@@ -1,0 +1,48 @@
+# Sources and limits
+
+Read on 2026-10-14. These sources ground the technical distinctions. They are references, not required software, services, or rules that every creative answer must quote. The craft workflow and response formats are practical design choices.
+
+| Source | What to consult | Use and limits |
+| --- | --- | --- |
+| Imam Muhammad ibn Saud Islamic University, Dr Badr al-Rashid, [مقدمة في العروض](https://units.imamu.edu.sa/deanships/admission/activities/Pages/news10.aspx) | القاعدة العامة في الكتابة العروضية، القواعد التفصيلية، الرموز، تقطيع الشعر | Primary teaching material for pronunciation-based transcription, shadda, tanwin, unwritten sounds, silent letters, and connected reading. Apply terminal lengthening to the actual rhyme reading, not arbitrary vowels. |
+| Ahmad al-Hashimi, [ميزان الذهب: مقدمات علم العروض](https://www.safahat.org/books/50259706/1.1/) | التفاعيل العشرة، الزحاف والعلل، كيفية التقطيع | Public-domain authored manual for cause/peg structure, feet, and sound-to-foot comparison. Its differently structured feet can share a moving/still string. Some broad lists conflict with later tables; cross-check the specific meter chapter. |
+| Al-Hashimi, [دروس علم العروض البحور](https://www.safahat.org/books/50259706/1.2/) | The candidate بحر, applicable عروض and ضرب, and footnotes | Meter-specific forms and licensed changes. The الهزج teaching example and الطويل forms inform the examples. Footnotes on المتقارب and المتدارك show why "every علة is obligatory and ending-only" is too broad. |
+| Al-Hashimi, [في حروف القافية الستة](https://www.safahat.org/books/50259706/2.1/) | الروي، الوصل، الخروج، الردف، التأسيس، الدخيل | Distinguishes the rhyme span and its anchor. A final written character or final word does not automatically identify either. |
+| Al Jazeera Learning, [قِفَا نَبْكِ](https://learning.aljazeera.net/en/languageofmedia/%D9%82%D9%81%D8%A7-%D9%86%D8%A8%D9%83) | العروض، البحر الطويل, full worked scan | First-party teaching example scanning both halves of the public-domain امرؤ القيس line, including فعولُ in the عجز. Its simplified description of changes does not authorize every change in every position. |
+| Cairo Arabic Language Academy, [الشعر المرسل والتفعيلة](https://www.arabicacademy.gov.eg/ar/%D9%85%D8%AD%D8%B1%D9%83-%D8%A7%D9%84%D8%A8%D8%AD%D8%AB/%D9%85%D8%B9%D8%AC%D9%85/dic-383/%D8%A7%D9%84%D8%B4%D8%B9%D8%B1-%D8%A7%D9%84%D9%85%D8%B1%D8%B3%D9%84-%D9%88-%D8%A7%D9%84%D8%AA%D9%81%D8%B9%D9%8A%D9%84%D8%A9) | Entries الشعر المرسل and التفعيلة | Primary terminology source distinguishing metered unrhymed verse from varying foot counts. Lack of fixed rhyme does not prove prose poetry. |
+| Hamdi al-Jabali, [قصيدة النثر](https://staff.najah.edu/media/sites/default/files/_%D8%A7%D9%84%D9%86%D8%AB%D8%B1.pdf), 1996 | Printed pages 9 and 12 on theory, sentence, and rhythm | University-hosted scholarly analysis of prose-poem theory and internal rhythm. The author's rejection of the genre and proponents' claims of superiority are critical positions, not objective quality tests. |
+| Al-Hashimi, [في فنون الشعر الجارية على ألسنة العامة](https://www.safahat.org/books/50259706/3.3/) | الزجل | Historical evidence for preserving vernacular pronunciation and avoiding imported case endings. It does not supply a complete contemporary Nabati or zajal meter taxonomy. |
+
+## Deeper craft and interpretation sources
+
+The following authored texts were read in the cited sections. Modern transcriptions of older works are primary text access, but not a facsimile or verification of every edition. Practical review questions derived from them remain workflow choices rather than universal rules.
+
+| Source | Locator | What it changes |
+| --- | --- | --- |
+| Abd al-Qahir al-Jurjani, [دلائل الإعجاز: النظم هو توخي معاني الإعراب](https://www.islamweb.com/ar/library/index.php?ID=7&bk_no=239&flag=1&page=bookcontents), [تمام القول في النظم](https://www.islamweb.net/amp/ar/library/content/239/68/%D9%81%D8%B5%D9%84-%D8%AA%D9%85%D8%A7%D9%85-%D8%A7%D9%84%D9%82%D9%88%D9%84-%D9%81%D9%8A-%D8%A7%D9%84%D9%86%D8%B8%D9%85-%D9%88%D8%A3%D9%86%D9%87-%D8%AA%D9%88%D8%AE%D9%89-%D9%85%D8%B9%D8%A7%D9%86%D9%8A-%D8%A7%D9%84%D9%86%D8%AD%D9%88) | Displayed pp.55–56, §48; pp.370–374, §§442–447 | Syntactic relations and their effect on meaning. Check semantic roles and consequential alternative readings during explanation and repair. |
+| Al-Jurjani, [أسرار البلاغة: مواقع التمثيل وتأثيره](https://mizanalarab.com/bab/21600017), [القول في التجنيس](https://mizanalarab.com/bab/21600002) | Image of fragrance released through fire; passages فقد تبين لك أن ما يعطي التجنيس and وعلى الجملة | Explain image function and meaning-led sound effects. The host is a sectioned transcription without edition footnotes; use named sections as locators. |
+| Ibn Rashiq, [العمدة في محاسن الشعر وآدابه](https://www.arabic-keyboard.info/books/ar/read-book/العمدة-في-محاسن-الشعر-وآدابه) | المطبوع والمصنوع، القطع والطول، النسيب | Revision can affect meaning, construction, and transitions. Historical قصيدة length thresholds differ; avoid a universal numerical classifier. Edition pagination is not consistently available. |
+| Ahmad Zaki Abu Shadi, [قضايا الشعر المعاصر: دفاع عن الشعر](https://www.safahat.org/books/31462469/1/), [خليل مطران](https://www.safahat.org/books/31462469/8/) | Varied poetic forms; passage دعم مطران وحدة القصيدة | Historically attributed advocacy of plural forms, poem unity, and artistic voice. Do not adopt priority claims, historical terms, or aesthetic positions as current consensus. |
+| Ibn Sana al-Mulk, [دار الطراز في عمل الموشحات](https://www.arabic-keyboard.info/books/ar/read-book/دار-الطراز-في-عمل-الموشحات) | Author's مقدمة, حد الموشح, الأقفال والأبيات | Preserve a requested stanza model and recurring units. Distinguish author text from the editor's introduction and variants; no claim that every later performed موشح follows one count. |
+| Muslih Abdelfattah Najjar, [التدوير في شعر التفعيلة العربي: شعر معين بسيسو أنموذجًا](https://ojs.aiou.edu.pk/index.php/jar/article/download/1357/1227/3452), 2023 | PDF pp.6–8, applications pp.9–11 | Distinguish foot/word divisions and semantic continuation; inspect rhyme and الوصل/الوقف together. A scholarly argument and worked applications, not a universal license or consensus taxonomy. |
+| Isam Asal Hasan, [انماط الشكل الكتابي في قصيدة النثر انسي الحاج انموذجا](https://amm.uomustansiriyah.edu.iq/index.php/mustansiriyah/article/view/562), [PDF](https://amm.uomustansiriyah.edu.iq/index.php/mustansiriyah/article/download/562/510/1093), 2018 | PDF pp.6,10,16,20–21 | Image, dialogue, and changing recurrence can organize prose poems. Composition-pattern study rather than detailed whitespace typography; no mandatory short length or final revelation follows. |
+
+The two contemporary studies' textual arguments were read, but their PDF typography and raw extracted scansion strings were not independently verified. They supply analytical questions, not additional certified sound-pattern fixtures.
+
+## Computational research
+
+| Primary research | Relevant section | Use and limits |
+| --- | --- | --- |
+| Sadallah et al., [Instruction-Guided Poetry Generation in Arabic and Its Dialects](https://arxiv.org/abs/2604.27766), [full paper](https://arxiv.org/pdf/2604.27766), 2026 v1 | §4.2, §5.1, Limitations, Appendix F | Separate generation, continuation, revision, and analysis; review compliance, fluency, coherence, and poetic effect separately. Corpus largely historical MSA despite dialectal instructions; reported model results do not validate this skill. |
+| Al Ghallabi et al., [Fann or Flop](https://aclanthology.org/2025.emnlp-main.1023/), [full text](https://arxiv.org/html/2505.18152v2), 2025 | §3, evaluation criteria and metric limits | Literal, interpretive, cultural, and stylistic understanding require distinct checks. Understanding benchmark rather than meter/originality certification; differing published genre counts were not adopted. |
+| Elzohbi and Zhao, [Tahḏīb](https://aclanthology.org/2025.arabicnlp-main.15/), [full paper](https://aclanthology.org/2025.arabicnlp-main.15.pdf), 2025 | Introduction, §§3.1–3.2 | Bounded phrase reconstruction under a declared rhythm motivates contextual repairs. Does not prove that arbitrary repairs preserve meaning or every grapheme rule generalizes. |
+
+Read [similar skills](SIMILAR_SKILLS.md) for five inspected source designs and commit-pinned links, and [optional tools](TOOLS.md) for analyzers and the local arithmetic checker. Third-party skill instructions and software claims are comparison evidence, not scholarly authority for Arabic prosody.
+
+## Scope of confidence
+
+- The skill supports composition, continuation, revision, explanation, and evidence-led analysis. Its local helper checks declared transcription arithmetic and exact foot coverage, not pronunciation or metrical legality. It contains no certified analyzer or exhaustive table of all licensed variants.
+- Classical scansion examples are checked against the linked teaching material. The taf‘ila and prose-poem examples are original exercises; they are not external literary evidence or benchmarks of aesthetic quality.
+- Specific dialectal meters, disputed traditions, and unusual ending forms need additional appropriate evidence. Preserve pronunciation and state uncertainty when that evidence is missing.
+- A source's historical terminology or taste may differ from current usage. Keep formal observations distinct from prescriptions about which poetry deserves to exist.
+- Verify a book's author and edition before attribution. The Hindawi title قضايا الشعر المعاصر at book 31462469 is by أحمد زكي أبو شادي; a shared title does not make it نازك الملائكة's book.

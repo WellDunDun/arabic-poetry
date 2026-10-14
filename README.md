@@ -27,9 +27,9 @@ Arabic poetry needs more than fluent phrasing or a guessed meter. This skill con
 
 The [source references](skills/arabic-poetry/references/SOURCES.md) and [research notes](docs/research/arabic-poetry.md) document the evidence, similar skills, and limitations.
 
-## Credits and collaboration
+## Collaboration
 
-The original idea came from a collaborator. Daniel Petro helped develop the initial skill and research. This dedicated repository keeps the project separate from the [personal skills collection](https://github.com/WellDunDun/skills).
+This project is maintained separately from the [personal skills collection](https://github.com/WellDunDun/skills).
 
 Contributions to poetic examples, Arabic terminology, research, and technical checks are welcome. Preserve the original poet's authorship and acknowledge contributions in the relevant work.
 

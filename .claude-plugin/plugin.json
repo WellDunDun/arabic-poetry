@@ -1,6 +1,7 @@
 {
   "name": "arabic-poetry",
   "skills": [
-    "./skills/arabic-poetry"
+    "./skills/arabic-poetry",
+    "./skills/arabic-prosody"
   ]
 }

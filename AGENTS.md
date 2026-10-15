@@ -8,6 +8,8 @@ This is a collaborative Arabic poetry Agent Skill. Keep README.md user-facing: p
 
 Keep the served skill at `skills/arabic-poetry/`, with `SKILL.md`, one-level `references/`, and deterministic helpers in `scripts/`. Its frontmatter name must match its directory. Keep the entrypoint under 100 lines when practical. Use relative reference links and do not require maintainer research notes to install the skill.
 
+`skills/arabic-prosody/` follows the same rules. Its `scripts/` hold the scanner (`scan.py`, pure Python); `assets/workbench/` holds the Diwan page sources (`page.html`, `engine.js`, `export.js`, `meters.json`) and the built single file `diwan.html`; `assets/fonts/` holds the Amiri font for PDF export. `scripts/arud/meters.py` is the single source of the meter tables: after changing it or the browser engine, run `python3 skills/arabic-prosody/scripts/build_workbench.py` and keep the parity test passing. Its entrypoint is longer than 100 lines because it also documents the Diwan workflow.
+
 Keep research in `docs/research/`; distinguish source findings, proposed workflow, and validation evidence. Do not add unrelated artifacts, screenshots, or app prototypes to the root. Preserve unrelated changes.
 
 ## Editing the skill
@@ -26,6 +28,9 @@ Run from the repository root:
 skills-ref validate skills/arabic-poetry
 PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s skills/arabic-poetry/scripts -p 'test_*.py'
 python3 -m json.tool .claude-plugin/plugin.json >/dev/null
+skills-ref validate skills/arabic-prosody
+PYTHONDONTWRITEBYTECODE=1 python3 skills/arabic-prosody/tests/run_gold.py
+node skills/arabic-prosody/tests/parity.js
 git diff --check
 ```
 

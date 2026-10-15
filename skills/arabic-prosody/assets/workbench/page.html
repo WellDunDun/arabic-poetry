@@ -1,0 +1,1068 @@
+<title>ديوان العروض</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap">
+<style>
+/* Layout: a manuscript sheet (verses + their scansion) beside a narrow reading desk (meter, rhyme, review). */
+:root {
+  --paper: #f5f6f3; --sheet: #fcfcfa; --ink: #1d2528; --ink-2: #55615f; --rule: #dfe3de;
+  --accent: #0e6b66; --accent-soft: #dcefec; --flag: #b8741a; --flag-soft: #f8ebd4;
+  --bad: #b3261e; --bad-soft: #f9e1de; --good: #2c7a4b; --good-soft: #e0f1e6;
+  --gold: #c99a2e;
+  --verse: "Amiri", "Noto Naskh Arabic", "Traditional Arabic", serif;
+  --ui: "IBM Plex Sans Arabic", "Segoe UI", "Geeza Pro", Tahoma, sans-serif;
+  --r: 10px;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper: #121718; --sheet: #182022; --ink: #e6ecea; --ink-2: #9aa8a5; --rule: #2a3436;
+  --accent: #4fb9ae; --accent-soft: #173533; --flag: #e3a64b; --flag-soft: #3a2c15;
+  --bad: #f08a80; --bad-soft: #3d1d1a; --good: #6fcf97; --good-soft: #17301f; --gold: #e2b75a; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --paper: #121718; --sheet: #182022; --ink: #e6ecea; --ink-2: #9aa8a5; --rule: #2a3436;
+  --accent: #4fb9ae; --accent-soft: #173533; --flag: #e3a64b; --flag-soft: #3a2c15;
+  --bad: #f08a80; --bad-soft: #3d1d1a; --good: #6fcf97; --good-soft: #17301f; --gold: #e2b75a; color-scheme: dark }
+* { box-sizing: border-box }
+[hidden] { display: none !important }
+body { background: var(--paper); color: var(--ink); font-family: var(--ui); font-size: 15px; line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 0 32px }
+button, input, textarea, select { font: inherit; color: inherit }
+button { cursor: pointer }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
+.app { max-width: 1180px; margin: 0 auto }
+
+/* top bar */
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--paper); display: flex; flex-wrap: wrap; gap: 10px;
+  align-items: center; padding-block: 12px; border-bottom: 1px solid var(--rule) }
+.brand { display: inline-flex; align-items: center; gap: 10px; margin-inline-end: 8px }
+.emblem { width: 52px; height: 64px; flex: none; overflow: visible }
+.em-nib { fill: var(--accent) }
+.em-slit { stroke: var(--paper); stroke-width: 2.2; stroke-linecap: round }
+.em-eye { fill: var(--paper); stroke: var(--accent); stroke-width: 1.4 }
+.em-net { stroke: var(--accent); stroke-width: 1.4; fill: none; opacity: .45 }
+.em-node { fill: var(--gold) }
+.em-beat { fill: var(--gold) }
+.wordmark { display: grid; line-height: 1 }
+.wordmark b { font-family: var(--verse); font-size: 40px; font-weight: 700; color: var(--accent); letter-spacing: .01em }
+.wordmark small { font-size: 13px; color: var(--ink-2); letter-spacing: .06em; margin-top: 3px }
+.credit { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 28px; padding-block: 14px;
+  border-top: 1px solid var(--rule); color: var(--ink-2); font-size: 13px; text-align: center }
+.credit .emblem { width: 22px; height: 27px }
+.credit .names { color: var(--ink); font-weight: 500 }
+.bar select { min-width: 0; max-width: 260px; padding: 6px 10px; border: 1px solid var(--rule); border-radius: 8px; background: var(--sheet) }
+.spacer { flex: 1 }
+.btn { border: 1px solid var(--rule); background: var(--sheet); border-radius: 8px; padding: 6px 12px; font-size: 14px; white-space: nowrap }
+.btn:hover { border-color: var(--accent) }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--sheet) }
+.btn.ghost { background: transparent }
+.btn[disabled] { opacity: .5; cursor: default }
+.seg { display: inline-flex; border: 1px solid var(--rule); border-radius: 8px; overflow: hidden }
+.seg button { border: 0; background: var(--sheet); padding: 6px 10px; font-size: 13px }
+.seg button[aria-pressed="true"] { background: var(--accent-soft); color: var(--accent); font-weight: 600 }
+
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 20px; padding-top: 18px; align-items: start }
+@media (max-width: 860px) { .layout { grid-template-columns: minmax(0, 1fr) } .panel { order: -1 } }
+
+/* sheet */
+.sheet { background: var(--sheet); border: 1px solid var(--rule); border-radius: 14px; padding: 18px clamp(14px, 3vw, 28px) 24px; min-width: 0 }
+.sheet-head { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 8px }
+#title { flex: 1; min-width: 160px; font-family: var(--verse); font-size: 26px; font-weight: 700; border: 0; background: transparent; padding: 2px 0 }
+#title:hover, #title:focus { border-bottom: 1px dashed var(--rule) }
+.banner { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; background: var(--flag-soft); border: 1px solid color-mix(in srgb, var(--flag) 35%, transparent);
+  border-radius: var(--r); padding: 10px 14px; margin: 6px 0 14px; font-size: 14px }
+.banner b { color: var(--flag) }
+.banner.done { background: var(--good-soft); border-color: color-mix(in srgb, var(--good) 35%, transparent) }
+.banner.done b { color: var(--good) }
+.banner .msg { flex: 1; min-width: 200px }
+
+#bulk { width: 100%; min-height: 260px; font-family: var(--verse); font-size: 22px; line-height: 1.9; padding: 12px; border: 1px solid var(--accent);
+  border-radius: var(--r); background: var(--paper); resize: vertical }
+.bulk-actions { display: flex; gap: 8px; margin: 8px 0 14px; flex-wrap: wrap; align-items: center; font-size: 13px; color: var(--ink-2) }
+
+ol.lines { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px }
+.line { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 8px; padding: 10px 0 12px; border-bottom: 1px solid var(--rule) }
+.line:last-child { border-bottom: 0 }
+.num { font-size: 13px; color: var(--ink-2); padding-top: 10px; text-align: center; font-variant-numeric: tabular-nums }
+.num .dot { display: block; width: 8px; height: 8px; border-radius: 50%; margin: 6px auto 0; background: var(--good) }
+.line.broken .num .dot { background: var(--bad) }
+.verse { font-family: var(--verse); font-size: clamp(21px, 2.6vw, 27px); line-height: 2; display: flex; flex-wrap: wrap; gap: 0 .32em; align-items: baseline; min-width: 0 }
+.w { border-radius: 6px; padding: 0 2px; cursor: pointer; border-bottom: 2px solid transparent; transition: background .15s }
+.w:hover { background: var(--accent-soft) }
+.w.bare { border-bottom: 2px dotted var(--ink-2) }
+.w.flag { background: var(--flag-soft); border-bottom: 2px solid var(--flag) }
+.w.flag.done { background: transparent; border-bottom: 2px solid color-mix(in srgb, var(--good) 60%, transparent) }
+.w.bad { color: var(--bad); text-decoration: underline wavy color-mix(in srgb, var(--bad) 70%, transparent); text-underline-offset: 7px }
+.sep { color: var(--ink-2); font-size: .8em; padding: 0 .4em }
+.edit-line { width: 100%; font-family: var(--verse); font-size: clamp(21px, 2.6vw, 27px); line-height: 1.9; padding: 4px 10px; border: 1px solid var(--accent);
+  border-radius: 8px; background: var(--paper) }
+.tools { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 2px }
+.mini { font-size: 12px; border: 1px solid var(--rule); background: transparent; border-radius: 999px; padding: 2px 10px; color: var(--ink-2) }
+.mini:hover { color: var(--accent); border-color: var(--accent) }
+.mini.warn { color: var(--bad); border-color: color-mix(in srgb, var(--bad) 45%, transparent) }
+
+/* feet strip — read right to left like the verse */
+.feet { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px }
+.foot { border: 1px solid var(--rule); border-radius: 8px; padding: 4px 10px 5px; display: grid; justify-items: center; gap: 0; min-width: 64px; background: var(--paper) }
+.foot .syl { font-size: 17px; letter-spacing: .14em; direction: rtl; font-weight: 600; color: var(--ink); white-space: nowrap }
+.foot .nm { font-family: var(--verse); font-size: 15px; color: var(--accent) }
+.foot .lt { font-family: var(--verse); font-size: 13px; color: var(--ink-2) }
+.foot.bad { border-color: var(--bad); background: var(--bad-soft) }
+.foot.bad .nm, .foot.bad .syl { color: var(--bad) }
+.foot.cont { border-style: dashed; opacity: .7 }
+.half { width: 100%; height: 0 }
+.halfmark { align-self: center; color: var(--ink-2); font-family: var(--verse); font-size: 18px; padding: 0 4px }
+.diag { font-size: 13px; color: var(--bad); margin-top: 6px; display: grid; gap: 2px }
+.note { font-size: 12.5px; color: var(--ink-2); margin-top: 4px }
+
+/* alternatives */
+.alts { margin-top: 10px; border: 1px solid var(--rule); border-radius: var(--r); overflow-x: auto; background: var(--paper) }
+.alts table { width: 100%; border-collapse: collapse; font-size: 14px }
+.alts th { text-align: right; font-weight: 500; color: var(--ink-2); font-size: 12px; padding: 8px 10px; border-bottom: 1px solid var(--rule) }
+.alts td { padding: 8px 10px; border-bottom: 1px solid var(--rule); vertical-align: middle }
+.alts tr:last-child td { border-bottom: 0 }
+.alts .v { font-family: var(--verse); font-size: 20px; min-width: 220px }
+.alts .sy { font-size: 13px; color: var(--ink-2); letter-spacing: .08em; white-space: nowrap }
+.pill { display: inline-block; font-size: 12px; border-radius: 999px; padding: 1px 9px; white-space: nowrap }
+.pill.ok { background: var(--good-soft); color: var(--good) }
+.pill.no { background: var(--bad-soft); color: var(--bad) }
+.pill.flag { background: var(--flag-soft); color: var(--flag) }
+.alts .head { display: flex; justify-content: space-between; gap: 8px; align-items: center; padding: 8px 10px; border-bottom: 1px solid var(--rule); font-size: 13px; flex-wrap: wrap }
+.status { font-size: 13px; color: var(--ink-2); padding: 8px 10px }
+
+/* panel */
+.panel { display: grid; gap: 14px; min-width: 0; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 70px);
+  max-height: calc(100vh - 90px - env(safe-area-inset-top, 0px)); overflow-y: auto; overscroll-behavior: contain; padding-bottom: 4px; scrollbar-width: thin }
+.setrow { flex-basis: 100%; display: flex; flex-wrap: wrap; gap: 8px 10px; align-items: center; padding-top: 2px }
+.setrow .lbl { font-size: 13px; color: var(--ink-2) }
+.setrow .seg { flex-wrap: wrap }
+.setrow .seg button[data-manual="true"] { background: var(--accent); color: var(--sheet) }
+#meterSel { padding: 6px 8px; border: 1px solid var(--rule); border-radius: 8px; background: var(--sheet); font-size: 14px }
+#meterSel.manual { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); font-weight: 600 }
+.detected { font-size: 13px; color: var(--ink-2); flex: 1; min-width: 200px }
+.detected b { color: var(--ink) }
+@media (max-width: 860px) { .panel { position: static; max-height: none; overflow: visible } }
+.card { background: var(--sheet); border: 1px solid var(--rule); border-radius: 14px; padding: 14px 16px }
+.card h3 { margin: 0 0 8px; font-size: 12px; font-weight: 600; color: var(--ink-2); letter-spacing: .04em }
+.meter { font-family: var(--verse); font-size: 36px; font-weight: 700; line-height: 1.2; color: var(--accent) }
+.meter small { font-family: var(--ui); font-size: 14px; font-weight: 500; color: var(--ink-2); margin-inline-start: 6px }
+.key { font-family: var(--verse); font-size: 15px; color: var(--ink-2); margin-top: 2px }
+.meterline { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 8px }
+.bar2 { height: 6px; border-radius: 99px; background: var(--bad-soft); overflow: hidden; margin-top: 10px }
+.bar2 > i { display: block; height: 100%; background: var(--good) }
+.stat { font-size: 13px; color: var(--ink-2); margin-top: 4px; font-variant-numeric: tabular-nums }
+.warnbox { background: var(--flag-soft); border-radius: var(--r); padding: 10px 12px; font-size: 13.5px; margin-top: 10px }
+.warnbox b { color: var(--flag) }
+.cands { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none }
+.cands button { width: 100%; display: flex; justify-content: space-between; gap: 8px; border: 1px solid transparent; background: transparent; border-radius: 8px;
+  padding: 5px 8px; font-size: 14px; text-align: right }
+.cands button:hover { border-color: var(--rule) }
+.cands button[aria-current="true"] { background: var(--accent-soft); color: var(--accent); font-weight: 600 }
+.cands .n { color: var(--ink-2); font-variant-numeric: tabular-nums; font-size: 13px }
+.rawi { font-family: var(--verse); font-size: 30px; color: var(--accent); line-height: 1 }
+.rhymes { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px }
+.rhymes span { font-family: var(--verse); font-size: 15px; border-radius: 6px; padding: 0 6px; background: var(--good-soft); color: var(--good) }
+.rhymes span.no { background: var(--bad-soft); color: var(--bad) }
+.legend { display: grid; gap: 4px; font-size: 13px; color: var(--ink-2) }
+.legend .sw { display: inline-block; min-width: 26px; text-align: center; border-radius: 4px; margin-inline-end: 6px; font-weight: 600 }
+.empty { text-align: center; padding: 40px 10px; color: var(--ink-2) }
+.empty .big { font-family: var(--verse); font-size: 26px; color: var(--ink); margin-bottom: 6px }
+
+/* popover */
+.pop { position: fixed; z-index: 20; background: var(--sheet); border: 1px solid var(--rule); border-radius: 12px; box-shadow: 0 12px 32px rgb(0 0 0 / .18);
+  padding: 12px; width: min(340px, calc(100vw - 32px)); display: grid; gap: 8px }
+.pop .wd { font-family: var(--verse); font-size: 28px; text-align: center }
+.pop .why { font-size: 13px; color: var(--ink-2) }
+.opts { display: flex; flex-wrap: wrap; gap: 6px }
+.opts button { font-family: var(--verse); font-size: 20px; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper); padding: 2px 10px; display: grid; justify-items: center }
+.opts button small { font-family: var(--ui); font-size: 11px; color: var(--ink-2) }
+.opts button:hover, .opts button[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft) }
+.endmarks { display: flex; gap: 4px; flex-wrap: wrap }
+.endmarks button { min-width: 38px; font-family: var(--verse); font-size: 20px; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper); padding: 0 6px }
+.pop input { font-family: var(--verse); font-size: 22px; width: 100%; padding: 4px 10px; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper) }
+.pop .row { display: flex; gap: 6px; justify-content: flex-start; flex-wrap: wrap }
+.toast { position: fixed; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--sheet);
+  padding: 8px 16px; border-radius: 999px; font-size: 14px; z-index: 30 }
+.ask { margin-top: 10px; border: 1px solid var(--rule); border-radius: var(--r); background: var(--paper); display: grid; gap: 0 }
+.ask .msgs { display: grid; gap: 8px; padding: 10px 12px; max-height: 420px; overflow-y: auto }
+.ask .me { justify-self: start; background: var(--accent-soft); border-radius: 10px 10px 10px 2px; padding: 6px 10px; max-width: 90% }
+.ask .cl { justify-self: end; background: var(--sheet); border: 1px solid var(--rule); border-radius: 10px 10px 2px 10px; padding: 8px 12px; max-width: 100%; min-width: 0 }
+.ask .cl p { margin: 0 0 6px }
+.ask .cl .alts { margin-top: 6px }
+.ask .busy { color: var(--ink-2); font-size: 13px }
+.ask form { display: flex; gap: 6px; padding: 8px; border-top: 1px solid var(--rule); flex-wrap: wrap }
+.ask textarea { flex: 1; min-width: 180px; min-height: 42px; resize: vertical; border: 1px solid var(--rule); border-radius: 8px; padding: 6px 10px; background: var(--sheet) }
+.ask .chips { display: flex; gap: 6px; flex-wrap: wrap; padding: 8px 12px 0 }
+.pmenu { position: relative; min-width: 0 }
+.pmbtn { max-width: 300px; overflow: hidden; text-overflow: ellipsis; font-family: var(--verse); font-size: 18px; padding: 3px 12px }
+.pmlist { position: absolute; top: calc(100% + 6px); inset-inline-start: 0; z-index: 15; width: min(340px, calc(100vw - 32px)); background: var(--sheet);
+  border: 1px solid var(--rule); border-radius: 12px; box-shadow: 0 12px 32px rgb(0 0 0 / .16); padding: 6px; display: grid; gap: 2px; max-height: 60vh; overflow-y: auto }
+.pmitem { display: flex; align-items: center; gap: 4px; border-radius: 8px }
+.pmitem[aria-current="true"] { background: var(--accent-soft) }
+.pmopen { flex: 1; min-width: 0; text-align: right; border: 0; background: transparent; padding: 6px 8px; display: grid }
+.pmopen b { font-family: var(--verse); font-size: 18px; font-weight: 400; overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+.pmopen small { color: var(--ink-2); font-size: 12px }
+.pmdel { border: 0; background: transparent; color: var(--ink-2); width: 32px; height: 32px; border-radius: 8px; font-size: 16px; flex: none }
+.pmdel:hover { color: var(--bad); background: var(--bad-soft) }
+.pmconfirm { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; padding: 6px 8px; background: var(--bad-soft); border-radius: 8px; font-size: 13px; width: 100% }
+.pmconfirm .btn.danger { background: var(--bad); border-color: var(--bad); color: var(--sheet) }
+.pmempty { padding: 8px; color: var(--ink-2); font-size: 13px }
+.ctitle { font-family: var(--verse); font-size: 26px; margin: 0 0 10px }
+.cform { display: grid; gap: 8px }
+.cform label { font-size: 13px; color: var(--ink-2) }
+#newTitle { font-family: var(--verse); font-size: 20px; padding: 6px 10px; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper) }
+#newText { min-height: 300px; font-family: var(--verse); font-size: 22px; line-height: 1.9; padding: 12px; border: 1px solid var(--rule); border-radius: var(--r); background: var(--paper); resize: vertical }
+.cnote { font-size: 13px; color: var(--ink-2) }
+.err { color: var(--bad); font-size: 13px }
+#banner .banner { margin: 16px 0 0 }
+.scrim { position: fixed; inset: 0; z-index: 40; background: rgb(0 0 0 / .35); display: grid; place-items: center;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)) }
+.dlg { background: var(--sheet); border: 1px solid var(--rule); border-radius: 14px; padding: 18px 20px; width: min(460px, 100%); max-height: 100%; overflow-y: auto; display: grid; gap: 12px }
+.dlg h2 { margin: 0; font-family: var(--verse); font-size: 26px }
+.dlg fieldset { border: 1px solid var(--rule); border-radius: 10px; padding: 8px 12px 10px; margin: 0; display: grid; gap: 4px }
+.dlg legend { font-size: 13px; color: var(--ink-2); padding: 0 4px }
+.dlg label { font-size: 14px }
+.dlg .check { display: flex; gap: 8px; align-items: center }
+.dlg input[type=text], .dlg #expBook, .dlg select { width: 100%; padding: 6px 10px; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper); margin-top: 4px }
+.dlg .muted { color: var(--ink-2); font-size: 12px }
+.dlg .row { display: flex; gap: 8px; flex-wrap: wrap }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important } }
+</style>
+
+<div class="app" dir="rtl" lang="ar">
+  <header class="bar">
+    <span class="brand" aria-label="ديوان — ورشة العروض">
+      <svg class="emblem" viewBox="8 6 42 52" aria-hidden="true" focusable="false">
+        <path class="em-net" d="M24 31 L12 17 M24 31 L36 13 M24 31 L44 25 M12 17 L36 13 M36 13 L44 25"/>
+        <circle class="em-node" cx="12" cy="17" r="2.6"/><circle class="em-node" cx="36" cy="13" r="2.6"/><circle class="em-node" cx="44" cy="25" r="2.6"/>
+        <path class="em-nib" d="M24 9 C31 16 34 24 31 32 L24 45 L17 32 C14 24 17 16 24 9 Z"/>
+        <path class="em-slit" d="M24 33 L24 45"/>
+        <circle class="em-eye" cx="24" cy="31" r="3"/>
+        <circle class="em-beat" cx="18" cy="53" r="2.4"/><rect class="em-beat" x="24" y="51" width="10" height="4" rx="2"/><rect class="em-beat" x="38" y="51" width="10" height="4" rx="2"/>
+      </svg>
+      <span class="wordmark"><b>ديوان</b><small>ورشة العروض</small></span>
+    </span>
+    <div class="pmenu">
+      <button class="btn pmbtn" id="pmBtn" type="button" aria-haspopup="true" aria-expanded="false"><span id="pmTitle">لا قصائد بعد</span> <span aria-hidden="true">▾</span></button>
+      <div class="pmlist" id="pmList" hidden></div>
+    </div>
+    <button class="btn" id="newBtn" type="button">+ قصيدة</button>
+    <span class="spacer"></span>
+    <div class="seg" role="group" aria-label="رموز التقطيع">
+      <button type="button" id="nSyl" aria-pressed="true">ب −</button>
+      <button type="button" id="nMarks" aria-pressed="false">/ ٠</button>
+    </div>
+    <button class="btn" id="copyBtn" type="button">نسخ القصيدة</button>
+    <button class="btn" id="exportBtn" type="button">تصدير</button>
+    <div class="setrow">
+      <span class="lbl" id="modeLbl">شكل القصيدة</span>
+      <div class="seg" role="group" aria-labelledby="modeLbl" id="modeSeg">
+        <button type="button" data-mode="auto" aria-pressed="true">تلقائي</button>
+        <button type="button" data-mode="classical" aria-pressed="false" title="بيت في كل سطر، والشطران بينهما *">عمودي: بيت في سطر</button>
+        <button type="button" data-mode="pairs" aria-pressed="false" title="كل سطرين بيت: الأول صدر والثاني عجز">عمودي: كل سطر شطر</button>
+        <button type="button" data-mode="free" aria-pressed="false">تفعيلة</button>
+      </div>
+      <label class="lbl" for="meterSel">البحر</label>
+      <select id="meterSel"><option value="">تلقائي</option></select>
+      <span class="detected" id="detected"></span>
+      <button class="btn ghost" type="button" id="resetBtn" hidden>↺ العودة إلى التلقائي</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="sheet" id="composer" aria-label="قصيدة جديدة" hidden>
+      <h2 class="ctitle">قصيدة جديدة</h2>
+      <div class="cform">
+        <label for="newTitle">العنوان</label>
+        <input id="newTitle" placeholder="اختياري — يُؤخذ من أول السطر إن تركته">
+        <label for="newText">النص</label>
+        <textarea id="newText" placeholder="الصق القصيدة هنا، بتشكيل أو بدونه.&#10;عمودي: بيت في كل سطر والشطران بينهما *  — أو شطر في كل سطر.&#10;تفعيلة: سطر في كل سطر."></textarea>
+        <div class="cnote">ستُفحص القصيدة فور إضافتها. إن كان التشكيل ناقصًا تقترح الصفحة تشكيلًا كاملًا لتراجعه قبل الاعتماد.</div>
+        <div class="bulk-actions"><button class="btn primary" id="newAdd" type="button">أضف إلى الديوان</button>
+          <button class="btn ghost" id="newCancel" type="button">إلغاء</button><span id="newErr" class="err"></span></div>
+      </div>
+    </section>
+    <section class="sheet" id="sheet" aria-label="القصيدة">
+      <div class="sheet-head">
+        <input id="title" aria-label="عنوان القصيدة" placeholder="عنوان القصيدة">
+        <button class="btn" id="diacBtn" type="button" hidden>شكّل القصيدة</button>
+        <button class="btn" id="bulkBtn" type="button">تحرير النص كاملًا</button>
+      </div>
+      <div id="bulkWrap" hidden>
+        <textarea id="bulk" aria-label="نص القصيدة" placeholder="بيت في كل سطر، والشطران بينهما *  — أو سطر تفعيلة في كل سطر"></textarea>
+        <div class="bulk-actions">
+          <button class="btn primary" id="bulkSave" type="button">حفظ</button>
+          <button class="btn ghost" id="bulkCancel" type="button">إلغاء</button>
+          <span>بيت في كل سطر، والشطران بينهما <b>*</b> · سطر التفعيلة بلا فاصل</span>
+        </div>
+      </div>
+      <ol class="lines" id="lines"></ol>
+      <div id="banner"></div>
+    </section>
+
+    <aside class="panel" aria-label="نتيجة التقطيع">
+      <div class="card" id="meterCard"></div>
+      <div class="card" id="candCard"></div>
+      <div class="card" id="rhymeCard"></div>
+      <div class="card">
+        <h3>مفتاح الرموز</h3>
+        <div class="legend">
+          <div><span class="sw">ب</span>مقطع قصير: متحرك (/)</div>
+          <div><span class="sw">−</span>مقطع طويل: متحرك فساكن (/٠)</div>
+          <div><span class="sw">=</span>مقطع زائد الطول آخر السطر (/٠٠)</div>
+          <div><span class="sw" style="background:var(--flag-soft);color:var(--flag)">كلمة</span>تشكيل يحتاج تأكيدك</div>
+          <div><span class="sw" style="border-bottom:2px dotted var(--ink-2)">كلمة</span>حروف بلا تشكيل</div>
+          <div><span class="sw" style="color:var(--bad)">كلمة</span>في تفعيلة مكسورة</div>
+        </div>
+      </div>
+    </aside>
+  </main>
+  <footer class="credit">
+    <svg class="emblem" viewBox="8 6 42 52" aria-hidden="true" focusable="false">
+        <path class="em-net" d="M24 31 L12 17 M24 31 L36 13 M24 31 L44 25 M12 17 L36 13 M36 13 L44 25"/>
+        <circle class="em-node" cx="12" cy="17" r="2.6"/><circle class="em-node" cx="36" cy="13" r="2.6"/><circle class="em-node" cx="44" cy="25" r="2.6"/>
+        <path class="em-nib" d="M24 9 C31 16 34 24 31 32 L24 45 L17 32 C14 24 17 16 24 9 Z"/>
+        <path class="em-slit" d="M24 33 L24 45"/>
+        <circle class="em-eye" cx="24" cy="31" r="3"/>
+        <circle class="em-beat" cx="18" cy="53" r="2.4"/><rect class="em-beat" x="24" y="51" width="10" height="4" rx="2"/><rect class="em-beat" x="38" y="51" width="10" height="4" rx="2"/>
+      </svg>
+    <span dir="ltr">Compliments from <span class="names">Firas F. Khabour &amp; Daniel Petro</span> · Oct. 2026</span>
+  </footer>
+  <div class="pop" id="pop" hidden role="dialog" aria-label="تشكيل الكلمة"></div>
+  <div class="scrim" id="exportDlg" hidden>
+    <div class="dlg" role="dialog" aria-modal="true" aria-labelledby="expTitle">
+      <h2 id="expTitle">تصدير</h2>
+      <fieldset><legend>ما الذي تريد تصديره؟</legend>
+        <label><input type="radio" name="expScope" value="one" checked> هذه القصيدة</label>
+        <label><input type="radio" name="expScope" value="all"> الديوان كله <span class="muted" id="expCount"></span></label>
+      </fieldset>
+      <div id="bookTitleRow"><label for="expBook">عنوان الديوان</label><input id="expBook" placeholder="يظهر على الصفحة الأولى"></div>
+      <fieldset><legend>التشكيل</legend>
+        <label><input type="radio" name="expTk" value="full" checked> كامل</label>
+        <label><input type="radio" name="expTk" value="light"> مخفّف <span class="muted">(بلا سكون، وبلا الحركة قبل حرف المد)</span></label>
+        <label><input type="radio" name="expTk" value="none"> بلا تشكيل</label>
+      </fieldset>
+      <label class="check"><input type="checkbox" id="expApp"> ملحق بالبحور والتقطيع (ب −)</label>
+      <label class="check"><input type="checkbox" id="expMeter" checked> اسم البحر تحت العنوان</label>
+      <div><label for="expFont">الخط</label>
+        <select id="expFont"><option>Traditional Arabic</option><option>Amiri</option><option>Sakkal Majalla</option><option>Simplified Arabic</option><option>Arial</option></select></div>
+      <div class="note">ملف Word بأبيات في عمودين (الصدر يمينًا والعجز يسارًا). لملف PDF اطلب من Claude في المحادثة: «صدّر الديوان PDF».</div>
+      <div class="row"><button class="btn primary" type="button" id="expGo">تنزيل ملف Word</button>
+        <button class="btn" type="button" id="expCopy">نسخ نصًّا</button>
+        <button class="btn ghost" type="button" id="expClose">إغلاق</button></div>
+      <div class="err" id="expErr"></div>
+    </div>
+  </div>
+  <div class="toast" id="toast" hidden></div>
+</div>
+
+<script>
+window.__METERS__ = /*METERS*/null;
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+/*ENGINE*/
+</script>
+<script>
+/*EXPORT*/
+</script>
+<script>
+(function () {
+  'use strict';
+  const A = window.Arud; A.load(window.__METERS__);
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const AR_DIG = n => String(n).replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
+  const store = { get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
+    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} } };
+
+  // ---------------------------------------------------------------- state
+  let db = null, sample = null;
+  let poems = [];                 // [{id, title, text, choices, suggestions, status, meter, mode, order}]
+  let curId = store.get('diwan.cur', null);
+  let notation = store.get('diwan.notation', 'syl');
+  const layoutCache = new Map();
+  let analysis = null, editing = null, openAlts = {}, altResults = {}, openAsk = {}, askState = {}, sampleTools = false;
+  const cur = () => poems.find(p => p.id === curId) || null;
+  const linesOf = p => (p ? p.text.split('\n') : []);
+
+  // ---------------------------------------------------------------- persistence
+  const pending = new Map(), writing = new Set(), dirty = new Set();
+  function save(p, now) {
+    if (!db) { store.set('diwan.local', poems); return; }
+    dirty.add(p.id);
+    clearTimeout(pending.get(p.id));
+    pending.set(p.id, setTimeout(() => flush(p.id), now ? 0 : 700));
+  }
+  async function flush(id) {
+    if (writing.has(id)) { pending.set(id, setTimeout(() => flush(id), 400)); return; }
+    const p = poems.find(x => x.id === id); if (!p) return;
+    writing.add(id);
+    const body = { title: p.title || '', text: p.text || '', choices: p.choices || [], suggestions: p.suggestions || {},
+      status: p.status || 'review', meter: p.meter || '', mode: p.mode || 'auto', order: p.order || 0 };
+    try { await db.collection('poems').doc(id).set(body); dirty.delete(id); }
+    catch (e) { toast(e && e.code === 'invalid_argument' ? 'لا تملك صلاحية الحفظ هنا' : 'تعذّر الحفظ، حاول مجددًا'); }
+    finally { writing.delete(id); }
+  }
+
+  // ---------------------------------------------------------------- analysis
+  function runAnalysis() {
+    const p = cur(); analysis = null;
+    if (!p) return;
+    const ls = linesOf(p).filter(l => A.clean(l));
+    if (!ls.length) return;
+    try {
+      let mode = p.mode || 'auto';
+      if (mode === 'auto' && p.meter) {          // a hand-picked meter keeps the layout found automatically
+        const key = ls.join('\n');
+        if (!layoutCache.has(key)) { const a0 = A.analyze(ls, { mode: 'auto' }); layoutCache.set(key, a0.mode === 'free' ? 'free' : a0.layout === 'pairs' ? 'pairs' : 'classical'); }
+        mode = layoutCache.get(key);
+      }
+      analysis = A.analyze(ls, { mode, meter: p.meter || null });
+    }
+    catch (e) { console.error(e); analysis = null; }
+  }
+  const pat = bits => notation === 'syl' ? A.syll(bits || '') : A.marks(bits || '');
+  const meterAr = k => (A.data.info[k] || [k])[0];
+
+  // per visible line: {feet, broken, diag[], words:Set(bad word idx), readings}
+  function lineViews() {
+    const p = cur(); const all = linesOf(p); const out = [];
+    let k = 0; // index among non-empty lines
+    for (const raw of all) {
+      if (!A.clean(raw)) { out.push(null); continue; }
+      out.push(viewFor(raw, k++));
+    }
+    return out;
+  }
+  function viewFor(raw, k) {
+    const v = { feet: [], broken: false, diag: [], bad: new Set(), readings: [] };
+    if (!analysis) return v;
+    if (analysis.mode === 'free') {
+      const best = analysis.free[0]; const ln = best && best.lines ? best.lines[k] : null; if (!ln) return v;
+      ln.feet.forEach(f => {
+        if (f.cont) { v.feet.push({ cont: true }); return; }
+        v.feet.push({ name: f.name, got: f.got, letters: f.letters, bad: f.errors > 0, crosses: f.crosses });
+        if (f.errors) { v.broken = true; (f.words || []).forEach(w => v.bad.add(w));
+          v.diag.push(`«${f.letters}» = ${pat(f.got)} لا تطابق صور ${best.family.foot}: ` + best.family.hashw.map(x => `${x[1]} (${pat(x[0])})`).join('، ')); }
+      });
+      return v;
+    }
+    const c = analysis.cands[0]; if (!c) return v;
+    if (analysis.layout === 'pairs') {
+      const pi = Math.floor(k / 2), half = k % 2;
+      let r = c.perLine[pi] ? (c.perLine[pi][1] || c.perLine[pi][2]) : null;
+      if (!r && analysis.scans[pi]) r = A.rescan(analysis.scans[pi].text, c.form);
+      if (!r) { v.broken = true; v.diag.push('بعيد جدًّا عن هذا البحر'); return v; }
+      const h = half ? r.ajuz : r.sadr;
+      if (!h) return v;
+      h.feet.forEach(f => {
+        v.feet.push({ name: f.name, got: f.got, letters: f.letters, bad: f.errors > 0 });
+        if (f.errors) { v.broken = true; f.words.forEach(w => v.bad.add(w));
+          v.diag.push(`التفعيلة ${AR_DIG(f.pos + 1)} (${half ? 'عجز' : 'صدر'}): «${f.letters}» = ${pat(f.got)} — المسموح: ` + h.allowed[f.pos].map(x => `${x[1]} (${pat(x[0])})`).join('، ')); }
+      });
+      h.readings.forEach(x => v.readings.push(`«${x.word}»: ${x.note}`));
+      return v;
+    }
+    let r = c.perLine[k][1] || c.perLine[k][2];
+    if (!r) r = A.rescan(analysis.scans[k].text, c.form);
+    if (!r) { v.broken = true; v.diag.push('بعيد جدًّا عن هذا البحر'); return v; }
+    const parts = r.sadr ? [r.sadr, r.ajuz] : [r.ajuz];
+    const offs = r.sadr ? [0, A.words(r.split ? r.split[0] : '').length] : [0];
+    parts.forEach((h, pi) => {
+      if (pi === 1) v.feet.push({ half: true });
+      h.feet.forEach(f => {
+        v.feet.push({ name: f.name, got: f.got, letters: f.letters, bad: f.errors > 0 });
+        if (f.errors) {
+          v.broken = true; f.words.forEach(w => v.bad.add(w + offs[pi]));
+          const allowed = h.allowed[f.pos].map(x => `${x[1]} (${pat(x[0])})`).join('، ');
+          v.diag.push(`التفعيلة ${AR_DIG(f.pos + 1)} من ${pi === 0 && r.sadr ? 'الصدر' : (r.sadr ? 'العجز' : 'الشطر')}: «${f.letters}» = ${pat(f.got)} — المسموح: ${allowed}`);
+        }
+      });
+      h.readings.forEach(x => v.readings.push(`«${x.word}»: ${x.note}`));
+    });
+    if (c.dominant && !v.broken && A.darbGroup(r.ajuz.ending) !== c.dominant) v.diag.push(`الضرب هنا «${r.ajuz.ending}» بخلاف الغالب «${c.dominant}»`);
+    return v;
+  }
+
+  // ---------------------------------------------------------------- rendering
+  function render() {
+    renderSelect(); renderHead(); runAnalysis(); renderLines(); renderPanel();
+  }
+  let pmOpen = false, pmConfirm = null;
+  function poemMeta(p) {
+    const n = linesOf(p).filter(l => A.clean(l)).length;
+    const cnt = n === 1 ? 'سطر واحد' : n === 2 ? 'سطران' : n <= 10 ? `${AR_DIG(n)} أسطر` : `${AR_DIG(n)} سطرًا`;
+    return `${cnt} · ${p.status === 'confirmed' ? 'التشكيل معتمد' : 'قيد المراجعة'}`;
+  }
+  function renderSelect() {
+    const p = cur();
+    $('pmTitle').textContent = p ? (p.title || 'بلا عنوان') : (poems.length ? 'اختر قصيدة' : 'لا قصائد بعد');
+    $('pmBtn').setAttribute('aria-expanded', String(pmOpen));
+    const list = $('pmList'); list.hidden = !pmOpen;
+    if (pmOpen) {
+      list.innerHTML = poems.length ? poems.map(x => pmConfirm === x.id
+        ? `<div class="pmitem"><div class="pmconfirm"><span>حذف «${esc(x.title || 'بلا عنوان')}» من الديوان نهائيًّا؟</span>
+            <button class="btn danger" type="button" data-pm="del" data-id="${esc(x.id)}">حذف</button>
+            <button class="btn ghost" type="button" data-pm="keep">إلغاء</button></div></div>`
+        : `<div class="pmitem" aria-current="${x.id === curId}"><button class="pmopen" type="button" data-pm="open" data-id="${esc(x.id)}">
+            <b>${esc(x.title || 'بلا عنوان')}</b><small>${esc(poemMeta(x))}</small></button>
+            <button class="pmdel" type="button" data-pm="ask" data-id="${esc(x.id)}" aria-label="حذف ${esc(x.title || 'القصيدة')}" title="حذف">✕</button></div>`).join('')
+        : '<div class="pmempty">لا قصائد بعد. اضغط «+ قصيدة».</div>';
+    }
+    $('nSyl').setAttribute('aria-pressed', String(notation === 'syl'));
+    $('nMarks').setAttribute('aria-pressed', String(notation !== 'syl'));
+  }
+  async function deletePoem(id) {
+    const i = poems.findIndex(x => x.id === id); if (i < 0) return;
+    const [gone] = poems.splice(i, 1);
+    clearTimeout(pending.get(id)); dirty.delete(id);
+    if (curId === id) { curId = poems.length ? poems[Math.max(0, i - 1)].id : null; store.set('diwan.cur', curId); }
+    pmConfirm = null; render();
+    if (db) {
+      try { await db.collection('poems').doc(id).delete(); toast(`حُذفت «${gone.title || 'القصيدة'}»`); }
+      catch (e) { poems.splice(i, 0, gone); render(); toast('تعذّر الحذف'); }
+    } else { store.set('diwan.local', poems); toast(`حُذفت «${gone.title || 'القصيدة'}»`); }
+  }
+  $('pmBtn').addEventListener('click', () => { pmOpen = !pmOpen; pmConfirm = null; renderSelect(); });
+  $('pmList').addEventListener('click', e => {
+    const b = e.target.closest('[data-pm]'); if (!b) return;
+    const act = b.dataset.pm, id = b.dataset.id;
+    if (act === 'open') { curId = id; store.set('diwan.cur', id); pmOpen = false; openAlts = {}; altResults = {}; openAsk = {}; editing = null; showComposer(false); render(); }
+    else if (act === 'ask') { pmConfirm = id; renderSelect(); }
+    else if (act === 'keep') { pmConfirm = null; renderSelect(); }
+    else if (act === 'del') { pmOpen = false; deletePoem(id); }
+  });
+  document.addEventListener('mousedown', e => { if (pmOpen && !e.target.closest('.pmenu')) { pmOpen = false; pmConfirm = null; renderSelect(); } });
+
+  function coverage(p) {
+    let need = 0, bare = 0;
+    for (const w of A.words(p.text)) { need += A.parseWord(w).length; bare += A.unmarkedCount(w); }
+    return need ? 1 - bare / need : 1;
+  }
+  function renderHead() {
+    const p = cur();
+    if (document.activeElement !== $('title')) $('title').value = p ? (p.title || '') : '';
+    $('title').disabled = !p;
+    $('bulkBtn').disabled = !p;
+    $('diacBtn').hidden = !(p && sample && coverage(p) < 0.85);
+    const b = $('banner');
+    if (!p) { b.innerHTML = ''; return; }
+    const open = (p.choices || []).filter(c => !c.done).length;
+    if (p.status === 'confirmed') {
+      b.innerHTML = `<div class="banner done"><span class="msg"><b>التشكيل معتمد.</b> التقطيع يعتمد هذه القراءة. اضغط أي كلمة لتعديلها.</span>
+        <button class="btn ghost" type="button" data-act="reopen">إعادة المراجعة</button></div>`;
+    } else {
+      const cov = coverage(p), low = cov < 0.85;
+      b.innerHTML = `<div class="banner"><span class="msg"><b>مراجعة التشكيل</b> — ${low
+        ? `التشكيل ناقص (${AR_DIG(Math.round(cov * 100))}٪)، فالتقطيع أعلاه تقريبي. ${sample ? 'اضغط «شكّل القصيدة» ليقترح Claude تشكيلًا كاملًا، أو' : 'اطلب من Claude في المحادثة تشكيلها، أو'} أكمل التشكيل بالضغط على الكلمات.`
+        : (open ? `${AR_DIG(open)} ${open === 1 ? 'كلمة مظلّلة تحتاج' : 'كلمات مظلّلة تحتاج'} تأكيدك. اضغط أي كلمة لتغيير تشكيلها.` : 'راجع التقطيع أعلاه، ثم اعتمد التشكيل.')}</span>
+        ${low && sample ? '<button class="btn" type="button" data-act="diac">شكّل القصيدة</button>' : ''}
+        ${open ? '<button class="btn" type="button" data-act="nextflag">الكلمة التالية</button>' : ''}
+        <button class="btn primary" type="button" data-act="confirm">اعتمد التشكيل</button></div>`;
+    }
+  }
+
+  function tokensOf(line) { // keep punctuation; index words the way the engine does
+    const out = []; let wi = 0;
+    for (const t of line.split(/(\s+)/)) {
+      if (!t) continue;
+      if (/^\s+$/.test(t)) continue;
+      if (A.clean(t)) out.push({ t, wi: wi++ }); else out.push({ t, wi: -1 });
+    }
+    return out;
+  }
+  function wordSkel(w) { return A.clean(w).replace(/[ً-ْٰ]/g, ''); }
+  function choiceFor(p, li, word) {
+    const sk = wordSkel(word);
+    return (p.choices || []).find(c => c.line === li + 1 && wordSkel(c.word) === sk);
+  }
+
+  function renderLines() {
+    const p = cur(), ol = $('lines');
+    if (!p) {
+      ol.innerHTML = `<li class="empty"><div class="big">لا قصائد في الديوان بعد</div>
+        اضغط «+ قصيدة» والصق نصّك، أو أرسل القصيدة إلى Claude في المحادثة ليضيفها هنا مشكولة.</li>`; return;
+    }
+    const all = linesOf(p), views = lineViews();
+    if (!A.clean(p.text || '')) { ol.innerHTML = '<li class="empty"><div class="big">القصيدة فارغة</div>اضغط «تحرير النص كاملًا» والصق الأبيات.</li>'; return; }
+    let k = 0;
+    ol.innerHTML = all.map((raw, li) => {
+      if (!A.clean(raw)) return '';
+      const v = views[li]; const n = ++k;
+      if (editing === li) {
+        return `<li class="line"><div class="num">${AR_DIG(n)}</div><div>
+          <input class="edit-line" id="edit-${li}" value="${esc(raw)}" aria-label="تحرير السطر ${n}">
+          <div class="tools"><button class="mini" data-act="saveline" data-li="${li}" type="button">حفظ</button>
+          <button class="mini" data-act="cancel" type="button">إلغاء</button></div></div></li>`;
+      }
+      const toks = tokensOf(raw).map(o => {
+        if (o.wi < 0) return /[*|]/.test(o.t) ? '<span class="sep">⁂</span>' : `<span class="sep">${esc(o.t)}</span>`;
+        const ch = choiceFor(p, li, o.t);
+        const cls = ['w', ch ? 'flag' : '', ch && ch.done ? 'done' : '', A.unmarkedCount(o.t) ? 'bare' : '', v && v.bad.has(o.wi) ? 'bad' : ''].join(' ');
+        return `<span class="${cls}" tabindex="0" role="button" data-li="${li}" data-wi="${o.wi}">${esc(o.t)}</span>`;
+      }).join(' ');
+      const feet = v && v.feet.length ? `<div class="feet">${v.feet.map(f => f.half ? '<span class="halfmark">⁂</span>' : f.cont
+        ? '<div class="foot cont"><span class="syl">↩</span><span class="nm">تكملة</span><span class="lt">من السطر السابق</span></div>'
+        : `<div class="foot${f.bad ? ' bad' : ''}" title="${esc(f.letters)}"><span class="syl">${esc(pat(f.got))}</span><span class="nm">${esc(f.name)}${f.crosses ? ' ↵' : ''}</span><span class="lt">${esc(f.letters)}</span></div>`).join('')}</div>` : '';
+      const diag = v && v.diag.length ? `<div class="diag">${v.diag.map(d => `<span>✗ ${esc(d)}</span>`).join('')}</div>` : '';
+      const reads = v && v.readings.length ? `<div class="note">قراءة مفترضة: ${esc([...new Set(v.readings)].join('؛ '))}</div>` : '';
+      const alts = openAlts[li] ? renderAlts(li) : '';
+      const btn = v && v.broken ? `<button class="mini warn" data-act="alts" data-li="${li}" type="button">${openAlts[li] ? 'إخفاء البدائل' : 'بدائل لتقويم الوزن'}</button>` : '';
+      return `<li class="line${v && v.broken ? ' broken' : ''}"><div class="num">${AR_DIG(n)}<span class="dot"></span></div><div>
+        <div class="verse">${toks}</div>${feet}${diag}${reads}
+        <div class="tools">${btn}<button class="mini" data-act="edit" data-li="${li}" type="button">تحرير السطر</button>
+        ${sample ? `<button class="mini" data-act="askopen" data-li="${li}" type="button">${openAsk[li] ? 'إخفاء المحادثة' : 'اسأل Claude عن هذا السطر'}</button>` : ''}</div>${alts}${openAsk[li] ? renderAsk(li) : ''}</div></li>`;
+    }).join('');
+  }
+
+  function currentMeter() {
+    if (!analysis) return null;
+    return analysis.mode === 'free' ? analysis.free[0].family.meter : analysis.cands[0].form.meter;
+  }
+  function meterLabel() {
+    if (!analysis) return '';
+    return analysis.mode === 'free' ? `شعر تفعيلة على ${analysis.free[0].family.foot} (${meterAr(analysis.free[0].family.meter)})`
+      : `${meterAr(analysis.cands[0].form.meter)} — ${analysis.cands[0].form.name}${analysis.layout === 'pairs' ? '، كل سطر شطر (نصف بيت)' : ''}`;
+  }
+  // a full check used by Claude's tool and by the page: verdict, scansion and the broken foot in words
+  function checkLine(text) {
+    const meter = currentMeter(); if (!meter) return { text, ok: false, problem: 'لا بحر محدد بعد' };
+    const r = A.verifyLine(text, meter, analysis.mode === 'free' ? 'free' : 'classical', analysis.layout === 'pairs');
+    if (!r) return { text, ok: false, problem: 'تعذّر الفحص' };
+    const feet = analysis.mode === 'free' ? (r.feet || []).filter(f => !f.cont).map(f => ({ name: f.name, got: f.got, bad: f.errors > 0, letters: f.letters }))
+      : (r.parts || []).flatMap(h => h.feet.map(f => ({ name: f.name, got: f.got, bad: f.errors > 0, letters: f.letters })));
+    const bad = feet.filter(f => f.bad);
+    return { text, ok: !!r.ok, scansion: feet.map(f => `${f.name} ${A.syll(f.got)}`).join(' | '),
+      problem: bad.length ? bad.map(f => `«${f.letters}» = ${A.syll(f.got)} لا تصح ${f.name}`).join('؛ ') : '' };
+  }
+
+  function verifyText(text) {
+    if (!analysis) return null;
+    const meter = analysis.mode === 'free' ? analysis.free[0].family.meter : analysis.cands[0].form.meter;
+    const r = A.verifyLine(text, meter, analysis.mode === 'free' ? 'free' : 'classical', analysis.layout === 'pairs');
+    if (!r) return null;
+    const feet = analysis.mode === 'free' ? r.feet.filter(f => !f.cont).map(f => f.got) : (r.parts || []).flatMap(h => h.feet.map(f => f.got));
+    return { ok: r.ok, syl: feet.map(pat).join('  |  ') };
+  }
+  function renderAlts(li) {
+    const p = cur(); const ar = altResults[li] || {};
+    const sug = ((p.suggestions || {})[li + 1] || []).concat(ar.items || []);
+    const uniq = [...new Map(sug.map(s => [typeof s === 'string' ? s : s.text, typeof s === 'string' ? { text: s } : s])).values()];
+    const rows = uniq.map(s => ({ s, r: verifyText(s.text) })).filter(x => x.r);
+    rows.sort((a, b) => (b.r.ok ? 1 : 0) - (a.r.ok ? 1 : 0));
+    const good = rows.filter(x => x.r.ok), bad = rows.length - good.length;
+    const head = `<div class="head"><span>${good.length ? `${AR_DIG(good.length)} ${good.length === 1 ? 'بديل موزون' : 'بدائل موزونة'}` : 'لا بدائل موزونة بعد'}${bad ? ` · استُبعد ${AR_DIG(bad)} مكسور` : ''}</span>
+      ${sample ? `<button class="btn" type="button" data-act="ask" data-li="${li}" ${ar.busy ? 'disabled' : ''}>${ar.busy ? 'Claude يكتب…' : (rows.length ? 'اطلب بدائل أخرى' : 'اطلب بدائل من Claude')}</button>` : ''}</div>`;
+    const body = good.length ? `<table><thead><tr><th>البديل</th><th>التقطيع</th><th>الأثر في المعنى</th><th></th></tr></thead><tbody>${good.map(x => `<tr>
+        <td class="v">${esc(x.s.text)}</td><td class="sy">${esc(x.r.syl)}</td><td>${esc(x.s.note || '')}</td>
+        <td><button class="btn" type="button" data-act="apply" data-li="${li}" data-text="${esc(x.s.text)}">استبدل</button></td></tr>`).join('')}</tbody></table>`
+      : `<div class="status">${ar.error ? esc(ar.error) : (sample ? 'اطلب من Claude بدائل؛ تظهر هنا الموزونة فقط بعد فحصها.' : 'اطلب البدائل من Claude في المحادثة؛ ستظهر هنا بعد فحصها.')}</div>`;
+    return `<div class="alts">${head}${body}</div>`;
+  }
+
+  function renderSettings() {
+    const p = cur(), mt = $('meterSel');
+    if (mt.options.length < 2) for (const k of Object.keys(A.data.info)) { const o = document.createElement('option'); o.value = k; o.textContent = meterAr(k); mt.appendChild(o); }
+    const mode = p ? (p.mode || 'auto') : 'auto', meter = p ? (p.meter || '') : '';
+    let shown = mode;
+    if (mode === 'auto' && analysis) shown = analysis.mode === 'free' ? 'free' : analysis.layout === 'pairs' ? 'pairs' : 'classical';
+    document.querySelectorAll('#modeSeg button').forEach(b => {
+      b.disabled = !p;
+      b.setAttribute('aria-pressed', String(b.dataset.mode === mode || (mode === 'auto' && b.dataset.mode === shown)));
+      b.dataset.manual = String(mode !== 'auto' && b.dataset.mode === mode);
+    });
+    mt.disabled = !p; mt.value = meter; mt.classList.toggle('manual', !!meter);
+    $('resetBtn').hidden = mode === 'auto' && !meter;
+    let det = '';
+    if (analysis) {
+      const shape = analysis.mode === 'free' ? 'تفعيلة' : analysis.layout === 'pairs' ? 'عمودي، كل سطر شطر' : 'عمودي، البيت في سطر';
+      const m = analysis.mode === 'free' ? meterAr(analysis.free[0].family.meter) : meterAr(analysis.cands[0].form.meter);
+      const how = mode === 'auto' && !meter ? 'اكتُشفت تلقائيًّا' : mode !== 'auto' && meter ? 'الشكل والبحر من اختيارك' : mode !== 'auto' ? 'الشكل من اختيارك' : 'البحر من اختيارك';
+      det = `القراءة الحالية: <b>${esc(shape)}</b> · <b>${esc(m)}</b> — ${how}`;
+    }
+    $('detected').innerHTML = det;
+  }
+  function renderPanel() {
+    renderSettings();
+    const p = cur(), mc = $('meterCard'), cc = $('candCard'), rc = $('rhymeCard');
+    if (!p || !analysis) { mc.innerHTML = '<h3>البحر</h3><div class="stat">يظهر هنا بعد إضافة أبيات.</div>'; cc.hidden = true; rc.hidden = true; return; }
+    cc.hidden = false; rc.hidden = false;
+    const views = lineViews().filter(Boolean), n = views.length, broken = views.filter(v => v.broken).length;
+    let name, form, key, list = [];
+    if (analysis.mode === 'free') {
+      const f = analysis.free[0]; name = meterAr(f.family.meter); form = `تفعيلة ${f.family.foot}`; key = A.data.info[f.family.meter][2];
+      list = analysis.free.slice(0, 5).map(r => ({ meter: r.family.meter, label: `${meterAr(r.family.meter)} · ${r.family.foot}`, n: `${AR_DIG(r.errors)} خطأ` }));
+    } else {
+      const c = analysis.cands[0]; name = meterAr(c.form.meter); form = c.form.name + (analysis.layout === 'pairs' ? ' · كل سطر شطر' : ''); key = A.data.info[c.form.meter][2];
+      list = analysis.cands.slice(0, 5).map(r => ({ meter: r.form.meter, label: `${meterAr(r.form.meter)} · ${r.form.name}`,
+        n: analysis.layout === 'pairs' ? `${AR_DIG(r.exactH)}/${AR_DIG(r.n * 2)} أشطر` : `${AR_DIG(r.exact)}/${AR_DIG(r.n)}` }));
+    }
+    const ratio = n ? (n - broken) / n : 0;
+    let conf = 'عالية';
+    if (analysis.mode !== 'free') {
+      const a = analysis.cands[0], b = analysis.cands[1], margin = b ? b.total - a.total : 9;
+      conf = a.exact === 0 ? 'منخفضة' : (margin >= Math.max(1, 0.5 * n) && a.exact >= 0.5 * n) ? 'عالية' : margin >= 0.5 ? 'متوسطة' : 'منخفضة';
+    } else { const a = analysis.free[0], b = analysis.free[1]; conf = (b && b.total - a.total < 1) ? 'متوسطة' : 'عالية'; }
+    const recheck = n >= 2 && broken / n >= 0.4;
+    const forced = !!p.meter;
+    let warn = '';
+    if (recheck) {
+      const alts = list.slice(1, 4).map(x => `<button class="mini" type="button" data-act="force" data-m="${x.meter}">${esc(x.label)} (${esc(x.n)})</button>`).join(' ');
+      warn = `<div class="warnbox"><b>الخلل كثير (${AR_DIG(broken)} من ${AR_DIG(n)}).</b> قبل التصحيح تحقّق: هل التشكيل صحيح؟ هل البحر غيره؟ ${analysis.mode === 'free' ? '' : 'أم هي قصيدة تفعيلة؟'}
+        <div class="tools" style="margin-top:6px">${alts}${analysis.mode !== 'free' ? '<button class="mini" type="button" data-act="mode" data-m="free">جرّب التفعيلة</button>' : '<button class="mini" type="button" data-act="mode" data-m="classical">جرّب العمودي</button>'}</div></div>`;
+    }
+    const ph = analysis.pairsHint;
+    let hint = '';
+    if (ph && analysis.layout !== 'pairs' && (p.mode || 'auto') !== 'pairs') hint = `<div class="warnbox" style="background:var(--accent-soft)"><b style="color:var(--accent)">قراءة عمودية ممكنة:</b>
+      كل سطرين بيتٌ من ${esc(meterAr(ph.meter))} ${esc(ph.form)} (السطر شطر). الأشطر السليمة: ${AR_DIG(ph.soundHalves)} من ${AR_DIG(ph.halves)}.
+      <div class="tools" style="margin-top:6px"><button class="mini" type="button" data-act="mode" data-m="pairs">اقرأها عموديًّا</button></div></div>`;
+    mc.innerHTML = `<h3>البحر${forced ? ' (محدّد يدويًّا)' : ''}</h3>
+      <div class="meter">${esc(name)}<small>${esc(form)}</small></div>
+      <div class="key">${esc(key)}</div>
+      <div class="meterline"><span class="pill ${conf === 'عالية' ? 'ok' : conf === 'متوسطة' ? 'flag' : 'no'}">ثقة ${conf}</span>
+        <span class="pill ${broken ? 'no' : 'ok'}">${broken ? `${AR_DIG(broken)} ${broken === 1 ? 'سطر مكسور' : 'أسطر مكسورة'}` : 'كل الأسطر موزونة'}</span>
+</div>
+      <div class="bar2" aria-hidden="true"><i style="width:${Math.round(ratio * 100)}%"></i></div>
+      <div class="stat">${AR_DIG(n - broken)} من ${AR_DIG(n)} ${analysis.mode === 'free' ? 'أسطر' : (analysis.layout === 'pairs' ? 'أشطر' : 'أبيات')} سليمة</div>${warn}${hint}`;
+    const curM = analysis.mode === 'free' ? analysis.free[0].family.meter : analysis.cands[0].form.meter;
+    cc.innerHTML = `<h3>البحور المرشّحة — اضغط بحرًا لفحص القصيدة عليه</h3><ul class="cands">${list.map(x =>
+      `<li><button type="button" data-act="force" data-m="${x.meter}" aria-current="${x.meter === curM}"><span>${esc(x.label)}</span><span class="n">${esc(x.n)}</span></button></li>`).join('')}</ul>`;
+    // rhyme: the qafiya sits at the end of each verse (the ajuz); free verse uses every line
+    let ends, sadr1 = null, labels;
+    if (analysis.mode === 'free') { ends = analysis.lines; labels = ends.map((_, i) => i + 1); }
+    else if (analysis.layout === 'pairs') {
+      ends = analysis.lines.filter((_, i) => i % 2 === 1); sadr1 = analysis.lines[0]; labels = ends.map((_, i) => i + 1);
+    } else {
+      ends = []; labels = [];
+      analysis.scans.forEach((s, i) => { const r = analysis.cands[0].perLine[i][1] || analysis.cands[0].perLine[i][2]; const sp = A.splitLine(s.text) || (r && r.split);
+        ends.push(sp ? sp[1] : s.text); labels.push(i + 1); if (i === 0 && sp) sadr1 = sp[0]; });
+    }
+    const rh = A.rhymeCheck(ends);
+    const bad = rh.rows.filter(r => r && !r.ok).length;
+    let tasree = '';
+    if (sadr1 && rh.rawi) { const r1 = A.rhymeCheck([sadr1]).rows[0]; const ok = r1 && (r1.rawi === rh.rawi || r1.alt === rh.rawi);
+      tasree = `<div class="stat">${ok ? 'المطلع مصرَّع: صدر البيت الأول يوافق قافيته' : 'المطلع غير مصرَّع'}</div>`; }
+    const unit = analysis.mode === 'free' ? 'سطر' : 'بيت';
+    rc.innerHTML = `<h3>القافية ${analysis.mode === 'free' ? '— آخر كل سطر' : '— آخر عجز كل بيت'}</h3><div style="display:flex;gap:12px;align-items:center"><span class="rawi">${esc(rh.rawi || '—')}</span>
+      <span class="stat" style="margin:0">${analysis.mode === 'free' ? 'الرويّ الغالب (القافية حرّة في التفعيلة)' : (bad ? `${AR_DIG(bad)} ${bad === 1 ? 'بيت يخالف' : 'أبيات تخالف'} الرويّ` : 'الرويّ واحد في كل الأبيات')}</span></div>
+      <div class="rhymes">${rh.rows.map((r, i) => r ? `<span class="${r.ok ? '' : 'no'}" title="${unit} ${AR_DIG(labels[i])}">${esc(r.word)}</span>` : '').join('')}</div>${tasree}`;
+  }
+
+  // ---------------------------------------------------------------- popover
+  const END_MARKS = [['ُ', 'ـُ'], ['َ', 'ـَ'], ['ِ', 'ـِ'], ['ْ', 'ـْ'], ['ٌ', 'ـٌ'], ['ً', 'ـً'], ['ٍ', 'ـٍ'], ['', 'بلا']];
+  let popCtx = null;
+  function openPop(el) {
+    const li = +el.dataset.li, wi = +el.dataset.wi, p = cur(), word = el.textContent;
+    const ch = choiceFor(p, li, word);
+    popCtx = { li, wi, word };
+    const pop = $('pop');
+    pop.innerHTML = `<div class="wd">${esc(word)}</div>
+      ${ch ? `<div class="why">${esc(ch.note || 'اختر القراءة التي تقصدها:')}</div><div class="opts">${(ch.options || []).map(o =>
+        `<button type="button" data-pick="${esc(o.text)}" aria-pressed="${A.clean(o.text) === A.clean(word)}">${esc(o.text)}${o.note ? `<small>${esc(o.note)}</small>` : ''}</button>`).join('')}</div>` : ''}
+      <div class="why">حركة آخر الكلمة:</div>
+      <div class="endmarks">${END_MARKS.map(([m, l]) => `<button type="button" data-end="${m}" aria-label="${l}">${l}</button>`).join('')}</div>
+      <input id="popInput" value="${esc(word)}" aria-label="تحرير الكلمة">
+      <div class="row"><button class="btn primary" type="button" data-pop="save">تطبيق</button>
+      ${ch ? '<button class="btn" type="button" data-pop="ok">القراءة صحيحة</button>' : ''}
+      <button class="btn ghost" type="button" data-pop="close">إغلاق</button></div>`;
+    pop.hidden = false;
+    const r = el.getBoundingClientRect(), w = pop.offsetWidth, h = pop.offsetHeight;
+    let left = Math.min(Math.max(16, r.left + r.width / 2 - w / 2), window.innerWidth - w - 16);
+    let top = r.bottom + 8; if (top + h > window.innerHeight - 16) top = Math.max(16, r.top - h - 8);
+    pop.style.left = left + 'px'; pop.style.top = top + 'px';
+    $('popInput').focus();
+  }
+  function closePop() { $('pop').hidden = true; popCtx = null; }
+  function replaceWord(li, wi, newWord, markDone) {
+    const p = cur(); const ls = linesOf(p); let k = -1;
+    const parts = ls[li].split(/(\s+)/).map(t => { if (t && !/^\s+$/.test(t) && A.clean(t)) { k++; if (k === wi) return newWord; } return t; });
+    const old = tokensOf(ls[li]).find(o => o.wi === wi);
+    ls[li] = parts.join(''); p.text = ls.join('\n');
+    if (old) { const ch = choiceFor(p, li, old.t); if (ch) { if (markDone) ch.done = true; ch.word = newWord; } }
+    save(p); render();
+  }
+  function setEndMark(word, mark) {
+    const letters = [...word]; let i = letters.length - 1;
+    while (i >= 0 && !/[ء-ي]/.test(letters[i])) i--;
+    if (i < 0) return word;
+    let j = i + 1; while (j < letters.length && /[ً-ْ]/.test(letters[j]) && letters[j] !== 'ّ') j++;
+    const keepShadda = letters.slice(i + 1, j).includes('ّ');
+    return letters.slice(0, i + 1).join('') + (keepShadda ? 'ّ' : '') + mark + letters.slice(j).join('').replace(/[ً-ِْ]/g, '');
+  }
+  $('pop').addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b || !popCtx) return;
+    if (b.dataset.pick !== undefined) { replaceWord(popCtx.li, popCtx.wi, b.dataset.pick, true); closePop(); return; }
+    if (b.dataset.end !== undefined) { $('popInput').value = setEndMark($('popInput').value, b.dataset.end); return; }
+    if (b.dataset.pop === 'save') { const v = $('popInput').value.trim(); if (v) replaceWord(popCtx.li, popCtx.wi, v, true); closePop(); }
+    else if (b.dataset.pop === 'ok') { const p = cur(); const ch = choiceFor(p, popCtx.li, popCtx.word); if (ch) { ch.done = true; save(p); } closePop(); render(); }
+    else if (b.dataset.pop === 'close') closePop();
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('exportDlg').hidden) $('exportDlg').hidden = true; });
+  $('pop').addEventListener('keydown', e => {
+    if (e.key === 'Escape') closePop();
+    if (e.key === 'Enter' && e.target.id === 'popInput') { e.preventDefault(); $('pop').querySelector('[data-pop="save"]').click(); }
+  });
+  document.addEventListener('mousedown', e => { if (!$('pop').hidden && !e.target.closest('#pop') && !e.target.closest('.w')) closePop(); });
+
+  // ---------------------------------------------------------------- Claude (sample)
+  function poemContext(p) { return linesOf(p).filter(l => A.clean(l)).map((l, i) => `${i + 1}. ${l}`).join('\n'); }
+  async function askAlternatives(li) {
+    const p = cur(); const ar = altResults[li] = altResults[li] || {}; ar.busy = true; ar.error = null; renderLines();
+    const v = lineViews()[li];
+    const meter = analysis.mode === 'free' ? `شعر تفعيلة على ${analysis.free[0].family.foot} (${meterAr(analysis.free[0].family.meter)})`
+      : `${meterAr(analysis.cands[0].form.meter)} — ${analysis.cands[0].form.name}`;
+    const prompt = `أنت عروضيّ وشاعر. هذه قصيدة لشاعر يريد تقويم وزن سطر واحد منها دون أن تضيع معانيه أو صوره.
+البحر: ${meter}
+القصيدة:
+${poemContext(p)}
+
+السطر المكسور: ${linesOf(p)[li]}
+تشخيص الكسر: ${v.diag.join(' | ')}
+
+اكتب 8 بدائل لهذا السطر وحده، مشكولة تشكيلًا كاملًا، تحافظ على المعنى وعلى أكبر قدر من كلمات الشاعر، وعلى القافية (الرويّ وحركته) إن كان السطر مقفّى${analysis.mode === 'free' ? '' : '، وبالصيغة «الصدر * العجز» إن كان بيتًا'}. نوّع الطرق: تبديل كلمة بمرادف، تقديم وتأخير، حذف أو زيادة حرف عطف.
+أجب بمصفوفة JSON فقط: [{"text": "البديل مشكولًا", "note": "ما الذي تغيّر وأثره في المعنى، بالعربية في أقل من 12 كلمة"}]`;
+    try {
+      const out = await sample.json(prompt, { cache: false });
+      ar.items = (Array.isArray(out) ? out : []).filter(x => x && typeof x.text === 'string').map(x => ({ text: x.text.trim(), note: String(x.note || '') }));
+      if (!ar.items.length) ar.error = 'لم تصل بدائل صالحة؛ حاول مرة أخرى.';
+    } catch (e) {
+      ar.error = e && (e.code === 'not_granted' || e.code === 'sampling_disabled') ? 'لم يُسمح بالاتصال بـ Claude من هذه الصفحة.'
+        : e && e.code === 'rate_limited' ? 'طلبات كثيرة؛ انتظر قليلًا ثم حاول.' : e && e.code === 'cancelled' ? '' : 'تعذّر الحصول على بدائل؛ حاول مرة أخرى.';
+      if (e && (e.code === 'not_granted' || e.code === 'sampling_disabled')) sample = null;
+    } finally { ar.busy = false; renderLines(); }
+  }
+  function renderAsk(li) {
+    const st = askState[li] || { msgs: [] };
+    const msgs = st.msgs.map(m => {
+      if (m.role === 'me') return `<div class="me">${esc(m.text)}</div>`;
+      const rows = (m.items || []).map(x => ({ x, r: verifyText(x.text) })).filter(o => o.r && o.r.ok);
+      const dropped = (m.items || []).length - rows.length;
+      const table = rows.length ? `<div class="alts"><table><thead><tr><th>الاقتراح</th><th>التقطيع</th><th>الملاحظة</th><th></th></tr></thead><tbody>${rows.map(o => `<tr>
+        <td class="v">${esc(o.x.text)}</td><td class="sy">${esc(o.r.syl)}</td><td>${esc(o.x.note || '')}</td>
+        <td><button class="btn" type="button" data-act="apply" data-li="${li}" data-text="${esc(o.x.text)}">استبدل</button></td></tr>`).join('')}</tbody></table></div>` : '';
+      return `<div class="cl"><p>${esc(m.text)}</p>${table}${dropped > 0 ? `<div class="note">استبعدت الصفحة ${AR_DIG(dropped)} ${dropped === 1 ? 'اقتراحًا مكسورًا' : 'اقتراحات مكسورة'}.</div>` : ''}</div>`;
+    }).join('');
+    const busy = st.busy ? `<div class="busy">${esc(st.progress || 'Claude يفكّر…')} <button class="mini" type="button" data-act="askstop" data-li="${li}">إيقاف</button></div>` : '';
+    const err = st.error ? `<div class="note" style="color:var(--bad)">${esc(st.error)}</div>` : '';
+    const chips = !st.msgs.length ? `<div class="chips">${['قوّم الوزن مع الحفاظ على كلماتي', 'لماذا هذا السطر مكسور؟', 'اقترح صورة أقوى بنفس الوزن', 'احتفظ بكلمة … وقوّم الباقي']
+      .map(q => `<button class="mini" type="button" data-act="askchip" data-li="${li}" data-q="${esc(q)}">${esc(q)}</button>`).join('')}</div>` : '';
+    return `<div class="ask">${chips}<div class="msgs" id="msgs-${li}">${msgs}${busy}${err}</div>
+      <form data-li="${li}" class="askform"><textarea id="askin-${li}" aria-label="سؤالك عن السطر" placeholder="مثال: أبقِ «آلهة» وقوّم الوزن">${esc(st.draft || '')}</textarea>
+      <button class="btn primary" type="submit" ${st.busy ? 'disabled' : ''}>أرسل</button></form></div>`;
+  }
+
+  async function askLine(li, question) {
+    const p = cur(); const st = askState[li] = askState[li] || { msgs: [], turns: [] };
+    if (st.busy || !question.trim()) return;
+    st.msgs.push({ role: 'me', text: question.trim() }); st.draft = ''; st.busy = true; st.error = null; st.progress = 'Claude يفكّر…';
+    const line = linesOf(p)[li], chk = checkLine(line), rh = A.rhymeCheck([line]).rows[0];
+    if (!st.turns.length) {
+      st.turns.push({ role: 'user', content: `أنت عروضيّ وشاعر تساعد شاعرًا على العمل على سطر من قصيدته، بصوته هو.
+البحر: ${meterLabel()}
+القصيدة:
+${poemContext(p)}
+
+السطر الذي نعمل عليه (رقم ${li + 1}): ${line}
+حالته الآن: ${chk.ok ? 'موزون' : 'مكسور — ' + chk.problem}
+تقطيعه: ${chk.scansion || '—'}
+القافية: الرويّ «${rh ? rh.rawi : ''}» في كلمة «${rh ? rh.word : ''}».
+
+قواعد:
+- أجب بالعربية باختصار وبلغة واضحة لشاعر، لا لعروضي متخصص.
+- كل سطر تقترحه يكون مشكولًا كاملًا، ويحافظ على المعنى والصورة وأكبر قدر من كلمات الشاعر وعلى القافية.
+- ${sampleTools ? 'افحص كل اقتراح بأداة check_lines قبل إرساله، وعدّل ما يفشل وأعد فحصه، ولا ترسل إلا ما نجح.' : 'تحقق من وزن كل اقتراح بعناية قبل إرساله.'}
+- إن لم يطلب الشاعر اقتراحات فلا ترسلها.
+أجب بكائن JSON فقط: {"answer": "ردك", "alternatives": [{"text": "السطر مشكولًا", "note": "ما تغيّر وأثره في المعنى، في أقل من 12 كلمة"}]}` });
+    }
+    st.turns.push({ role: 'user', content: question.trim() });
+    renderLines();
+    const ctl = st.ctl = new AbortController();
+    const opts = { signal: ctl.signal, cache: false };
+    if (sampleTools) {
+      delete opts.cache;
+      opts.tools = [{
+        name: 'check_lines',
+        description: 'Checks Arabic lines against the poem\'s meter with the page\'s scanner. Returns, for each line, ok (true/false), its scansion (feet with ب short / − long syllables), and the broken foot if any. Use it on every line before suggesting it.',
+        inputSchema: { type: 'object', properties: { lines: { type: 'array', items: { type: 'string' }, description: 'fully diacritized candidate lines' } }, required: ['lines'] },
+        execute: (input) => {
+          const ls = Array.isArray(input.lines) ? input.lines.slice(0, 12).map(String) : [];
+          st.progress = `Claude يفحص ${AR_DIG(ls.length)} ${ls.length === 1 ? 'سطرًا' : 'أسطر'} على البحر…`; renderLines();
+          return ls.map(checkLine);
+        }
+      }];
+    }
+    try {
+      const out = await sample.json(st.turns, opts);
+      const answer = out && typeof out.answer === 'string' ? out.answer : '';
+      const items = out && Array.isArray(out.alternatives) ? out.alternatives.filter(x => x && typeof x.text === 'string').map(x => ({ text: x.text.trim(), note: String(x.note || '') })) : [];
+      st.msgs.push({ role: 'cl', text: answer || (items.length ? 'هذه اقتراحات:' : '—'), items });
+      st.turns.push({ role: 'assistant', content: JSON.stringify(out) });
+    } catch (e) {
+      st.turns.pop();
+      st.error = e && e.code === 'cancelled' ? '' : e && (e.code === 'not_granted' || e.code === 'sampling_disabled') ? 'لم يُسمح بالاتصال بـ Claude من هذه الصفحة.'
+        : e && e.code === 'rate_limited' ? 'طلبات كثيرة؛ انتظر قليلًا ثم أرسل مجددًا.' : e && e.code === 'tools_unavailable' ? 'أعد الإرسال.' : 'تعذّر الرد؛ أرسل مجددًا.';
+      if (e && e.code === 'tools_unavailable') sampleTools = false;
+      if (e && (e.code === 'not_granted' || e.code === 'sampling_disabled')) sample = null;
+    } finally {
+      st.busy = false; st.ctl = null; renderLines();
+      const box = $('msgs-' + li); if (box) box.scrollTop = box.scrollHeight;
+    }
+  }
+
+  async function askDiacritics() {
+    const p = cur(); const btn = $('diacBtn'); btn.disabled = true; btn.textContent = 'Claude يشكّل…';
+    const prompt = `شكّل هذه القصيدة تشكيلًا كاملًا كما يلقيها شاعرها، بناءً على المعنى في سياق القصيدة كلها، لا على الوزن.
+احتفظ بكل حركة كتبها الشاعر، ولا تغيّر أي كلمة. اترك الحرف الأخير من السطر بلا حركة إن لم تتبيّن أهو ساكن أم مشبع.
+القصيدة (سطر في كل سطر):
+${linesOf(p).join('\n')}
+
+أجب بكائن JSON فقط:
+{"lines": ["السطر الأول مشكولًا", "..."], "choices": [{"line": رقم السطر من 1, "word": "الكلمة كما شكّلتها", "note": "سبب التردد في سطر قصير", "options": [{"text": "قراءة", "note": "معناها في كلمتين"}]}]}
+ضع في choices القرارات الحقيقية فقط (كلمات تحتمل قراءتين تغيّران المعنى أو الوزن)، وأول خيار هو ما اخترته.`;
+    try {
+      const out = await sample.json(prompt, { cache: false });
+      if (out && Array.isArray(out.lines) && out.lines.length) {
+        p.text = out.lines.join('\n'); p.choices = Array.isArray(out.choices) ? out.choices : []; p.status = 'review';
+        save(p, true); toast('تمّ التشكيل — راجع الكلمات المظلّلة');
+      } else toast('لم يصل تشكيل صالح؛ حاول مرة أخرى');
+    } catch (e) { toast(e && e.code === 'not_granted' ? 'لم يُسمح بالاتصال بـ Claude' : 'تعذّر التشكيل؛ حاول مرة أخرى'); }
+    finally { btn.disabled = false; btn.textContent = 'شكّل القصيدة'; render(); }
+  }
+
+  // ---------------------------------------------------------------- events
+  document.addEventListener('click', e => {
+    const w = e.target.closest('.w'); if (w) { openPop(w); return; }
+    const b = e.target.closest('[data-act]'); if (!b) return;
+    const p = cur(), act = b.dataset.act, li = b.dataset.li !== undefined ? +b.dataset.li : null;
+    if (act === 'edit') { editing = li; renderLines(); const inp = $('edit-' + li); if (inp) inp.focus(); }
+    else if (act === 'cancel') { editing = null; renderLines(); }
+    else if (act === 'saveline') { const ls = linesOf(p); ls[li] = $('edit-' + li).value; p.text = ls.join('\n'); editing = null; save(p); render(); }
+    else if (act === 'alts') { openAlts[li] = !openAlts[li]; renderLines(); }
+    else if (act === 'ask') askAlternatives(li);
+    else if (act === 'askopen') { openAsk[li] = !openAsk[li]; renderLines(); const t = $('askin-' + li); if (t) t.focus(); }
+    else if (act === 'askchip') { const q = b.dataset.q; if (q.includes('…')) { const t = $('askin-' + li); t.value = q; t.focus(); } else askLine(li, q); }
+    else if (act === 'askstop') { const st = askState[li]; if (st && st.ctl) st.ctl.abort(); }
+    else if (act === 'apply') { const ls = linesOf(p); ls[li] = b.dataset.text; p.text = ls.join('\n'); openAlts[li] = false; save(p); render(); toast('استُبدل السطر'); }
+    else if (act === 'confirm') { p.status = 'confirmed'; (p.choices || []).forEach(c => { c.done = true; }); save(p, true); render(); toast('اعتُمد التشكيل — أخبر Claude في المحادثة بأنك انتهيت'); }
+    else if (act === 'diac') askDiacritics();
+    else if (act === 'reopen') { p.status = 'review'; save(p); render(); }
+    else if (act === 'nextflag') { const f = [...document.querySelectorAll('.w.flag:not(.done)')][0]; if (f) { f.scrollIntoView({ block: 'center' }); openPop(f); } }
+    else if (act === 'force') { p.meter = b.dataset.m || ''; save(p); render(); }
+    else if (act === 'mode') { p.mode = b.dataset.m; p.meter = ''; save(p); render(); }
+  });
+  document.addEventListener('submit', e => {
+    const f = e.target.closest('.askform'); if (!f) return;
+    e.preventDefault(); const li = +f.dataset.li; askLine(li, $('askin-' + li).value);
+  });
+  document.addEventListener('input', e => {
+    if (e.target.id && e.target.id.startsWith('askin-')) { const li = +e.target.id.split('-')[1]; (askState[li] = askState[li] || { msgs: [], turns: [] }).draft = e.target.value; }
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey && e.target.id && e.target.id.startsWith('askin-')) { e.preventDefault(); const li = +e.target.id.split('-')[1]; askLine(li, e.target.value); return; }
+    if ((e.key === 'Enter' || e.key === ' ') && e.target.classList && e.target.classList.contains('w')) { e.preventDefault(); openPop(e.target); }
+    if (e.key === 'Enter' && e.target.classList && e.target.classList.contains('edit-line')) { e.preventDefault(); const li = +e.target.id.split('-')[1]; document.querySelector(`[data-act="saveline"][data-li="${li}"]`).click(); }
+    if (e.key === 'Escape' && editing !== null) { editing = null; renderLines(); }
+  });
+  $('title').addEventListener('change', e => { const p = cur(); if (!p) return; p.title = e.target.value.trim(); save(p); renderSelect(); });
+  const setMode = m => { const p = cur(); if (!p) return; p.mode = m; p.meter = ''; save(p); render(); };
+  document.querySelectorAll('#modeSeg button').forEach(b => { b.onclick = () => setMode(b.dataset.mode); });
+  $('meterSel').onchange = e => { const p = cur(); if (!p) return; p.meter = e.target.value; save(p); render(); };
+  $('resetBtn').onclick = () => { const p = cur(); if (!p) return; p.mode = 'auto'; p.meter = ''; save(p); render(); toast('عاد الاكتشاف التلقائي'); };
+  $('nSyl').onclick = () => { notation = 'syl'; store.set('diwan.notation', notation); render(); };
+  $('nMarks').onclick = () => { notation = 'marks'; store.set('diwan.notation', notation); render(); };
+  $('bulkBtn').onclick = () => { const p = cur(); if (!p) return; $('bulk').value = p.text; $('bulkWrap').hidden = false; $('lines').hidden = true; $('bulk').focus(); };
+  $('bulkCancel').onclick = () => { $('bulkWrap').hidden = true; $('lines').hidden = false; };
+  $('bulkSave').onclick = () => { const p = cur(); p.text = $('bulk').value.replace(/\r/g, '').replace(/\n{3,}/g, '\n\n').trim(); $('bulkWrap').hidden = true; $('lines').hidden = false; save(p); render(); };
+  $('diacBtn').onclick = askDiacritics;
+  function showComposer(on) {
+    $('composer').hidden = !on; $('sheet').hidden = on;
+    if (on) { $('newTitle').value = ''; $('newText').value = ''; $('newErr').textContent = ''; $('newText').focus(); }
+  }
+  $('newBtn').onclick = () => { pmOpen = false; renderSelect(); showComposer(true); };
+  $('newCancel').onclick = () => showComposer(false);
+  $('newAdd').onclick = () => {
+    const text = $('newText').value.replace(/\r/g, '').replace(/\n{3,}/g, '\n\n').trim();
+    if (!A.clean(text)) { $('newErr').textContent = 'الصق نص القصيدة أولًا.'; $('newText').focus(); return; }
+    let title = $('newTitle').value.trim();
+    if (!title) title = A.words(text.split('\n')[0]).slice(0, 3).join(' ').replace(/[\u064b-\u0652\u0670]/g, '');
+    const id = 'p' + Date.now().toString(36);
+    const order = poems.reduce((m, x) => Math.max(m, x.order || 0), 0) + 1;
+    const p = { id, title, text, choices: [], suggestions: {}, status: 'review', meter: '', mode: 'auto', order };
+    poems.push(p); curId = id; store.set('diwan.cur', id); save(p, true);
+    showComposer(false); render(); try { window.scrollTo({ top: 0 }); } catch (e) {}
+    toast('أُضيفت القصيدة');
+  };
+  // ---------------------------------------------------------------- copy & export
+  let downloads = null;
+  function exportModel(scope) {
+    const list = scope === 'all' ? poems.filter(x => A.clean(x.text || '')) : [cur()].filter(Boolean);
+    return list.map(x => DiwanExport.poemModel(x, A));
+  }
+  function selectedTk() { return (document.querySelector('input[name="expTk"]:checked') || {}).value || 'full'; }
+  function selectedScope() { return (document.querySelector('input[name="expScope"]:checked') || {}).value || 'one'; }
+  async function copyText(text, okMsg) {
+    try { await navigator.clipboard.writeText(text); toast(okMsg); return true; }
+    catch (e) { $('bulk').value = text; $('bulkWrap').hidden = false; $('lines').hidden = true; $('bulk').select(); toast('حدّد النص وانسخه'); return false; }
+  }
+  $('copyBtn').onclick = () => {
+    const p = cur(); if (!p) return;
+    copyText(DiwanExport.plainText({ tashkeel: 'full', poems: exportModel('one') }), 'نُسخت القصيدة — الشطران بينهما خمس مسافات');
+  };
+  $('exportBtn').onclick = () => {
+    if (!poems.length) { toast('لا قصائد للتصدير'); return; }
+    $('expCount').textContent = `(${AR_DIG(poems.length)})`; $('expErr').textContent = '';
+    $('bookTitleRow').hidden = selectedScope() !== 'all';
+    $('exportDlg').hidden = false; $('expGo').focus();
+  };
+  document.querySelectorAll('input[name="expScope"]').forEach(r => r.addEventListener('change', () => { $('bookTitleRow').hidden = selectedScope() !== 'all'; }));
+  $('expClose').onclick = () => { $('exportDlg').hidden = true; };
+  $('exportDlg').addEventListener('mousedown', e => { if (e.target.id === 'exportDlg') $('exportDlg').hidden = true; });
+  $('expCopy').onclick = () => {
+    copyText(DiwanExport.plainText({ tashkeel: selectedTk(), poems: exportModel(selectedScope()) }), 'نُسخ النص');
+  };
+  $('expGo').onclick = async () => {
+    const btn = $('expGo'); $('expErr').textContent = '';
+    if (!downloads) { $('expErr').textContent = 'التنزيل غير متاح في هذا العرض؛ اطلب الملف من Claude في المحادثة، أو انسخه نصًّا.'; return; }
+    if (typeof JSZip === 'undefined') { $('expErr').textContent = 'تعذّر تحميل أداة إنشاء الملف؛ أعد فتح الصفحة.'; return; }
+    btn.disabled = true; btn.textContent = 'يُجهَّز الملف…';
+    try {
+      const scope = selectedScope(), model = { tashkeel: selectedTk(), appendix: $('expApp').checked, meterUnderTitle: $('expMeter').checked,
+        font: $('expFont').value, bookTitle: scope === 'all' ? ($('expBook').value.trim() || 'ديوان') : '', poems: exportModel(scope) };
+      const parts = DiwanExport.build(model), zip = new JSZip();
+      zip.file('[Content_Types].xml', parts['[Content_Types].xml']);
+      for (const k of Object.keys(parts)) if (k !== '[Content_Types].xml') zip.file(k, parts[k]);
+      const data = await zip.generateAsync({ type: 'uint8array', compression: 'DEFLATE', mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+      const base = scope === 'all' ? (model.bookTitle || 'ديوان') : (cur().title || 'قصيدة');
+      await downloads.save({ filename: base.replace(/[\\/:*?"<>|]/g, '').slice(0, 60) + '.docx', data });
+      $('exportDlg').hidden = true; toast('جُهّز ملف Word');
+    } catch (e) {
+      const c = e && e.code;
+      $('expErr').textContent = (c === 'cancelled' || c === 'declined' || c === 'dismissed') ? 'أُلغي التنزيل.'
+        : (c === 'unavailable' || c === 'not_granted' || c === 'extension_not_enabled') ? 'التنزيل غير متاح هنا؛ اطلب الملف من Claude في المحادثة.' : 'تعذّر إنشاء الملف؛ حاول مرة أخرى.';
+    } finally { btn.disabled = false; btn.textContent = 'تنزيل ملف Word'; }
+  };
+  let tt; function toast(m) { const t = $('toast'); t.textContent = m; t.hidden = false; clearTimeout(tt); tt = setTimeout(() => { t.hidden = true; }, 2600); }
+
+  // ---------------------------------------------------------------- boot
+  render();
+  (async () => {
+    try { sample = await claude.use('sample'); } catch (e) { sample = null; }
+    if (sample) { try { const lim = await sample.limits(); sampleTools = !!(lim && lim.tools); } catch (e) { sampleTools = false; } }
+    try { downloads = await claude.use('downloads'); } catch (e) { downloads = null; }
+    try { db = await claude.use('db'); } catch (e) { db = null; }
+    if (!db) { poems = store.get('diwan.local', []); if (!cur() && poems.length) curId = poems[0].id; render(); return; }
+    db.collection('poems').onSnapshot(snap => {
+      const incoming = snap.docs.map(d => Object.assign({ id: d.id }, d.data()));
+      // keep local edits that are still waiting to be written
+      const local = new Map(poems.map(p => [p.id, p]));
+      poems = incoming.map(x => (dirty.has(x.id) && local.has(x.id)) ? local.get(x.id) : JSON.parse(JSON.stringify(x)));
+      for (const id of dirty) if (!poems.find(p => p.id === id) && local.has(id)) poems.push(local.get(id));
+      for (const p of poems) { p.choices = p.choices || []; p.suggestions = p.suggestions || {}; }
+      poems.sort((a, b) => (a.order || 0) - (b.order || 0));
+      if (!cur() && poems.length) curId = poems[poems.length - 1].id;
+      const typing = document.activeElement && document.activeElement.id && document.activeElement.id.startsWith('askin-');
+      if (editing === null && $('bulkWrap').hidden && $('pop').hidden && !typing) render(); else renderSelect();
+    }, () => { toast('انقطع الاتصال بالديوان'); });
+  })();
+})();
+</script>

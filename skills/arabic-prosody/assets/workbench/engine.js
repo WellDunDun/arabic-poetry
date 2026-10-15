@@ -136,7 +136,6 @@
         }
         if (prev && prev.tanwin === 'a') { s.kind = 'silent'; fixed('', []); slots.push(s); continue; }
         if (k === n - 1 && prev && prev.letter === 'و' && !prev.vowel && n >= 3) { s.kind = 'silent'; fixed('', []); slots.push(s); continue; }
-        if (nxtSakin) { s.kind = 'silent'; fixed('', []); slots.push(s); continue; }
         s.kind = 'madd'; fixed('0', ['ا']); slots.push(s); continue;
       }
       if (L === 'آ') { s.kind = 'hamza_madd'; fixed('10', ['ء', 'ا']); slots.push(s); continue; }
@@ -321,10 +320,11 @@
   const TEMPL = new Map();
   const formsAll = () => M.forms;
   function darbGroup(label) { if (!label || !label.startsWith('ضرب')) return 'ضرب صحيح'; return label.split(/\s+/).slice(0, 2).join(' '); }
-  function template(form, part, group) {
-    const key = form.key + '|' + part + '|' + (group || '');
+  function template(form, part, group, endingPatterns = null, tasriPattern = null) {
+    const key = JSON.stringify([form.key, part, group, endingPatterns, tasriPattern]);
     if (!TEMPL.has(key)) {
-      let last = (part === 'ajuz' || form.single) ? form.darb : form.arud;
+      let last = (part === 'ajuz' || form.single) ? form.darb : form.arud.filter(v => !v[3].includes('تصريع') || v[0] === tasriPattern);
+      if (endingPatterns) last = last.filter(v => endingPatterns.includes(v[0]));
       if (group) last = last.filter(v => darbGroup(v[3]) === group);
       TEMPL.set(key, last.length ? templateGraph(form.hashw.concat([last])) : null);
     }
@@ -362,10 +362,42 @@
     return { form: form.key, part, cost, errors, feet, readings, ending: feet[feet.length - 1].label, pattern, allowed: T.positions };
   }
 
-  function scanHemistich(text, form, part, cap = 4, group = null) {
-    const [L, ws] = lattice(text); const T = template(form, part, group); if (!T) return null;
+  function scanHemistich(text, form, part, cap = 4, group = null, endingPatterns = null, tasriPattern = null) {
+    const [L, ws] = lattice(text); const T = template(form, part, group, endingPatterns, tasriPattern); if (!T) return null;
     const r = align(L, T, cap); if (!r) return null;
     return summarize(L, T, r[0], r[1], form, part, ws);
+  }
+
+  // Compare analyzer candidates; unknown vowels remain provisional.
+  function sameRhyme(a, b) {
+    const ra = lineRhyme(a), rb = lineRhyme(b);
+    if (!ra || !rb) return false;
+    const ac = [[ra.rawi, ra.vowel, ra.ridf, ra.tasis], [ra.alt, ra.altVowel, ra.altRidf, ra.altTasis]].filter(x => x[0]);
+    const bc = [[rb.rawi, rb.vowel, rb.ridf, rb.tasis], [rb.alt, rb.altVowel, rb.altRidf, rb.altTasis]].filter(x => x[0]);
+    return ac.some(x => bc.some(y => x[0] === y[0] && x[2] === y[2] && x[3] === y[3] && (!x[1] || !y[1] || x[1] === y[1])));
+  }
+
+  function compatibleEndings(ra, rb, form, first = false) {
+    if (!ra) return form.single;
+    const arud = ra.feet.at(-1), darb = rb.feet.at(-1), pairs = form.ending_pairs || {};
+    if (Object.keys(pairs).length && !(pairs[arud.expected] || []).includes(darb.expected)) return false;
+    return !arud.label.includes('تصريع') || (first && arud.expected === darb.expected);
+  }
+
+  function scanPair(a, b, form, first = false, cap = 4) {
+    const pairs = form.ending_pairs || {};
+    const endings = Object.keys(pairs).length ? [...new Set(form.darb.map(v => v[0]))] : [null];
+    let best = null;
+    for (const ending of endings) {
+      const rb = scanHemistich(b, form, 'ajuz', cap, null, ending ? [ending] : null);
+      if (!rb) continue;
+      const allowed = Object.keys(pairs).length ? Object.keys(pairs).filter(arud => pairs[arud].includes(rb.feet.at(-1).expected)) : null;
+      if (allowed && !allowed.length) continue;
+      const tasri = first && rb.errors === 0 && sameRhyme(a, b) ? rb.feet.at(-1).expected : null;
+      const ra = scanHemistich(a, form, 'sadr', cap, null, allowed, tasri);
+      if (ra && (!best || ra.cost + rb.cost < best.cost)) best = {cost: ra.cost + rb.cost, sadr: ra, ajuz: rb, split: [a,b]};
+    }
+    return best;
   }
 
   const SEP = /\s*(?:\t+|\*+|\|+|…+|\.\.\.+|٭+|⁂|\s{3,}|\/\/+|-{2,}|—+)\s*/;
@@ -385,10 +417,9 @@
         const r = scanHemistich(line, form, 'ajuz', cap); if (r) best = { cost: r.cost + form.rare, sadr: null, ajuz: r, split: null };
       } else {
         for (const [a, b] of cands) {
-          const ra = scanHemistich(a, form, 'sadr', cap); if (!ra) continue;
-          const rb = scanHemistich(b, form, 'ajuz', cap); if (!rb) continue;
-          const c = ra.cost + rb.cost + form.rare;
-          if (!best || c < best.cost) best = { cost: c, sadr: ra, ajuz: rb, split: [a, b] };
+          const pair = scanPair(a, b, form, i === 0, cap); if (!pair) continue;
+          const c = pair.cost + form.rare;
+          if (!best || c < best.cost) best = Object.assign({}, pair, {cost: c});
         }
       }
       if (best) results[form.key] = best;
@@ -411,7 +442,7 @@
           if (!exact(r) || darbGroup(r.ajuz.ending) === dominant) return;
           const aj = r.split ? r.split[1] : scans[idx].text;
           const rr = scanHemistich(aj, form, 'ajuz', 4, dominant);
-          if (rr && rr.errors === 0) { const nc = (r.sadr ? r.sadr.cost : 0) + rr.cost + form.rare; per[idx] = [Math.min(nc, LINE_CAP), Object.assign({}, r, { cost: nc, ajuz: rr })]; }
+          if (rr && rr.errors === 0 && compatibleEndings(r.sadr, rr, form, idx === 0)) { const nc = (r.sadr ? r.sadr.cost : 0) + rr.cost + form.rare; per[idx] = [Math.min(nc, LINE_CAP), Object.assign({}, r, { cost: nc, ajuz: rr })]; }
         });
       }
       let total = 0, ex = 0, exH = 0; const mism = [];
@@ -428,7 +459,7 @@
     for (const r of ranking.slice(0, 6)) {
       r.perLine.forEach(([c, x], idx) => {
         if (x) return;
-        const rr = rescan(scans[idx].text, r.form);
+        const rr = rescan(scans[idx].text, r.form, idx === 0);
         if (rr) { r.exactH += (rr.sadr && rr.sadr.errors === 0 ? 1 : 0) + (rr.ajuz.errors === 0 ? 1 : 0); r.perLine[idx] = [c, null, rr]; }
       });
     }
@@ -444,13 +475,13 @@
     return out;
   }
 
-  function rescan(text, form) {
+  function rescan(text, form, first = false) {
     const sp = splitLine(text), cands = sp ? [sp] : autoSplits(text);
     if (form.single) { const r = scanHemistich(text, form, 'ajuz', 20); return r ? { cost: r.cost, sadr: null, ajuz: r, split: null } : null; }
     let best = null;
     for (const [a, b] of cands) {
-      const ra = scanHemistich(a, form, 'sadr', 20), rb = scanHemistich(b, form, 'ajuz', 20);
-      if (ra && rb && (!best || ra.cost + rb.cost < best.cost)) best = { cost: ra.cost + rb.cost, sadr: ra, ajuz: rb, split: [a, b] };
+      const pair = scanPair(a, b, form, first, 20);
+      if (pair && (!best || pair.cost < best.cost)) best = pair;
     }
     return best;
   }
@@ -475,14 +506,14 @@
     for (let k = slots.length - 1; k >= 0; k--) {
       const s = slots[k]; if (s.kind === 'silent') continue;
       const extra = [];
-      for (const o of s.opts) if (o.bits.length >= 2 && o.bits.endsWith('0') && ['end_v', 'end_amb', 'ha', 'cons_tan', 'shadda'].includes(s.kind))
+      for (const o of s.opts) if (o.bits.length >= 2 && o.bits.endsWith('0') && ['end_v', 'end_amb', 'ha', 'shadda'].includes(s.kind))
         extra.push(opt(o.bits.slice(0, -1), o.disp.slice(0, -1), o.cost + 0.3, 'تدوير: آخر السطر موصول بما بعده'));
       s.opts.push(...extra); return;
     }
   }
   function buildStream(lines) {
     const slots = [];
-    lines.forEach((line, li) => { const sl = buildHemistich(line); addTadwir(sl); sl.forEach(s => { s.line = li; }); slots.push(...sl); });
+    lines.forEach((line, li) => { const sl = buildHemistich(line); if (li + 1 < lines.length) addTadwir(sl); sl.forEach(s => { s.line = li; }); slots.push(...sl); });
     const L = latticeGraph(slots), lineEnd = new Set();
     for (let k = 1; k < slots.length; k++) if (slots[k].line !== slots[k - 1].line) lineEnd.add(L.slotStart[k]);
     lineEnd.add(L.final);
@@ -623,8 +654,8 @@
     const sp = splitLine(text);
     for (const form of forms) {
       if (sp && !form.single) {
-        const ra = scanHemistich(sp[0], form, 'sadr', 8), rb = scanHemistich(sp[1], form, 'ajuz', 8);
-        if (ra && rb && (!best || ra.cost + rb.cost < best.cost)) best = { cost: ra.cost + rb.cost, parts: [ra, rb], form };
+        const pair = scanPair(sp[0], sp[1], form, true, 8);
+        if (pair && (!best || pair.cost < best.cost)) best = {cost: pair.cost, parts:[pair.sadr, pair.ajuz], form};
       } else if (!sp && asHalf && !form.single) {
         for (const part of ['sadr', 'ajuz']) { const r = scanHemistich(text, form, part, 8); if (r && (!best || r.cost < best.cost)) best = { cost: r.cost, parts: [r], form }; }
       } else if (!sp) {
@@ -665,11 +696,23 @@
     const ws = words(text); if (!ws.length) return null;
     const units = rewriteSpecial(parseWord(ws[ws.length - 1]));
     while (units.length > 1 && units[units.length - 1].letter === 'ا' && units[units.length - 2].letter === 'و' && !units[units.length - 2].vowel) units.pop();
-    let i = units.length - 1;
-    if (i > 0 && 'اىوي'.includes(units[i].letter) && !units[i].vowel && !units[i].shadda && !units[i].tanwin) i--;
+    let i = units.length - 1, wasl = null;
+    if (i > 0 && 'اىوي'.includes(units[i].letter) && !units[i].vowel && !units[i].shadda && !units[i].tanwin) { wasl = units[i].letter; i--; }
     const r = units[i];
-    const out = { word: ws[ws.length - 1], rawi: r.letter === 'ة' ? 'ت' : r.letter, vowel: r.vowel || r.tanwin || (r.sukun ? 'o' : null), alt: null };
-    if ((r.letter === 'ه' || r.letter === 'ة') && i > 0 && !'اىوي'.includes(units[i - 1].letter)) out.alt = units[i - 1].letter;
+    const rhymeDetails = index => {
+      const before = units[index - 1];
+      const ridf = before && 'اىوي'.includes(before.letter) && !before.vowel && !before.shadda
+        ? ('اى'.includes(before.letter) ? 'ا' : 'وي') : null;
+      const tasis = index >= 2 && units[index - 2].letter === 'ا' && !units[index - 2].vowel && ridf === null;
+      return {ridf, tasis};
+    };
+    const base = rhymeDetails(i);
+    const out = { word: ws[ws.length - 1], rawi: r.letter === 'ة' ? 'ت' : r.letter, vowel: r.vowel || r.tanwin || (r.sukun ? 'o' : null) || ({ا:'a',ى:'a',و:'u',ي:'i'}[wasl] || null), alt: null, altVowel: null, ridf: base.ridf, tasis: base.tasis, altRidf: null, altTasis: false };
+    if ((r.letter === 'ه' || r.letter === 'ة') && i > 0 && !'اىوي'.includes(units[i - 1].letter)) {
+      const before = units[i - 1]; out.alt = before.letter;
+      out.altVowel = before.vowel || before.tanwin || (before.sukun ? 'o' : null);
+      const alt = rhymeDetails(i - 1); out.altRidf = alt.ridf; out.altTasis = alt.tasis;
+    }
     return out;
   }
   function rhymeCheck(endTexts) {

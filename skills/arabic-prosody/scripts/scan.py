@@ -23,7 +23,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from arud.lattice import build_hemistich, clean, describe   # noqa: E402
 from arud.classical import (scan_line, rank_poem, best_per_meter, split_line, scan_hemistich,  # noqa: E402
-                            to_marks, template)
+                            to_marks, template, scan_pair)
 from arud.meters import FORMS, FORMS_BY_KEY, METER_INFO, FAMILIES   # noqa: E402
 from arud import freeverse, qafiya, report   # noqa: E402
 
@@ -97,7 +97,7 @@ def cmd_analyze(a):
             lens = [len(describe(build_hemistich(l))[1]) for l in lines]
             spread = (statistics.pstdev(lens) / statistics.mean(lens)) if len(lens) > 1 else 0
             scans, ranking, cands = classical(lines, a.meter)
-            free_res, flines = freeverse.analyze(lines)
+            free_res, flines = freeverse.analyze(lines, meter=a.meter)
             c_err = cands[0]['total'] / len(lines) if cands else 99
             f_err = (free_res[0]['total'] / len(lines)) if free_res else 99
             if spread > 0.2:
@@ -106,9 +106,7 @@ def cmd_analyze(a):
                 c_err -= 0.3     # equal-length lines: favour classical (مشطور / أرجوزة)
             mode = 'classical' if c_err <= f_err else 'free'
     if mode == 'free':
-        res, flines = free_res and (free_res, lines) or freeverse.analyze(lines)
-        if a.meter:
-            res = [r for r in res if r['family'].meter == a.meter] or res
+        res, flines = free_res and (free_res, lines) or freeverse.analyze(lines, meter=a.meter)
         if a.json:
             print(json.dumps([{'meter': r['family'].meter, 'foot': r['family'].foot, 'total': r['total'],
                                'errors': r['errors'],
@@ -188,10 +186,9 @@ def cmd_verify(a):
             if a.part == 'verse' or (a.part is None and sp):
                 if form.single or not sp:
                     continue
-                ra = scan_hemistich(sp[0], form, 'sadr', cap=8)
-                rb = scan_hemistich(sp[1], form, 'ajuz', cap=8)
-                if ra and rb and (best is None or ra.cost + rb.cost < best[0]):
-                    best = (ra.cost + rb.cost, form, [('الصدر', ra), ('العجز', rb)])
+                pair = scan_pair(sp[0], sp[1], form, first=True, cap=8)
+                if pair and (best is None or pair[0] < best[0]):
+                    best = (pair[0], form, [('الصدر', pair[1]), ('العجز', pair[2])])
             else:
                 part = a.part or 'ajuz'
                 if form.single and part == 'sadr':

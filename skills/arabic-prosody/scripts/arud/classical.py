@@ -16,11 +16,14 @@ DARB_MISMATCH = 0.75    # penalty when a line's darb differs from the poem's dom
 _TEMPLATE_CACHE = {}
 
 
-def template(form, part):
-    key = (form.key, part)
+def template(form, part, ending_patterns=None, tasri_pattern=None):
+    key = (form.key, part, tuple(ending_patterns or ()), tasri_pattern)
     if key not in _TEMPLATE_CACHE:
-        last = form.darb if (part == 'ajuz' or form.single) else form.arud
-        _TEMPLATE_CACHE[key] = TemplateGraph(form.hashw + [last])
+        last = form.darb if (part == 'ajuz' or form.single) else [
+            v for v in form.arud if 'تصريع' not in v[3] or v[0] == tasri_pattern]
+        if ending_patterns is not None:
+            last = [v for v in last if v[0] in ending_patterns]
+        _TEMPLATE_CACHE[key] = TemplateGraph(form.hashw + [last]) if last else None
     return _TEMPLATE_CACHE[key]
 
 
@@ -147,18 +150,60 @@ def summarize(L, T, cost, steps, form, part, words) -> HemiResult:
 _LATTICE_CACHE = {}
 
 
-def scan_hemistich(text, form, part, cap=4.0, _cache=_LATTICE_CACHE):
+def scan_hemistich(text, form, part, cap=4.0, _cache=_LATTICE_CACHE,
+                    ending_patterns=None, tasri_pattern=None):
     key = text
     if key not in _cache:
         slots = build_hemistich(text)
         _cache[key] = (LatticeGraph(slots), clean(text).split(' '))
     L, words = _cache[key]
-    T = template(form, part)
+    T = template(form, part, ending_patterns, tasri_pattern)
+    if T is None:
+        return None
     r = align(L, T, cap)
     if r is None:
         return None
     cost, steps = r
     return summarize(L, T, cost, steps, form, part, words)
+
+
+def same_rhyme(a, b):
+    """Compare available rhyme candidates; unknown vowels remain provisional."""
+    from .qafiya import line_rhyme
+    ra, rb = line_rhyme(a), line_rhyme(b)
+    return any(x['rawi'] == y['rawi'] and x['ridf'] == y['ridf'] and x['tasis'] == y['tasis'] and
+               (x['majra'] is None or y['majra'] is None or x['majra'] == y['majra'])
+               for x in (ra['base'], ra['alt']) if x
+               for y in (rb['base'], rb['alt']) if y)
+
+
+def compatible_endings(ra, rb, form, first=False):
+    if ra is None:
+        return form.single
+    arud, darb = ra.feet[-1], rb.feet[-1]
+    if form.ending_pairs and darb.expected not in form.ending_pairs.get(arud.expected, []):
+        return False
+    return 'تصريع' not in arud.label or (first and arud.expected == darb.expected)
+
+
+def scan_pair(a, b, form, first=False, cap=4.0):
+    """Enforce declared ending pairs and contextual first-verse tasri'."""
+    endings = list(dict.fromkeys(v[0] for v in form.darb)) if form.ending_pairs else [None]
+    best = None
+    for ending in endings:
+        rb = scan_hemistich(b, form, 'ajuz', cap,
+                             ending_patterns=[ending] if ending else None)
+        if rb is None:
+            continue
+        allowed = [arud for arud, darbs in form.ending_pairs.items()
+                   if rb.feet[-1].expected in darbs] if form.ending_pairs else None
+        if allowed == []:
+            continue
+        tasri = rb.feet[-1].expected if first and rb.errors == 0 and same_rhyme(a, b) else None
+        ra = scan_hemistich(a, form, 'sadr', cap, ending_patterns=allowed, tasri_pattern=tasri)
+        if ra and (best is None or ra.cost + rb.cost < best[0]):
+            best = (ra.cost + rb.cost, ra, rb, (a, b))
+    return best
 
 
 SEPARATORS = re.compile(r'\s*(?:\t+|\*+|\|+|…+|\.\.\.+|٭+|⁂|\s{3,}|//+|-{2,}|—+|،\s{2,})\s*')
@@ -208,13 +253,11 @@ def scan_line(i, line, forms=FORMS, auto_split=True):
                 best = (r.cost + form.rare, None, r, None)
         else:
             for (a, b) in candidates:
-                ra = scan_hemistich(a, form, 'sadr')
-                if ra is None:
+                pair = scan_pair(a, b, form, first=i == 0)
+                if pair is None:
                     continue
-                rb = scan_hemistich(b, form, 'ajuz')
-                if rb is None:
-                    continue
-                c = ra.cost + rb.cost + form.rare
+                _, ra, rb, _ = pair
+                c = pair[0] + form.rare
                 if best is None or c < best[0]:
                     best = (c, ra, rb, (a, b))
         if best is not None:
@@ -250,7 +293,7 @@ def rank_poem(lines: List[LineScan], forms=FORMS):
                 if not aj_text:
                     continue
                 rr = scan_restricted(aj_text, form, dominant)
-                if rr is not None and rr.errors == 0:
+                if rr is not None and rr.errors == 0 and compatible_endings(r[1], rr, form, idx == 0):
                     nc = (r[1].cost if r[1] else 0) + rr.cost + form.rare
                     per_line[idx] = (min(nc, LINE_CAP), (nc, r[1], rr, r[3]))
         total = 0.0
@@ -310,8 +353,7 @@ def rescan(ls, form, cap=20.0):
         r = scan_hemistich(ls.text, form, 'ajuz', cap)
         return (r.cost, None, r, None) if r else None
     for (a, b) in candidates:
-        ra = scan_hemistich(a, form, 'sadr', cap)
-        rb = scan_hemistich(b, form, 'ajuz', cap)
-        if ra and rb and (best is None or ra.cost + rb.cost < best[0]):
-            best = (ra.cost + rb.cost, ra, rb, (a, b))
+        pair = scan_pair(a, b, form, first=ls.index == 0, cap=cap)
+        if pair and (best is None or pair[0] < best[0]):
+            best = pair
     return best

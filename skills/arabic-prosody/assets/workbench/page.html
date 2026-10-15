@@ -1,3 +1,4 @@
+<meta charset="utf-8">
 <title>ديوان العروض</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -384,10 +385,14 @@ window.__METERS__ = /*METERS*/null;
   let analysis = null, editing = null, openAlts = {}, altResults = {}, openAsk = {}, askState = {}, sampleTools = false;
   const cur = () => poems.find(p => p.id === curId) || null;
   const linesOf = p => (p ? p.text.split('\n') : []);
+  const sampleContext = p => JSON.stringify([p.id, p.text, p.mode, p.meter, assistantEpoch, revisions.get(p.id)]);
+  const contextIsCurrent = context => cur() && sampleContext(cur()) === context;
+  let assistantPoemId = curId, assistantEpoch = 0;
 
   // ---------------------------------------------------------------- persistence
-  const pending = new Map(), writing = new Set(), dirty = new Set();
+  const pending = new Map(), writing = new Set(), dirty = new Set(), revisions = new Map();
   function save(p, now) {
+    revisions.set(p.id, (revisions.get(p.id) || 0) + 1);
     if (!db) { store.set('diwan.local', poems); return; }
     dirty.add(p.id);
     clearTimeout(pending.get(p.id));
@@ -397,9 +402,13 @@ window.__METERS__ = /*METERS*/null;
     if (writing.has(id)) { pending.set(id, setTimeout(() => flush(id), 400)); return; }
     const p = poems.find(x => x.id === id); if (!p) return;
     writing.add(id);
-    const body = { title: p.title || '', text: p.text || '', choices: p.choices || [], suggestions: p.suggestions || {},
-      status: p.status || 'review', meter: p.meter || '', mode: p.mode || 'auto', order: p.order || 0 };
-    try { await db.collection('poems').doc(id).set(body); dirty.delete(id); }
+    const revision = revisions.get(id);
+    const body = JSON.parse(JSON.stringify({ title: p.title || '', text: p.text || '', choices: p.choices || [], suggestions: p.suggestions || {},
+      status: p.status || 'review', meter: p.meter || '', mode: p.mode || 'auto', order: p.order || 0 }));
+    try {
+      await db.collection('poems').doc(id).set(body);
+      if (revisions.get(id) === revision) dirty.delete(id);
+    }
     catch (e) { toast(e && e.code === 'invalid_argument' ? 'لا تملك صلاحية الحفظ هنا' : 'تعذّر الحفظ، حاول مجددًا'); }
     finally { writing.delete(id); }
   }
@@ -495,6 +504,11 @@ window.__METERS__ = /*METERS*/null;
     return `${cnt} · ${p.status === 'confirmed' ? 'التشكيل معتمد' : 'قيد المراجعة'}`;
   }
   function renderSelect() {
+    if (assistantPoemId !== curId) {
+      for (const st of Object.values(askState)) if (st.ctl) st.ctl.abort();
+      askState = {}; openAsk = {}; altResults = {}; openAlts = {};
+      assistantPoemId = curId; assistantEpoch++;
+    }
     const p = cur();
     $('pmTitle').textContent = p ? (p.title || 'بلا عنوان') : (poems.length ? 'اختر قصيدة' : 'لا قصائد بعد');
     $('pmBtn').setAttribute('aria-expanded', String(pmOpen));
@@ -645,7 +659,8 @@ window.__METERS__ = /*METERS*/null;
     return { ok: r.ok, syl: feet.map(pat).join('  |  ') };
   }
   function renderAlts(li) {
-    const p = cur(); const ar = altResults[li] || {};
+    const p = cur();
+    const ar = altResults[li] && altResults[li].context === sampleContext(p) ? altResults[li] : {};
     const sug = ((p.suggestions || {})[li + 1] || []).concat(ar.items || []);
     const uniq = [...new Map(sug.map(s => [typeof s === 'string' ? s : s.text, typeof s === 'string' ? { text: s } : s])).values()];
     const rows = uniq.map(s => ({ s, r: verifyText(s.text) })).filter(x => x.r);
@@ -807,7 +822,9 @@ window.__METERS__ = /*METERS*/null;
   // ---------------------------------------------------------------- Claude (sample)
   function poemContext(p) { return linesOf(p).filter(l => A.clean(l)).map((l, i) => `${i + 1}. ${l}`).join('\n'); }
   async function askAlternatives(li) {
-    const p = cur(); const ar = altResults[li] = altResults[li] || {}; ar.busy = true; ar.error = null; renderLines();
+    const p = cur(); if (!p || !sample) return;
+    const context = sampleContext(p);
+    const ar = altResults[li] = { context }; ar.busy = true; ar.error = null; renderLines();
     const v = lineViews()[li];
     const meter = analysis.mode === 'free' ? `شعر تفعيلة على ${analysis.free[0].family.foot} (${meterAr(analysis.free[0].family.meter)})`
       : `${meterAr(analysis.cands[0].form.meter)} — ${analysis.cands[0].form.name}`;
@@ -823,16 +840,18 @@ ${poemContext(p)}
 أجب بمصفوفة JSON فقط: [{"text": "البديل مشكولًا", "note": "ما الذي تغيّر وأثره في المعنى، بالعربية في أقل من 12 كلمة"}]`;
     try {
       const out = await sample.json(prompt, { cache: false });
+      if (!contextIsCurrent(context) || altResults[li] !== ar) return;
       ar.items = (Array.isArray(out) ? out : []).filter(x => x && typeof x.text === 'string').map(x => ({ text: x.text.trim(), note: String(x.note || '') }));
       if (!ar.items.length) ar.error = 'لم تصل بدائل صالحة؛ حاول مرة أخرى.';
     } catch (e) {
+      if (!contextIsCurrent(context) || altResults[li] !== ar) return;
       ar.error = e && (e.code === 'not_granted' || e.code === 'sampling_disabled') ? 'لم يُسمح بالاتصال بـ Claude من هذه الصفحة.'
         : e && e.code === 'rate_limited' ? 'طلبات كثيرة؛ انتظر قليلًا ثم حاول.' : e && e.code === 'cancelled' ? '' : 'تعذّر الحصول على بدائل؛ حاول مرة أخرى.';
       if (e && (e.code === 'not_granted' || e.code === 'sampling_disabled')) sample = null;
     } finally { ar.busy = false; renderLines(); }
   }
   function renderAsk(li) {
-    const st = askState[li] || { msgs: [] };
+    const st = askState[li] && askState[li].context === sampleContext(cur()) ? askState[li] : { msgs: [] };
     const msgs = st.msgs.map(m => {
       if (m.role === 'me') return `<div class="me">${esc(m.text)}</div>`;
       const rows = (m.items || []).map(x => ({ x, r: verifyText(x.text) })).filter(o => o.r && o.r.ok);
@@ -852,7 +871,14 @@ ${poemContext(p)}
   }
 
   async function askLine(li, question) {
-    const p = cur(); const st = askState[li] = askState[li] || { msgs: [], turns: [] };
+    const p = cur(); if (!p || !sample) return;
+    const context = sampleContext(p);
+    if (askState[li] && askState[li].context !== context) {
+      if (askState[li].ctl) askState[li].ctl.abort();
+      delete askState[li];
+    }
+    const st = askState[li] = askState[li] || { msgs: [], turns: [], context };
+    st.context = context;
     if (st.busy || !question.trim()) return;
     st.msgs.push({ role: 'me', text: question.trim() }); st.draft = ''; st.busy = true; st.error = null; st.progress = 'Claude يفكّر…';
     const line = linesOf(p)[li], chk = checkLine(line), rh = A.rhymeCheck([line]).rows[0];
@@ -885,6 +911,7 @@ ${poemContext(p)}
         description: 'Checks Arabic lines against the poem\'s meter with the page\'s scanner. Returns, for each line, ok (true/false), its scansion (feet with ب short / − long syllables), and the broken foot if any. Use it on every line before suggesting it.',
         inputSchema: { type: 'object', properties: { lines: { type: 'array', items: { type: 'string' }, description: 'fully diacritized candidate lines' } }, required: ['lines'] },
         execute: (input) => {
+          if (!contextIsCurrent(context) || askState[li] !== st) throw new Error('stale poem');
           const ls = Array.isArray(input.lines) ? input.lines.slice(0, 12).map(String) : [];
           st.progress = `Claude يفحص ${AR_DIG(ls.length)} ${ls.length === 1 ? 'سطرًا' : 'أسطر'} على البحر…`; renderLines();
           return ls.map(checkLine);
@@ -893,11 +920,13 @@ ${poemContext(p)}
     }
     try {
       const out = await sample.json(st.turns, opts);
+      if (!contextIsCurrent(context) || askState[li] !== st) return;
       const answer = out && typeof out.answer === 'string' ? out.answer : '';
       const items = out && Array.isArray(out.alternatives) ? out.alternatives.filter(x => x && typeof x.text === 'string').map(x => ({ text: x.text.trim(), note: String(x.note || '') })) : [];
       st.msgs.push({ role: 'cl', text: answer || (items.length ? 'هذه اقتراحات:' : '—'), items });
       st.turns.push({ role: 'assistant', content: JSON.stringify(out) });
     } catch (e) {
+      if (!contextIsCurrent(context) || askState[li] !== st) return;
       st.turns.pop();
       st.error = e && e.code === 'cancelled' ? '' : e && (e.code === 'not_granted' || e.code === 'sampling_disabled') ? 'لم يُسمح بالاتصال بـ Claude من هذه الصفحة.'
         : e && e.code === 'rate_limited' ? 'طلبات كثيرة؛ انتظر قليلًا ثم أرسل مجددًا.' : e && e.code === 'tools_unavailable' ? 'أعد الإرسال.' : 'تعذّر الرد؛ أرسل مجددًا.';
@@ -909,8 +938,28 @@ ${poemContext(p)}
     }
   }
 
+  function preservesDiacritics(before, after) {
+    const clusters = text => {
+      const out = [];
+      for (const c of text.normalize('NFC')) {
+        if (/[\u064b-\u0652\u0670]/u.test(c)) {
+          if (!out.length) return null;
+          out[out.length - 1].marks += c;
+        } else out.push({ letter: c, marks: '' });
+      }
+      return out;
+    };
+    const a = clusters(before), b = clusters(after);
+    return !!(a && b && a.length === b.length && a.every((x, i) => {
+      const y = b[i], vowels = y.marks.match(/[\u064b-\u0650\u0652]/g) || [];
+      return x.letter === y.letter && [...x.marks].every(m => y.marks.includes(m)) &&
+        vowels.length <= 1 && new Set(y.marks).size === y.marks.length;
+    }));
+  }
   async function askDiacritics() {
-    const p = cur(); const btn = $('diacBtn'); btn.disabled = true; btn.textContent = 'Claude يشكّل…';
+    const p = cur(); if (!p || !sample) return;
+    const context = sampleContext(p), before = p.text;
+    const btn = $('diacBtn'); btn.disabled = true; btn.textContent = 'Claude يشكّل…';
     const prompt = `شكّل هذه القصيدة تشكيلًا كاملًا كما يلقيها شاعرها، بناءً على المعنى في سياق القصيدة كلها، لا على الوزن.
 احتفظ بكل حركة كتبها الشاعر، ولا تغيّر أي كلمة. اترك الحرف الأخير من السطر بلا حركة إن لم تتبيّن أهو ساكن أم مشبع.
 القصيدة (سطر في كل سطر):
@@ -921,9 +970,12 @@ ${linesOf(p).join('\n')}
 ضع في choices القرارات الحقيقية فقط (كلمات تحتمل قراءتين تغيّران المعنى أو الوزن)، وأول خيار هو ما اخترته.`;
     try {
       const out = await sample.json(prompt, { cache: false });
-      if (out && Array.isArray(out.lines) && out.lines.length) {
-        p.text = out.lines.join('\n'); p.choices = Array.isArray(out.choices) ? out.choices : []; p.status = 'review';
-        save(p, true); toast('تمّ التشكيل — راجع الكلمات المظلّلة');
+      if (!contextIsCurrent(context)) { toast('تغيّرت القصيدة؛ اطلب التشكيل مجددًا'); return; }
+      if (out && Array.isArray(out.lines) && out.lines.length && out.lines.every(l => typeof l === 'string' && !/[\r\n]/.test(l)) &&
+          preservesDiacritics(before, out.lines.join('\n'))) {
+        const current = cur();
+        current.text = out.lines.join('\n'); current.choices = Array.isArray(out.choices) ? out.choices : []; current.status = 'review';
+        save(current, true); toast('تمّ التشكيل — راجع الكلمات المظلّلة');
       } else toast('لم يصل تشكيل صالح؛ حاول مرة أخرى');
     } catch (e) { toast(e && e.code === 'not_granted' ? 'لم يُسمح بالاتصال بـ Claude' : 'تعذّر التشكيل؛ حاول مرة أخرى'); }
     finally { btn.disabled = false; btn.textContent = 'شكّل القصيدة'; render(); }
@@ -955,7 +1007,7 @@ ${linesOf(p).join('\n')}
     e.preventDefault(); const li = +f.dataset.li; askLine(li, $('askin-' + li).value);
   });
   document.addEventListener('input', e => {
-    if (e.target.id && e.target.id.startsWith('askin-')) { const li = +e.target.id.split('-')[1]; (askState[li] = askState[li] || { msgs: [], turns: [] }).draft = e.target.value; }
+    if (e.target.id && e.target.id.startsWith('askin-')) { const li = +e.target.id.split('-')[1]; (askState[li] = askState[li] || { msgs: [], turns: [], context: sampleContext(cur()) }).draft = e.target.value; }
   });
   document.addEventListener('keydown', e => {
     if (e.key === 'Enter' && !e.shiftKey && e.target.id && e.target.id.startsWith('askin-')) { e.preventDefault(); const li = +e.target.id.split('-')[1]; askLine(li, e.target.value); return; }

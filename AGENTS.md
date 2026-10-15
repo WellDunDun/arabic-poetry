@@ -31,6 +31,8 @@ python3 -m json.tool .claude-plugin/plugin.json >/dev/null
 skills-ref validate skills/arabic-prosody
 PYTHONDONTWRITEBYTECODE=1 python3 skills/arabic-prosody/tests/run_gold.py
 node skills/arabic-prosody/tests/parity.js
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s skills/arabic-prosody/tests -p 'test_*.py'
+node skills/arabic-prosody/tests/workbench_state.js
 git diff --check
 ```
 

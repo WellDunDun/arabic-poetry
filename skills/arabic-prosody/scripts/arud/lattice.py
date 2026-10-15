@@ -243,8 +243,6 @@ def build_word_slots(units: List[Unit], wi: int, first_in_hemistich: bool):
                 s.kind = 'silent'; s.fixed('', []); slots.append(s); continue
             if k == n - 1 and prev is not None and prev.letter == 'و' and not prev.vowel and n >= 3:
                 s.kind = 'silent'; s.fixed('', []); slots.append(s); continue  # alef fariqa (كتبوا)
-            if nxt_sakin:
-                s.kind = 'silent'; s.fixed('', []); slots.append(s); continue
             s.kind = 'madd'; s.fixed('0', ['ا']); slots.append(s); continue
 
         if L == 'آ':

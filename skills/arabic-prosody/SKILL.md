@@ -1,6 +1,6 @@
 ---
 name: arabic-prosody
-description: Deterministic scanner and Diwan workbench for Arabic meter (العروض، البحور، التفاعيل) and rhyme (القافية) — classical عمودي verse, شعر التفعيلة and free verse. Use whenever the user shares Arabic verses and asks about their بحر / وزن / تقطيع / كسر / قافية, wants their poem checked, corrected to fit its meter, kept and edited in a Diwan, or exported to Word/PDF, or wants the meter of a poem they admire identified — even if they never say "prosody" or name a meter.
+description: Rule-based scansion assistant and Diwan workbench for Arabic meter (العروض، البحور، التفاعيل) and rhyme (القافية), covering classical عمودي verse and شعر التفعيلة. Use when the user shares Arabic verses and asks about their بحر / وزن / تقطيع / كسر / قافية, wants their poem checked, corrected to fit its meter, kept and edited in a Diwan, or exported to Word/PDF, or wants the meter of a poem they admire identified — even if they never say "prosody" or name a meter.
 ---
 
 # Arabic prosody workbench (ورشة العروض)
@@ -13,21 +13,24 @@ The division of labour is the heart of this skill:
 * **You** read the language: add the tashkeel, understand the meaning, choose
   between readings, propose wording, explain.
 * **The scanner** (`scripts/scan.py`, pure Python 3, no dependencies) does the
-  counting: it converts text to arudi writing, tries every plausible reading,
+  counting: it converts text to arudi writing, tries implemented pronunciation alternatives,
   aligns each hemistich against every meter form with its permitted zihafat,
   votes across the whole poem, and pinpoints broken feet.
 
 Language models are unreliable at counting moving and still letters, so the
-scanner is the authority on weight. Never tell the poet a line is sound,
-broken, or fixed without having run it.
+scanner supplies reproducible alignment evidence, not an infallible metrical
+verdict. Run it for supported cases, inspect its pronunciation and licensed
+forms against the references, and distinguish zero alignment errors from
+independent confirmation of metrical validity.
 
 ## Working with the arabic-poetry skill
 
 This repository also serves `arabic-poetry`, which covers composition, close
 reading, critique and revision craft. The two are complementary: follow
 arabic-poetry's guidance for meaning, voice and literary judgement, and use this
-skill's scanner for every metrical or rhyme claim (it shows the pronunciation it
-assumed, so its verdicts stay checkable). When both apply, do the craft work
+skill's scanner as evidence for supported metrical claims. Check its assumed
+pronunciation and rules independently; the spelling-based rhyme result is a
+candidate, not a substitute for the pronounced ending. When both apply, do the craft work
 there and the counting here.
 
 ## Golden rules
@@ -140,7 +143,9 @@ How to use it:
 1. Find the poet's existing workbench (`Artifact` list; title «ديوان العروض»).
    If none exists, build and publish it once:
    `python3 scripts/build_workbench.py` → publish `assets/workbench/diwan.html`
-   with `capabilities: {"db": {}, "sample": {}}`, icon `book`.
+   with `capabilities: {"db": {}, "sample": {}, "downloads": {}}`, icon `book`,
+   when those capabilities are supported by the host. Otherwise use chat/local
+   editing and the CLI exporter; do not invent an unavailable host API.
    Never publish a second one when one exists; reuse its URL.
 2. Write the poem with `ArtifactData` into collection `poems` (one document per
    poem, doc id = a short latin slug):
@@ -291,7 +296,7 @@ rest of the poem.
   - مجزوء الوافر vs الهزج — identical when every foot is مفاعلْتن (عصب); one
     مفاعَلَتن (//0///0) anywhere proves الوافر.
   - الكامل vs الرجز — متْفاعلن (مضمر) = مستفعلن; one متَفاعلن (///0//0) proves الكامل.
-  - المتدارك (الخبب) vs other short lines; المجتث/المقتضب/المضارع are rare —
+  - المتدارك/الخبب under the implemented shared-family convention vs other short lines; المجتث/المقتضب/المضارع are rare —
     prefer a common meter on a tie and say so.
 - **Per verse**: arudi writing split by foot, each foot with name and /0
   pattern. ✗ marks a broken foot with a diagnosis ("زيادة/نقص/حركة في موضع
@@ -310,9 +315,9 @@ rest of the poem.
   word's spelling; double-check its findings against your own reading.
 - **Free verse**: the taf'ila family, a verdict (موزون / مواضع خلل / not on one
   taf'ila), feet per line, ↵ for a foot that runs into the next line (تدوير).
-  Line lengths vary freely in التفعيلة; only foot validity matters. If no
-  family fits, the text may be a prose poem (قصيدة النثر) or mix taf'ilas —
-  say so rather than forcing a meter.
+  Line lengths vary in التفعيلة; pronunciation, structural choices and the
+  intended convention still matter. If no family fits, report that no supported
+  match was established. A failed scan alone does not classify قصيدة النثر.
 
 Permitted zihafat are not errors; a rare one (كفّ in الطويل، وقص in الكامل) is
 allowed but heavier — mention it as a stylistic note, not a fault.
@@ -348,6 +353,7 @@ purpose, and end with the single question the poet needs to answer.
 
 ## Reference files (load when needed)
 
+- [Primary sources and coverage limits](references/sources.md): consult for rule checks and unfamiliar variants.
 - `references/meters.md` — the 16 meters, their forms, feet, zihafat and the
   rhythm "feel" of each; mnemonic lines (مفاتيح البحور).
 - `references/zihafat.md` — zihaf and 'illa definitions and where each applies.
@@ -359,6 +365,19 @@ purpose, and end with the single question the poet needs to answer.
   necessities (الضرورات الشعرية).
 
 ## Limits (say so when relevant)
+
+- Meter tables, ending-pair constraints, pronunciation alternatives and tests
+  cover implemented cases, not every licensed classical or modern practice.
+  Ranking costs and confidence are heuristics, not accuracy probabilities.
+  Keep multiple plausible readings or meters visible instead of certifying a
+  unique result from a short or ambiguous passage.
+- The Diwan database and AI buttons require the host's Claude capabilities; an
+  ordinary browser uses local storage and manual editing; page Word download
+  additionally needs the host downloads capability. Provider features
+  require a compatible host and do not imply integration with every agent.
+  The page fetches fonts and JSZip from CDNs, so it is not fully offline.
+- CLI Word export requires Node.js. PDF additionally requires LibreOffice and
+  font support; check these before promising a PDF.
 
 - Colloquial / نبطي poetry follows different pronunciation and meters; scan it
   only as an approximation and tell the poet.

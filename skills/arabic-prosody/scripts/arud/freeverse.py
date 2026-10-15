@@ -42,7 +42,7 @@ def _add_tadwir(slots):
             continue
         extra = []
         for o in s.opts:
-            if len(o.bits) >= 2 and o.bits.endswith('0') and s.kind in ('end_v', 'end_amb', 'ha', 'cons_tan', 'shadda'):
+            if len(o.bits) >= 2 and o.bits.endswith('0') and s.kind in ('end_v', 'end_amb', 'ha', 'shadda'):
                 extra.append(Opt(o.bits[:-1], o.disp[:-1], o.cost + 0.3, 'تدوير: آخر السطر موصول بما بعده'))
         s.opts.extend(extra)
         return
@@ -60,7 +60,8 @@ def build_stream(lines):
     slots, owner = [], []
     for li, line in enumerate(lines):
         sl = build_hemistich(line)
-        _add_tadwir(sl)
+        if li + 1 < len(lines):
+            _add_tadwir(sl)
         for s in sl:
             s.line = li
         slots.extend(sl)
@@ -176,11 +177,13 @@ def summarize(L, steps, T, lines):
     return out, readings
 
 
-def analyze(lines):
+def analyze(lines, meter=None):
     lines = [l for l in lines if clean(l)]
     L, line_end = build_stream(lines)
     results = []
     for fam in FAMILIES:
+        if meter and fam.meter != meter:
+            continue
         r = scan_family(L, line_end, fam)
         if r is None:
             continue

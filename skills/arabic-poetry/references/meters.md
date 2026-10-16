@@ -1,5 +1,7 @@
 # البحور الستة عشر — reference
 
+These compact summaries support the implemented scanner; they are not exhaustive permissions for every position. Check [primary sources and coverage](SCANNER-SOURCES.md), ending pairs and pronunciation before accepting an alignment. Common "feel" descriptions are associations, not constraints on a poem's theme.
+
 Notation: `/` = متحرك (moving letter), `0` = ساكن (still letter).
 سبب خفيف `/0`، سبب ثقيل `//`، وتد مجموع `//0`، وتد مفروق `/0/`.
 
@@ -25,7 +27,7 @@ Rule of thumb: zihaf touches only the **second letter of a sabab** (أسباب);
 ---
 
 ## الطويل — فعولن مفاعيلن فعولن مفاعيلن (×2)
-- Used only تامًّا. العروض always مقبوضة (مفاعلن //0//0).
+- Used تامًّا. العروض مقبوضة (مفاعلن //0//0) outside the supported first-verse تصريع exceptions; those require matching ending weight and rhyme.
 - الضرب: صحيح (مفاعيلن)، مقبوض (مفاعلن)، محذوف (فعولن).
 - Hashw zihaf: قبض in فعولن → فعولُ (//0/) common; قبض in مفاعيلن → مفاعلن; كفّ (مفاعيلُ) rare.
 - Feel: long, grave, narrative; the meter of the great pre-Islamic odes.
@@ -35,6 +37,7 @@ Rule of thumb: zihaf touches only the **second letter of a sabab** (أسباب);
 - Original: فاعلاتن فاعلن فاعلاتن فاعلن; always used majzu'.
 - Arud: صحيحة، محذوفة (فاعلن)، محذوفة مخبونة (فعِلن).
 - Darb: صحيح، مقصور (فاعلانْ)، محذوف، أبتر (فعْلن)، and their khabn forms.
+- These endings cannot be combined independently; verify the applicable عروض/ضرب pair in the source and implemented tables.
 - Rare in practice; confusable with مجزوء الرمل — the middle فاعلن decides.
 - مفتاح: لمديد الشعر عندي صفاتُ — فاعلاتن فاعلن فاعلاتُ
 
@@ -117,15 +120,17 @@ Rule of thumb: zihaf touches only the **second letter of a sabab** (أسباب);
 - Feel: martial, marching.
 - مفتاح: عن المتقارب قال الخليلُ — فعولن فعولن فعولن فعولُ
 
-## المتدارك / الخبب — فاعلن ×4 (×2)
-- Added by الأخفش. In the خبب form the feet are almost all فعِلن (///0) and فعْلن (/0/0), freely mixed.
+## المتدارك / الخبب — implementation's shared-family label
+- The engine groups فاعلن and supported فعِلن/فعْلن patterns under one family. This does not settle theoretical distinctions between المتدارك and الخبب or authorize every combination in every convention.
 - Darb may be مذيّل (فاعلانْ) or مرفّل (فاعلاتن).
 - Feel: galloping, very common in modern and song poetry.
 - مفتاح: حركات المحدث تنتقلُ — فعِلن فعِلن فعِلن فعِلُ
 
 ---
 
-## Quick identification hints (always confirm with the scanner)
+## Quick identification hints (hypotheses to check)
+
+These shortcuts do not establish a meter. Scan the complete supplied sequence and verify pronunciation and licensed forms; use manual, provisional analysis if execution is unavailable.
 
 - Count letters: a tawil verse is long (≈ 46–48 arudi letters); مجزوء forms are short.
 - Starting `//0` (watad) → الطويل، الوافر، الهزج، المتقارب، المضارع.

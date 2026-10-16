@@ -36,7 +36,7 @@ Separate standards and behavior reviews inspected the Python scanner, browser en
 | P2 | Forcing a free-verse family outside the top three candidates crashed with `KeyError: 'lines'`. | Filter before summarizing; check both text and JSON command output. |
 | P1 | The standalone HTML lacked a UTF-8 declaration. Plain HTTP delivery garbled Arabic and caused script parse failures. | Declare UTF-8 and rebuild the bundled page; a browser reload reports UTF-8, correct Arabic, retained content, a meter result and no page errors. |
 
-The meter-rule repairs were checked against the primary references linked in [the installed skill's sources](../../skills/arabic-prosody/references/sources.md), especially al-Hashimi's الطويل, المديد and البسيط chapters. The implemented coverage remains narrower than the complete classical tradition. The تصريع rhyme guard now considers candidate ردف and تأسيس as well as روي and known مجرى; unknown vocalization remains provisional. A single-form regression also checks the absence of صدر without imposing a paired-ending constraint.
+The meter-rule repairs were checked against the primary references linked in [the installed skill's sources](../../skills/arabic-poetry/references/SCANNER-SOURCES.md), especially al-Hashimi's الطويل, المديد and البسيط chapters. The implemented coverage remains narrower than the complete classical tradition. The تصريع rhyme guard now considers candidate ردف and تأسيس as well as روي and known مجرى; unknown vocalization remains provisional. A single-form regression also checks the absence of صدر without imposing a paired-ending constraint.
 
 ## Validation
 

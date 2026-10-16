@@ -37,7 +37,7 @@ The two contemporary studies' textual arguments were read, but their PDF typogra
 | Al Ghallabi et al., [Fann or Flop](https://aclanthology.org/2025.emnlp-main.1023/), [full text](https://arxiv.org/html/2505.18152v2), 2025 | §3, evaluation criteria and metric limits | Literal, interpretive, cultural, and stylistic understanding require distinct checks. Understanding benchmark rather than meter/originality certification; differing published genre counts were not adopted. |
 | Elzohbi and Zhao, [Tahḏīb](https://aclanthology.org/2025.arabicnlp-main.15/), [full paper](https://aclanthology.org/2025.arabicnlp-main.15.pdf), 2025 | Introduction, §§3.1–3.2 | Bounded phrase reconstruction under a declared rhythm motivates contextual repairs. Does not prove that arbitrary repairs preserve meaning or every grapheme rule generalizes. |
 
-Read [similar skills](SIMILAR_SKILLS.md) for five inspected source designs and commit-pinned links, and [optional tools](TOOLS.md) for analyzers and the local arithmetic checker. Third-party skill instructions and software claims are comparison evidence, not scholarly authority for Arabic prosody.
+Read [similar skills](SIMILAR_SKILLS.md) for five inspected source designs and commit-pinned links, and [tools](TOOLS.md) for the integrated scanner, analyzers and local arithmetic checker. The scanner's [primary rule references and coverage limits](SCANNER-SOURCES.md) supplement these craft and interpretation sources. Third-party skill instructions and software claims are comparison evidence, not scholarly authority for Arabic prosody.
 
 ## Scope of confidence
 

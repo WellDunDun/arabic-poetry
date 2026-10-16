@@ -1,12 +1,13 @@
 # Repairing a broken line (تقويم الوزن)
 
 Goal: restore the meter with the **smallest change to the poet's meaning, words
-and music**. Always verify candidates with `scan.py verify`.
+and music**. Verify supported candidates with `scan.py verify` when execution is available; never claim an unrun check. Follow [SCANNER.md](SCANNER.md) and the main skill's reading/confirmation policy.
 
 ## 1. Locate
 From the report: which foot is ✗, what was found vs what is allowed there, and
 whether the hemistich is too long or too short overall. A 💡 line means one word
-is surplus — often a filler conjunction or particle.
+is a candidate source of surplus sound. It does not prove that word is filler
+or that deleting it preserves the poet's meaning.
 
 ## 2. Choose a technique (least invasive first)
 
@@ -32,7 +33,9 @@ fills exactly the gap (e.g. the foot needs `//0/0` and you have `//0`: add a
 - تسكين المتحرك أو تحريك الساكن في مواضع محدودة.
 - إشباع الحركة لتوليد حرف مد (خاصة في القافية).
 - تخفيف المشدد: «رُبَّ → رُبَ».
-Modern editors frown on heavy use; prefer lexical fixes first.
+These are topics to verify against a source for the exact meter, position and
+reading, not blanket licenses. Prefer natural grammatical wording; never
+change negation, roles or supplied pronunciation simply to fit a pattern.
 
 ## 5. Present
 For each broken line: original, then 2–3 verified alternatives, each with what

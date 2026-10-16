@@ -1,0 +1,192 @@
+{
+  "condition": "combined",
+  "model": "inherited",
+  "context": "single batch; separate requests share context",
+  "cases": [
+    {
+      "id": "prose-compose",
+      "response": "في جيب المعطف بقي مفتاح البيت القديم.\nنقلتُ المعطف معي، وعلّقتُه وراء باب جديد.\nكلما أدخلتُ يدي بحثًا عن شيء، وجدته.\nأضعه على الطاولة قليلًا، ثم أعيده إلى الجيب.\nفي الخارج، يجرّب أحدهم جرس البيت الجديد.",
+      "commands": [],
+      "artifacts": [
+        "/private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/prose-compose-response.md"
+      ]
+    },
+    {
+      "id": "close-reading",
+      "response": "«الكرسي قبالة الباب» يهيّئ مكانًا لشخص يُنتظَر وصوله، فيجعل الغياب حاضرًا في ترتيب الغرفة. وتكرار «كل مساء» يحوّل الانتظار إلى عادة يومية. أمّا «غبار يوم آخر» فيجمع الغبار الذي يستقر على المقعد ومرور الوقت؛ كأن المتكلم يزيل يومًا من الانتظار ليُبقي المكان جاهزًا.\n\nلا يثبت النص أن الغائب مات. قد يكون غائبًا بسبب سفر أو فراق، وقد تكون الصورة متصلة بذكرى ميت، لكن الألفاظ لا تحسم ذلك. ما يثبته النص هو استمرار فعل الانتظار أو التذكّر، لا سبب الغياب.",
+      "commands": [],
+      "artifacts": [
+        "/private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/close-reading-response.md"
+      ]
+    },
+    {
+      "id": "classical-scan",
+      "response": "This verse fits **al-Ṭawīl (البحر الطويل)**. I checked both halves with the bundled local scanner. A compact scan of the first half is:\n\nقِفَا نَبْ / كِ مِنْ ذِكْرَى / حَبِيبِنْ / وَمَنْزِلِي\n\nفعولن / مفاعيلن / فعولن / مفاعلن\n\n`11010 | 1101010 | 11010 | 110110`\n\nHere `1` means a moving consonant and `0` a still consonant or long-vowel letter; read the symbols left to right. The transcription preserves pronounced tanwīn and lengthens the final kasra to **ī** (إشباع). The second half also fits: فعولن / مفاعيلن / فعولُ / مفاعلن; فعولُ is the permitted قبض form here.\n\nThe **rhyme letter (الروي) is ل**, whereas the final pronounced sound under this rhyme reading is long **ī**, represented by ياء الوصل. The final vowel sound is therefore distinct from the rhyme’s anchoring consonant.",
+      "commands": [
+        {
+          "command": "PYTHONDONTWRITEBYTECODE=1 TMPDIR=/private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/tmp python3 /private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/skills/arabic-poetry/scripts/scan.py verify --meter tawil 'قِفَا نَبْكِ مِنْ ذِكْرَى حَبِيبٍ وَمَنْزِلِ * بِسِقْطِ اللِّوَى بَيْنَ الدَّخُولِ فَحَوْمَلِ'",
+          "exit_code": 0,
+          "stdout": "— «قِفَا نَبْكِ مِنْ ذِكْرَى حَبِيبٍ وَمَنْزِلِ * بِسِقْطِ اللِّوَى بَيْنَ الدَّخُولِ فَحَوْمَلِ»\n  ✓ موزون على الطويل (al-Tawil) — تام\n    - **الصدر** [سليم]  الكتابة العروضية: `قفانب كمنذكرى حبيبن ومنزلي`\n      التفاعيل: فعولن ب − − | مفاعيلن ب − − − | فعولن ب − − | مفاعلن ب − ب −\n    - **العجز** [سليم]  الكتابة العروضية: `بسقطل لوىبيند دخول فحوملي`\n      التفاعيل: فعولن ب − − | مفاعيلن ب − − − | فعولُ ب − ب | مفاعلن ب − ب −\n",
+          "stderr": ""
+        }
+      ],
+      "artifacts": [
+        "/private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/classical-scan-response.md"
+      ]
+    },
+    {
+      "id": "provisional-reading",
+      "response": "الأرجح مبدئيًا **السريع**، إذا قرأنا: «يَا قَلْبُ لَا تَسْأَلْ عَنِ الْغَائِبِينْ»، بالوقف على النون ووصل «عَنِ الْغَائِبِينْ». أعطى الفاحص المحلي: **مستفعلن | مستفعلن | فاعلانْ**؛ والأخيرة ضرب موقوف جائز في السريع. هذا توافق لهذه العبارة بهذه القراءة، ولا يكفي وحده للجزم ببحر القصيدة الغائبة.",
+      "commands": [
+        {
+          "command": "PYTHONDONTWRITEBYTECODE=1 TMPDIR=/private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/tmp python3 /private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/skills/arabic-poetry/scripts/scan.py analyze /private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/provisional-reading.txt --json",
+          "exit_code": 0,
+          "stdout": "{\n \"meter\": \"rajaz\",\n \"meter_ar\": \"الرجز\",\n \"form\": \"مشطور\",\n \"confidence\": \"منخفضة\",\n \"candidates\": [\n  {\n   \"form\": \"rajaz/مشطور\",\n   \"total\": 1.0,\n   \"exact\": 0\n  },\n  {\n   \"form\": \"sari/مشطور\",\n   \"total\": 1.3,\n   \"exact\": 0\n  },\n  {\n   \"form\": \"hazaj/مجزوء وجوبًا\",\n   \"total\": 3.2,\n   \"exact\": 0\n  },\n  {\n   \"form\": \"kamil/مجزوء\",\n   \"total\": 3.7,\n   \"exact\": 0\n  },\n  {\n   \"form\": \"mutadarak/مجزوء\",\n   \"total\": 3.5,\n   \"exact\": 0\n  }\n ],\n \"dominant_darb\": null,\n \"darb_mismatch_lines\": [],\n \"verses\": [\n  {\n   \"n\": 1,\n   \"text\": \"يَا قَلْبُ لَا تَسْأَلْ عَنِ الْغَائِبِينَ\",\n   \"sadr\": null,\n   \"ajuz\": {\n    \"arudi\": \"ياقلبلا تسألعنل غائبينا\",\n    \"pattern\": \"− − ب − − − ب − − ب − −\",\n    \"errors\": 1,\n    \"ending\": \"مقطوع\",\n    \"readings\": [],\n    \"unmarked\": 0,\n    \"feet\": [\n     {\n      \"name\": \"مستفعلن\",\n      \"expected\": \"− − ب −\",\n      \"got\": \"− − ب −\",\n      \"letters\": \"ياقلبلا\",\n      \"errors\": 0\n     },\n     {\n      \"name\": \"مستفعلن\",\n      \"expected\": \"− − ب −\",\n      \"got\": \"− − ب −\",\n      \"letters\": \"تسألعنل\",\n      \"errors\": 0\n     },\n     {\n      \"name\": \"مستفعلْ\",\n      \"expected\": \"− − −\",\n      \"got\": \"− ب − −\",\n      \"letters\": \"غائبينا\",\n      \"errors\": 1\n     }\n    ]\n   }\n  }\n ],\n \"qafiya\": {\n  \"rawi\": \"ن\",\n  \"ha_wasl\": false,\n  \"majra\": \"a\",\n  \"majra_ar\": \"فتحة\",\n  \"mutlaqa\": true,\n  \"ridf\": \"وي\",\n  \"tasis\": false,\n  \"type\": null,\n  \"tasree\": null,\n  \"issues\": []\n }\n}\n",
+          "stderr": ""
+        },
+        {
+          "command": "PYTHONDONTWRITEBYTECODE=1 TMPDIR=/private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/tmp python3 /private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/skills/arabic-poetry/scripts/scan.py analyze /private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/provisional-reading-pause.txt --json",
+          "exit_code": 0,
+          "stdout": "{\n \"meter\": \"sari\",\n \"meter_ar\": \"السريع\",\n \"form\": \"مشطور\",\n \"confidence\": \"متوسطة\",\n \"candidates\": [\n  {\n   \"form\": \"sari/مشطور\",\n   \"total\": 0.3,\n   \"exact\": 1\n  },\n  {\n   \"form\": \"rajaz/مشطور\",\n   \"total\": 1.15,\n   \"exact\": 0\n  },\n  {\n   \"form\": \"hazaj/مجزوء وجوبًا\",\n   \"total\": 4.2,\n   \"exact\": 0\n  },\n  {\n   \"form\": \"mutadarak/مجزوء\",\n   \"total\": 4.5,\n   \"exact\": 0\n  },\n  {\n   \"form\": \"khafif/مجزوء\",\n   \"total\": 4.6,\n   \"exact\": 0\n  }\n ],\n \"dominant_darb\": \"ضرب صحيح\",\n \"darb_mismatch_lines\": [],\n \"verses\": [\n  {\n   \"n\": 1,\n   \"text\": \"يَا قَلْبُ لَا تَسْأَلْ عَنِ الْغَائِبِينْ\",\n   \"sadr\": null,\n   \"ajuz\": {\n    \"arudi\": \"ياقلبلا تسألعنل غائبين\",\n    \"pattern\": \"− − ب − − − ب − − ب =\",\n    \"errors\": 0,\n    \"ending\": \"موقوف\",\n    \"readings\": [],\n    \"unmarked\": 0,\n    \"feet\": [\n     {\n      \"name\": \"مستفعلن\",\n      \"expected\": \"− − ب −\",\n      \"got\": \"− − ب −\",\n      \"letters\": \"ياقلبلا\",\n      \"errors\": 0\n     },\n     {\n      \"name\": \"مستفعلن\",\n      \"expected\": \"− − ب −\",\n      \"got\": \"− − ب −\",\n      \"letters\": \"تسألعنل\",\n      \"errors\": 0\n     },\n     {\n      \"name\": \"فاعلانْ\",\n      \"expected\": \"− ب =\",\n      \"got\": \"− ب =\",\n      \"letters\": \"غائبين\",\n      \"errors\": 0\n     }\n    ]\n   }\n  }\n ],\n \"qafiya\": {\n  \"rawi\": \"ن\",\n  \"ha_wasl\": false,\n  \"majra\": \"o\",\n  \"majra_ar\": \"سكون\",\n  \"mutlaqa\": false,\n  \"ridf\": \"وي\",\n  \"tasis\": false,\n  \"type\": \"مترادف (ساكنان متتاليان)\",\n  \"tasree\": null,\n  \"issues\": []\n }\n}\n",
+          "stderr": ""
+        },
+        {
+          "command": "PYTHONDONTWRITEBYTECODE=1 TMPDIR=/private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/tmp python3 /private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/skills/arabic-poetry/scripts/scan.py verify --meter sari --part ajuz 'يَا قَلْبُ لَا تَسْأَلْ عَنِ الْغَائِبِينْ'",
+          "exit_code": 0,
+          "stdout": "— «يَا قَلْبُ لَا تَسْأَلْ عَنِ الْغَائِبِينْ»\n  ✓ موزون على السريع (al-Sari') — تام\n    - **العجز** [سليم]  الكتابة العروضية: `ياقلبلا تسألعنل غائبين`\n      التفاعيل: مستفعلن − − ب − | مستفعلن − − ب − | فاعلانْ − ب =\n",
+          "stderr": ""
+        },
+        {
+          "command": "PYTHONDONTWRITEBYTECODE=1 TMPDIR=/private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/tmp rg -n -A 25 'السريع' /private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/skills/arabic-poetry/references/meters.md",
+          "exit_code": 0,
+          "stdout": "87:## السريع — مستفعلن مستفعلن مفعولاتُ (×2)\n88-- In use: مستفعلن مستفعلن فاعلن (العروض مطوية مكشوفة).\n89-- Darb: فاعلن، فاعلانْ (موقوف)، فعْلن (أصلم).\n90-- Hashw: like الرجز (خبن، طي).\n91-- مفتاح: بحرٌ سريعٌ ماله ساحلُ — مستفعلن مستفعلن فاعلُ\n92-\n93-## المنسرح — مستفعلن مفعولاتُ مستفعلن (×2)\n94-- In use: مستفعلن مفعولاتُ مفتعلن — the middle foot almost always مطوي (فاعلاتُ /0//0/).\n95-- Arud/darb: مطوية (مفتعلن /0///0).\n96-- مفتاح: منسرحٌ فيه يُضرب المثلُ — مستفعلن مفعولاتُ مفتعلُ\n97-\n98-## الخفيف — فاعلاتن مستفعِ لن فاعلاتن (×2)\n99-- تام: arud/darb صحيحة، محذوفة؛ darb مشعّث (فالاتن /0/0/0) common.\n100-- مجزوء: فاعلاتن مستفعِ لن؛ darb صحيح، مخبون مقصور (فعولن).\n101-- Hashw: خبن everywhere (فعِلاتن، متفعِ لن).\n102-- Feel: light, quick, elegiac and lyrical.\n103-- مفتاح: يا خفيفًا خفّت به الحركاتُ — فاعلاتن مستفع لن فاعلاتُ\n104-\n105-## المضارع — مفاعيلُ فاعِ لاتن (مجزوء وجوبًا) — rare\n106-- مفتاح: تُعدّ المضارعاتُ — مفاعيلُ فاعلاتُ\n107-\n108-## المقتضب — مفعولاتُ مفتعلن (مجزوء وجوبًا) — rare\n109-- First foot usually مطوي (فاعلاتُ /0//0/).\n110-- مفتاح: اقتضب كما سألوا — مفعولاتُ مفتعلُ\n111-\n112-## المجتث — مستفعِ لن فاعلاتن (مجزوء وجوبًا)\n",
+          "stderr": ""
+        }
+      ],
+      "artifacts": [
+        "/private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/provisional-reading.txt",
+        "/private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/provisional-reading-pause.txt",
+        "/private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/provisional-reading-response.md"
+      ]
+    },
+    {
+      "id": "review-only",
+      "response": "لَمْ أَبِعِ الْوَعْدَ وَلَمْ أَنْسَ وَجْهَكَ.\n\nأنتظر موافقتك.",
+      "commands": [],
+      "artifacts": [
+        "/private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/review-only-response.md"
+      ]
+    },
+    {
+      "id": "bounded-repair",
+      "response": "أقل تغيير هو حذف «جِدًّا» وحدها:\n\n**قَرِيبٌ صَدِيقِي بَعِيدٌ مَكَانِي**\n\nتبقى الكلمات الأربع وتشكيلها كما طلبت. المعنى يبقى: صديقي قريب ومكاني بعيد؛ لكن الحذف يزيل تأكيد شدة البعد الذي أدّته «جدًّا».\n\nهذا دليل القراءة الموصولة مع نطق التنوين، بعد فحص النصين بالمحلّل المحلي. في الرموز الآتية `1` متحرك و`0` ساكن، وتُقرأ من اليسار إلى اليمين:\n\n| الموضع | الكتابة العروضية مقسّمة | تسلسل الأصوات | النتيجة |\n| --- | --- | --- | --- |\n| قبل | قَرِيبُنْ / صَدِيقِي / بَعِيدُنْ / جِدْدَنْ / مَكَانِي | `11010 | 11010 | 11010 | 1010 | 11010` | تزيد «جِدًّا» المقطعين الطويلين `1010` بين التفعيلتين الثالثة والرابعة المطلوبة |\n| بعد | قَرِيبُنْ / صَدِيقِي / بَعِيدُنْ / مَكَانِي | `11010 | 11010 | 11010 | 11010` | فعولن / فعولن / فعولن / فعولن، أربع تفعيلات سليمة بلا زحاف |\n\nفي الأصل نفك الشدة في «جِدًّا» إلى دال ساكنة فمتحركة، وننطق تنوينها نونًا؛ لم أغيّر قراءتك كي يستقيم الوزن.",
+      "commands": [
+        {
+          "command": "PYTHONDONTWRITEBYTECODE=1 TMPDIR=/private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/tmp python3 /private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/skills/arabic-poetry/scripts/scan.py verify --meter mutaqarib --free 'قَرِيبٌ صَدِيقِي بَعِيدٌ جِدًّا مَكَانِي' 'قَرِيبٌ صَدِيقِي بَعِيدٌ مَكَانِي'",
+          "exit_code": 0,
+          "stdout": "— «قَرِيبٌ صَدِيقِي بَعِيدٌ جِدًّا مَكَانِي»\n  ✗ مكسور على تفعيلة فعولن: فعولن ب − − | فعولن ب − − | فعولن ب − − | فعولن − − ✗ | فعولن ب − −\n— «قَرِيبٌ صَدِيقِي بَعِيدٌ مَكَانِي»\n  ✓ موزون على تفعيلة فعولن: فعولن ب − − | فعولن ب − − | فعولن ب − − | فعولن ب − −\n",
+          "stderr": ""
+        },
+        {
+          "command": "PYTHONDONTWRITEBYTECODE=1 TMPDIR=/private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/tmp python3 /private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/skills/arabic-poetry/scripts/scan.py weigh 'قَرِيبٌ صَدِيقِي بَعِيدٌ جِدًّا مَكَانِي'",
+          "exit_code": 0,
+          "stdout": "النص: قَرِيبٌ صَدِيقِي بَعِيدٌ جِدًّا مَكَانِي\nالكتابة العروضية: قريبنصديقيبعيدنجددنمكاني\nالوزن: ب − − ب − − ب − − − − ب − −   (24 حرفًا عروضيًّا: 14 متحرك، 10 ساكن)\nالكلمات (قراءة افتراضية؛ آخر كلمة تُعامل كآخر شطر):\n  قَرِيبٌ: ب − −\n  صَدِيقِي: ب − −\n  بَعِيدٌ: ب − −\n  جِدًّا: − −\n  مَكَانِي: ب − −\n",
+          "stderr": ""
+        },
+        {
+          "command": "PYTHONDONTWRITEBYTECODE=1 TMPDIR=/private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/tmp python3 /private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/skills/arabic-poetry/scripts/scan.py weigh 'قَرِيبٌ صَدِيقِي بَعِيدٌ مَكَانِي'",
+          "exit_code": 0,
+          "stdout": "النص: قَرِيبٌ صَدِيقِي بَعِيدٌ مَكَانِي\nالكتابة العروضية: قريبنصديقيبعيدنمكاني\nالوزن: ب − − ب − − ب − − ب − −   (20 حرفًا عروضيًّا: 12 متحرك، 8 ساكن)\nالكلمات (قراءة افتراضية؛ آخر كلمة تُعامل كآخر شطر):\n  قَرِيبٌ: ب − −\n  صَدِيقِي: ب − −\n  بَعِيدٌ: ب − −\n  مَكَانِي: ب − −\n",
+          "stderr": ""
+        }
+      ],
+      "artifacts": [
+        "/private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/bounded-repair.txt",
+        "/private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/bounded-repair-response.md"
+      ]
+    },
+    {
+      "id": "tafila-boundary",
+      "response": "**لا تصحّ تفعيلةَ كاملٍ سليمة بهذه القراءة.** مع وصل السطرين ونطق نون التنوين تكون الكتابة العروضية:\n\nيَدُنْ / تَاهَتْ\n\nوتسلسلها، حيث `1` متحرك و`0` ساكن ويُقرأ من اليسار إلى اليمين:\n\n`110 | 1010 = 1101010`\n\nأمّا متفاعلن السليمة فهي `1110110`، وصورتها المضمرة متْفاعلن هي `1010110`. القراءة المعطاة لا توافق أيًّا منهما، وأظهر الفحص المحلي للكامل عدم المطابقة أيضًا.\n\nفاصل السطر يقع بعد «يَدُنْ»، والنون المنطوقة جزء من الوزن. يجوز أن تعبر التفعيلة فاصل السطر في التدوير، لكن ذلك لا يبيح حذف هذه النون. أبقيتُ اللفظ والتنوين كما طلبت.",
+      "commands": [
+        {
+          "command": "PYTHONDONTWRITEBYTECODE=1 TMPDIR=/private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/tmp cat /private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/skills/arabic-poetry/references/free-verse.md",
+          "exit_code": 0,
+          "stdout": "# شعر التفعيلة والشعر الحر\n\n## Definitions\n- **شعر التفعيلة** (often called الشعر الحر in Arabic criticism since نازك الملائكة\n  and بدر شاكر السياب, late 1940s): the line (السطر) is built from **one repeated\n  taf'ila**, but the number of feet per line is free and lines need not rhyme\n  regularly.\n- **قصيدة النثر**: not bound to a Khalilian meter. Identify the intended form\n  from the request and text; a failed scanner match alone cannot classify it.\n- Some poets mix taf'ilas from one \"circle\" (e.g. مستفعلن with فاعلن as in\n  البسيط) — the scanner handles one family at a time; mention mixed usage when\n  two families each fit different stretches.\n\n## Taf'ila families (the \"صافية\" meters used in free verse)\n\nThese are the implementation's supported families, not a complete taxonomy of modern Arabic rhythm. The shared المتدارك/الخبب label is an implementation convention; keep theoretical distinctions visible when relevant. See [coverage and sources](SCANNER-SOURCES.md).\n| التفعيلة | البحر | صور الحشو | نهايات السطر الشائعة |\n|---|---|---|---|\n| متفاعلن | الكامل | متَفاعلن ///0//0، متْفاعلن /0/0//0 | متفاعلْ، متفاعلانْ، متفاعلاتن، فعِلن |\n| مستفعلن | الرجز | مستفعلن، متفعلن، مستعلن | مستفعلْ، متفعلْ، مستفعلانْ |\n| فاعلاتن | الرمل | فاعلاتن، فعِلاتن | فاعلانْ، فاعلن، فعِلن، فاعلاتانْ |\n| فعولن | المتقارب | فعولن، فعولُ | فعولْ، فعو، فعْ |\n| فاعلن | المتدارك/الخبب | فاعلن، فعِلن، فعْلن | فاعلانْ، فاعلاتن |\n| مفاعيلن | الهزج | مفاعيلن، مفاعيلُ | فعولن |\n| مفاعلتن | الوافر | مفاعلتن، مفاعلْتن | فعولن |\n\n## Rules the scanner applies\n- A scanned sequence uses the supported feet; a foot may cross a printed\n  line break. Implemented line-ending forms may apply where the reading and\n  intended convention permit them.\n- **التدوير**: a foot may run across a line break — the line's last word is then\n  read in wasl (its final vowel not lengthened) and the foot completes in the\n  next line. Marked ↵ in the report. Preserve pronounced sounds, including\n  tanwin nun; distinguish semantic continuation from an actual divided foot.\n- Line length is free; a one-foot line is fine.\n- Rhyme is free; recurring end-sounds may still be pointed out as a strength.\n\n## Checking a single line while composing\n`python3 scripts/scan.py verify --meter kamil --free \"السطر\"`\n",
+          "stderr": ""
+        },
+        {
+          "command": "PYTHONDONTWRITEBYTECODE=1 TMPDIR=/private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/tmp python3 /private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/skills/arabic-poetry/scripts/scan.py verify --meter kamil --free 'يَدٌ\nتَاهَتْ'",
+          "exit_code": 0,
+          "stdout": "— «يَدٌ\nتَاهَتْ»\n  ✗ مكسور على تفعيلة متفاعلن: متفاعلْ ب − − − ✗\n",
+          "stderr": ""
+        },
+        {
+          "command": "PYTHONDONTWRITEBYTECODE=1 TMPDIR=/private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/tmp python3 /private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/skills/arabic-poetry/scripts/scan.py weigh 'يَدٌ تَاهَتْ'",
+          "exit_code": 0,
+          "stdout": "النص: يَدٌ تَاهَتْ\nالكتابة العروضية: يدنتاهت\nالوزن: ب − − −   (7 حرفًا عروضيًّا: 4 متحرك، 3 ساكن)\nالكلمات (قراءة افتراضية؛ آخر كلمة تُعامل كآخر شطر):\n  يَدٌ: ب −\n  تَاهَتْ: − −\n",
+          "stderr": ""
+        },
+        {
+          "command": "PYTHONDONTWRITEBYTECODE=1 TMPDIR=/private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/tmp python3 /private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/skills/arabic-poetry/scripts/scan.py verify --meter kamil --free 'يَدٌ تَاهَتْ'",
+          "exit_code": 0,
+          "stdout": "— «يَدٌ تَاهَتْ»\n  ✗ مكسور على تفعيلة متفاعلن: متفاعلْ ب − − − ✗\n",
+          "stderr": ""
+        },
+        {
+          "command": "PYTHONDONTWRITEBYTECODE=1 TMPDIR=/private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/tmp python3 /private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/skills/arabic-poetry/scripts/scan.py analyze /private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/tafila-boundary.txt --mode free --meter kamil --json",
+          "exit_code": 0,
+          "stdout": "[\n {\n  \"meter\": \"kamil\",\n  \"foot\": \"متفاعلن\",\n  \"total\": 1.15,\n  \"errors\": 1,\n  \"lines\": [\n   {\n    \"line\": 1,\n    \"feet\": [\n     {\n      \"name\": \"متفاعلْ\",\n      \"letters\": \"يدنتاهت\",\n      \"pattern\": \"1101010\",\n      \"errors\": 1,\n      \"tadwir\": true\n     }\n    ]\n   },\n   {\n    \"line\": 2,\n    \"feet\": [\n     {\n      \"name\": \"↩ متفاعلْ\",\n      \"letters\": \"\",\n      \"pattern\": \"\",\n      \"errors\": 0,\n      \"tadwir\": true\n     }\n    ]\n   }\n  ]\n }\n]\n",
+          "stderr": ""
+        }
+      ],
+      "artifacts": [
+        "/private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/tafila-boundary.txt",
+        "/private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/tafila-boundary-response.md"
+      ]
+    },
+    {
+      "id": "workbench-export",
+      "response": "حفظتُ «مسافة» بالنص الذي أرسلته، وصدّرتها إلى [ملف Word](/private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/masafa.docx).\n\nالملفات محفوظة محليًا في `/private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs`:\n\n- [القصيدة بعنوانها وبياناتها، JSON](/private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/masafa-poems.json).\n- [نسخة نصية](/private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/masafa.txt).\n- [محرر الديوان، HTML](/private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/diwan.html)، وهو نسخة من المحرر المرفق بالمهارة، مع الحفاظ على نسبته إلى Firas F. Khabour وDaniel Petro.\n\nلا تتاح هنا إمكانية فتح متصفح، لذلك لم أفتح جلسة المحرر أو أدخل القصيدة في تخزينه؛ حفظتها في الملفات المذكورة. يمكنك فتح ملف HTML بنفسك، وقد تحتاج الخطوط وبعض مزايا التصدير داخل الصفحة إلى الإنترنت. تصدير Word أُنجز فعليًا محليًا، وفُحصت بنية الملف ووجود العنوان والنص فيه؛ لم أعاين تنسيقه بصريًا.\n\nلن تظهر القصيدة تلقائيًا في محادثة أخرى: لا توجد هنا قاعدة بيانات مشتركة أو مزامنة. الملف المحلي يبقى في مساره، وتخزين المحرر عند استخدامه يكون خاصًا بالمتصفح.",
+      "commands": [
+        {
+          "command": "PYTHONDONTWRITEBYTECODE=1 TMPDIR=/private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/tmp rg -n 'import|localStorage|STORAGE|poems|Compliments' /private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/skills/arabic-poetry/assets/workbench/diwan.html",
+          "exit_code": 0,
+          "stdout": "27:[hidden] { display: none !important }\n229:@media (prefers-reduced-motion: reduce) { * { transition: none !important } }\n329:    <span dir=\"ltr\">Compliments from <span class=\"names\">Firas F. Khabour &amp; Daniel Petro</span> · Oct. 2026</span>\n1095:/* Diwan exporter — builds a Word (.docx) manuscript from poems, as a map of {path: xml}.\n1100:             poems: [{ title, meter, kind: 'verses'|'lines', verses: [[sadr, ajuz]], lines: [..],\n1178:    if (model.bookTitle && model.poems.length > 1) {\n1180:      const n = model.poems.length, cnt = n === 2 ? 'قصيدتان' : n <= 10 ? `${AR(n)} قصائد` : `${AR(n)} قصيدة`;\n1184:    for (const p of model.poems) {\n1194:      for (const p of model.poems) {\n1227:    for (const p of model.poems) {\n1292:  const store = { get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },\n1293:    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} } };\n1297:  let poems = [];                 // [{id, title, text, choices, suggestions, status, meter, mode, order}]\n1302:  const cur = () => poems.find(p => p.id === curId) || null;\n1312:    if (!db) { store.set('diwan.local', poems); return; }\n1319:    const p = poems.find(x => x.id === id); if (!p) return;\n1325:      await db.collection('poems').doc(id).set(body);\n1429:    $('pmTitle').textContent = p ? (p.title || 'بلا عنوان') : (poems.length ? 'اختر قصيدة' : 'لا قصائد بعد');\n1433:      list.innerHTML = poems.length ? poems.map(x => pmConfirm === x.id\n1446:    const i = poems.findIndex(x => x.id === id); if (i < 0) return;\n1447:    const [gone] = poems.splice(i, 1);\n1449:    if (curId === id) { curId = poems.length ? poems[Math.max(0, i - 1)].id : null; store.set('diwan.cur', curId); }\n1452:      try { await db.collection('poems').doc(id).delete(); toast(`حُذفت «${gone.title || 'القصيدة'}»`); }\n1453:      catch (e) { poems.splice(i, 0, gone); render(); toast('تعذّر الحذف'); }\n1454:    } else { store.set('diwan.local', poems); toast(`حُذفت «${gone.title || 'القصيدة'}»`); }\n1957:    const order = poems.reduce((m, x) => Math.max(m, x.order || 0), 0) + 1;\n1959:    poems.push(p); curId = id; store.set('diwan.cur', id); save(p, true);\n1966:    const list = scope === 'all' ? poems.filter(x => A.clean(x.text || '')) : [cur()].filter(Boolean);\n1977:    copyText(DiwanExport.plainText({ tashkeel: 'full', poems: exportModel('one') }), 'نُسخت القصيدة — الشطران بينهما خمس مسافات');\n1980:    if (!poems.length) { toast('لا قصائد للتصدير'); return; }\n1981:    $('expCount').textContent = `(${AR_DIG(poems.length)})`; $('expErr').textContent = '';\n1989:    copyText(DiwanExport.plainText({ tashkeel: selectedTk(), poems: exportModel(selectedScope()) }), 'نُسخ النص');\n1998:        font: $('expFont').value, bookTitle: scope === 'all' ? ($('expBook').value.trim() || 'ديوان') : '', poems: exportModel(scope) };\n2021:    if (!db) { poems = store.get('diwan.local', []); if (!cur() && poems.length) curId = poems[0].id; render(); return; }\n2022:    db.collection('poems').onSnapshot(snap => {\n2025:      const local = new Map(poems.map(p => [p.id, p]));\n2026:      poems = incoming.map(x => (dirty.has(x.id) && local.has(x.id)) ? local.get(x.id) : JSON.parse(JSON.stringify(x)));\n2027:      for (const id of dirty) if (!poems.find(p => p.id === id) && local.has(id)) poems.push(local.get(id));\n2028:      for (const p of poems) { p.choices = p.choices || []; p.suggestions = p.suggestions || {}; }\n2029:      poems.sort((a, b) => (a.order || 0) - (b.order || 0));\n2030:      if (!cur() && poems.length) curId = poems[poems.length - 1].id;\n",
+          "stderr": ""
+        },
+        {
+          "command": "PYTHONDONTWRITEBYTECODE=1 TMPDIR=/private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/tmp python3 -c 'import json,shutil\nfrom pathlib import Path\nout=Path('\"'\"'/private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs'\"'\"')\npoems=[{'\"'\"'id'\"'\"':'\"'\"'masafa'\"'\"','\"'\"'title'\"'\"':'\"'\"'مسافة'\"'\"','\"'\"'text'\"'\"':'\"'\"'قَرِيبٌ صَدِيقِي بَعِيدٌ مَكَانِي'\"'\"','\"'\"'status'\"'\"':'\"'\"'review'\"'\"','\"'\"'mode'\"'\"':'\"'\"'auto'\"'\"','\"'\"'meter'\"'\"':'\"'\"''\"'\"','\"'\"'order'\"'\"':0}]\np=out/'\"'\"'masafa-poems.json'\"'\"'; p.write_text(json.dumps(poems,ensure_ascii=False,indent=2)+'\"'\"'\\n'\"'\"')\nshutil.copy2('\"'\"'/private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/skills/arabic-poetry/assets/workbench/diwan.html'\"'\"',out/'\"'\"'diwan.html'\"'\"')\nprint('\"'\"'saved'\"'\"',p)\nprint('\"'\"'copied shipped HTML to'\"'\"',out/'\"'\"'diwan.html'\"'\"')\n'",
+          "exit_code": 0,
+          "stdout": "saved /private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/masafa-poems.json\ncopied shipped HTML to /private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/diwan.html\n",
+          "stderr": ""
+        },
+        {
+          "command": "PYTHONDONTWRITEBYTECODE=1 TMPDIR=/private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/tmp python3 /private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/skills/arabic-poetry/scripts/export_book.py /private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/masafa-poems.json /private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/masafa.docx --text /private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/masafa.txt",
+          "exit_code": 0,
+          "stdout": "wrote /private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/masafa.docx\nwrote /private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/masafa.txt\n",
+          "stderr": ""
+        },
+        {
+          "command": "PYTHONDONTWRITEBYTECODE=1 TMPDIR=/private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/tmp python3 -c 'from pathlib import Path\nfrom xml.etree import ElementTree as ET\nimport json,zipfile,hashlib\nout=Path('\"'\"'/private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs'\"'\"')\nsource=Path('\"'\"'/private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/skills/arabic-poetry/assets/workbench/diwan.html'\"'\"')\nassert source.read_bytes()==(out/'\"'\"'diwan.html'\"'\"').read_bytes()\nassert '\"'\"'Compliments from'\"'\"' in (out/'\"'\"'diwan.html'\"'\"').read_text()\npoems=json.loads((out/'\"'\"'masafa-poems.json'\"'\"').read_text())\nassert poems[0]['\"'\"'title'\"'\"']=='\"'\"'مسافة'\"'\"' and poems[0]['\"'\"'text'\"'\"']=='\"'\"'قَرِيبٌ صَدِيقِي بَعِيدٌ مَكَانِي'\"'\"'\nwith zipfile.ZipFile(out/'\"'\"'masafa.docx'\"'\"') as z:\n    assert z.testzip() is None\n    for n in z.namelist():\n        if n.endswith('\"'\"'.xml'\"'\"') or n.endswith('\"'\"'.rels'\"'\"'): ET.fromstring(z.read(n))\n    root=ET.fromstring(z.read('\"'\"'word/document.xml'\"'\"'))\n    texts='\"'\"''\"'\"'.join(root.itertext())\n    assert '\"'\"'مسافة'\"'\"' in texts and '\"'\"'قَرِيبٌ صَدِيقِي بَعِيدٌ مَكَانِي'\"'\"' in texts\n    print('\"'\"'DOCX ZIP and XML checks passed; exact Arabic title and poem found.'\"'\"')\nassert '\"'\"'قَرِيبٌ صَدِيقِي بَعِيدٌ مَكَانِي'\"'\"' in (out/'\"'\"'masafa.txt'\"'\"').read_text()\nprint('\"'\"'JSON and text preserve supplied poem. HTML is byte-identical to shipped workbench, including credit.'\"'\"')\nprint('\"'\"'No visual rendering performed; no browser capability in this trial.'\"'\"')\nfor name in ['\"'\"'diwan.html'\"'\"','\"'\"'masafa-poems.json'\"'\"','\"'\"'masafa.docx'\"'\"','\"'\"'masafa.txt'\"'\"']:\n    p=out/name; print(name,p.stat().st_size,hashlib.sha256(p.read_bytes()).hexdigest())\n'",
+          "exit_code": 0,
+          "stdout": "DOCX ZIP and XML checks passed; exact Arabic title and poem found.\nJSON and text preserve supplied poem. HTML is byte-identical to shipped workbench, including credit.\nNo visual rendering performed; no browser capability in this trial.\ndiwan.html 171509 b6c36c6648183f3cf35283202d076a2bc9d589725db2d3e7098bf5f1f04fbd34\nmasafa-poems.json 214 184c619f5ed79e93a1b2d47035f24d8120307a4558e59a82f0f3aa983840aa74\nmasafa.docx 2409 c311f6052a35658864071afc8bf223829c57fc52fb9406f95d68e2669158a7a4\nmasafa.txt 76 ce91c6a21af52ff75975acada23a805025f4ecf17846911e91163a5de87f817f\n",
+          "stderr": ""
+        },
+        {
+          "command": "PYTHONDONTWRITEBYTECODE=1 TMPDIR=/private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/tmp python3 -c 'import json\nfrom pathlib import Path\np=Path('\"'\"'/private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/responses.json'\"'\"')\nd=json.loads(p.read_text())\nexpected=['\"'\"'prose-compose'\"'\"','\"'\"'close-reading'\"'\"','\"'\"'classical-scan'\"'\"','\"'\"'provisional-reading'\"'\"','\"'\"'review-only'\"'\"','\"'\"'bounded-repair'\"'\"','\"'\"'tafila-boundary'\"'\"','\"'\"'workbench-export'\"'\"']\nassert [c['\"'\"'id'\"'\"'] for c in d['\"'\"'cases'\"'\"']]==expected\nassert all(c['\"'\"'response'\"'\"'].strip() for c in d['\"'\"'cases'\"'\"'])\nassert len(d['\"'\"'cases'\"'\"'][0]['\"'\"'response'\"'\"'].splitlines())==5\nassert d['\"'\"'cases'\"'\"'][4]['\"'\"'commands'\"'\"']==[]\nfor c in d['\"'\"'cases'\"'\"']:\n    for a in c['\"'\"'artifacts'\"'\"']: assert Path(a).is_file(),a\n    for cmd in c['\"'\"'commands'\"'\"']: assert {'\"'\"'command'\"'\"','\"'\"'exit_code'\"'\"','\"'\"'stdout'\"'\"','\"'\"'stderr'\"'\"'}<=cmd.keys()\nprint('\"'\"'All 8 responses present in requested order; response artifacts exist; 5 prose lines; review-only case has no scan commands.'\"'\"')\nprint('\"'\"'All recorded task commands exited successfully:'\"'\"',all(x['\"'\"'exit_code'\"'\"']==0 for c in d['\"'\"'cases'\"'\"'] for x in c['\"'\"'commands'\"'\"']))\n'",
+          "exit_code": 0,
+          "stdout": "All 8 responses present in requested order; response artifacts exist; 5 prose lines; review-only case has no scan commands.\nAll recorded task commands exited successfully: True\n",
+          "stderr": ""
+        }
+      ],
+      "artifacts": [
+        "/private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/diwan.html",
+        "/private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/masafa-poems.json",
+        "/private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/masafa.docx",
+        "/private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/masafa.txt",
+        "/private/tmp/arabic-poetry-unify-20261016.KklyBN/review-trials/combined/outputs/workbench-export-response.md"
+      ]
+    }
+  ]
+}

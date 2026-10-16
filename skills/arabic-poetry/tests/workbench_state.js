@@ -1,4 +1,4 @@
-// node skills/arabic-prosody/tests/workbench_state.js — deterministic production-page state regressions
+// node skills/arabic-poetry/tests/workbench_state.js — deterministic production-page state regressions
 const assert = require('node:assert/strict');
 const fs = require('node:fs'), path = require('node:path'), vm = require('node:vm');
 const page = fs.readFileSync(path.join(__dirname, '../assets/workbench/page.html'), 'utf8');

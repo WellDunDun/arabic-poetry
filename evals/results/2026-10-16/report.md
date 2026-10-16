@@ -10,6 +10,8 @@ The combined package retained the behaviors covered by this small trial and answ
 - Conditions: original poetry only, prosody only, both current packages, and combined poetry. Packages were isolated and their source content hashes preserved. Execution was restricted to local filesystem, Python and Node, with no browser, network, hosted APIs, publishing, installs or global font changes.
 - The lead reviewed actual responses, commands and artifacts against the frozen criteria. The semantic grader knew the condition names; this was not blinded grading. [Grades](grades.json) contain criterion-level reasons, and [run metadata](runs.json) binds the corpus, package hashes and response records.
 
+After PR review restored links to the retained transcription/rhyme references, a fifth fresh execution agent reran the combined condition on the revised package using the same eight requests and tool limits. The combined records below are that latest run, re-reviewed against the original criteria. The initial combined run is retained in Git at `29f136c9ec7fb4f6272e5afd1a012aafd075cfb0`; the three baseline records are unchanged. Both combined runs met all eight cases. This follow-up was required by the package-content check, not an attempt to resample a failing result.
+
 ## Results
 
 Pass means all applicable frozen behavior criteria passed. It does not imply identical capabilities or a successful unavailable integration.
@@ -47,7 +49,9 @@ Raw response and command evidence:
 - [21 scanner/exporter/browser/font implementation files](unchanged-implementation.json) are byte-identical after relocation. This change does not revise the scanner algorithm. Its historical regression and accuracy limits still apply.
 - Building at the new package path reproduces the original `diwan.html` and `meters.json` hashes.
 - Skill reference and skill-creator validators, plugin JSON, relative Markdown links and whitespace checks pass. The shared entrypoint is 66 lines.
-- `python3 evals/check_results.py` checks 32 response records, frozen input hashes, per-criterion evidence completeness, and that the current combined package matches the evaluated snapshot. It does not grade meaning or poetry.
+- `python3 evals/check_results.py` checks 32 current response records, corpus bytes and baseline manifests against pinned Git history, criterion/case status consistency, artifact-inventory correspondence/checksum and current combined-package identity. It does not grade meaning or poetry or recreate missing artifacts.
+- Fifteen evidence acceptance/mutation regressions pass. Thirteen of those tests reproduced checker failures on the originally reviewed implementation. They now reject coordinated edits to corpus/baseline metadata, contradictory case grades and missing or inconsistent artifact inventories while accepting valid records and applicable `not_applicable` judgments. The [review dispositions](../../../docs/research/pr-2-review-2026-10-16.md) explain each finding and correction.
+- [Review follow-up check outputs](review-checks.json) record the final checker tests, existing software suites and package validators after the fixes.
 
 Execution caveat: early both-current Python calls wrote bytecode caches and the exporter used its default transient temporary directory; the exporter was rerun with temporary files under the assigned output directory. Hash checks confirm all original package source files remained unchanged. Later combined runs disabled bytecode and used an output-local temporary directory.
 

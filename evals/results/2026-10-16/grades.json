@@ -468,7 +468,8 @@
           "evidence": "combined.responses.json case prose-compose: Response consists of the poem; no approval question, editor setup or explanatory afterword."
         }
       ],
-      "status": "pass"
+      "status": "pass",
+      "review_run": "post-review-reference-routing"
     },
     "close-reading": {
       "criteria": [
@@ -485,7 +486,8 @@
           "evidence": "combined.responses.json case close-reading: Explains the supplied text without replacing it or introducing a meter diagnosis."
         }
       ],
-      "status": "pass"
+      "status": "pass",
+      "review_run": "post-review-reference-routing"
     },
     "classical-scan": {
       "criteria": [
@@ -506,7 +508,8 @@
           "evidence": "combined.responses.json case classical-scan: Recorded command output supports the displayed analysis; scope of tools is not fabricated."
         }
       ],
-      "status": "pass"
+      "status": "pass",
+      "review_run": "post-review-reference-routing"
     },
     "provisional-reading": {
       "criteria": [
@@ -523,7 +526,8 @@
           "evidence": "combined.responses.json case provisional-reading: Gives a brief conditional السريع reading with supporting feet rather than blocking for routine approval."
         }
       ],
-      "status": "pass"
+      "status": "pass",
+      "review_run": "post-review-reference-routing"
     },
     "review-only": {
       "criteria": [
@@ -540,7 +544,8 @@
           "evidence": "combined.responses.json case review-only: No metrical analysis or verdict; response stops at the requested review stage."
         }
       ],
-      "status": "pass"
+      "status": "pass",
+      "review_run": "post-review-reference-routing"
     },
     "bounded-repair": {
       "criteria": [
@@ -561,7 +566,8 @@
           "evidence": "combined.responses.json case bounded-repair: Works with supplied confirmed reading without demanding vowel approval."
         }
       ],
-      "status": "pass"
+      "status": "pass",
+      "review_run": "post-review-reference-routing"
     },
     "tafila-boundary": {
       "criteria": [
@@ -578,7 +584,8 @@
           "evidence": "combined.responses.json case tafila-boundary: Does not infer prose-poem classification from this failed Kamil match."
         }
       ],
-      "status": "pass"
+      "status": "pass",
+      "review_run": "post-review-reference-routing"
     },
     "workbench-export": {
       "criteria": [
@@ -600,7 +607,8 @@
         }
       ],
       "status": "pass",
-      "capability_gap": "No browser/host APIs; original-only additionally has no bundled Diwan. Passing honesty/fallback criteria does not mean the requested hosted workflow ran."
+      "capability_gap": "No browser/host APIs; original-only additionally has no bundled Diwan. Passing honesty/fallback criteria does not mean the requested hosted workflow ran.",
+      "review_run": "post-review-reference-routing"
     }
   }
 }

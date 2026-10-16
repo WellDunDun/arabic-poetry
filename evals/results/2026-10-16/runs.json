@@ -3,13 +3,13 @@
   "date": "2026-10-16",
   "timezone": "Asia/Amman",
   "base_commit": "3286f489881b9fbc5bb2fc2bca7dd064835b1a4c",
-  "corpus_commit": "e1f91bf",
+  "corpus_commit": "e1f91bf645fd0e06fc4fd94f89f67ca2cb00ee3a",
   "prompts_sha256": "2c4c204c2cc0e233a8360ff2622a0540dbef52e46c33e18195e8ebe0755c0dac",
   "rubric_sha256": "d2db0367abfd0b788a99fb6a50eff178fff488963f132e06b29940bd17ed981a",
   "model": "Inherited parent model/configuration in four fresh collaboration agents; no model overrides. Exact backend identifier and reasoning level not exposed in the execution record.",
   "sampling": "One batch per condition; eight sequential requests share that agent context. Other batches, expected answers and proposed changes withheld.",
   "capabilities": "Local filesystem, Python and Node only; no network, browser, host database/sampling/download APIs, publishing, installs or global fonts.",
-  "grading": "Lead semantic review against frozen criteria; reviewer knew condition names. Not a blind or statistical evaluation.",
+  "grading": "Lead semantic review against frozen criteria; reviewer knew condition names. Combined responses re-reviewed after reference-link fix. Not a blind or statistical evaluation.",
   "environment": {
     "python": "3.14.2",
     "node": "v25.8.1"
@@ -41,11 +41,13 @@
     },
     "combined": {
       "record": "combined.responses.json",
-      "record_sha256": "4981ebc9de5f10d7c8545e7a3062fe4afc4c38959c5a5fe6b682c7ec1ce53371",
+      "record_sha256": "e17eccff912c231e98c4009c77f8159a463c15b19c831538622ed9f953e74de2",
       "package_manifest": "combined.package-hashes.json",
-      "package_manifest_sha256": "f9cdc77303358d797baa9812b78a5e7153f6ca4904d525104ac9e4928ed2ac13",
+      "package_manifest_sha256": "546af4b9fe836cbe6243fb4c573ae5d700df19ee139b180c186e93eb77f9d952",
       "source": "frozen package snapshot",
-      "notes": "No source modifications reported; snapshot hashes verified."
+      "notes": "Fresh independent rerun after restoring transcription/rhyme reference routes; exact final skill bytes match this snapshot. Same frozen requests/criteria and local capability limits. Initial combined trial retained in Git at29f136c9ec7fb4f6272e5afd1a012aafd075cfb0."
     }
-  }
+  },
+  "artifacts_sha256": "a34b91e1cbe2e83a1f53830eaddd6f88135f2baebfc7a51c7cb7ad8e247162dc",
+  "previous_combined_commit": "29f136c9ec7fb4f6272e5afd1a012aafd075cfb0"
 }

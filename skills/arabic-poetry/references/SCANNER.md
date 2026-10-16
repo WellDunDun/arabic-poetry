@@ -35,12 +35,12 @@ Meter keys: `tawil madid basit wafir kamil hazaj rajaz ramal sari munsarih khafi
 
 ## Read and verify the result
 
-1. Inspect the chosen reading and عروض letters before accepting a meter. Keep supplied text, inferred reading, normalized output and proposed correction distinct. A famous verse's attribution does not validate altered wording.
+1. Inspect the chosen reading and عروض letters before accepting a meter, using the [transcription rules](arudi-writing.md) for sound expansion and connected pronunciation. Keep supplied text, inferred reading, normalized output and proposed correction distinct. A famous verse's attribution does not validate altered wording.
 2. Read whole-poem candidates, decisive lines, per-foot patterns, alignment errors, ending forms and rhyme candidates. A zero alignment error still needs plausible pronunciation and position-appropriate rules. Check unfamiliar endings against [meters](meters.md), [zihafat](zihafat.md) and primary references.
 3. Confidence describes ranking separation, not a probability or comprehensive accuracy. Short passages can fit multiple meters. Preserve ambiguity such as الكامل/الرجز or مجزوء الوافر/الهزج when the actual sounds do not distinguish them.
 4. If many lines fail, recheck reading, layout, paired halves, mode and rival candidates before proposing extensive edits. The report's 40% warning is an implementation heuristic, not evidence that the poet is wrong.
 5. For taf‘ila, inspect [line crossings and ending conventions](free-verse.md). Never delete a pronounced tanwin nun just to join a foot. State the implementation's shared المتدارك/الخبب convention without treating it as settled theory.
-6. Check عروض/ضرب compatibility, first-verse تصريع conditions and consistency in the poem's intended form. The tables encode selected constraints, not every classical permission. A spelling-based rhyme audit is provisional; inspect pronounced روي، مجرى، ردف، تأسيس and optional وصل/خروج independently.
+6. Check عروض/ضرب compatibility, first-verse تصريع conditions and consistency in the poem's intended form. The tables encode selected constraints, not every classical permission. A spelling-based rhyme audit is provisional; use the [rhyme definitions and fault checks](qafiya.md) to inspect pronounced روي، مجرى، ردف، تأسيس and optional وصل/خروج independently.
 
 For repairs, draft a few minimal phrase alternatives using [repair techniques](fixing.md), verify candidates in one call, then check grammar, rhyme and meaning yourself. Put a chosen repair into a separate poem copy and analyze the whole affected line/poem again. Verification of an isolated half cannot establish first-verse context or whole-poem consistency.
 

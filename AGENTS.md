@@ -32,6 +32,7 @@ PYTHONDONTWRITEBYTECODE=1 python3 skills/arabic-poetry/tests/run_gold.py
 node skills/arabic-poetry/tests/parity.js
 PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s skills/arabic-poetry/tests -p 'test_*.py'
 node skills/arabic-poetry/tests/workbench_state.js
+PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s evals -p 'test_*.py'
 python3 evals/check_results.py
 git diff --check
 ```

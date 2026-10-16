@@ -1,0 +1,606 @@
+{
+  "original-only": {
+    "prose-compose": {
+      "criteria": [
+        {
+          "status": "pass",
+          "evidence": "original-only.responses.json case prose-compose: Five Arabic lines describe the key retained in the coat after the move."
+        },
+        {
+          "status": "pass",
+          "evidence": "original-only.responses.json case prose-compose: No Khalilian meter or regular rhyme is asserted."
+        },
+        {
+          "status": "pass",
+          "evidence": "original-only.responses.json case prose-compose: Response consists of the poem; no approval question, editor setup or explanatory afterword."
+        }
+      ],
+      "status": "pass"
+    },
+    "close-reading": {
+      "criteria": [
+        {
+          "status": "pass",
+          "evidence": "original-only.responses.json case close-reading: Explains chair facing the door and repeated evening/dust as continuing expectation."
+        },
+        {
+          "status": "pass",
+          "evidence": "original-only.responses.json case close-reading: Explicitly says death is not established and gives possible alternative contexts."
+        },
+        {
+          "status": "pass",
+          "evidence": "original-only.responses.json case close-reading: Explains the supplied text without replacing it or introducing a meter diagnosis."
+        }
+      ],
+      "status": "pass"
+    },
+    "classical-scan": {
+      "criteria": [
+        {
+          "status": "pass",
+          "evidence": "original-only.responses.json case classical-scan: Names الطويل and displays a complete hemistich segmented فعولن / مفاعيلن / فعولن / مفاعلن."
+        },
+        {
+          "status": "pass",
+          "evidence": "original-only.responses.json case classical-scan: Names ل as الروي and distinguishes final kasra or lengthened /i:/ as وصل."
+        },
+        {
+          "status": "pass",
+          "evidence": "original-only.responses.json case classical-scan: English explanation in chat, with no editor setup."
+        },
+        {
+          "status": "pass",
+          "evidence": "original-only.responses.json case classical-scan: Two actual arithmetic-checker calls pass for the displayed transcriptions. Response explicitly limits that checker to arithmetic/coverage and derives meter interpretation from the worked example."
+        }
+      ],
+      "status": "pass"
+    },
+    "provisional-reading": {
+      "criteria": [
+        {
+          "status": "pass",
+          "evidence": "original-only.responses.json case provisional-reading: Treats a short fragment as insufficient to establish a whole poem meter."
+        },
+        {
+          "status": "pass",
+          "evidence": "original-only.responses.json case provisional-reading: Separates supplied phrase from a proposed vocalized reading and states the stopping/ending assumption."
+        },
+        {
+          "status": "pass",
+          "evidence": "original-only.responses.json case provisional-reading: Gives a brief conditional السريع reading with supporting feet rather than blocking for routine approval."
+        }
+      ],
+      "status": "pass"
+    },
+    "review-only": {
+      "criteria": [
+        {
+          "status": "pass",
+          "evidence": "original-only.responses.json case review-only: Supplied base letters, negation and existing marks remain; added marks form a review proposal."
+        },
+        {
+          "status": "pass",
+          "evidence": "original-only.responses.json case review-only: Presents a proposed reading without changing negation or claiming a new intended proposition."
+        },
+        {
+          "status": "pass",
+          "evidence": "original-only.responses.json case review-only: No metrical analysis or verdict; response stops at the requested review stage."
+        }
+      ],
+      "status": "pass"
+    },
+    "bounded-repair": {
+      "criteria": [
+        {
+          "status": "pass",
+          "evidence": "original-only.responses.json case bounded-repair: Deletes only جِدًّا, retaining قريب وصديقي وبعيد ومكاني."
+        },
+        {
+          "status": "pass",
+          "evidence": "original-only.responses.json case bounded-repair: Explains that removing جِدًّا loses emphasis on the degree of distance."
+        },
+        {
+          "status": "pass",
+          "evidence": "original-only.responses.json case bounded-repair: Shows added 1010 or two long syllables before, and four full فعولن after, with recorded checks."
+        },
+        {
+          "status": "pass",
+          "evidence": "original-only.responses.json case bounded-repair: Works with supplied confirmed reading without demanding vowel approval."
+        }
+      ],
+      "status": "pass"
+    },
+    "tafila-boundary": {
+      "criteria": [
+        {
+          "status": "pass",
+          "evidence": "original-only.responses.json case tafila-boundary: Retains the pronounced nun in يدن / يدنتاهت or equivalent displayed transcription."
+        },
+        {
+          "status": "pass",
+          "evidence": "original-only.responses.json case tafila-boundary: Rejects a sound Kamil verdict for this reading with actual sound or scanner evidence."
+        },
+        {
+          "status": "pass",
+          "evidence": "original-only.responses.json case tafila-boundary: Does not infer prose-poem classification from this failed Kamil match."
+        }
+      ],
+      "status": "pass"
+    },
+    "workbench-export": {
+      "criteria": [
+        {
+          "status": "pass",
+          "evidence": "original-only.responses.json case workbench-export: Response distinguishes real local output from unavailable browser opening and shared host store."
+        },
+        {
+          "status": "pass",
+          "evidence": "original-only.responses.json case workbench-export: Explicitly denies automatic later-chat synchronization; no fabricated host API success."
+        },
+        {
+          "status": "pass",
+          "evidence": "original-only.responses.json case workbench-export: Actual local DOCX exists and ZIP/XML, Arabic text and RTL were independently inspected. Installed editor availability is recorded separately. No Diwan HTML is installed; response accurately states that gap and creates DOCX manually."
+        },
+        {
+          "status": "pass",
+          "evidence": "original-only.responses.json case workbench-export: No untested PDF or host success is promised; page/runtime limits are stated where relevant."
+        }
+      ],
+      "status": "pass",
+      "capability_gap": "No browser/host APIs; original-only additionally has no bundled Diwan. Passing honesty/fallback criteria does not mean the requested hosted workflow ran."
+    }
+  },
+  "prosody-only": {
+    "prose-compose": {
+      "criteria": [
+        {
+          "status": "pass",
+          "evidence": "prosody-only.responses.json case prose-compose: Five Arabic lines describe the key retained in the coat after the move."
+        },
+        {
+          "status": "pass",
+          "evidence": "prosody-only.responses.json case prose-compose: No Khalilian meter or regular rhyme is asserted."
+        },
+        {
+          "status": "pass",
+          "evidence": "prosody-only.responses.json case prose-compose: Response consists of the poem; no approval question, editor setup or explanatory afterword."
+        }
+      ],
+      "status": "pass"
+    },
+    "close-reading": {
+      "criteria": [
+        {
+          "status": "pass",
+          "evidence": "prosody-only.responses.json case close-reading: Explains chair facing the door and repeated evening/dust as continuing expectation."
+        },
+        {
+          "status": "pass",
+          "evidence": "prosody-only.responses.json case close-reading: Explicitly says death is not established and gives possible alternative contexts."
+        },
+        {
+          "status": "pass",
+          "evidence": "prosody-only.responses.json case close-reading: Explains the supplied text without replacing it or introducing a meter diagnosis."
+        }
+      ],
+      "status": "pass"
+    },
+    "classical-scan": {
+      "criteria": [
+        {
+          "status": "pass",
+          "evidence": "prosody-only.responses.json case classical-scan: Names الطويل and displays a complete hemistich segmented فعولن / مفاعيلن / فعولن / مفاعلن."
+        },
+        {
+          "status": "pass",
+          "evidence": "prosody-only.responses.json case classical-scan: Names ل as الروي and distinguishes final kasra or lengthened /i:/ as وصل."
+        },
+        {
+          "status": "pass",
+          "evidence": "prosody-only.responses.json case classical-scan: English explanation in chat, with no editor setup."
+        },
+        {
+          "status": "pass",
+          "evidence": "prosody-only.responses.json case classical-scan: Recorded command output supports the displayed analysis; scope of tools is not fabricated."
+        }
+      ],
+      "status": "pass"
+    },
+    "provisional-reading": {
+      "criteria": [
+        {
+          "status": "pass",
+          "evidence": "prosody-only.responses.json case provisional-reading: Treats a short fragment as insufficient to establish a whole poem meter."
+        },
+        {
+          "status": "pass",
+          "evidence": "prosody-only.responses.json case provisional-reading: Separates supplied phrase from a proposed vocalized reading and states the stopping/ending assumption."
+        },
+        {
+          "status": "pass",
+          "evidence": "prosody-only.responses.json case provisional-reading: Gives a brief conditional السريع reading with supporting feet rather than blocking for routine approval."
+        }
+      ],
+      "status": "pass"
+    },
+    "review-only": {
+      "criteria": [
+        {
+          "status": "pass",
+          "evidence": "prosody-only.responses.json case review-only: Supplied base letters, negation and existing marks remain; added marks form a review proposal."
+        },
+        {
+          "status": "pass",
+          "evidence": "prosody-only.responses.json case review-only: Presents a proposed reading without changing negation or claiming a new intended proposition."
+        },
+        {
+          "status": "pass",
+          "evidence": "prosody-only.responses.json case review-only: No metrical analysis or verdict; response stops at the requested review stage."
+        }
+      ],
+      "status": "pass"
+    },
+    "bounded-repair": {
+      "criteria": [
+        {
+          "status": "pass",
+          "evidence": "prosody-only.responses.json case bounded-repair: Deletes only جِدًّا, retaining قريب وصديقي وبعيد ومكاني."
+        },
+        {
+          "status": "pass",
+          "evidence": "prosody-only.responses.json case bounded-repair: Explains that removing جِدًّا loses emphasis on the degree of distance."
+        },
+        {
+          "status": "pass",
+          "evidence": "prosody-only.responses.json case bounded-repair: Shows added 1010 or two long syllables before, and four full فعولن after, with recorded checks."
+        },
+        {
+          "status": "pass",
+          "evidence": "prosody-only.responses.json case bounded-repair: Works with supplied confirmed reading without demanding vowel approval."
+        }
+      ],
+      "status": "pass"
+    },
+    "tafila-boundary": {
+      "criteria": [
+        {
+          "status": "pass",
+          "evidence": "prosody-only.responses.json case tafila-boundary: Retains the pronounced nun in يدن / يدنتاهت or equivalent displayed transcription."
+        },
+        {
+          "status": "pass",
+          "evidence": "prosody-only.responses.json case tafila-boundary: Rejects a sound Kamil verdict for this reading with actual sound or scanner evidence."
+        },
+        {
+          "status": "pass",
+          "evidence": "prosody-only.responses.json case tafila-boundary: Does not infer prose-poem classification from this failed Kamil match."
+        }
+      ],
+      "status": "pass"
+    },
+    "workbench-export": {
+      "criteria": [
+        {
+          "status": "pass",
+          "evidence": "prosody-only.responses.json case workbench-export: Response distinguishes real local output from unavailable browser opening and shared host store."
+        },
+        {
+          "status": "pass",
+          "evidence": "prosody-only.responses.json case workbench-export: Explicitly denies automatic later-chat synchronization; no fabricated host API success."
+        },
+        {
+          "status": "pass",
+          "evidence": "prosody-only.responses.json case workbench-export: Actual local DOCX exists and ZIP/XML, Arabic text and RTL were independently inspected. Installed editor availability is recorded separately. A local HTML artifact and DOCX from the shipped exporter exist; no browser UI run was claimed."
+        },
+        {
+          "status": "pass",
+          "evidence": "prosody-only.responses.json case workbench-export: No untested PDF or host success is promised; page/runtime limits are stated where relevant."
+        }
+      ],
+      "status": "pass",
+      "capability_gap": "No browser/host APIs; original-only additionally has no bundled Diwan. Passing honesty/fallback criteria does not mean the requested hosted workflow ran."
+    }
+  },
+  "current-both": {
+    "prose-compose": {
+      "criteria": [
+        {
+          "status": "pass",
+          "evidence": "current-both.responses.json case prose-compose: Five Arabic lines describe the key retained in the coat after the move."
+        },
+        {
+          "status": "pass",
+          "evidence": "current-both.responses.json case prose-compose: No Khalilian meter or regular rhyme is asserted."
+        },
+        {
+          "status": "pass",
+          "evidence": "current-both.responses.json case prose-compose: Response consists of the poem; no approval question, editor setup or explanatory afterword."
+        }
+      ],
+      "status": "pass"
+    },
+    "close-reading": {
+      "criteria": [
+        {
+          "status": "pass",
+          "evidence": "current-both.responses.json case close-reading: Explains chair facing the door and repeated evening/dust as continuing expectation."
+        },
+        {
+          "status": "pass",
+          "evidence": "current-both.responses.json case close-reading: Explicitly says death is not established and gives possible alternative contexts."
+        },
+        {
+          "status": "pass",
+          "evidence": "current-both.responses.json case close-reading: Explains the supplied text without replacing it or introducing a meter diagnosis."
+        }
+      ],
+      "status": "pass"
+    },
+    "classical-scan": {
+      "criteria": [
+        {
+          "status": "pass",
+          "evidence": "current-both.responses.json case classical-scan: Names الطويل and displays a complete hemistich segmented فعولن / مفاعيلن / فعولن / مفاعلن."
+        },
+        {
+          "status": "pass",
+          "evidence": "current-both.responses.json case classical-scan: Names ل as الروي and distinguishes final kasra or lengthened /i:/ as وصل."
+        },
+        {
+          "status": "pass",
+          "evidence": "current-both.responses.json case classical-scan: English explanation in chat, with no editor setup."
+        },
+        {
+          "status": "pass",
+          "evidence": "current-both.responses.json case classical-scan: Recorded command output supports the displayed analysis; scope of tools is not fabricated."
+        }
+      ],
+      "status": "pass"
+    },
+    "provisional-reading": {
+      "criteria": [
+        {
+          "status": "pass",
+          "evidence": "current-both.responses.json case provisional-reading: Treats a short fragment as insufficient to establish a whole poem meter."
+        },
+        {
+          "status": "pass",
+          "evidence": "current-both.responses.json case provisional-reading: Separates supplied phrase from a proposed vocalized reading and states the stopping/ending assumption."
+        },
+        {
+          "status": "fail",
+          "evidence": "current-both.responses.json case provisional-reading: Instead of preliminary analysis, asks: هل تعتمد هذا التشكيل لأفحص البحر؟ No candidate or preliminary metrical reasoning is supplied."
+        }
+      ],
+      "status": "fail"
+    },
+    "review-only": {
+      "criteria": [
+        {
+          "status": "pass",
+          "evidence": "current-both.responses.json case review-only: Supplied base letters, negation and existing marks remain; added marks form a review proposal."
+        },
+        {
+          "status": "pass",
+          "evidence": "current-both.responses.json case review-only: Presents a proposed reading without changing negation or claiming a new intended proposition."
+        },
+        {
+          "status": "pass",
+          "evidence": "current-both.responses.json case review-only: No metrical analysis or verdict; response stops at the requested review stage."
+        }
+      ],
+      "status": "pass"
+    },
+    "bounded-repair": {
+      "criteria": [
+        {
+          "status": "pass",
+          "evidence": "current-both.responses.json case bounded-repair: Deletes only جِدًّا, retaining قريب وصديقي وبعيد ومكاني."
+        },
+        {
+          "status": "pass",
+          "evidence": "current-both.responses.json case bounded-repair: Explains that removing جِدًّا loses emphasis on the degree of distance."
+        },
+        {
+          "status": "pass",
+          "evidence": "current-both.responses.json case bounded-repair: Shows added 1010 or two long syllables before, and four full فعولن after, with recorded checks."
+        },
+        {
+          "status": "pass",
+          "evidence": "current-both.responses.json case bounded-repair: Works with supplied confirmed reading without demanding vowel approval."
+        }
+      ],
+      "status": "pass"
+    },
+    "tafila-boundary": {
+      "criteria": [
+        {
+          "status": "pass",
+          "evidence": "current-both.responses.json case tafila-boundary: Retains the pronounced nun in يدن / يدنتاهت or equivalent displayed transcription."
+        },
+        {
+          "status": "pass",
+          "evidence": "current-both.responses.json case tafila-boundary: Rejects a sound Kamil verdict for this reading with actual sound or scanner evidence."
+        },
+        {
+          "status": "pass",
+          "evidence": "current-both.responses.json case tafila-boundary: Does not infer prose-poem classification from this failed Kamil match."
+        }
+      ],
+      "status": "pass"
+    },
+    "workbench-export": {
+      "criteria": [
+        {
+          "status": "pass",
+          "evidence": "current-both.responses.json case workbench-export: Response distinguishes real local output from unavailable browser opening and shared host store."
+        },
+        {
+          "status": "pass",
+          "evidence": "current-both.responses.json case workbench-export: Explicitly denies automatic later-chat synchronization; no fabricated host API success."
+        },
+        {
+          "status": "pass",
+          "evidence": "current-both.responses.json case workbench-export: Actual local DOCX exists and ZIP/XML, Arabic text and RTL were independently inspected. Installed editor availability is recorded separately. A local HTML artifact and DOCX from the shipped exporter exist; no browser UI run was claimed."
+        },
+        {
+          "status": "pass",
+          "evidence": "current-both.responses.json case workbench-export: No untested PDF or host success is promised; page/runtime limits are stated where relevant."
+        }
+      ],
+      "status": "pass",
+      "capability_gap": "No browser/host APIs; original-only additionally has no bundled Diwan. Passing honesty/fallback criteria does not mean the requested hosted workflow ran."
+    }
+  },
+  "combined": {
+    "prose-compose": {
+      "criteria": [
+        {
+          "status": "pass",
+          "evidence": "combined.responses.json case prose-compose: Five Arabic lines describe the key retained in the coat after the move."
+        },
+        {
+          "status": "pass",
+          "evidence": "combined.responses.json case prose-compose: No Khalilian meter or regular rhyme is asserted."
+        },
+        {
+          "status": "pass",
+          "evidence": "combined.responses.json case prose-compose: Response consists of the poem; no approval question, editor setup or explanatory afterword."
+        }
+      ],
+      "status": "pass"
+    },
+    "close-reading": {
+      "criteria": [
+        {
+          "status": "pass",
+          "evidence": "combined.responses.json case close-reading: Explains chair facing the door and repeated evening/dust as continuing expectation."
+        },
+        {
+          "status": "pass",
+          "evidence": "combined.responses.json case close-reading: Explicitly says death is not established and gives possible alternative contexts."
+        },
+        {
+          "status": "pass",
+          "evidence": "combined.responses.json case close-reading: Explains the supplied text without replacing it or introducing a meter diagnosis."
+        }
+      ],
+      "status": "pass"
+    },
+    "classical-scan": {
+      "criteria": [
+        {
+          "status": "pass",
+          "evidence": "combined.responses.json case classical-scan: Names الطويل and displays a complete hemistich segmented فعولن / مفاعيلن / فعولن / مفاعلن."
+        },
+        {
+          "status": "pass",
+          "evidence": "combined.responses.json case classical-scan: Names ل as الروي and distinguishes final kasra or lengthened /i:/ as وصل."
+        },
+        {
+          "status": "pass",
+          "evidence": "combined.responses.json case classical-scan: English explanation in chat, with no editor setup."
+        },
+        {
+          "status": "pass",
+          "evidence": "combined.responses.json case classical-scan: Recorded command output supports the displayed analysis; scope of tools is not fabricated."
+        }
+      ],
+      "status": "pass"
+    },
+    "provisional-reading": {
+      "criteria": [
+        {
+          "status": "pass",
+          "evidence": "combined.responses.json case provisional-reading: Treats a short fragment as insufficient to establish a whole poem meter."
+        },
+        {
+          "status": "pass",
+          "evidence": "combined.responses.json case provisional-reading: Separates supplied phrase from a proposed vocalized reading and states the stopping/ending assumption."
+        },
+        {
+          "status": "pass",
+          "evidence": "combined.responses.json case provisional-reading: Gives a brief conditional السريع reading with supporting feet rather than blocking for routine approval."
+        }
+      ],
+      "status": "pass"
+    },
+    "review-only": {
+      "criteria": [
+        {
+          "status": "pass",
+          "evidence": "combined.responses.json case review-only: Supplied base letters, negation and existing marks remain; added marks form a review proposal."
+        },
+        {
+          "status": "pass",
+          "evidence": "combined.responses.json case review-only: Presents a proposed reading without changing negation or claiming a new intended proposition."
+        },
+        {
+          "status": "pass",
+          "evidence": "combined.responses.json case review-only: No metrical analysis or verdict; response stops at the requested review stage."
+        }
+      ],
+      "status": "pass"
+    },
+    "bounded-repair": {
+      "criteria": [
+        {
+          "status": "pass",
+          "evidence": "combined.responses.json case bounded-repair: Deletes only جِدًّا, retaining قريب وصديقي وبعيد ومكاني."
+        },
+        {
+          "status": "pass",
+          "evidence": "combined.responses.json case bounded-repair: Explains that removing جِدًّا loses emphasis on the degree of distance."
+        },
+        {
+          "status": "pass",
+          "evidence": "combined.responses.json case bounded-repair: Shows added 1010 or two long syllables before, and four full فعولن after, with recorded checks."
+        },
+        {
+          "status": "pass",
+          "evidence": "combined.responses.json case bounded-repair: Works with supplied confirmed reading without demanding vowel approval."
+        }
+      ],
+      "status": "pass"
+    },
+    "tafila-boundary": {
+      "criteria": [
+        {
+          "status": "pass",
+          "evidence": "combined.responses.json case tafila-boundary: Retains the pronounced nun in يدن / يدنتاهت or equivalent displayed transcription."
+        },
+        {
+          "status": "pass",
+          "evidence": "combined.responses.json case tafila-boundary: Rejects a sound Kamil verdict for this reading with actual sound or scanner evidence."
+        },
+        {
+          "status": "pass",
+          "evidence": "combined.responses.json case tafila-boundary: Does not infer prose-poem classification from this failed Kamil match."
+        }
+      ],
+      "status": "pass"
+    },
+    "workbench-export": {
+      "criteria": [
+        {
+          "status": "pass",
+          "evidence": "combined.responses.json case workbench-export: Response distinguishes real local output from unavailable browser opening and shared host store."
+        },
+        {
+          "status": "pass",
+          "evidence": "combined.responses.json case workbench-export: Explicitly denies automatic later-chat synchronization; no fabricated host API success."
+        },
+        {
+          "status": "pass",
+          "evidence": "combined.responses.json case workbench-export: Actual local DOCX exists and ZIP/XML, Arabic text and RTL were independently inspected. Installed editor availability is recorded separately. A local HTML artifact and DOCX from the shipped exporter exist; no browser UI run was claimed."
+        },
+        {
+          "status": "pass",
+          "evidence": "combined.responses.json case workbench-export: No untested PDF or host success is promised; page/runtime limits are stated where relevant."
+        }
+      ],
+      "status": "pass",
+      "capability_gap": "No browser/host APIs; original-only additionally has no bundled Diwan. Passing honesty/fallback criteria does not mean the requested hosted workflow ran."
+    }
+  }
+}

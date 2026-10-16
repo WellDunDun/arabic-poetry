@@ -11,7 +11,7 @@ Use this procedure for identifying a meter, composing metrical poetry, or repair
 
 If a layer changes, recompute the layers that follow. Do not correct the original silently, infer a reading solely because it matches a target, or use the known meter of a famous poem to validate an altered quotation.
 
-When using an analyzer, retain its normalized input and version alongside these layers. Inspect inserted vowels and spelling changes before accepting the scan. The [tool guide](TOOLS.md) describes optional analyzers and a local arithmetic checker.
+When using an analyzer, retain its normalized input and version alongside these layers. Inspect inserted vowels and spelling changes before accepting the scan. Use the integrated [scanner workflow](SCANNER.md) for supported metrical claims when execution is available. The [tool guide](TOOLS.md) distinguishes that scanner, optional external analyzers and the local transcription arithmetic checker.
 
 ## Establish the pronounced sequence
 

@@ -1,70 +1,66 @@
 ---
 name: arabic-poetry
-description: Write, revise, continue, and explain Arabic poetry; identify form, meter, rhyme, and theme through explicit analysis. Use when asked to write or complete an Arabic poem, improve أبيات or قصيدة, explain imagery or meaning, repair كسر الوزن or القافية, perform تقطيع عروضي, identify البحر or نوع الشعر, or critique classical, taf‘ila, or prose poetry.
+description: Write, revise, continue, explain and analyze classical and modern Arabic poetry, with a local meter scanner and optional Diwan editor. Use when asked to compose or complete أبيات or قصيدة, critique imagery or meaning, identify نوع الشعر or البحر, perform تقطيع عروضي, repair الوزن or القافية, or edit and export a poetry collection.
 ---
 
 # Arabic poetry
 
-Support classical and modern Arabic poetry equally. Judge each poem by its intended form. Respond in Arabic unless the user requests another language; use Arabic prosody terms with brief explanations suited to the reader.
+Support classical and modern Arabic poetry equally. Judge each poem by its intended form. Follow the user's requested response language; otherwise match their language, keeping verses and Arabic prosody terms in Arabic with brief explanations when needed.
 
-## Choose the task and constraints
+## Choose the relevant workflow
 
-- Determine whether the user wants composition, continuation, revision, identification, explanation, or critique. Combine modes only where useful to the request.
-- For "ما نوع هذا الشعر؟", distinguish **الشكل** such as عمودي، تفعيلة، قصيدة نثر, **البحر**, **القافية والروي**, and **الغرض** such as غزل، رثاء، وصف. A theme does not identify a meter; a modern date does not identify a form.
-- Treat "شعر حر" as context-dependent terminology. Name the intended form; metered شعر مرسل can omit a fixed rhyme without becoming prose poetry.
-- These form labels are not exhaustive. For a موشح or another stanza tradition, identify its repeating units and rhyme scheme before judging an excerpt. Length labels such as مقطوعة do not identify a meter; avoid universal قصيدة length cutoffs.
-- Extract the intended form, language variety, subject, speaker, tone, length, audience, and any required meter or rhyme from the request and supplied draft. Preserve explicit constraints.
-- Infer routine choices. If an unspecified form would substantially change the result, ask one focused question; otherwise choose a suitable form and state the assumption briefly. Never require a beginner to name a بحر before helping.
-- Keep dialectal poetry in its dialect. For نبطي، زجل، شعر شعبي, establish pronunciation and the relevant tradition before applying a meter label. Do not silently convert it to الفصحى.
+- For composition, continuation, revision or critique, read [craft and revision](references/CRAFT.md). For explanation and interpretation, read [close reading](references/READING.md).
+- For meter or rhyme claims, read [prosody](references/PROSODY.md) and the [scanner workflow](references/SCANNER.md). The bundled scanner supplies reproducible alignment evidence; interpretation still requires plausible pronunciation and licensed forms.
+- For a requested editor, a collection or export, read [Diwan](references/DIWAN.md). Keep ordinary writing, critique and quick analysis in chat unless an editor helps the requested work. Diwan is optional; unavailable host capabilities must not block chat or local-file work.
+- Use [worked examples](references/EXAMPLES.md) when teaching or checking a detailed scan. [Tools](references/TOOLS.md) distinguishes the scanner, arithmetic checker and external analyzers. [Sources](references/SOURCES.md), [scanner coverage](references/SCANNER-SOURCES.md) and [similar skills](references/SIMILAR_SKILLS.md) explain evidence and limits. Load only relevant resources.
 
-Read [craft and revision](references/CRAFT.md) for composition or editing, [close reading](references/READING.md) for explanation or literary critique, [prosody](references/PROSODY.md) for metrical or rhyme claims, and [worked examples](references/EXAMPLES.md) when teaching or checking the output shape. Read [optional tools](references/TOOLS.md) for analyzer audits or the local arithmetic checker. [Sources](references/SOURCES.md) and [similar skills](references/SIMILAR_SKILLS.md) explain the evidence and its limits.
+## Establish intent and preserve the text
 
-## Explain and read closely
+- Determine whether the request is composition, continuation, revision, identification, explanation, critique, editing or export. Combine workflows only as needed.
+- Extract form, language variety, subject, speaker, tone, length, audience, meter, rhyme and editing scope. Infer routine choices; ask one focused question only when missing information would materially change the result.
+- For "ما نوع هذا الشعر؟", distinguish الشكل such as عمودي، تفعيلة، قصيدة نثر, البحر, القافية والروي, and الغرض such as غزل or رثاء. Theme, date and line breaks do not establish a meter. "شعر حر" is context-dependent; شعر مرسل may remain metered without fixed rhyme.
+- Preserve supplied wording, marks, line breaks and dialect. Keep originals, inferred vocalization and proposed corrections separate. Do not silently convert نبطي، زجل or other dialectal traditions to الفصحى or force them into unsupported tables.
+- For موشح or another stanza tradition, establish repeating units and rhyme structure before judging it. Length labels do not identify a meter; avoid universal قصيدة length cutoffs.
 
-1. Establish the literal reading, difficult words, speaker, addressee, and situation. Keep the poem's speaker distinct from its historical author; verify any claimed occasion, quotation, or historical allusion.
-2. Support each major interpretation with a short phrase, its specific linguistic or formal feature, and the effect that supports the reading. Explain how imagery, syntax, sound, or a break works here rather than merely naming a device.
-3. Check consequential alternative grammar or meanings and neighboring lines. Mark a plausible interpretation as an interpretation; do not invent biography to resolve purposeful ambiguity.
-4. Give a clear overall reading and focus on the details the user asked about. Offer a competing reading only when the text supports it. Include meter analysis when relevant to the request, rather than requiring every explanation to identify a بحر.
+## Vocalization and confirmation
 
-## Compose
+- Choose tashkeel from meaning and grammar, preserving the poet's existing marks. A meter match cannot justify changing who acts, negation or meaning. Keep meaningful alternative readings visible.
+- For an ordinary preliminary analysis, state consequential reading and الوصل/الوقف assumptions and proceed provisionally. A short or unvocalized passage may not establish a unique meter.
+- If unresolved ambiguity prevents a reliable answer or a meaning-preserving repair, ask a focused reading question. Do not silently select vowels just to obtain a passing scan.
+- If the user asks to review tashkeel before analysis, show the proposed reading and consequential choices, then stop without scanning. Honor their corrections even when the resulting reading breaks the meter.
+- Already confirmed or fully supplied vocalization needs no routine approval turn. For newly composed drafts, verify your own reading without asking the user to approve every vowel first.
 
-1. Choose a movement suited to the brief, such as a situation, a concrete image or encounter, and a change in feeling or understanding. Let the subject, voice, and requested length govern how much develops.
-2. For **عمودي**, choose or honor a بحر, its applicable عروض and ضرب, and a rhyme plan. Write complete أبيات with صدر and عجز, keeping the chosen metrical form consistent. Make rhyme serve the meaning.
-3. For **تفعيلة**, choose or honor the rhythmic basis, scan the actual foot sequence, and vary line length with the sense. Allow enjambment and rhyme choices supported by the poem. Visible line breaks alone do not prove meter.
-4. For **قصيدة نثر**, shape imagery, syntax, sonic recurrence, pacing, and the ending. Do not impose a Khalilian meter or monorhyme unless the user requests a change of form.
-5. Review diction, grammar, imagery, voice, and progression. Remove padding or forced sound effects where they weaken meaning; preserve purposeful abstraction, symbolism, repetition, and ambiguity. Avoid explaining an image that already carries its meaning.
-6. Check every line when claiming metrical regularity and every relevant ending when claiming rhyme consistency. Revise and rescan any changed line. If verification remains unresolved, describe the text as a draft and identify the uncertain passage.
+## Compose and continue
 
-Deliver the poem first. Add a short form or verification note only when it helps or was requested. Keep detailed scansion available for a technical request; do not overwhelm a simple creative request.
-
-For continuation, retain the supplied lines, speaker, imagery, and established form; label only the added passage as new. Develop what follows without silently repairing or restarting the poem. Check the transition and any ongoing meter/rhyme against the supplied passage.
+1. Choose a movement and voice suited to the subject and length. Develop images, encounters or changes in feeling rather than repeating a premise. Preserve purposeful abstraction, symbolism and ambiguity.
+2. For عمودي, honor the بحر, applicable عروض/ضرب and rhyme plan; write complete صدر/عجز pairs. For تفعيلة, honor the rhythmic basis and inspect the sequence across relevant line breaks. For قصيدة نثر, shape imagery, syntax, recurrence and pacing without imposing Khalilian meter or monorhyme.
+3. Review diction, grammar, imagery, progression and sound. Remove padding or forced phrasing when it weakens meaning. A metrical match does not prove literary quality.
+4. Before claiming metrical regularity, check every supplied or generated line using the scanner when execution is available, inspect its reading and forms, and check relevant rhyme endings. Rescan affected lines after edits. If verification remains unresolved, label the passage a draft and locate the uncertainty.
+5. Deliver the poem first, with only useful or requested verification notes. For continuation, retain the supplied passage, label the added portion as new, develop its established voice and check the join. Do not silently restart or repair it.
 
 ## Revise or critique
 
-1. Preserve the original text and identify its intended meaning, voice, form, and constraints before changing it.
-2. Separate metrical or rhyme faults, grammar or unclear meaning, and aesthetic preferences. A permitted زحاف is not automatically a flaw; unusual imagery is not automatically an error.
-3. If the meter is unspecified, analyze the surrounding poem before repairing one line. Do not rewrite a poem onto a guessed بحر without stating the uncertainty.
-4. Locate the faulty span and keep surrounding sound material where possible. Compare a few meaningful repairs when constraints compete, then choose the smallest viable change. Foot boundaries may cross words; repair a grammatical phrase rather than remove letters mechanically. For critique-only requests, diagnose without rewriting the whole poem.
-5. Show the original passage, proposed passage, and concrete reason for each significant change. Explain meaning lost or gained when a repair has a tradeoff.
-6. Check subject/object roles, negation, pronoun reference, and modifiers for meaning changes; rescan the whole affected line and compare rhyme endings. Do not fix one foot by breaking another or changing the intended pronunciation without disclosure. Offer a broader rewrite separately when it changes the voice or form.
+1. Preserve the original and identify intended meaning, voice, form and constraints. For critique-only requests, diagnose without rewriting.
+2. Separate meter/rhyme faults, grammar/meaning problems and aesthetic preferences. A permitted زحاف is not automatically a fault; unusual imagery is not automatically an error.
+3. Establish the intended meter from context before repairing a line. Locate the mismatch in the actual pronounced span; recheck reading, layout and candidate meters when many lines appear broken.
+4. Compare a few grammatical phrase repairs and choose the smallest viable change. Preserve required words, imagery and dialect. Explain lost or gained meaning, including removed emphasis. Offer a broader rewrite separately if it changes voice or form.
+5. Verify promising metrical repairs, then check subject/object roles, negation, pronouns, agreement, modifiers and rhyme. Put the repair into the poem copy and recheck the full affected line and surrounding ending consistency.
+6. Return the revised passage with concrete reasons for significant changes. If constraints conflict, explain the conflict rather than silently changing the brief. Preserve authorship and distinguish supplied lines from newly composed text.
 
-Return the revised passage and a few actionable notes. Preserve the user's authorship and distinguish their supplied lines from newly composed lines.
+## Identify, scan and explain
 
-## Identify and scan
+1. Establish pronunciation before metrical classification. For supported metered text, execute the local scanner as described in [SCANNER.md](references/SCANNER.md); inspect the inferred عروض writing, actual sound sequence, foot boundaries and licensed variants. Never invent a tool run.
+2. Keep notation explicit and cover all sounds exactly once. The optional arithmetic checker checks a declared transcription and coverage; it does not identify meter or license a variant.
+3. Compare the whole supplied passage, both halves of a بيت, and relevant connected taf‘ila sequences. A familiar quotation, first match or nearest-pattern score does not establish uniqueness or validate changed wording.
+4. Analyze الروي and the pronounced rhyme ending separately. The scanner's spelling-based rhyme candidate needs review; the final printed character is not automatically الروي.
+5. Report a supported fit, plausible candidates with distinguishing readings, or insufficient evidence. Locate mismatches before proposing repair. A failed scan alone does not establish قصيدة نثر or invalidate an unsupported tradition.
+6. For a concise request, give the likely form/meter, compact evidence and consequential assumptions. For full analysis, use النص، القراءة، الكتابة العروضية، التفعيلات، الملاحظة. Explain symbols and keep technical detail proportional.
+7. For interpretation, ground each major reading in quoted wording, its linguistic/formal feature and its effect. Separate speaker from historical author, check consequential alternative meanings, and avoid invented biography or conclusions such as death from absence alone. Meter analysis is optional when it does not answer the literary question.
 
-1. Preserve the exact wording and line breaks. Separate the supplied text, an inferred vocalization, and any proposed correction.
-2. Establish pronunciation, then write the relevant passage in الكتابة العروضية. Record meaningful alternatives for unvocalized words and for الوصل والوقف.
-3. Show the sound sequence, foot boundaries, and actual تفعيلات. Ensure foot segments cover every sound exactly once and that binary patterns agree with the transcription; use the optional checker for detailed scans. Account for each claimed زحاف or علة by its position and permitted use in that meter.
-4. Compare the entire supplied passage with candidate meters. Locate a mismatch in the actual pronounced span before proposing a repair. A recognizable phrase or memorized attribution is not a substitute for scanning this wording; a first or nearest tool match does not establish uniqueness.
-5. For a بيت, examine both hemistichs. For تفعيلة, examine the rhythmic sequence across line breaks where appropriate. A short fragment may fit several meters or establish a rhythm without establishing the whole form.
-6. Analyze الروي and the pronounced rhyme ending separately. Do not label the final printed letter as الروي automatically.
-7. State what the evidence supports: clear fit, plausible candidates with the distinguishing reading, or insufficient evidence. If no fit is established, show the mismatch; do not conclude that the text is قصيدة نثر solely from a failed scan.
+## Evidence, tools and delivery
 
-For a concise answer, give the likely form and meter, one compact scan, and any pronunciation assumption. For a full analysis, use columns for النص، القراءة، الكتابة العروضية، التفعيلات، الملاحظة. Explain symbols before using them.
-
-## Evidence and final check
-
-- Verify unfamiliar meter variants, rhyme rules, and dialectal conventions against an appropriate reference. Use the linked sources when accessible; name unavailable evidence and keep the claim provisional. Do not invent a citation, poetic necessity, or license to excuse a mismatch.
-- Treat analyzer output as a candidate. Preserve the original and tool-normalized reading, record the tool/version when used, and inspect its transformations, input coverage, and variant rules. A local checker passes arithmetic only, not pronunciation or meter legality.
-- Quote existing poems accurately and verify attribution when requested. Do not present generated lines as a historical poet's words. If provenance is uncertain, say so.
-- Review adherence to the request, technical validity where applicable, language/meaning, and literary effect separately. Confirm form, dialect, length, editing scope, and preserved voice. Evidence for meter does not prove artistry, originality, or historical attribution; do not promise a "perfect" poem.
+- Verify unfamiliar variants, rhyme rules, dialectal conventions and historical attribution against appropriate sources. Name unavailable evidence and keep claims provisional; do not invent a poetic license or citation.
+- Treat scanner ranking and confidence as heuristic, not accuracy probabilities. Its implemented pronunciation alternatives and metrical forms are incomplete. Inspect normalized readings; two runtimes agreeing does not establish linguistic correctness.
+- If execution is unavailable, explain that limit, give checkable manual analysis where justified, and keep unresolved claims provisional. Never present an unrun scanner or arithmetic check as completed evidence.
+- Use the editor and exporter only through capabilities actually available. Local files/browser storage do not imply host synchronization or future-chat access. Preserve Firas F. Khabour's scanner/Diwan credit and the Amiri font license when copying or rebuilding assets.
+- Review request adherence, technical validity, language/meaning and literary effect separately. Do not promise a perfect poem, originality, attribution or comprehensive accuracy on the basis of a scan.

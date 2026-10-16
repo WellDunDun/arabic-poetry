@@ -51,9 +51,10 @@ poem's darb form and must stay.
 
 ## Practical notes for diagnosis
 
-- If the difference between what the poet wrote and the expected foot is
-  exactly one of the changes above **and** it is permitted at that position in
-  that meter, the line is sound. The scanner's tables encode this.
+- A change above is locally permissible only if licensed in that meter and
+  position. Check the whole line, its reading and applicable ending pair
+  before calling it sound. The scanner encodes selected permissions, not all
+  rules; consult [sources and coverage](SCANNER-SOURCES.md) for uncertain cases.
 - A missing/extra letter inside a watad (`//0`) in the hashw is a كسر.
 - Common real-world breaks: a stray conjunction (و/ف) adding a moving letter;
   dropping a needed tanwin; reading hamzat wasl as qat'; an unintended long

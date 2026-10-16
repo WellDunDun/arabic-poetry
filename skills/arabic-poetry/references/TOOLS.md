@@ -1,6 +1,12 @@
-# Optional tools and arithmetic checks
+# Scanner, arithmetic checker and optional tools
 
 Tools help check a proposed reading; they do not determine literary value. None of the external tools or models below is required by this skill. Do not install a stack or submit a user's unpublished poem to a service simply because it is linked here.
+
+## Use the bundled scanner for supported analysis
+
+The local [scan.py](../scripts/scan.py) takes vocalized verse, derives implemented pronunciation alternatives and ranks metrical forms. It supplies reproducible alignment evidence for identification and repair. Read [SCANNER.md](SCANNER.md) for input, commands, confirmation policy and interpretation, and [SCANNER-SOURCES.md](SCANNER-SOURCES.md) for coverage limits. It is the integrated scanner contributed by Firas F. Khabour; it is not an external service or another skill to install.
+
+Use it when making supported metrical claims and execution is available. Inspect its pronunciation, whole-input coverage and rule permissions. Use the smaller arithmetic helper below when checking an explicitly displayed transcription. Neither checker replaces literary judgment or makes a failed scan proof of prose poetry. Optional [Diwan editing/export](DIWAN.md) uses the same engine family.
 
 ## Audit analyzer evidence
 

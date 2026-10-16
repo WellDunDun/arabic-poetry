@@ -5,14 +5,15 @@
   and بدر شاكر السياب, late 1940s): the line (السطر) is built from **one repeated
   taf'ila**, but the number of feet per line is free and lines need not rhyme
   regularly.
-- **قصيدة النثر**: no meter at all. If the scanner finds no taf'ila that fits
-  most lines, the text may be a prose poem — say so respectfully; it is a form,
-  not a failure.
+- **قصيدة النثر**: not bound to a Khalilian meter. Identify the intended form
+  from the request and text; a failed scanner match alone cannot classify it.
 - Some poets mix taf'ilas from one "circle" (e.g. مستفعلن with فاعلن as in
   البسيط) — the scanner handles one family at a time; mention mixed usage when
   two families each fit different stretches.
 
 ## Taf'ila families (the "صافية" meters used in free verse)
+
+These are the implementation's supported families, not a complete taxonomy of modern Arabic rhythm. The shared المتدارك/الخبب label is an implementation convention; keep theoretical distinctions visible when relevant. See [coverage and sources](SCANNER-SOURCES.md).
 | التفعيلة | البحر | صور الحشو | نهايات السطر الشائعة |
 |---|---|---|---|
 | متفاعلن | الكامل | متَفاعلن ///0//0، متْفاعلن /0/0//0 | متفاعلْ، متفاعلانْ، متفاعلاتن، فعِلن |
@@ -24,11 +25,13 @@
 | مفاعلتن | الوافر | مفاعلتن، مفاعلْتن | فعولن |
 
 ## Rules the scanner applies
-- Each line is a sequence of whole feet; the **last foot of a line** may take an
-  ending form (علة) from the table.
+- A scanned sequence uses the supported feet; a foot may cross a printed
+  line break. Implemented line-ending forms may apply where the reading and
+  intended convention permit them.
 - **التدوير**: a foot may run across a line break — the line's last word is then
   read in wasl (its final vowel not lengthened) and the foot completes in the
-  next line. Marked ↵ in the report; it is legitimate, though some poets avoid it.
+  next line. Marked ↵ in the report. Preserve pronounced sounds, including
+  tanwin nun; distinguish semantic continuation from an actual divided foot.
 - Line length is free; a one-foot line is fine.
 - Rhyme is free; recurring end-sounds may still be pointed out as a strength.
 

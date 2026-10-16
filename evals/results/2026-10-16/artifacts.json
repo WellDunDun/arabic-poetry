@@ -1,0 +1,358 @@
+{
+  "original-only": [
+    {
+      "case_id": "classical-scan",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/original-only/outputs/classical-sadr.json",
+      "sha256": "f271f4189c59e88435e260d1695ca72832ad31c337a56daa6c47e1565f192b81",
+      "bytes": 560
+    },
+    {
+      "case_id": "classical-scan",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/original-only/outputs/classical-sadr.result.json",
+      "sha256": "f37f5b381373f4175b11af1a5015e4deb8d6233032c2cbd111b59c763f7bbe11",
+      "bytes": 665
+    },
+    {
+      "case_id": "classical-scan",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/original-only/outputs/classical-ajuz.json",
+      "sha256": "b1675a41ec5ff0dbac2fdb6a11e93effbafe6d28c2fd503e5df8876bfc378712",
+      "bytes": 551
+    },
+    {
+      "case_id": "classical-scan",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/original-only/outputs/classical-ajuz.result.json",
+      "sha256": "304da59c9918085174e842d38a60cd5e805ea248ea1555be58ff6efabdb5bfff",
+      "bytes": 658
+    },
+    {
+      "case_id": "provisional-reading",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/original-only/outputs/provisional-reading.json",
+      "sha256": "4e3a03f3843847a3e7c0ff323cba46aecc9fded92565e290d7f3a48f4255ba1b",
+      "bytes": 458
+    },
+    {
+      "case_id": "provisional-reading",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/original-only/outputs/provisional-reading.result.json",
+      "sha256": "d6df03ed08bf36a9e4bf61370cd29b961c4813ec9d13ac0b921ceb601c5fea3f",
+      "bytes": 556
+    },
+    {
+      "case_id": "bounded-repair",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/original-only/outputs/repair-before.json",
+      "sha256": "f8811a5d29e757452ab22add5817c1ce70121956bed2c161a6b7a7a6dfccbcb8",
+      "bytes": 630
+    },
+    {
+      "case_id": "bounded-repair",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/original-only/outputs/repair-before.result.json",
+      "sha256": "38dcec4871118211414075f248b192f98331182073242ceb3fa479bb7cab76c7",
+      "bytes": 753
+    },
+    {
+      "case_id": "bounded-repair",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/original-only/outputs/repair-after.json",
+      "sha256": "66d2746ae36a5ecb765344e3256c3efd0ca3af739d8f25bf401afd8126ecc533",
+      "bytes": 513
+    },
+    {
+      "case_id": "bounded-repair",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/original-only/outputs/repair-after.result.json",
+      "sha256": "31dd113462065cc7d5cc321d22d3563b1cc4d75db3ea014570471986f97a1543",
+      "bytes": 637
+    },
+    {
+      "case_id": "tafila-boundary",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/original-only/outputs/tafila-actual.json",
+      "sha256": "6d8c69e8436b5716a6a92f106edcc9b8a2153e4331c9a08d7fc4b814fdbba70e",
+      "bytes": 190
+    },
+    {
+      "case_id": "tafila-boundary",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/original-only/outputs/tafila-actual.result.json",
+      "sha256": "38ff1e2d49ed442193c766c8326c9ccf2f1d5158e9ff415ad1bcc565c802f8e1",
+      "bytes": 293
+    },
+    {
+      "case_id": "tafila-boundary",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/original-only/outputs/tafila-kamil-countercheck.json",
+      "sha256": "7ada50cbdacb8f307311a3b597fe0953be757df6e0f9a4a1bf64194f87184b0b",
+      "bytes": 204
+    },
+    {
+      "case_id": "tafila-boundary",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/original-only/outputs/tafila-kamil-countercheck.result.json",
+      "sha256": "246acf0301fa393e04e44e8bea4993e42120517c680022398012ba0322edb852",
+      "bytes": 419
+    },
+    {
+      "case_id": "workbench-export",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/original-only/outputs/masafa.docx",
+      "sha256": "f92cede29c3e0dcc4e575e82337a743b437d48ddce0172160d15ddbc1e510186",
+      "bytes": 1015
+    },
+    {
+      "case_id": "workbench-export",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/original-only/outputs/masafa.txt",
+      "sha256": "ce91c6a21af52ff75975acada23a805025f4ecf17846911e91163a5de87f817f",
+      "bytes": 76
+    }
+  ],
+  "prosody-only": [
+    {
+      "case_id": "prose-compose",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/prosody-only/outputs/prose-compose.response.md",
+      "sha256": "15e64f696199a5a87e9d7399f2d02e6f67dace5eabc8bd9aa9f21eb123ad1465",
+      "bytes": 351
+    },
+    {
+      "case_id": "close-reading",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/prosody-only/outputs/close-reading.response.md",
+      "sha256": "90917630a70b86ae4a4016e266fbd74f8475f0a89e3cc0c954f29623e245bf88",
+      "bytes": 638
+    },
+    {
+      "case_id": "classical-scan",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/prosody-only/outputs/classical-scan.raw.txt",
+      "sha256": "b71faf2a8500375d35eed2e223f0cc005c732f3b11add0c21b589732764bf249",
+      "bytes": 175
+    },
+    {
+      "case_id": "classical-scan",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/prosody-only/outputs/classical-scan.response.md",
+      "sha256": "f20f251070343ade52fa410f42a440cccac23d351251fe0e5f86d9bae8d8b92b",
+      "bytes": 945
+    },
+    {
+      "case_id": "provisional-reading",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/prosody-only/outputs/provisional-reading.raw.txt",
+      "sha256": "c1b42d28da54c7a5245c112e16077614fe0e24d9f2e5ca29cf3e25a9da94a5cf",
+      "bytes": 48
+    },
+    {
+      "case_id": "provisional-reading",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/prosody-only/outputs/provisional-reading.assumed.txt",
+      "sha256": "814207277b20643893f67fa4aaa0221ef3764248fc5f603964923c3339851269",
+      "bytes": 80
+    },
+    {
+      "case_id": "provisional-reading",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/prosody-only/outputs/provisional-reading.pause.txt",
+      "sha256": "56384b0f6752857098595b915d38829b2a1e4b8ad72373965157f291b056928e",
+      "bytes": 80
+    },
+    {
+      "case_id": "provisional-reading",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/prosody-only/outputs/provisional-reading.response.md",
+      "sha256": "976101c5331a569395c62909d717acd714092d821b2039b08b2bebb9eac945ae",
+      "bytes": 445
+    },
+    {
+      "case_id": "review-only",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/prosody-only/outputs/review-only.raw.txt",
+      "sha256": "4bed95b1da275c45f27237a979719e71af192b85b41c39f60b2db286ad34ef2c",
+      "bytes": 52
+    },
+    {
+      "case_id": "review-only",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/prosody-only/outputs/review-only.draft.txt",
+      "sha256": "12b8d7d461a0ac07dba84bda688ed55b8b3e975ca7a019fabdf9c9831fccc145",
+      "bytes": 84
+    },
+    {
+      "case_id": "review-only",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/prosody-only/outputs/review-only.response.md",
+      "sha256": "39c707b28403e81b89a19b7f643b3e5c349c3081d5cbe5865d9feb439f42ae7a",
+      "bytes": 267
+    },
+    {
+      "case_id": "bounded-repair",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/prosody-only/outputs/bounded-repair.raw.txt",
+      "sha256": "5ad4d8b835d7b0356f47e5cc34aca1939800af12d29eb7244498f3c7c8c38e74",
+      "bytes": 77
+    },
+    {
+      "case_id": "bounded-repair",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/prosody-only/outputs/bounded-repair.fixed.txt",
+      "sha256": "6b74fa3d50af0f080dce2b100399a3c515a38894e4d3302fb37dd37db873c323",
+      "bytes": 64
+    },
+    {
+      "case_id": "bounded-repair",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/prosody-only/outputs/bounded-repair.response.md",
+      "sha256": "5719ae0e8dd48524b9ad464340f6d6cdd814784cef6c618d50ca7a3fe74979d9",
+      "bytes": 1434
+    },
+    {
+      "case_id": "tafila-boundary",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/prosody-only/outputs/tafila-boundary.raw.txt",
+      "sha256": "cc5d06caf9935b9a59d62a4915473c3b066634cd496d91f3012d0cb7df4806ce",
+      "bytes": 24
+    },
+    {
+      "case_id": "tafila-boundary",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/prosody-only/outputs/tafila-boundary.response.md",
+      "sha256": "f39b18a3dc3678956ccf8b8534aa3fc16aeb375852a5ac78ff1a5444108350fa",
+      "bytes": 1095
+    },
+    {
+      "case_id": "workbench-export",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/prosody-only/outputs/masafa.poems.json",
+      "sha256": "624f33bb09e60efe214805d6848066a75540bd04ec40d94d219cd8de00f45413",
+      "bytes": 267
+    },
+    {
+      "case_id": "workbench-export",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/prosody-only/outputs/masafa.txt",
+      "sha256": "ce91c6a21af52ff75975acada23a805025f4ecf17846911e91163a5de87f817f",
+      "bytes": 76
+    },
+    {
+      "case_id": "workbench-export",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/prosody-only/outputs/masafa.diwan.html",
+      "sha256": "8849c163f4e20061391ade36d61f8167140d3491f9ed9f91a9a59403790361fe",
+      "bytes": 171418
+    },
+    {
+      "case_id": "workbench-export",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/prosody-only/outputs/masafa.docx",
+      "sha256": "7b7cb97cd02a2ac3e5b1eca2a6b4d6db4e77c060bd51ffc710668645a2cd0348",
+      "bytes": 2409
+    },
+    {
+      "case_id": "workbench-export",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/prosody-only/outputs/workbench-export.response.md",
+      "sha256": "3b796ca96ec736a6a1984f585057c3dc8c32d2a452927ed15c2dae3b0a847fca",
+      "bytes": 1519
+    },
+    {
+      "case_id": "workbench-export",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/prosody-only/outputs/commands.json",
+      "sha256": "605d1b4c879afaed2228d48b52c72c81a29859a5f794ab9034d7c4ec6707dc66",
+      "bytes": 96225
+    },
+    {
+      "case_id": "workbench-export",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/prosody-only/outputs/finish_trial.py",
+      "sha256": "d468bc10298ac0aaa63acaa4f7998744fe06078bc59dc4fa3c55e161b989b49b",
+      "bytes": 10900
+    }
+  ],
+  "current-both": [
+    {
+      "case_id": "classical-scan",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/current-both/outputs/classical-scan.txt",
+      "sha256": "b71faf2a8500375d35eed2e223f0cc005c732f3b11add0c21b589732764bf249",
+      "bytes": 175
+    },
+    {
+      "case_id": "provisional-reading",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/current-both/outputs/provisional-raw.txt",
+      "sha256": "47135374e39ce39c8a277053f1fbd8c7c70048649343d584c91fc16c506edea1",
+      "bytes": 47
+    },
+    {
+      "case_id": "provisional-reading",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/current-both/outputs/provisional-draft.txt",
+      "sha256": "01931772c22d3356b5ef682f206adc45f1c6140f140f69067e820940df03ce37",
+      "bytes": 77
+    },
+    {
+      "case_id": "review-only",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/current-both/outputs/review-raw.txt",
+      "sha256": "df6f83d3941f655d2cf31bcd3bbac1c874dce8182ba5fcc269e19d70dfc75be0",
+      "bytes": 51
+    },
+    {
+      "case_id": "review-only",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/current-both/outputs/review-draft.txt",
+      "sha256": "ee2a62e89be76cb8d0e84439c602bf73f3b38693dc709bcd228f52cdc1a513b3",
+      "bytes": 83
+    },
+    {
+      "case_id": "bounded-repair",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/current-both/outputs/bounded-before.txt",
+      "sha256": "5ad4d8b835d7b0356f47e5cc34aca1939800af12d29eb7244498f3c7c8c38e74",
+      "bytes": 77
+    },
+    {
+      "case_id": "bounded-repair",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/current-both/outputs/bounded-after.txt",
+      "sha256": "6b74fa3d50af0f080dce2b100399a3c515a38894e4d3302fb37dd37db873c323",
+      "bytes": 64
+    },
+    {
+      "case_id": "tafila-boundary",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/current-both/outputs/tafila.txt",
+      "sha256": "cc5d06caf9935b9a59d62a4915473c3b066634cd496d91f3012d0cb7df4806ce",
+      "bytes": 24
+    },
+    {
+      "case_id": "workbench-export",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/current-both/outputs/masafa.docx",
+      "sha256": "ea56987d1bc3347c8e5a8fec909edd78ded899c8bc390153e8fdc2a12da37959",
+      "bytes": 2409
+    },
+    {
+      "case_id": "workbench-export",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/current-both/outputs/diwan-masafa.html",
+      "sha256": "3070cb075689061eee47d0235a838627ec4774f329bfd2223a5ca463093b651a",
+      "bytes": 171770
+    },
+    {
+      "case_id": "workbench-export",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/current-both/outputs/masafa.json",
+      "sha256": "16fa2a1b83ea12ac6bd0f6ba8cfb48ac949dfd2abda00aab4c5e47ab098b96cc",
+      "bytes": 258
+    },
+    {
+      "case_id": "workbench-export",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/current-both/outputs/masafa.txt",
+      "sha256": "ce91c6a21af52ff75975acada23a805025f4ecf17846911e91163a5de87f817f",
+      "bytes": 76
+    }
+  ],
+  "combined": [
+    {
+      "case_id": "provisional-reading",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/combined/outputs/provisional-reading.txt",
+      "sha256": "56384b0f6752857098595b915d38829b2a1e4b8ad72373965157f291b056928e",
+      "bytes": 80
+    },
+    {
+      "case_id": "tafila-boundary",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/combined/outputs/tafila-boundary.txt",
+      "sha256": "cc5d06caf9935b9a59d62a4915473c3b066634cd496d91f3012d0cb7df4806ce",
+      "bytes": 24
+    },
+    {
+      "case_id": "workbench-export",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/combined/outputs/masafa.docx",
+      "sha256": "38b0ab4a48365cb952d4172f5552e6e6cbc7cf9abf6921e4e2654cff85947cd1",
+      "bytes": 2409
+    },
+    {
+      "case_id": "workbench-export",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/combined/outputs/masafa.txt",
+      "sha256": "ce91c6a21af52ff75975acada23a805025f4ecf17846911e91163a5de87f817f",
+      "bytes": 76
+    },
+    {
+      "case_id": "workbench-export",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/combined/outputs/masafa.json",
+      "sha256": "928f88887474a831c9522c5f77ab40d0763941224004e9dc35179a3005151578",
+      "bytes": 194
+    },
+    {
+      "case_id": "workbench-export",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/combined/outputs/diwan/diwan.html",
+      "sha256": "b6c36c6648183f3cf35283202d076a2bc9d589725db2d3e7098bf5f1f04fbd34",
+      "bytes": 171509
+    },
+    {
+      "case_id": "workbench-export",
+      "path": "/private/tmp/arabic-poetry-unify-20261016.KklyBN/trials/combined/outputs/diwan/OFL.txt",
+      "sha256": "51aac3e37ad762f728297f8638a27cb71e85e63649cc7594b674bf96f85b92bb",
+      "bytes": 4385
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "suite_id": "poetry-consolidation-v1",
+  "date": "2026-10-16",
+  "timezone": "Asia/Amman",
+  "base_commit": "3286f489881b9fbc5bb2fc2bca7dd064835b1a4c",
+  "corpus_commit": "e1f91bf",
+  "prompts_sha256": "2c4c204c2cc0e233a8360ff2622a0540dbef52e46c33e18195e8ebe0755c0dac",
+  "rubric_sha256": "d2db0367abfd0b788a99fb6a50eff178fff488963f132e06b29940bd17ed981a",
+  "model": "Inherited parent model/configuration in four fresh collaboration agents; no model overrides. Exact backend identifier and reasoning level not exposed in the execution record.",
+  "sampling": "One batch per condition; eight sequential requests share that agent context. Other batches, expected answers and proposed changes withheld.",
+  "capabilities": "Local filesystem, Python and Node only; no network, browser, host database/sampling/download APIs, publishing, installs or global fonts.",
+  "grading": "Lead semantic review against frozen criteria; reviewer knew condition names. Not a blind or statistical evaluation.",
+  "environment": {
+    "python": "3.14.2",
+    "node": "v25.8.1"
+  },
+  "conditions": {
+    "original-only": {
+      "record": "original-only.responses.json",
+      "record_sha256": "666583965446a674be50b90a084af50b5e4557962f601613ea1d344656dac501",
+      "package_manifest": "original-only.package-hashes.json",
+      "package_manifest_sha256": "4dc4782e1864d84fda43f0875fb903254f26c5280905aac84cf87b2ea6b542da",
+      "source": "3286f489881b9fbc5bb2fc2bca7dd064835b1a4c",
+      "notes": "No source modifications reported; snapshot hashes verified."
+    },
+    "prosody-only": {
+      "record": "prosody-only.responses.json",
+      "record_sha256": "59ca2d2c11899351c8e44f2086a5d607191a68c5122b23e319924a12f887bafa",
+      "package_manifest": "prosody-only.package-hashes.json",
+      "package_manifest_sha256": "7eba96b679b71007cd2318d03b2b4577584abadd93269905af0002c2894590e3",
+      "source": "3286f489881b9fbc5bb2fc2bca7dd064835b1a4c",
+      "notes": "No source modifications reported; snapshot hashes verified."
+    },
+    "current-both": {
+      "record": "current-both.responses.json",
+      "record_sha256": "5c5a5216ce9eb5102275f08e0dd72db079af9aee61a18d7c834a344bc316e764",
+      "package_manifest": "current-both.package-hashes.json",
+      "package_manifest_sha256": "a79fe31e22464060590c12d220f099938f6d5e69d16ea2267746e22f5ddf1e8f",
+      "source": "3286f489881b9fbc5bb2fc2bca7dd064835b1a4c",
+      "notes": "Original source bytes unchanged; initial Python calls created bytecode caches and exporter used a default transient directory before rerun under outputs."
+    },
+    "combined": {
+      "record": "combined.responses.json",
+      "record_sha256": "4981ebc9de5f10d7c8545e7a3062fe4afc4c38959c5a5fe6b682c7ec1ce53371",
+      "package_manifest": "combined.package-hashes.json",
+      "package_manifest_sha256": "f9cdc77303358d797baa9812b78a5e7153f6ca4904d525104ac9e4928ed2ac13",
+      "source": "frozen package snapshot",
+      "notes": "No source modifications reported; snapshot hashes verified."
+    }
+  }
+}

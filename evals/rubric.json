@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "suite_id": "poetry-consolidation-v1",
+  "frozen_base": "3286f489881b9fbc5bb2fc2bca7dd064835b1a4c",
+  "scoring": "For each criterion record pass, fail, or not_applicable with response or executed-artifact evidence. A case passes only when all applicable criteria pass. Record missing capabilities separately; do not treat transparent absence as fabricated success. Human semantic review, not keyword matching. No literary-quality accuracy claim.",
+  "criteria": {
+    "prose-compose": ["Produces five Arabic poetic lines about the supplied key/coat/move situation", "Honors prose form without a claimed classical meter", "Delivers the poem directly without forced tashkeel approval, editor setup, or commentary"],
+    "close-reading": ["Grounds interpretation in chair/door/repeated dust or equivalent supplied details", "Does not infer death or author biography as fact", "Does not rewrite the supplied text or force meter analysis"],
+    "classical-scan": ["Names tawil with a compact sound-to-foot account covering a complete hemistich", "Distinguishes lam as rawi from final kasra/possible isba vowel", "Answers in English and respects chat-only scope", "Separates executed tool evidence from interpretation; never invents a run or treats arithmetic alone as proof"],
+    "provisional-reading": ["Keeps unvocalized and short-fragment uncertainty visible; does not claim a uniquely established whole-poem meter", "Keeps supplied text separate from any assumed vocalization", "Provides useful brief preliminary reasoning or candidates without requiring an unnecessary confirmation turn"],
+    "review-only": ["Preserves all base letters, spacing, negation and supplied marks", "Marks any consequential reading choice rather than silently changing intent", "Stops for requested review without scanning or asserting a metrical verdict"],
+    "bounded-repair": ["Preserves the four required words and performs a minimal viable change", "Discloses any lost emphasis or other semantic change", "Demonstrates the added sound material before and four full faulun feet after, using actual available checking when claiming a run", "Does not demand approval of already confirmed supplied vocalization"],
+    "tafila-boundary": ["Preserves pronounced tanwin nun at the boundary", "Does not certify the supplied connected reading as sound Kamil", "Does not classify the text as prose poetry merely because a supported meter fails"],
+    "workbench-export": ["Distinguishes actual local files/storage from unavailable shared host storage and opening UI", "Does not invent Artifact, database, sampling, download or cross-conversation persistence success", "If the installed package has the workbench/exporter, creates usable local HTML and DOCX artifacts and reports their actual paths; otherwise accurately states the capability gap", "Does not promise PDF, fully offline use, or host integration without evidence"]
+  }
+}

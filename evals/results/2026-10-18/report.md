@@ -1,6 +1,6 @@
 # Fresh frozen-suite trial — 2026-10-18
 
-The current combined candidate is `2411c2af7c12e10c9102b2c38f3a460b44eed4d1` (combined-pr2). This trial follows the merge of Firas Khabour’s PR #4. The three comparison packages remain pinned to `3286f489881b9fbc5bb2fc2bca7dd064835b1a4c`: “current-both” is the suite’s historical condition name, not a claim that it represents today’s main. The requests and criteria remain pinned to `e1f91bf645fd0e06fc4fd94f89f67ca2cb00ee3a`.
+The current combined candidate is `f87011d9d70d5f09810ce2e7e8c1df770b7e3960` (combined-pr3). This trial follows the merge of Firas Khabour’s PR #4. The three comparison packages remain pinned to `3286f489881b9fbc5bb2fc2bca7dd064835b1a4c`: “current-both” is the suite’s historical condition name, not a claim that it represents today’s main. The requests and criteria remain pinned to `e1f91bf645fd0e06fc4fd94f89f67ca2cb00ee3a`.
 
 | Condition | Cases meeting all frozen criteria |
 | --- | --- |

@@ -41,13 +41,13 @@
     },
     "combined": {
       "record": "combined.responses.json",
-      "record_sha256": "11b4426bdebab05e2104756dbe056ec5f9857d4d6994a1f1ec8efdb5245d8887",
+      "record_sha256": "30204bd3976519d73e03a7a29c3050a96a57621fb019e3223d0fd549cf9a5274",
       "package_manifest": "combined.package-hashes.json",
-      "package_manifest_sha256": "f7e652cc7620b481c24abb614ffc2501d05d3fef7b15fb24f5fb11ec1b3bd63d",
-      "source": "2411c2af7c12e10c9102b2c38f3a460b44eed4d1",
+      "package_manifest_sha256": "28b228c5a525245d9279e8b737aaca5af09e21bbd42067efcc79f6b215613563",
+      "source": "f87011d9d70d5f09810ce2e7e8c1df770b7e3960",
       "notes": "Fresh 2026-10-18 trial. Exact source bytes verified; see combined.execution-notes.json for execution failures, capture and capability limits."
     }
   },
-  "artifacts_sha256": "b0dea3d2893bb2747ed1fe07387398279f93490df213fe5ead230e0926e923a8",
+  "artifacts_sha256": "76ed26bc1a196a3feb6b0cf609517792e09eef02bdaf5ae9b895d3cfcc486e44",
   "supersedes_for_current_package": "2026-10-16 records remain unchanged as historical evidence."
 }

@@ -51,7 +51,7 @@
     ],
     "exit_code": 0,
     "stdout": "",
-    "stderr": "..............\n----------------------------------------------------------------------\nRan 14 tests in 0.447s\n\nOK\n"
+    "stderr": "..............\n----------------------------------------------------------------------\nRan 14 tests in 0.450s\n\nOK\n"
   },
   {
     "command": [
@@ -61,6 +61,30 @@
     "exit_code": 0,
     "stdout": "PASS workbench state: revision-safe saves, isolated conversations, stale responses, preserved wording/marks, line identities/metadata and word context\n",
     "stderr": ""
+  },
+  {
+    "command": [
+      "node",
+      "skills/arabic-poetry/tests/workbench_host.js"
+    ],
+    "exit_code": 0,
+    "stdout": "PASS workbench host: portable exchange, invalid input, cancellation, native download, optional host adapters\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "skills/arabic-poetry/scripts",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ".....\n----------------------------------------------------------------------\nRan 5 tests in 2.540s\n\nOK\n"
   },
   {
     "command": [
@@ -75,7 +99,7 @@
     ],
     "exit_code": 0,
     "stdout": "",
-    "stderr": "...............\n----------------------------------------------------------------------\nRan 15 tests in 0.395s\n\nOK\n"
+    "stderr": "...............\n----------------------------------------------------------------------\nRan 15 tests in 0.362s\n\nOK\n"
   },
   {
     "command": [
@@ -102,7 +126,7 @@
       "skills/arabic-poetry/scripts/build_workbench.py"
     ],
     "exit_code": 0,
-    "stdout": "built /private/tmp/poetry-unify-after-pr4-20261018/skills/arabic-poetry/scripts/../assets/workbench/diwan.html 212 KB\nRebuilt bundle SHA256 unchanged: 4d41148c71e8a8fdebc9ef9ad42f195acea1f8fcb2959925eedba1f39b2b4210\n",
+    "stdout": "built /private/tmp/poetry-portable-after-pr4-20261018/skills/arabic-poetry/scripts/../assets/workbench/diwan.html 221 KB\nRebuilt bundle SHA256 unchanged: bcbb8aa95775da904db1d41e0a24bcaead960bd8159478f869f9e6c9875e9e8d\n",
     "stderr": ""
   },
   {

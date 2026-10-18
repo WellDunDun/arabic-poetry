@@ -643,148 +643,70 @@
   ],
   "combined": [
     {
-      "case_id": "prose-compose",
-      "path": "/private/tmp/poetry-evals-20261018/outputs/combined-pr2/prose-compose/response.txt",
-      "sha256": "53667598e3a09897ee431e23f08adeef18a6660b203d9c3032e885ffb3f3dba7",
-      "bytes": 289
-    },
-    {
-      "case_id": "close-reading",
-      "path": "/private/tmp/poetry-evals-20261018/outputs/combined-pr2/close-reading/response.txt",
-      "sha256": "5896aeadd785d905b3c68e9e12b715c391abb53f681f590b431e696f0587531e",
-      "bytes": 989
-    },
-    {
       "case_id": "classical-scan",
-      "path": "/private/tmp/poetry-evals-20261018/outputs/combined-pr2/classical-scan/input.txt",
+      "path": "/private/tmp/poetry-evals-20261018/outputs/combined-pr3/classical-scan.txt",
       "sha256": "b71faf2a8500375d35eed2e223f0cc005c732f3b11add0c21b589732764bf249",
       "bytes": 175
     },
     {
-      "case_id": "classical-scan",
-      "path": "/private/tmp/poetry-evals-20261018/outputs/combined-pr2/classical-scan/response.txt",
-      "sha256": "7cce1dc61e5adbffd5f09663a870d26b9488370d4b677d63158f43f56c77642c",
-      "bytes": 1448
-    },
-    {
       "case_id": "provisional-reading",
-      "path": "/private/tmp/poetry-evals-20261018/outputs/combined-pr2/provisional-reading/input.txt",
+      "path": "/private/tmp/poetry-evals-20261018/outputs/combined-pr3/provisional-reading.txt",
       "sha256": "814207277b20643893f67fa4aaa0221ef3764248fc5f603964923c3339851269",
       "bytes": 80
     },
     {
       "case_id": "provisional-reading",
-      "path": "/private/tmp/poetry-evals-20261018/outputs/combined-pr2/provisional-reading/paused-reading.txt",
+      "path": "/private/tmp/poetry-evals-20261018/outputs/combined-pr3/provisional-reading-pause.txt",
       "sha256": "56384b0f6752857098595b915d38829b2a1e4b8ad72373965157f291b056928e",
       "bytes": 80
     },
     {
-      "case_id": "provisional-reading",
-      "path": "/private/tmp/poetry-evals-20261018/outputs/combined-pr2/provisional-reading/response.txt",
-      "sha256": "48ada8208f4f588d18d19902fa24320cb2b5eefb0506d45e7db5ec20c6e8a1dd",
-      "bytes": 633
-    },
-    {
-      "case_id": "review-only",
-      "path": "/private/tmp/poetry-evals-20261018/outputs/combined-pr2/review-only/response.txt",
-      "sha256": "0787be0e37e182a1b31802ebb9567dbc34cc0a5af90b828b0d68d463ca4f6a01",
-      "bytes": 84
+      "case_id": "bounded-repair",
+      "path": "/private/tmp/poetry-evals-20261018/outputs/combined-pr3/bounded-repair-before.txt",
+      "sha256": "5ad4d8b835d7b0356f47e5cc34aca1939800af12d29eb7244498f3c7c8c38e74",
+      "bytes": 77
     },
     {
       "case_id": "bounded-repair",
-      "path": "/private/tmp/poetry-evals-20261018/outputs/combined-pr2/bounded-repair/response.txt",
-      "sha256": "72e764079cff9ec1d4d086a5861444918c2d10eccf0e45ad74fd0ca3248cad03",
-      "bytes": 1478
-    },
-    {
-      "case_id": "bounded-repair",
-      "path": "/private/tmp/poetry-evals-20261018/outputs/combined-pr2/bounded-repair/revised.txt",
+      "path": "/private/tmp/poetry-evals-20261018/outputs/combined-pr3/bounded-repair-after.txt",
       "sha256": "6b74fa3d50af0f080dce2b100399a3c515a38894e4d3302fb37dd37db873c323",
       "bytes": 64
     },
     {
       "case_id": "tafila-boundary",
-      "path": "/private/tmp/poetry-evals-20261018/outputs/combined-pr2/tafila-boundary/input.txt",
+      "path": "/private/tmp/poetry-evals-20261018/outputs/combined-pr3/tafila-boundary.txt",
       "sha256": "cc5d06caf9935b9a59d62a4915473c3b066634cd496d91f3012d0cb7df4806ce",
       "bytes": 24
     },
     {
       "case_id": "tafila-boundary",
-      "path": "/private/tmp/poetry-evals-20261018/outputs/combined-pr2/tafila-boundary/response.txt",
-      "sha256": "73b93794a137246e13f5e4b5eb8b75c1233d9e4d2d09f17505d151927fa9238b",
-      "bytes": 951
+      "path": "/private/tmp/poetry-evals-20261018/outputs/combined-pr3/tafila-boundary-connected.txt",
+      "sha256": "b96fcfc1432eaab4d1fcee0291149227f828ed28956087248f5769e85ecec19e",
+      "bytes": 24
     },
     {
       "case_id": "workbench-export",
-      "path": "/private/tmp/poetry-evals-20261018/outputs/combined-pr2/workbench-export/check_local_files.py",
-      "sha256": "9c5f749e71dae317819facd9912f19ecafe796b65440ef04c42a3a11615b24a4",
-      "bytes": 1075
+      "path": "/private/tmp/poetry-evals-20261018/outputs/combined-pr3/poems.json",
+      "sha256": "36c8f933730804fd88290ed96496cc090a71a7dc7c7a55f5762460199aee34cf",
+      "bytes": 270
     },
     {
       "case_id": "workbench-export",
-      "path": "/private/tmp/poetry-evals-20261018/outputs/combined-pr2/workbench-export/create_local_files.py",
-      "sha256": "61805ab226142d309d41e16c01f56ed7553dad35f998870f80d95baafc1a5479",
-      "bytes": 1299
+      "path": "/private/tmp/poetry-evals-20261018/outputs/combined-pr3/diwan-masafa.html",
+      "sha256": "fc659074c5f69274d57e9741bfeaa966723430a68217e158afbf994db1901793",
+      "bytes": 246081
     },
     {
       "case_id": "workbench-export",
-      "path": "/private/tmp/poetry-evals-20261018/outputs/combined-pr2/workbench-export/diwan.html",
-      "sha256": "ff9cee9df675034cb3aab514438f341fd02df3ca949d534c05fb3342a7300a41",
-      "bytes": 236291
-    },
-    {
-      "case_id": "workbench-export",
-      "path": "/private/tmp/poetry-evals-20261018/outputs/combined-pr2/workbench-export/inline-script-0.js",
-      "sha256": "92c5d9701e153231ac8e9e595094eddc7f7735e30f78b45f904228cbe408cd5c",
-      "bytes": 34114
-    },
-    {
-      "case_id": "workbench-export",
-      "path": "/private/tmp/poetry-evals-20261018/outputs/combined-pr2/workbench-export/inline-script-2.js",
-      "sha256": "db27c8295a2ecf9b41b325f46bccb70d4d16a81ad148a09b6632c4d3b239e3de",
-      "bytes": 48954
-    },
-    {
-      "case_id": "workbench-export",
-      "path": "/private/tmp/poetry-evals-20261018/outputs/combined-pr2/workbench-export/inline-script-3.js",
-      "sha256": "2ea4c86e164d5bd5d31a0a08e523a5c0a445ffd5bb49c5b9fd6a1c811c17f08b",
-      "bytes": 15834
-    },
-    {
-      "case_id": "workbench-export",
-      "path": "/private/tmp/poetry-evals-20261018/outputs/combined-pr2/workbench-export/inline-script-4.js",
-      "sha256": "f277f8c5dc6d389140096aa6ea5e41e62839721eb9834360f5818f404539bd7c",
-      "bytes": 96052
-    },
-    {
-      "case_id": "workbench-export",
-      "path": "/private/tmp/poetry-evals-20261018/outputs/combined-pr2/workbench-export/masafa-source.txt",
-      "sha256": "af35008d528fd7e4c77126c9a90480bc0fdcdc691a8c798a9e14919a94f77d9c",
-      "bytes": 75
-    },
-    {
-      "case_id": "workbench-export",
-      "path": "/private/tmp/poetry-evals-20261018/outputs/combined-pr2/workbench-export/masafa.docx",
-      "sha256": "c1586ff7ecd0109261f024d1356374560f02aba35f1f3b75d857d034fd279287",
+      "path": "/private/tmp/poetry-evals-20261018/outputs/combined-pr3/masafa.docx",
+      "sha256": "49b264c055c90f62a2d6f93fdfd55919c5258eaab1b1b730bd1b3a3931d7a023",
       "bytes": 2425
     },
     {
       "case_id": "workbench-export",
-      "path": "/private/tmp/poetry-evals-20261018/outputs/combined-pr2/workbench-export/masafa.txt",
+      "path": "/private/tmp/poetry-evals-20261018/outputs/combined-pr3/masafa.txt",
       "sha256": "ce91c6a21af52ff75975acada23a805025f4ecf17846911e91163a5de87f817f",
       "bytes": 76
-    },
-    {
-      "case_id": "workbench-export",
-      "path": "/private/tmp/poetry-evals-20261018/outputs/combined-pr2/workbench-export/poems.json",
-      "sha256": "e3e154c2fe200d2059ab3fff10734d230fe45ee81a94c872f0e3b8623827ea72",
-      "bytes": 256
-    },
-    {
-      "case_id": "workbench-export",
-      "path": "/private/tmp/poetry-evals-20261018/outputs/combined-pr2/workbench-export/response.txt",
-      "sha256": "b2e34f65ed296e618d08d13ab7d2ea08bc9c98d36dd15a9b51cb995317c8ffcf",
-      "bytes": 1755
     }
   ]
 }

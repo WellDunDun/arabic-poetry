@@ -1,41 +1,52 @@
 {
   "condition": "combined",
-  "package": "/private/tmp/poetry-evals-20261018/packages/combined-pr2/skills/arabic-poetry",
-  "model": "GPT-6-based Codex, as identified by system instructions; exact serving model identifier not exposed.",
-  "runtime": {
-    "python": "Python 3.14.2",
-    "node": "v25.8.1",
-    "environment": "macOS filesystem environment; zsh exec tool; Python and Node locally executed"
+  "package": "/private/tmp/poetry-evals-20261018/packages/combined-pr3/skills/arabic-poetry",
+  "prompts": "/private/tmp/poetry-evals-20261018/prompts.json",
+  "output_directory": "/private/tmp/poetry-evals-20261018/outputs/combined-pr3",
+  "execution": "One shared-context batch of eight cases in supplied order. Same inherited model; no model override or subagents.",
+  "allowed_capabilities_used": [
+    "local filesystem reads of the assigned package and prompt file",
+    "Python standard library with PYTHONDONTWRITEBYTECODE=1",
+    "local Node invoked by the shipped Word exporter"
+  ],
+  "unused_or_unavailable": [
+    "network",
+    "browser opening or browser automation",
+    "external host APIs",
+    "installation",
+    "publishing",
+    "global font changes",
+    "visual rendering or visual validation",
+    "shared storage/database"
+  ],
+  "provenance": {
+    "skill_author_credit": "Firas F. Khabour scanner and Diwan; HTML footer credit preserved",
+    "editor_copy": "Shipped diwan.html copied to output; only empty local-collection fallback seeded with the supplied poem. Package remained read-only.",
+    "word_export": "Shipped scripts/export_book.py invokes shipped Node exporter; no PDF requested or attempted. TMPDIR set under output directory.",
+    "text_fidelity": "All exact original requests retained from prompts.json; supplied marks preserved; extra provisional vocalizations stored in separate files.",
+    "evaluation_inputs": "No rubric, expected answers, other conditions, repository research, or other trial outputs read. No grading performed.",
+    "context_limit": "Inherited root conversation/system context exists; the trial read only assigned package and prompts plus its own outputs. This is not a claim of a newly empty model context."
   },
-  "limits": [
-    "No network or browser calls, host APIs, publishing, installation or global font writes.",
-    "No editor opening or visual rendering was possible within the allowed interfaces.",
-    "DOCX checked as a ZIP with parseable XML and exact supplied text; no visual layout check.",
-    "The copied editor still includes its shipped external CDN references; they were not fetched.",
-    "Local files and browser-local storage do not establish cross-conversation synchronization.",
-    "Scanner results are heuristic alignment evidence; outputs were checked against the actual supplied readings.",
-    "Subprocess receipts in case.commands record actual argv, exit_code, stdout and stderr for scanner/export/check commands. Initial package/reference reads used direct exec tool output rather than separate subprocess stream capture; their exact tool outputs remain in the evaluation transcript."
+  "evidence_limits": [
+    "Scanner scores are heuristic alignment, not accuracy probabilities or literary acceptance.",
+    "DOCX inspection checks ZIP/XML and literal text, not layout.",
+    "HTML was written but never opened; no browser-local poem storage was actually exercised.",
+    "Poems are stored locally in JSON/text/DOCX, not synchronized across chats."
   ],
-  "shared_context_caveat": "This delegated run inherited shared parent conversation and repository/agent instructions, so it is not a fresh isolated model session. Only the assigned combined package, supplied prompt file and this condition output were read for evaluation; no sibling package/output, rubric, grade, research or review record was consulted.",
-  "package_mutation": "The supplied package was read and executed without edits. PYTHONDONTWRITEBYTECODE=1 was set for execution. All new inputs and artifacts are under this condition output directory.",
-  "case_order": [
-    "prose-compose",
-    "close-reading",
-    "classical-scan",
-    "provisional-reading",
-    "review-only",
-    "bounded-repair",
-    "tafila-boundary",
-    "workbench-export"
+  "receipts_scope": "responses.json commands contain actual subprocess command argv, exit code, stdout, stderr for scanner/export/verification calls, including all their failures (none). Package discovery and file-write orchestration appeared in tool transcript; they are not represented as independent case subprocess receipts.",
+  "read_resources": [
+    "SKILL.md",
+    "references/CRAFT.md",
+    "references/READING.md",
+    "references/PROSODY.md",
+    "references/SCANNER.md",
+    "references/DIWAN.md",
+    "references/free-verse.md",
+    "references/fixing.md",
+    "references/meters.md (targeted matches)",
+    "references/zihafat.md (targeted matches)",
+    "scripts/export_book.py",
+    "assets/workbench/diwan.html"
   ],
-  "grading": "No grades assigned.",
-  "output_generation_command": {
-    "command": [
-      "python3",
-      "/private/tmp/poetry-evals-20261018/outputs/combined-pr2/write_responses.py"
-    ],
-    "exit_code": 0,
-    "stdout": "wrote /private/tmp/poetry-evals-20261018/outputs/combined-pr2/responses.json\nwrote /private/tmp/poetry-evals-20261018/outputs/combined-pr2/execution-notes.json\nVerified all eight requests in order, recorded commands, and artifact paths.\n",
-    "stderr": ""
-  }
+  "command_failure_count": 0
 }

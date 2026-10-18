@@ -7,6 +7,9 @@
 <style>
 /* Layout: a manuscript sheet (verses + their scansion) beside a narrow reading desk (meter, rhyme, review). */
 :root {
+  --tip-accent: #8fd9cf; --tip-bad: #ff9b8f; --tip-ok: #9be3a6;
+  --ice: #6cc3b8; --ice-glow: rgb(108 195 184 / .22); --pop-bg: rgb(255 255 255 / .9);
+  --pop: #ffffff; --pop-edge: #d3d9d5; --pop-hover: #eef4f2; --pop-shadow: 0 8px 24px rgb(20 30 28 / .14), 0 1px 3px rgb(20 30 28 / .08);
   --paper: #f5f6f3; --sheet: #fcfcfa; --ink: #1d2528; --ink-2: #55615f; --rule: #dfe3de;
   --accent: #0e6b66; --accent-soft: #dcefec; --flag: #b8741a; --flag-soft: #f8ebd4;
   --bad: #b3261e; --bad-soft: #f9e1de; --good: #2c7a4b; --good-soft: #e0f1e6;
@@ -16,10 +19,16 @@
   --r: 10px;
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --tip-accent: #8fd9cf; --tip-bad: #ff9b8f; --tip-ok: #9be3a6;
+  --ice: #5fc9bc; --ice-glow: rgb(95 201 188 / .2); --pop-bg: rgb(30 40 42 / .92);
+  --pop: #1f292b; --pop-edge: #354245; --pop-hover: #283537; --pop-shadow: 0 10px 28px rgb(0 0 0 / .5), 0 1px 3px rgb(0 0 0 / .4);
   --paper: #121718; --sheet: #182022; --ink: #e6ecea; --ink-2: #9aa8a5; --rule: #2a3436;
   --accent: #4fb9ae; --accent-soft: #173533; --flag: #e3a64b; --flag-soft: #3a2c15;
   --bad: #f08a80; --bad-soft: #3d1d1a; --good: #6fcf97; --good-soft: #17301f; --gold: #e2b75a; color-scheme: dark } }
 :root[data-theme="dark"] {
+  --tip-accent: #8fd9cf; --tip-bad: #ff9b8f; --tip-ok: #9be3a6;
+  --ice: #5fc9bc; --ice-glow: rgb(95 201 188 / .2); --pop-bg: rgb(30 40 42 / .92);
+  --pop: #1f292b; --pop-edge: #354245; --pop-hover: #283537; --pop-shadow: 0 10px 28px rgb(0 0 0 / .5), 0 1px 3px rgb(0 0 0 / .4);
   --paper: #121718; --sheet: #182022; --ink: #e6ecea; --ink-2: #9aa8a5; --rule: #2a3436;
   --accent: #4fb9ae; --accent-soft: #173533; --flag: #e3a64b; --flag-soft: #3a2c15;
   --bad: #f08a80; --bad-soft: #3d1d1a; --good: #6fcf97; --good-soft: #17301f; --gold: #e2b75a; color-scheme: dark }
@@ -84,6 +93,14 @@ ol.lines { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px }
 .line { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 8px; padding: 10px 0 12px; border-bottom: 1px solid var(--rule) }
 .line:last-child { border-bottom: 0 }
 .num { font-size: 13px; color: var(--ink-2); padding-top: 10px; text-align: center; font-variant-numeric: tabular-nums }
+.num .lbtns { display: flex; flex-direction: column; align-items: center; gap: 4px; margin-top: 8px; opacity: 0; transition: opacity .12s }
+.line:hover .lbtns, .line:focus-within .lbtns { opacity: 1 }
+@media (hover: none) { .num .lbtns { opacity: 1 } }
+.num .lbtns button { width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--rule); background: var(--sheet); color: var(--ink-2);
+  font-size: 15px; line-height: 1; padding: 0; display: grid; place-items: center; cursor: pointer }
+.num .lbtns button:hover, .num .lbtns button:focus-visible { border-color: var(--accent); color: var(--accent); outline: none }
+.num .lbtns button[data-act="delline"]:hover { border-color: var(--bad); color: var(--bad) }
+.line.editing { background: var(--accent-soft); border-radius: 10px; padding-inline: 6px }
 .num .dot { display: block; width: 8px; height: 8px; border-radius: 50%; margin: 6px auto 0; background: var(--good) }
 .line.broken .num .dot { background: var(--bad) }
 .verse { font-family: var(--verse); font-size: clamp(21px, 2.6vw, 27px); line-height: 2; display: flex; flex-wrap: wrap; gap: 0 .32em; align-items: baseline; min-width: 0 }
@@ -108,6 +125,33 @@ ol.lines { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px }
 .foot .nm { font-family: var(--verse); font-size: 15px; color: var(--accent) }
 .foot .lt { font-family: var(--verse); font-size: 13px; color: var(--ink-2) }
 .foot.bad { border-color: var(--bad); background: var(--bad-soft) }
+.foot[data-tip] { cursor: help } .foot[data-tip]:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
+#ftip { position: fixed; z-index: 60; max-width: min(330px, calc(100vw - 16px)); background: var(--ink); color: var(--sheet);
+  border-radius: 8px; box-shadow: 0 6px 18px rgb(0 0 0 / .25); padding: 8px 10px 7px; font-size: 12.5px; direction: rtl; pointer-events: none }
+#ftip::before { content: ''; position: absolute; top: -5px; left: var(--cx, 50%); width: 10px; height: 10px; background: inherit; transform: translateX(-50%) rotate(45deg); border-radius: 2px }
+#ftip.up::before { top: auto; bottom: -5px }
+#ftip .th { font-weight: 600; font-size: 12px; opacity: .75; margin-bottom: 3px }
+#ftip .got { margin-bottom: 6px } #ftip .got b { letter-spacing: .12em }
+#ftip.bad .got b { color: var(--tip-bad) }
+#ftip table { border-collapse: collapse; width: 100% }
+#ftip th { font-weight: 500; font-size: 11px; opacity: .6; text-align: right; padding: 0 6px 2px }
+#ftip td { padding: 2px 6px; text-align: right; white-space: nowrap; border-top: 1px solid color-mix(in srgb, var(--sheet) 14%, transparent) }
+#ftip td.nm { font-family: var(--verse); font-size: 15px; color: var(--tip-accent) }
+#ftip td.sy { letter-spacing: .12em; font-weight: 600 }
+#ftip td.k { opacity: .75 }
+#ftip tr.hit td { color: var(--tip-ok) } #ftip tr.hit td.nm { color: var(--tip-ok) }
+#ftip i { font-style: normal; opacity: .6; font-size: 10.5px; margin-inline-start: 4px }
+/* ice frame shared by the menus and the hover card */
+.cmenu, .pop, #ftip { border: 1px solid var(--ice) !important;
+  box-shadow: 0 0 0 3px var(--ice-glow), inset 0 1px 0 rgb(255 255 255 / .35), 0 12px 30px rgb(0 0 0 / .22) !important;
+  -webkit-backdrop-filter: blur(10px) saturate(1.2); backdrop-filter: blur(10px) saturate(1.2) }
+.cmenu, .pop { background: linear-gradient(160deg, rgb(255 255 255 / .1), transparent 40%), var(--pop-bg) !important }
+.cmenu.sub .hd { background: var(--pop) }
+#ftip { background: linear-gradient(160deg, #1b4244 0%, #12302f 45%, #0d2324 100%) !important; color: #e3f1ee !important;
+  box-shadow: 0 0 0 3px var(--ice-glow), inset 0 1px 0 rgb(255 255 255 / .12), 0 12px 30px rgb(0 0 0 / .35) !important }
+#ftip::before { background: #1b4244 !important; border-top: 1px solid var(--ice); border-left: 1px solid var(--ice) }
+#ftip.up::before { background: #0d2324 !important; border: 0; border-bottom: 1px solid var(--ice); border-right: 1px solid var(--ice) }
+#ftip td { border-top-color: rgb(227 241 238 / .12) !important }
 .foot.bad .nm, .foot.bad .syl { color: var(--bad) }
 .foot.cont { border-style: dashed; opacity: .7 }
 .half { width: 100%; height: 0 }
@@ -118,6 +162,25 @@ ol.lines { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px }
 /* alternatives */
 .alts { margin-top: 10px; border: 1px solid var(--rule); border-radius: var(--r); overflow-x: auto; background: var(--paper) }
 .alts table { width: 100%; border-collapse: collapse; font-size: 14px }
+.alist { display: grid; gap: 8px; padding: 10px }
+.acard { border: 1px solid var(--rule); border-radius: 10px; background: var(--sheet); padding: 10px 14px 8px; display: grid; gap: 6px }
+.acard.broken { opacity: .8; border-style: dashed }
+.arow { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: start; column-gap: 14px }
+.arow.one { grid-template-columns: minmax(0, 1fr) }
+.ah { display: grid; gap: 5px; justify-items: center; min-width: 0 }
+.av { font-family: var(--verse); font-size: 21px; line-height: 1.6; text-align: center }
+.av mark { background: transparent; color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 1px }
+.asep { color: var(--ink-2); font-size: 15px; padding-top: 8px }
+.afeet { display: flex; flex-wrap: wrap; gap: 4px; justify-content: center }
+.af { display: inline-grid; justify-items: center; font-size: 11px; color: var(--accent); padding: 2px 6px; border-radius: 6px; background: var(--paper); border: 1px solid var(--rule); line-height: 1.35 }
+.af i { font-style: normal; font-size: 12px; letter-spacing: .1em; color: var(--ink); font-weight: 600 }
+.af.bad { color: var(--bad); border-color: var(--bad); background: var(--bad-soft) } .af.bad i { color: var(--bad) }
+.ameta { display: flex; justify-content: space-between; align-items: center; gap: 10px; border-top: 1px solid var(--rule); padding-top: 6px }
+.anote { font-size: 13px; color: var(--ink-2); line-height: 1.6 }
+.ameta .btn { flex: none; padding: 3px 14px }
+.awarn { color: var(--bad); font-weight: 600 }
+.diag .warnd { color: var(--flag) }
+@media (max-width: 640px) { .arow { grid-template-columns: minmax(0, 1fr) } .asep { display: none } }
 .alts th { text-align: right; font-weight: 500; color: var(--ink-2); font-size: 12px; padding: 8px 10px; border-bottom: 1px solid var(--rule) }
 .alts td { padding: 8px 10px; border-bottom: 1px solid var(--rule); vertical-align: middle }
 .alts tr:last-child td { border-bottom: 0 }
@@ -127,6 +190,12 @@ ol.lines { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px }
 .pill.ok { background: var(--good-soft); color: var(--good) }
 .pill.no { background: var(--bad-soft); color: var(--bad) }
 .pill.flag { background: var(--flag-soft); color: var(--flag) }
+.askhead { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: var(--ink-2); margin-bottom: 6px }
+.alts .hbtns { display: flex; gap: 6px; align-items: center }
+.badalts { padding: 6px 10px; font-size: 13px; color: var(--ink-2) } .badalts summary { cursor: pointer }
+.note.tdw { color: var(--accent) }
+.spin { display: inline-block; width: 12px; height: 12px; border: 2px solid var(--rule); border-top-color: var(--accent); border-radius: 50%; animation: spin .8s linear infinite; vertical-align: -2px }
+@keyframes spin { to { transform: rotate(360deg) } }
 .alts .head { display: flex; justify-content: space-between; gap: 8px; align-items: center; padding: 8px 10px; border-bottom: 1px solid var(--rule); font-size: 13px; flex-wrap: wrap }
 .status { font-size: 13px; color: var(--ink-2); padding: 8px 10px }
 
@@ -145,6 +214,11 @@ ol.lines { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px }
 .card { background: var(--sheet); border: 1px solid var(--rule); border-radius: 14px; padding: 14px 16px }
 .card h3 { margin: 0 0 8px; font-size: 12px; font-weight: 600; color: var(--ink-2); letter-spacing: .04em }
 .meter { font-family: var(--verse); font-size: 36px; font-weight: 700; line-height: 1.2; color: var(--accent) }
+.meterbtn { display: inline-flex; align-items: baseline; gap: 4px; flex-wrap: wrap; background: transparent; border: 0; padding: 0 2px; border-radius: 8px; cursor: pointer; text-align: right; color: var(--accent) }
+.meterbtn:hover, .meterbtn:focus-visible { background: var(--accent-soft); outline: none }
+.meterbtn .caret { font-family: var(--ui); font-size: 14px; color: var(--ink-2); font-weight: 400 }
+.cmenu .mcount { margin-inline-start: auto; font-size: 11.5px; color: var(--ink-2) } .cmenu .mcount.ok { color: var(--good) }
+.cmenu button[aria-current="true"] { background: var(--pop-hover); font-weight: 600 }
 .meter small { font-family: var(--ui); font-size: 14px; font-weight: 500; color: var(--ink-2); margin-inline-start: 6px }
 .key { font-family: var(--verse); font-size: 15px; color: var(--ink-2); margin-top: 2px }
 .meterline { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 8px }
@@ -158,6 +232,10 @@ ol.lines { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px }
   padding: 5px 8px; font-size: 14px; text-align: right }
 .cands button:hover { border-color: var(--rule) }
 .cands button[aria-current="true"] { background: var(--accent-soft); color: var(--accent); font-weight: 600 }
+.cands .crow { display: flex; gap: 4px; align-items: stretch }
+.cands .crow > button:first-child { flex: 1 }
+.cands .cpick { flex: none; width: 34px; justify-content: center; border: 1px solid var(--rule); background: var(--accent-soft); color: var(--accent); font-size: 14px; padding: 0 }
+.cands .cpick:hover, .cands .cpick:focus-visible { border-color: var(--accent); outline: none }
 .cands .n { color: var(--ink-2); font-variant-numeric: tabular-nums; font-size: 13px }
 .rawi { font-family: var(--verse); font-size: 30px; color: var(--accent); line-height: 1 }
 .rhymes { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px }
@@ -169,7 +247,7 @@ ol.lines { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px }
 .empty .big { font-family: var(--verse); font-size: 26px; color: var(--ink); margin-bottom: 6px }
 
 /* popover */
-.pop { position: fixed; z-index: 20; background: var(--sheet); border: 1px solid var(--rule); border-radius: 12px; box-shadow: 0 12px 32px rgb(0 0 0 / .18);
+.pop { position: fixed; z-index: 20; background: var(--pop); border: 1.5px solid var(--pop-edge); border-top-width: 4px; border-radius: 12px; box-shadow: var(--pop-shadow);
   padding: 12px; width: min(340px, calc(100vw - 32px)); display: grid; gap: 8px }
 .pop .wd { font-family: var(--verse); font-size: 28px; text-align: center }
 .pop .why { font-size: 13px; color: var(--ink-2) }
@@ -181,13 +259,47 @@ ol.lines { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px }
 .endmarks button { min-width: 38px; font-family: var(--verse); font-size: 20px; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper); padding: 0 6px }
 .pop input { font-family: var(--verse); font-size: 22px; width: 100%; padding: 4px 10px; border: 1px solid var(--rule); border-radius: 8px; background: var(--paper) }
 .pop .row { display: flex; gap: 6px; justify-content: flex-start; flex-wrap: wrap }
+.cmenu { position: fixed; z-index: 40; width: 232px; max-width: calc(100vw - 16px); background: var(--pop); color: var(--ink);
+  border: 1px solid var(--pop-edge); border-radius: 10px; box-shadow: var(--pop-shadow); padding: 4px; direction: rtl; font-size: 13.5px;
+  animation: cmIn .1s ease-out }
+@keyframes cmIn { from { opacity: 0; transform: translateY(-2px) } to { opacity: 1; transform: none } }
+@media (prefers-reduced-motion: reduce) { .cmenu { animation: none } }
+.cmenu .cw { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; padding: 6px 10px 7px; margin-bottom: 3px; border-bottom: 1px solid var(--rule) }
+.cmenu .cw .word { font-family: var(--verse); font-size: 19px; line-height: 1.3 }
+.cmenu .rh { font-size: 12px; letter-spacing: .14em; color: var(--ink-2); white-space: nowrap; direction: rtl }
+.cmenu button { display: flex; width: 100%; align-items: center; gap: 9px; border: 0; background: transparent; color: inherit;
+  text-align: right; padding: 6px 10px; border-radius: 6px; font: inherit; cursor: pointer; min-height: 32px }
+.cmenu button:hover, .cmenu button:focus-visible, .cmenu button[aria-expanded="true"] { background: var(--pop-hover); outline: none }
+.cmenu .ic { flex: none; width: 16px; height: 16px; color: var(--ink-2); display: grid; place-items: center }
+.cmenu .ic svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round }
+.cmenu button:hover .ic, .cmenu button[aria-expanded="true"] .ic { color: var(--accent) }
+.cmenu .tx { flex: 1; min-width: 0 }
+.cmenu button.danger, .cmenu button.danger .ic { color: var(--bad) }
+.cmenu .arrow { color: var(--ink-2); font-size: 10px }
+.cmenu .kbd { font-size: 11px; color: var(--ink-2) }
+.cmenu hr { border: 0; border-top: 1px solid var(--rule); margin: 3px 6px }
+.cmenu.sub { width: 250px; max-height: 60vh; overflow-y: auto; z-index: 41 }
+.cmenu .hd { display: flex; justify-content: space-between; align-items: baseline; padding: 5px 10px 6px; margin-bottom: 3px; border-bottom: 1px solid var(--rule);
+  font-size: 11.5px; color: var(--ink-2); position: sticky; top: -4px; background: var(--pop) }
+.cmenu .cand { align-items: center; gap: 8px; padding: 5px 10px }
+.cmenu .cand b { font-family: var(--verse); font-size: 18px; font-weight: 400; line-height: 1.3; white-space: nowrap }
+.cmenu .cand .gl { flex: 1; min-width: 0; font-size: 11.5px; color: var(--ink-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+.cmenu .cand .rh { font-size: 11px }
+.cmenu .mark { flex: none; width: 14px; text-align: center; font-size: 12px; color: var(--good) }
+.cmenu .mark.no { color: transparent }
+.cmenu .extlink { display: block; padding: 7px 10px; font-size: 12.5px; color: var(--accent); text-decoration: none; border-top: 1px solid var(--rule); margin-top: 3px }
+.cmenu .extlink:hover { background: var(--pop-hover); border-radius: 6px }
+.cmenu .more { justify-content: center; color: var(--accent); font-size: 12.5px; min-height: 28px }
+.cmenu .msg { padding: 10px; color: var(--ink-2); font-size: 12.5px; line-height: 1.7 }
+.toast button { margin-inline-start: 10px; background: transparent; color: inherit; border: 1px solid currentColor; border-radius: 6px; padding: 1px 8px; font: inherit; cursor: pointer }
 .toast { position: fixed; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--sheet);
   padding: 8px 16px; border-radius: 999px; font-size: 14px; z-index: 30 }
 .ask { margin-top: 10px; border: 1px solid var(--rule); border-radius: var(--r); background: var(--paper); display: grid; gap: 0 }
-.ask .msgs { display: grid; gap: 8px; padding: 10px 12px; max-height: 420px; overflow-y: auto }
+.ask .msgs { display: grid; gap: 10px; padding: 12px; max-height: min(70vh, 720px); overflow-y: auto }
 .ask .me { justify-self: start; background: var(--accent-soft); border-radius: 10px 10px 10px 2px; padding: 6px 10px; max-width: 90% }
-.ask .cl { justify-self: end; background: var(--sheet); border: 1px solid var(--rule); border-radius: 10px 10px 2px 10px; padding: 8px 12px; max-width: 100%; min-width: 0 }
-.ask .cl p { margin: 0 0 6px }
+.ask .cl { justify-self: stretch; background: transparent; border: 0; border-inline-start: 2px solid var(--accent); border-radius: 0; padding: 2px 12px 2px 0; max-width: 100%; min-width: 0 }
+.ask .cl p { margin: 0 0 8px; line-height: 1.8; max-width: 72ch }
+.ask .cl .alist { padding: 0 }
 .ask .cl .alts { margin-top: 6px }
 .ask .busy { color: var(--ink-2); font-size: 13px }
 .ask form { display: flex; gap: 6px; padding: 8px; border-top: 1px solid var(--rule); flex-wrap: wrap }
@@ -202,6 +314,8 @@ ol.lines { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px }
 .pmopen { flex: 1; min-width: 0; text-align: right; border: 0; background: transparent; padding: 6px 8px; display: grid }
 .pmopen b { font-family: var(--verse); font-size: 18px; font-weight: 400; overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
 .pmopen small { color: var(--ink-2); font-size: 12px }
+.ecount { font-weight: 600; margin-inline-start: 4px }
+.ecount.ok { color: var(--good) } .ecount.no { color: var(--bad) } .ecount.wait { color: var(--ink-2); font-weight: 400 }
 .pmdel { border: 0; background: transparent; color: var(--ink-2); width: 32px; height: 32px; border-radius: 8px; font-size: 16px; flex: none }
 .pmdel:hover { color: var(--bad); background: var(--bad-soft) }
 .pmconfirm { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; padding: 6px 8px; background: var(--bad-soft); border-radius: 8px; font-size: 13px; width: 100% }
@@ -227,6 +341,18 @@ ol.lines { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px }
 .dlg .muted { color: var(--ink-2); font-size: 12px }
 .dlg .row { display: flex; gap: 8px; flex-wrap: wrap }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important } }
+
+/* ---- tashkeel-safe spacing: harakat above and below a letter must never be clipped by a frame ---- */
+input, textarea, select { box-sizing: border-box }
+#title, .edit-line, #bulk, #newTitle, #newText, .pop input, .ask textarea { line-height: 2.2 !important; padding-top: .3em !important; padding-bottom: .3em !important; height: auto !important; overflow: visible }
+.pop input { font-size: 20px !important; padding-inline: 12px !important }
+.pop .wd { line-height: 1.9 }
+.endmarks button, .opts button { line-height: 2; padding-top: 2px; padding-bottom: 2px }
+.pmbtn, .pmopen b { line-height: 2; padding-top: 2px !important; padding-bottom: 2px !important }
+.cmenu .cw .word, .cmenu .cand b { line-height: 1.9 }
+.meter { line-height: 1.6 } .rawi { line-height: 1.7 } .av { line-height: 2.1 }
+.foot .nm, .foot .lt, #ftip td.nm, .rhymes span, .key { line-height: 1.8 }
+.ctitle, .dlg h2, .empty .big { line-height: 1.8 }
 </style>
 
 <div class="app" dir="rtl" lang="ar">
@@ -279,6 +405,7 @@ ol.lines { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px }
         <textarea id="newText" placeholder="الصق القصيدة هنا، بتشكيل أو بدونه.&#10;عمودي: بيت في كل سطر والشطران بينهما *  — أو شطر في كل سطر.&#10;تفعيلة: سطر في كل سطر."></textarea>
         <div class="cnote">ستُفحص القصيدة فور إضافتها. إن كان التشكيل ناقصًا تقترح الصفحة تشكيلًا كاملًا لتراجعه قبل الاعتماد.</div>
         <div class="bulk-actions"><button class="btn primary" id="newAdd" type="button">أضف إلى الديوان</button>
+          <button class="btn" id="newBlank" type="button">ابدأ قصيدة فارغة واكتب سطرًا سطرًا</button>
           <button class="btn ghost" id="newCancel" type="button">إلغاء</button><span id="newErr" class="err"></span></div>
       </div>
     </section>
@@ -342,6 +469,10 @@ ol.lines { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px }
         <label><input type="radio" name="expTk" value="light"> مخفّف <span class="muted">(بلا سكون، وبلا الحركة قبل حرف المد)</span></label>
         <label><input type="radio" name="expTk" value="none"> بلا تشكيل</label>
       </fieldset>
+      <fieldset><legend>شكل الأبيات العمودية</legend>
+        <label><input type="radio" name="expLay" value="paras" checked> سطور نصية <span class="muted">(أسهل للنسخ واللصق: الشطران في سطر واحد بينهما مسافة جدولة)</span></label>
+        <label><input type="radio" name="expLay" value="table"> جدول بلا حدود <span class="muted">(أعمدة ثابتة للطباعة)</span></label>
+      </fieldset>
       <label class="check"><input type="checkbox" id="expApp"> ملحق بالبحور والتقطيع (ب −)</label>
       <label class="check"><input type="checkbox" id="expMeter" checked> اسم البحر تحت العنوان</label>
       <div><label for="expFont">الخط</label>
@@ -354,10 +485,12 @@ ol.lines { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px }
     </div>
   </div>
   <div class="toast" id="toast" hidden></div>
+  <div class="cmenu" id="cmenu" hidden role="menu" aria-label="خيارات الكلمة"></div>
+  <div class="cmenu sub" id="cmsub" hidden role="menu"></div>
 </div>
 
 <script>
-window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ له دون البحور فضائلُ — فعولن مفاعيلن فعولن مفاعلُ"], "madid": ["المديد", "al-Madid", "لمديد الشعر عندي صفاتُ — فاعلاتن فاعلن فاعلاتُ"], "basit": ["البسيط", "al-Basit", "إنّ البسيط لديه يُبسط الأملُ — مستفعلن فاعلن مستفعلن فعِلُ"], "wafir": ["الوافر", "al-Wafir", "بحور الشعر وافرها جميلُ — مفاعلتن مفاعلتن فعولُ"], "kamil": ["الكامل", "al-Kamil", "كمل الجمال من البحور الكاملُ — متفاعلن متفاعلن متفاعلُ"], "hazaj": ["الهزج", "al-Hazaj", "على الأهزاج تسهيلُ — مفاعيلن مفاعيلُ"], "rajaz": ["الرجز", "al-Rajaz", "في أبحر الأرجاز بحرٌ يسهلُ — مستفعلن مستفعلن مستفعلُ"], "ramal": ["الرمل", "al-Ramal", "رمل الأبحر ترويه الثقاتُ — فاعلاتن فاعلاتن فاعلاتُ"], "sari": ["السريع", "al-Sari'", "بحرٌ سريعٌ ماله ساحلُ — مستفعلن مستفعلن فاعلُ"], "munsarih": ["المنسرح", "al-Munsarih", "منسرحٌ فيه يُضرب المثلُ — مستفعلن مفعولاتُ مفتعلُ"], "khafif": ["الخفيف", "al-Khafif", "يا خفيفًا خفّت به الحركاتُ — فاعلاتن مستفع لن فاعلاتُ"], "mudari": ["المضارع", "al-Mudari'", "تُعدّ المضارعاتُ — مفاعيلُ فاعلاتُ"], "muqtadab": ["المقتضب", "al-Muqtadab", "اقتضب كما سألوا — مفعولاتُ مفتعلُ"], "mujtath": ["المجتث", "al-Mujtath", "إن جُثّت الحركاتُ — مستفع لن فاعلاتُ"], "mutaqarib": ["المتقارب", "al-Mutaqarib", "عن المتقارب قال الخليلُ — فعولن فعولن فعولن فعولُ"], "mutadarak": ["المتدارك (الخبب)", "al-Mutadarak", "حركات المحدث تنتقلُ — فعِلن فعِلن فعِلن فعِلُ"]}, "forms": [{"meter": "tawil", "name": "تام", "key": "tawil/تام", "hashw": [[["11010", "فعولن", 0.0, "فعولن"], ["1101", "فعولُ", 0.1, "فعولُ (قبض)"]], [["1101010", "مفاعيلن", 0.0, "مفاعيلن"], ["110110", "مفاعلن", 0.1, "مفاعلن (قبض)"], ["110101", "مفاعيلُ", 0.5, "مفاعيلُ (كف)"]], [["11010", "فعولن", 0.0, "فعولن"], ["1101", "فعولُ", 0.1, "فعولُ (قبض)"]]], "arud": [["110110", "مفاعلن", 0, "عروض مقبوضة"], ["1101010", "مفاعيلن", 0.3, "عروض صحيحة (تصريع)"], ["11010", "فعولن", 0.3, "عروض محذوفة (تصريع)"]], "darb": [["1101010", "مفاعيلن", 0, "ضرب صحيح"], ["110110", "مفاعلن", 0, "ضرب مقبوض"], ["11010", "فعولن", 0, "ضرب محذوف"]], "single": false, "rare": 0.0, "ending_pairs": {}}, {"meter": "madid", "name": "تام (مجزوء وجوبًا)", "key": "madid/تام (مجزوء وجوبًا)", "hashw": [[["1011010", "فاعلاتن", 0.0, "فاعلاتن"], ["111010", "فعِلاتن", 0.1, "فعِلاتن (خبن)"], ["101101", "فاعلاتُ", 0.5, "فاعلاتُ (كف)"], ["11101", "فعِلاتُ", 0.7, "فعِلاتُ (شكل)"]], [["10110", "فاعلن", 0.0, "فاعلن"], ["1110", "فعِلن", 0.1, "فعِلن (خبن)"]]], "arud": [["1011010", "فاعلاتن", 0, "عروض صحيحة"], ["111010", "فعِلاتن", 0.1, "عروض صحيحة مخبونة"], ["10110", "فاعلن", 0, "عروض محذوفة"], ["1110", "فعِلن", 0.1, "عروض محذوفة مخبونة"]], "darb": [["1011010", "فاعلاتن", 0, "ضرب صحيح"], ["111010", "فعِلاتن", 0.1, "ضرب صحيح مخبون"], ["101100", "فاعلانْ", 0, "ضرب مقصور"], ["10110", "فاعلن", 0, "ضرب محذوف"], ["1110", "فعِلن", 0.1, "ضرب محذوف مخبون"], ["1010", "فعْلن", 0, "ضرب أبتر"]], "single": false, "rare": 0.0, "ending_pairs": {"1011010": ["1011010", "111010"], "111010": ["1011010", "111010"], "10110": ["101100", "10110", "1010"], "1110": ["1110", "1010"]}}, {"meter": "basit", "name": "تام", "key": "basit/تام", "hashw": [[["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"], ["11110", "متعلن", 0.5, "متعلن/فعِلتن (خبل)"]], [["10110", "فاعلن", 0.0, "فاعلن"], ["1110", "فعِلن", 0.1, "فعِلن (خبن)"]], [["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"], ["11110", "متعلن", 0.5, "متعلن/فعِلتن (خبل)"]]], "arud": [["1110", "فعِلن", 0, "عروض مخبونة"], ["1010", "فعْلن", 0.3, "عروض مقطوعة (تصريع)"]], "darb": [["1110", "فعِلن", 0, "ضرب مخبون"], ["1010", "فعْلن", 0, "ضرب مقطوع"]], "single": false, "rare": 0.0, "ending_pairs": {}}, {"meter": "basit", "name": "مجزوء", "key": "basit/مجزوء", "hashw": [[["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"], ["11110", "متعلن", 0.5, "متعلن/فعِلتن (خبل)"]], [["10110", "فاعلن", 0.0, "فاعلن"], ["1110", "فعِلن", 0.1, "فعِلن (خبن)"]]], "arud": [["1010110", "مستفعلن", 0, "عروض صحيحة"], ["110110", "متفعلن", 0.1, "عروض صحيحة مخبونة"], ["101110", "مستعلن", 0.15, "عروض صحيحة مطوية"]], "darb": [["1010110", "مستفعلن", 0, "ضرب صحيح"], ["110110", "متفعلن", 0.1, "ضرب صحيح مخبون"], ["101110", "مستعلن", 0.15, "ضرب مطوي"], ["10101100", "مستفعلانْ", 0, "ضرب مذيّل"], ["101010", "مستفعلْ", 0, "ضرب مقطوع"]], "single": false, "rare": 0.1, "ending_pairs": {}}, {"meter": "basit", "name": "مخلّع", "key": "basit/مخلّع", "hashw": [[["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"], ["11110", "متعلن", 0.5, "متعلن/فعِلتن (خبل)"]], [["10110", "فاعلن", 0.0, "فاعلن"], ["1110", "فعِلن", 0.1, "فعِلن (خبن)"]]], "arud": [["11010", "فعولن", 0, "عروض مخلّعة (مخبونة مقطوعة)"]], "darb": [["11010", "فعولن", 0, "ضرب مخلّع"], ["1100", "فعولْ", 0.2, "ضرب مخلّع مقصور"]], "single": false, "rare": 0.0, "ending_pairs": {}}, {"meter": "wafir", "name": "تام", "key": "wafir/تام", "hashw": [[["1101110", "مفاعَلَتن", 0.0, "مفاعَلَتن"], ["1101010", "مفاعلْتن", 0.05, "مفاعلْتن (عصب)"], ["110110", "مفاعتن", 0.6, "مفاعتن (عقل)"]], [["1101110", "مفاعَلَتن", 0.0, "مفاعَلَتن"], ["1101010", "مفاعلْتن", 0.05, "مفاعلْتن (عصب)"], ["110110", "مفاعتن", 0.6, "مفاعتن (عقل)"]]], "arud": [["11010", "فعولن", 0, "عروض مقطوفة"]], "darb": [["11010", "فعولن", 0, "ضرب مقطوف"]], "single": false, "rare": 0.0, "ending_pairs": {}}, {"meter": "wafir", "name": "مجزوء", "key": "wafir/مجزوء", "hashw": [[["1101110", "مفاعَلَتن", 0.0, "مفاعَلَتن"], ["1101010", "مفاعلْتن", 0.05, "مفاعلْتن (عصب)"], ["110110", "مفاعتن", 0.6, "مفاعتن (عقل)"]]], "arud": [["1101110", "مفاعلتن", 0, "عروض صحيحة"], ["1101010", "مفاعلْتن", 0.05, "عروض صحيحة معصوبة"]], "darb": [["1101110", "مفاعلتن", 0, "ضرب صحيح"], ["1101010", "مفاعلْتن", 0, "ضرب صحيح معصوب"]], "single": false, "rare": 0.0, "ending_pairs": {}}, {"meter": "kamil", "name": "تام", "key": "kamil/تام", "hashw": [[["1110110", "متَفاعلن", 0.0, "متَفاعلن"], ["1010110", "متْفاعلن", 0.05, "متْفاعلن (إضمار)"], ["110110", "مفاعلن", 0.6, "مفاعلن (وقص)"], ["101110", "متْفعلن", 0.6, "متْفعلن (خزل)"]], [["1110110", "متَفاعلن", 0.0, "متَفاعلن"], ["1010110", "متْفاعلن", 0.05, "متْفاعلن (إضمار)"], ["110110", "مفاعلن", 0.6, "مفاعلن (وقص)"], ["101110", "متْفعلن", 0.6, "متْفعلن (خزل)"]]], "arud": [["1110110", "متفاعلن", 0, "عروض صحيحة"], ["1010110", "متْفاعلن", 0.05, "عروض صحيحة مضمرة"], ["1110", "فعِلن", 0, "عروض حذّاء"], ["1010", "فعْلن", 0.05, "عروض حذّاء مضمرة"], ["111010", "متفاعلْ", 0.3, "عروض مقطوعة (تصريع)"], ["101010", "متْفاعلْ", 0.3, "عروض مقطوعة مضمرة (تصريع)"]], "darb": [["1110110", "متفاعلن", 0, "ضرب صحيح"], ["1010110", "متْفاعلن", 0.05, "ضرب صحيح مضمر"], ["111010", "متفاعلْ", 0, "ضرب مقطوع"], ["101010", "متْفاعلْ", 0.05, "ضرب مقطوع مضمر"], ["1110", "فعِلن", 0, "ضرب أحذّ"], ["1010", "فعْلن", 0.05, "ضرب أحذّ مضمر"], ["11010", "فعولن", 0.2, "ضرب أحذّ مضمر (متْفا)"]], "single": false, "rare": 0.0, "ending_pairs": {}}, {"meter": "kamil", "name": "مجزوء", "key": "kamil/مجزوء", "hashw": [[["1110110", "متَفاعلن", 0.0, "متَفاعلن"], ["1010110", "متْفاعلن", 0.05, "متْفاعلن (إضمار)"], ["110110", "مفاعلن", 0.6, "مفاعلن (وقص)"], ["101110", "متْفعلن", 0.6, "متْفعلن (خزل)"]]], "arud": [["1110110", "متفاعلن", 0, "عروض صحيحة"], ["1010110", "متْفاعلن", 0.05, "عروض مضمرة"]], "darb": [["1110110", "متفاعلن", 0, "ضرب صحيح"], ["1010110", "متْفاعلن", 0.05, "ضرب مضمر"], ["11101010", "متفاعلاتن", 0, "ضرب مرفّل"], ["10101010", "متْفاعلاتن", 0.05, "ضرب مرفّل مضمر"], ["11101100", "متفاعلانْ", 0, "ضرب مذيّل"], ["10101100", "متْفاعلانْ", 0.05, "ضرب مذيّل مضمر"], ["111010", "متفاعلْ", 0, "ضرب مقطوع"], ["101010", "متْفاعلْ", 0.05, "ضرب مقطوع مضمر"]], "single": false, "rare": 0.0, "ending_pairs": {}}, {"meter": "hazaj", "name": "مجزوء وجوبًا", "key": "hazaj/مجزوء وجوبًا", "hashw": [[["1101010", "مفاعيلن", 0.0, "مفاعيلن"], ["110101", "مفاعيلُ", 0.1, "مفاعيلُ (كف)"], ["110110", "مفاعلن", 0.4, "مفاعلن (قبض)"]]], "arud": [["1101010", "مفاعيلن", 0, "عروض صحيحة"], ["110101", "مفاعيلُ", 0.1, "عروض مكفوفة"]], "darb": [["1101010", "مفاعيلن", 0, "ضرب صحيح"], ["11010", "فعولن", 0, "ضرب محذوف"]], "single": false, "rare": 0.0, "ending_pairs": {}}, {"meter": "rajaz", "name": "تام", "key": "rajaz/تام", "hashw": [[["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"], ["11110", "متعلن", 0.5, "متعلن/فعِلتن (خبل)"]], [["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"], ["11110", "متعلن", 0.5, "متعلن/فعِلتن (خبل)"]]], "arud": [["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"], ["11110", "متعلن", 0.5, "متعلن/فعِلتن (خبل)"], ["101010", "مستفعلْ", 0.3, "عروض مقطوعة (تصريع)"]], "darb": [["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"], ["11110", "متعلن", 0.5, "متعلن/فعِلتن (خبل)"], ["101010", "مستفعلْ", 0, "ضرب مقطوع"], ["11010", "متفعلْ", 0.1, "ضرب مقطوع مخبون"]], "single": false, "rare": 0.0, "ending_pairs": {}}, {"meter": "rajaz", "name": "مجزوء", "key": "rajaz/مجزوء", "hashw": [[["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"], ["11110", "متعلن", 0.5, "متعلن/فعِلتن (خبل)"]]], "arud": [["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"], ["11110", "متعلن", 0.5, "متعلن/فعِلتن (خبل)"]], "darb": [["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"], ["11110", "متعلن", 0.5, "متعلن/فعِلتن (خبل)"], ["101010", "مستفعلْ", 0, "ضرب مقطوع"], ["11010", "متفعلْ", 0.1, "ضرب مقطوع مخبون"]], "single": false, "rare": 0.0, "ending_pairs": {}}, {"meter": "rajaz", "name": "مشطور", "key": "rajaz/مشطور", "hashw": [[["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"], ["11110", "متعلن", 0.5, "متعلن/فعِلتن (خبل)"]], [["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"], ["11110", "متعلن", 0.5, "متعلن/فعِلتن (خبل)"]]], "arud": [], "darb": [["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"], ["11110", "متعلن", 0.5, "متعلن/فعِلتن (خبل)"], ["101010", "مستفعلْ", 0, "مقطوع"], ["11010", "متفعلْ", 0.1, "مقطوع مخبون"]], "single": true, "rare": 0.0, "ending_pairs": {}}, {"meter": "rajaz", "name": "منهوك", "key": "rajaz/منهوك", "hashw": [[["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"], ["11110", "متعلن", 0.5, "متعلن/فعِلتن (خبل)"]]], "arud": [], "darb": [["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"], ["11110", "متعلن", 0.5, "متعلن/فعِلتن (خبل)"], ["101010", "مستفعلْ", 0, "مقطوع"]], "single": true, "rare": 0.2, "ending_pairs": {}}, {"meter": "ramal", "name": "تام", "key": "ramal/تام", "hashw": [[["1011010", "فاعلاتن", 0.0, "فاعلاتن"], ["111010", "فعِلاتن", 0.1, "فعِلاتن (خبن)"], ["101101", "فاعلاتُ", 0.5, "فاعلاتُ (كف)"], ["11101", "فعِلاتُ", 0.7, "فعِلاتُ (شكل)"]], [["1011010", "فاعلاتن", 0.0, "فاعلاتن"], ["111010", "فعِلاتن", 0.1, "فعِلاتن (خبن)"], ["101101", "فاعلاتُ", 0.5, "فاعلاتُ (كف)"], ["11101", "فعِلاتُ", 0.7, "فعِلاتُ (شكل)"]]], "arud": [["10110", "فاعلن", 0, "عروض محذوفة"], ["1110", "فعِلن", 0.05, "عروض محذوفة مخبونة"], ["101100", "فاعلانْ", 0.3, "عروض مقصورة (تصريع)"]], "darb": [["10110", "فاعلن", 0, "ضرب محذوف"], ["1110", "فعِلن", 0.05, "ضرب محذوف مخبون"], ["101100", "فاعلانْ", 0, "ضرب مقصور"], ["1011010", "فاعلاتن", 0.1, "ضرب صحيح"], ["111010", "فعِلاتن", 0.15, "ضرب صحيح مخبون"]], "single": false, "rare": 0.0, "ending_pairs": {}}, {"meter": "ramal", "name": "مجزوء", "key": "ramal/مجزوء", "hashw": [[["1011010", "فاعلاتن", 0.0, "فاعلاتن"], ["111010", "فعِلاتن", 0.1, "فعِلاتن (خبن)"], ["101101", "فاعلاتُ", 0.5, "فاعلاتُ (كف)"], ["11101", "فعِلاتُ", 0.7, "فعِلاتُ (شكل)"]]], "arud": [["1011010", "فاعلاتن", 0, "عروض صحيحة"], ["111010", "فعِلاتن", 0.1, "عروض صحيحة مخبونة"]], "darb": [["1011010", "فاعلاتن", 0, "ضرب صحيح"], ["111010", "فعِلاتن", 0.1, "ضرب صحيح مخبون"], ["10110100", "فاعلاتانْ", 0, "ضرب مسبّغ"], ["101100", "فاعلانْ", 0.1, "ضرب مقصور"], ["10110", "فاعلن", 0, "ضرب محذوف"], ["1110", "فعِلن", 0.1, "ضرب محذوف مخبون"]], "single": false, "rare": 0.0, "ending_pairs": {}}, {"meter": "sari", "name": "تام", "key": "sari/تام", "hashw": [[["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"], ["11110", "متعلن", 0.5, "متعلن/فعِلتن (خبل)"]], [["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"], ["11110", "متعلن", 0.5, "متعلن/فعِلتن (خبل)"]]], "arud": [["10110", "فاعلن", 0, "عروض مطوية مكشوفة"], ["1110", "فعِلن", 0.05, "عروض مخبولة مكشوفة"]], "darb": [["10110", "فاعلن", 0, "ضرب مطوي مكشوف"], ["1110", "فعِلن", 0.05, "ضرب مخبول مكشوف"], ["101100", "فاعلانْ", 0, "ضرب مطوي موقوف"], ["1010", "فعْلن", 0, "ضرب أصلم"]], "single": false, "rare": 0.0, "ending_pairs": {}}, {"meter": "sari", "name": "مشطور", "key": "sari/مشطور", "hashw": [[["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"], ["11110", "متعلن", 0.5, "متعلن/فعِلتن (خبل)"]], [["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"], ["11110", "متعلن", 0.5, "متعلن/فعِلتن (خبل)"]]], "arud": [], "darb": [["1010101", "مفعولاتُ", 0.1, "موقوف/صحيح"], ["101100", "فاعلانْ", 0, "موقوف"], ["1010100", "مفعولاتْ", 0, "موقوف"], ["10110", "فاعلن", 0.1, "مكشوف"]], "single": true, "rare": 0.3, "ending_pairs": {}}, {"meter": "munsarih", "name": "تام", "key": "munsarih/تام", "hashw": [[["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"]], [["101101", "مفعلاتُ", 0.0, "فاعلاتُ (مفعولاتُ مطوية)"], ["1010101", "مفعولاتُ", 0.2, "مفعولاتُ"], ["110101", "معولاتُ", 0.2, "مفاعيلُ (مفعولاتُ مخبونة)"]]], "arud": [["101110", "مفتعلن", 0, "عروض مطوية"], ["1010110", "مستفعلن", 0.3, "عروض صحيحة"], ["110110", "مفاعلن", 0.2, "عروض مخبونة"]], "darb": [["101110", "مفتعلن", 0, "ضرب مطوي"], ["1010110", "مستفعلن", 0.3, "ضرب صحيح"], ["110110", "مفاعلن", 0.2, "ضرب مخبون"], ["101010", "مفعولن", 0.2, "ضرب مقطوع"]], "single": false, "rare": 0.0, "ending_pairs": {}}, {"meter": "munsarih", "name": "منهوك", "key": "munsarih/منهوك", "hashw": [[["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"]]], "arud": [], "darb": [["1010101", "مفعولاتُ", 0.1, "موقوف"], ["1010100", "مفعولاتْ", 0, "موقوف"], ["101010", "مفعولن", 0.1, "مكشوف"]], "single": true, "rare": 0.3, "ending_pairs": {}}, {"meter": "khafif", "name": "تام", "key": "khafif/تام", "hashw": [[["1011010", "فاعلاتن", 0.0, "فاعلاتن"], ["111010", "فعِلاتن", 0.1, "فعِلاتن (خبن)"], ["101101", "فاعلاتُ", 0.5, "فاعلاتُ (كف)"]], [["1010110", "مستفع لن", 0.0, "مستفع لن"], ["110110", "متفع لن", 0.1, "متفع لن (خبن)"]]], "arud": [["1011010", "فاعلاتن", 0, "عروض صحيحة"], ["111010", "فعِلاتن", 0.05, "عروض صحيحة مخبونة"], ["101010", "فالاتن", 0.2, "عروض مشعّثة"], ["10110", "فاعلن", 0.1, "عروض محذوفة"], ["1110", "فعِلن", 0.1, "عروض محذوفة مخبونة"]], "darb": [["1011010", "فاعلاتن", 0, "ضرب صحيح"], ["111010", "فعِلاتن", 0.05, "ضرب صحيح مخبون"], ["101010", "فالاتن", 0, "ضرب مشعّث"], ["10110", "فاعلن", 0, "ضرب محذوف"], ["1110", "فعِلن", 0.05, "ضرب محذوف مخبون"]], "single": false, "rare": 0.0, "ending_pairs": {}}, {"meter": "khafif", "name": "مجزوء", "key": "khafif/مجزوء", "hashw": [[["1011010", "فاعلاتن", 0.0, "فاعلاتن"], ["111010", "فعِلاتن", 0.1, "فعِلاتن (خبن)"], ["101101", "فاعلاتُ", 0.5, "فاعلاتُ (كف)"]]], "arud": [["1010110", "مستفع لن", 0, "عروض صحيحة"], ["110110", "متفع لن", 0.1, "عروض مخبونة"]], "darb": [["1010110", "مستفع لن", 0, "ضرب صحيح"], ["110110", "متفع لن", 0.1, "ضرب مخبون"], ["11010", "فعولن", 0, "ضرب مقصور مخبون"]], "single": false, "rare": 0.0, "ending_pairs": {}}, {"meter": "mudari", "name": "مجزوء وجوبًا", "key": "mudari/مجزوء وجوبًا", "hashw": [[["110101", "مفاعيلُ", 0.0, "مفاعيلُ"], ["1101010", "مفاعيلن", 0.3, "مفاعيلن"], ["110110", "مفاعلن", 0.3, "مفاعلن"]]], "arud": [["1011010", "فاع لاتن", 0, "عروض صحيحة"]], "darb": [["1011010", "فاع لاتن", 0, "ضرب صحيح"]], "single": false, "rare": 0.3, "ending_pairs": {}}, {"meter": "muqtadab", "name": "مجزوء وجوبًا", "key": "muqtadab/مجزوء وجوبًا", "hashw": [[["101101", "مفعلاتُ", 0, "فاعلاتُ (مفعولاتُ مطوية)"], ["110101", "معولاتُ", 0.1, "مفاعيلُ"]]], "arud": [["101110", "مفتعلن", 0, "عروض مطوية"]], "darb": [["101110", "مفتعلن", 0, "ضرب مطوي"]], "single": false, "rare": 0.3, "ending_pairs": {}}, {"meter": "mujtath", "name": "مجزوء وجوبًا", "key": "mujtath/مجزوء وجوبًا", "hashw": [[["1010110", "مستفع لن", 0.0, "مستفع لن"], ["110110", "متفع لن", 0.1, "متفع لن (خبن)"]]], "arud": [["1011010", "فاعلاتن", 0, "عروض صحيحة"], ["111010", "فعِلاتن", 0.05, "عروض مخبونة"]], "darb": [["1011010", "فاعلاتن", 0, "ضرب صحيح"], ["111010", "فعِلاتن", 0.05, "ضرب مخبون"], ["101010", "فالاتن", 0.1, "ضرب مشعّث"]], "single": false, "rare": 0.0, "ending_pairs": {}}, {"meter": "mutaqarib", "name": "تام", "key": "mutaqarib/تام", "hashw": [[["11010", "فعولن", 0.0, "فعولن"], ["1101", "فعولُ", 0.1, "فعولُ (قبض)"]], [["11010", "فعولن", 0.0, "فعولن"], ["1101", "فعولُ", 0.1, "فعولُ (قبض)"]], [["11010", "فعولن", 0.0, "فعولن"], ["1101", "فعولُ", 0.1, "فعولُ (قبض)"]]], "arud": [["11010", "فعولن", 0, "عروض صحيحة"], ["1101", "فعولُ", 0.1, "عروض مقبوضة"], ["110", "فعو", 0.05, "عروض محذوفة"], ["1100", "فعولْ", 0.2, "عروض مقصورة (تصريع)"]], "darb": [["11010", "فعولن", 0, "ضرب صحيح"], ["1100", "فعولْ", 0, "ضرب مقصور"], ["110", "فعو", 0, "ضرب محذوف"], ["10", "فعْ", 0, "ضرب أبتر"]], "single": false, "rare": 0.0, "ending_pairs": {}}, {"meter": "mutaqarib", "name": "مجزوء", "key": "mutaqarib/مجزوء", "hashw": [[["11010", "فعولن", 0.0, "فعولن"], ["1101", "فعولُ", 0.1, "فعولُ (قبض)"]], [["11010", "فعولن", 0.0, "فعولن"], ["1101", "فعولُ", 0.1, "فعولُ (قبض)"]]], "arud": [["11010", "فعولن", 0, "عروض صحيحة"], ["110", "فعو", 0.05, "عروض محذوفة"]], "darb": [["11010", "فعولن", 0, "ضرب صحيح"], ["110", "فعو", 0, "ضرب محذوف"], ["1100", "فعولْ", 0, "ضرب مقصور"]], "single": false, "rare": 0.1, "ending_pairs": {}}, {"meter": "mutadarak", "name": "تام", "key": "mutadarak/تام", "hashw": [[["10110", "فاعلن", 0.0, "فاعلن"], ["1110", "فعِلن", 0.0, "فعِلن (خبن)"], ["1010", "فعْلن", 0.1, "فعْلن (تشعيث/قطع)"]], [["10110", "فاعلن", 0.0, "فاعلن"], ["1110", "فعِلن", 0.0, "فعِلن (خبن)"], ["1010", "فعْلن", 0.1, "فعْلن (تشعيث/قطع)"]], [["10110", "فاعلن", 0.0, "فاعلن"], ["1110", "فعِلن", 0.0, "فعِلن (خبن)"], ["1010", "فعْلن", 0.1, "فعْلن (تشعيث/قطع)"]]], "arud": [["10110", "فاعلن", 0.0, "فاعلن"], ["1110", "فعِلن", 0.0, "فعِلن (خبن)"], ["1010", "فعْلن", 0.1, "فعْلن (تشعيث/قطع)"]], "darb": [["10110", "فاعلن", 0.0, "فاعلن"], ["1110", "فعِلن", 0.0, "فعِلن (خبن)"], ["1010", "فعْلن", 0.1, "فعْلن (تشعيث/قطع)"], ["101100", "فاعلانْ", 0, "ضرب مذيّل"], ["1011010", "فاعلاتن", 0.1, "ضرب مرفّل"]], "single": false, "rare": 0.0, "ending_pairs": {}}, {"meter": "mutadarak", "name": "مجزوء", "key": "mutadarak/مجزوء", "hashw": [[["10110", "فاعلن", 0.0, "فاعلن"], ["1110", "فعِلن", 0.0, "فعِلن (خبن)"], ["1010", "فعْلن", 0.1, "فعْلن (تشعيث/قطع)"]], [["10110", "فاعلن", 0.0, "فاعلن"], ["1110", "فعِلن", 0.0, "فعِلن (خبن)"], ["1010", "فعْلن", 0.1, "فعْلن (تشعيث/قطع)"]]], "arud": [["10110", "فاعلن", 0.0, "فاعلن"], ["1110", "فعِلن", 0.0, "فعِلن (خبن)"], ["1010", "فعْلن", 0.1, "فعْلن (تشعيث/قطع)"]], "darb": [["10110", "فاعلن", 0.0, "فاعلن"], ["1110", "فعِلن", 0.0, "فعِلن (خبن)"], ["1010", "فعْلن", 0.1, "فعْلن (تشعيث/قطع)"], ["101100", "فاعلانْ", 0, "ضرب مذيّل"], ["1011010", "فاعلاتن", 0, "ضرب مرفّل"]], "single": false, "rare": 0.1, "ending_pairs": {}}], "families": [{"meter": "kamil", "foot": "متفاعلن", "hashw": [["1110110", "متَفاعلن", 0.0, "متَفاعلن"], ["1010110", "متْفاعلن", 0.05, "متْفاعلن (إضمار)"], ["110110", "مفاعلن", 0.4, "وقص"], ["101110", "متْفعلن", 0.4, "خزل"]], "endings": [["111010", "متفاعلْ", 0.0, "متفاعلْ"], ["101010", "متْفاعلْ", 0.0, "متْفاعلْ"], ["11101100", "متفاعلانْ", 0.0, "متفاعلانْ"], ["10101100", "متْفاعلانْ", 0.0, "متْفاعلانْ"], ["11101010", "متفاعلاتن", 0.0, "متفاعلاتن"], ["10101010", "متْفاعلاتن", 0.0, "متْفاعلاتن"], ["1110", "فعِلن", 0.2, "حذذ"], ["1010", "فعْلن", 0.2, "حذذ مع إضمار"]]}, {"meter": "rajaz", "foot": "مستفعلن", "hashw": [["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"], ["11110", "متعلن", 0.5, "متعلن/فعِلتن (خبل)"]], "endings": [["101010", "مستفعلْ", 0.0, "مستفعلْ"], ["11010", "متفعلْ", 0.0, "متفعلْ"], ["10101100", "مستفعلانْ", 0.0, "مستفعلانْ"], ["1101100", "متفعلانْ", 0.0, "متفعلانْ"]]}, {"meter": "ramal", "foot": "فاعلاتن", "hashw": [["1011010", "فاعلاتن", 0.0, "فاعلاتن"], ["111010", "فعِلاتن", 0.1, "فعِلاتن (خبن)"], ["101101", "فاعلاتُ", 0.15, "فاعلاتُ (كف)"], ["11101", "فعِلاتُ", 0.7, "فعِلاتُ (شكل)"]], "endings": [["101100", "فاعلانْ", 0.0, "فاعلانْ"], ["11100", "فعِلانْ", 0.0, "فعِلانْ"], ["10110", "فاعلن", 0.0, "فاعلن"], ["1110", "فعِلن", 0.0, "فعِلن"], ["10110100", "فاعلاتانْ", 0.0, "فاعلاتانْ"]]}, {"meter": "mutaqarib", "foot": "فعولن", "hashw": [["11010", "فعولن", 0.0, "فعولن"], ["1101", "فعولُ", 0.1, "فعولُ (قبض)"]], "endings": [["1100", "فعولْ", 0.0, "فعولْ"], ["110", "فعو", 0.0, "فعو"], ["10", "فعْ", 0.2, "فعْ"]]}, {"meter": "mutadarak", "foot": "فاعلن", "hashw": [["10110", "فاعلن", 0.0, "فاعلن"], ["1110", "فعِلن", 0.0, "فعِلن (خبن)"], ["1010", "فعْلن", 0.1, "فعْلن (تشعيث/قطع)"]], "endings": [["101100", "فاعلانْ", 0.0, "فاعلانْ"], ["11100", "فعِلانْ", 0.0, "فعِلانْ"], ["1011010", "فاعلاتن", 0.2, "فاعلاتن"], ["100", "فاعْ", 0.3, "فاعْ"]]}, {"meter": "hazaj", "foot": "مفاعيلن", "hashw": [["1101010", "مفاعيلن", 0.0, "مفاعيلن"], ["110101", "مفاعيلُ", 0.1, "مفاعيلُ (كف)"]], "endings": [["11010", "فعولن", 0.0, "فعولن"], ["1101100", "مفاعيلانْ", 0.2, "مفاعيلانْ"]]}, {"meter": "wafir", "foot": "مفاعلتن", "hashw": [["1101110", "مفاعَلَتن", 0.0, "مفاعَلَتن"], ["1101010", "مفاعلْتن", 0.05, "مفاعلْتن (عصب)"]], "endings": [["11010", "فعولن", 0, "مفاعلْ (مقطوفة)"]]}]};
+window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ له دون البحور فضائلُ — فعولن مفاعيلن فعولن مفاعلُ"], "madid": ["المديد", "al-Madid", "لمديد الشعر عندي صفاتُ — فاعلاتن فاعلن فاعلاتُ"], "basit": ["البسيط", "al-Basit", "إنّ البسيط لديه يُبسط الأملُ — مستفعلن فاعلن مستفعلن فعِلُ"], "wafir": ["الوافر", "al-Wafir", "بحور الشعر وافرها جميلُ — مفاعلتن مفاعلتن فعولُ"], "kamil": ["الكامل", "al-Kamil", "كمل الجمال من البحور الكاملُ — متفاعلن متفاعلن متفاعلُ"], "hazaj": ["الهزج", "al-Hazaj", "على الأهزاج تسهيلُ — مفاعيلن مفاعيلُ"], "rajaz": ["الرجز", "al-Rajaz", "في أبحر الأرجاز بحرٌ يسهلُ — مستفعلن مستفعلن مستفعلُ"], "ramal": ["الرمل", "al-Ramal", "رمل الأبحر ترويه الثقاتُ — فاعلاتن فاعلاتن فاعلاتُ"], "sari": ["السريع", "al-Sari'", "بحرٌ سريعٌ ماله ساحلُ — مستفعلن مستفعلن فاعلُ"], "munsarih": ["المنسرح", "al-Munsarih", "منسرحٌ فيه يُضرب المثلُ — مستفعلن مفعولاتُ مفتعلُ"], "khafif": ["الخفيف", "al-Khafif", "يا خفيفًا خفّت به الحركاتُ — فاعلاتن مستفع لن فاعلاتُ"], "mudari": ["المضارع", "al-Mudari'", "تُعدّ المضارعاتُ — مفاعيلُ فاعلاتُ"], "muqtadab": ["المقتضب", "al-Muqtadab", "اقتضب كما سألوا — مفعولاتُ مفتعلُ"], "mujtath": ["المجتث", "al-Mujtath", "إن جُثّت الحركاتُ — مستفع لن فاعلاتُ"], "mutaqarib": ["المتقارب", "al-Mutaqarib", "عن المتقارب قال الخليلُ — فعولن فعولن فعولن فعولُ"], "mutadarak": ["المتدارك (الخبب)", "al-Mutadarak", "حركات المحدث تنتقلُ — فعِلن فعِلن فعِلن فعِلُ"]}, "forms": [{"meter": "tawil", "name": "تام", "key": "tawil/تام", "hashw": [[["11010", "فعولن", 0.0, "فعولن"], ["1101", "فعولُ", 0.1, "فعولُ (قبض)"]], [["1101010", "مفاعيلن", 0.0, "مفاعيلن"], ["110110", "مفاعلن", 0.1, "مفاعلن (قبض)"], ["110101", "مفاعيلُ", 0.5, "مفاعيلُ (كف)"]], [["11010", "فعولن", 0.0, "فعولن"], ["1101", "فعولُ", 0.1, "فعولُ (قبض)"]]], "arud": [["110110", "مفاعلن", 0, "عروض مقبوضة"], ["1101010", "مفاعيلن", 0.3, "عروض صحيحة (تصريع)"], ["11010", "فعولن", 0.3, "عروض محذوفة (تصريع)"]], "darb": [["1101010", "مفاعيلن", 0, "ضرب صحيح"], ["110110", "مفاعلن", 0, "ضرب مقبوض"], ["11010", "فعولن", 0, "ضرب محذوف"]], "single": false, "rare": 0.0, "ending_pairs": {}, "kharm": [["1010", "عولن", 0.6, "عولن (فعولن مخرومة: خرم)"], ["101", "عولُ", 0.8, "عولُ (ثرم: خرم مع قبض)"]]}, {"meter": "madid", "name": "تام (مجزوء وجوبًا)", "key": "madid/تام (مجزوء وجوبًا)", "hashw": [[["1011010", "فاعلاتن", 0.0, "فاعلاتن"], ["111010", "فعِلاتن", 0.1, "فعِلاتن (خبن)"], ["101101", "فاعلاتُ", 0.5, "فاعلاتُ (كف)"], ["11101", "فعِلاتُ", 0.7, "فعِلاتُ (شكل)"]], [["10110", "فاعلن", 0.0, "فاعلن"], ["1110", "فعِلن", 0.1, "فعِلن (خبن)"]]], "arud": [["1011010", "فاعلاتن", 0, "عروض صحيحة"], ["111010", "فعِلاتن", 0.1, "عروض صحيحة مخبونة"], ["10110", "فاعلن", 0, "عروض محذوفة"], ["1110", "فعِلن", 0.1, "عروض محذوفة مخبونة"]], "darb": [["1011010", "فاعلاتن", 0, "ضرب صحيح"], ["111010", "فعِلاتن", 0.1, "ضرب صحيح مخبون"], ["101100", "فاعلانْ", 0, "ضرب مقصور"], ["10110", "فاعلن", 0, "ضرب محذوف"], ["1110", "فعِلن", 0.1, "ضرب محذوف مخبون"], ["1010", "فعْلن", 0, "ضرب أبتر"]], "single": false, "rare": 0.0, "ending_pairs": {"1011010": ["1011010", "111010"], "111010": ["1011010", "111010"], "10110": ["101100", "10110", "1010"], "1110": ["1110", "1010"]}, "kharm": []}, {"meter": "basit", "name": "تام", "key": "basit/تام", "hashw": [[["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"], ["11110", "متعلن", 0.5, "متعلن/فعِلتن (خبل)"]], [["10110", "فاعلن", 0.0, "فاعلن"], ["1110", "فعِلن", 0.1, "فعِلن (خبن)"]], [["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"], ["11110", "متعلن", 0.5, "متعلن/فعِلتن (خبل)"]]], "arud": [["1110", "فعِلن", 0, "عروض مخبونة"], ["1010", "فعْلن", 0.3, "عروض مقطوعة (تصريع)"]], "darb": [["1110", "فعِلن", 0, "ضرب مخبون"], ["1010", "فعْلن", 0, "ضرب مقطوع"]], "single": false, "rare": 0.0, "ending_pairs": {}, "kharm": []}, {"meter": "basit", "name": "مجزوء", "key": "basit/مجزوء", "hashw": [[["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"], ["11110", "متعلن", 0.5, "متعلن/فعِلتن (خبل)"]], [["10110", "فاعلن", 0.0, "فاعلن"], ["1110", "فعِلن", 0.1, "فعِلن (خبن)"]]], "arud": [["1010110", "مستفعلن", 0, "عروض صحيحة"], ["110110", "متفعلن", 0.1, "عروض صحيحة مخبونة"], ["101110", "مستعلن", 0.15, "عروض صحيحة مطوية"], ["101010", "مستفعلْ", 0.15, "عروض مقطوعة"], ["11010", "متفعلْ", 0.2, "عروض مقطوعة مخبونة"]], "darb": [["1010110", "مستفعلن", 0, "ضرب صحيح"], ["110110", "متفعلن", 0.1, "ضرب صحيح مخبون"], ["101110", "مستعلن", 0.15, "ضرب مطوي"], ["10101100", "مستفعلانْ", 0, "ضرب مذيّل"], ["101010", "مستفعلْ", 0, "ضرب مقطوع"]], "single": false, "rare": 0.1, "ending_pairs": {}, "kharm": []}, {"meter": "basit", "name": "مخلّع", "key": "basit/مخلّع", "hashw": [[["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"], ["11110", "متعلن", 0.5, "متعلن/فعِلتن (خبل)"]], [["10110", "فاعلن", 0.0, "فاعلن"], ["1110", "فعِلن", 0.1, "فعِلن (خبن)"]]], "arud": [["11010", "فعولن", 0, "عروض مخلّعة (مخبونة مقطوعة)"]], "darb": [["11010", "فعولن", 0, "ضرب مخلّع"], ["1100", "فعولْ", 0.35, "ضرب مخلّع مقصور (عند المحدثين)"]], "single": false, "rare": 0.0, "ending_pairs": {}, "kharm": []}, {"meter": "wafir", "name": "تام", "key": "wafir/تام", "hashw": [[["1101110", "مفاعَلَتن", 0.0, "مفاعَلَتن"], ["1101010", "مفاعلْتن", 0.05, "مفاعلْتن (عصب)"], ["110110", "مفاعتن", 0.6, "مفاعتن (عقل)"], ["110101", "مفاعلْتُ", 0.6, "مفاعلْتُ (نقص)"]], [["1101110", "مفاعَلَتن", 0.0, "مفاعَلَتن"], ["1101010", "مفاعلْتن", 0.05, "مفاعلْتن (عصب)"], ["110110", "مفاعتن", 0.6, "مفاعتن (عقل)"], ["110101", "مفاعلْتُ", 0.6, "مفاعلْتُ (نقص)"]]], "arud": [["11010", "فعولن", 0, "عروض مقطوفة"]], "darb": [["11010", "فعولن", 0, "ضرب مقطوف"]], "single": false, "rare": 0.0, "ending_pairs": {}, "kharm": [["101110", "فاعلتن", 0.6, "فاعلتن (أعضب: خرم)"], ["101010", "فاعلْتن", 0.7, "فاعلْتن (أقصم: خرم مع عصب)"], ["10110", "فاعلن", 0.8, "فاعلن (أجمّ: خرم مع عقل)"], ["10101", "مفعولُ", 0.8, "مفعولُ (أعقص: خرم مع نقص)"]]}, {"meter": "wafir", "name": "مجزوء", "key": "wafir/مجزوء", "hashw": [[["1101110", "مفاعَلَتن", 0.0, "مفاعَلَتن"], ["1101010", "مفاعلْتن", 0.05, "مفاعلْتن (عصب)"], ["110110", "مفاعتن", 0.6, "مفاعتن (عقل)"], ["110101", "مفاعلْتُ", 0.6, "مفاعلْتُ (نقص)"]]], "arud": [["1101110", "مفاعلتن", 0, "عروض صحيحة"], ["1101010", "مفاعلْتن", 0.05, "عروض صحيحة معصوبة"]], "darb": [["1101110", "مفاعلتن", 0, "ضرب صحيح"], ["1101010", "مفاعلْتن", 0, "ضرب صحيح معصوب"]], "single": false, "rare": 0.0, "ending_pairs": {}, "kharm": [["101110", "فاعلتن", 0.6, "فاعلتن (أعضب: خرم)"], ["101010", "فاعلْتن", 0.7, "فاعلْتن (أقصم: خرم مع عصب)"], ["10110", "فاعلن", 0.8, "فاعلن (أجمّ: خرم مع عقل)"], ["10101", "مفعولُ", 0.8, "مفعولُ (أعقص: خرم مع نقص)"]]}, {"meter": "kamil", "name": "تام", "key": "kamil/تام", "hashw": [[["1110110", "متَفاعلن", 0.0, "متَفاعلن"], ["1010110", "متْفاعلن", 0.05, "متْفاعلن (إضمار)"], ["110110", "مفاعلن", 0.6, "مفاعلن (وقص)"], ["101110", "متْفعلن", 0.6, "متْفعلن (خزل)"]], [["1110110", "متَفاعلن", 0.0, "متَفاعلن"], ["1010110", "متْفاعلن", 0.05, "متْفاعلن (إضمار)"], ["110110", "مفاعلن", 0.6, "مفاعلن (وقص)"], ["101110", "متْفعلن", 0.6, "متْفعلن (خزل)"]]], "arud": [["1110110", "متفاعلن", 0, "عروض صحيحة"], ["1010110", "متْفاعلن", 0.05, "عروض صحيحة مضمرة"], ["1110", "فعِلن", 0, "عروض حذّاء"], ["1010", "فعْلن", 0.05, "عروض حذّاء مضمرة"], ["111010", "متفاعلْ", 0.3, "عروض مقطوعة (تصريع)"], ["101010", "متْفاعلْ", 0.3, "عروض مقطوعة مضمرة (تصريع)"]], "darb": [["1110110", "متفاعلن", 0, "ضرب صحيح"], ["1010110", "متْفاعلن", 0.05, "ضرب صحيح مضمر"], ["111010", "متفاعلْ", 0, "ضرب مقطوع"], ["101010", "متْفاعلْ", 0.05, "ضرب مقطوع مضمر"], ["1110", "فعِلن", 0, "ضرب أحذّ"], ["1010", "فعْلن", 0.05, "ضرب أحذّ مضمر"], ["11101100", "متفاعلانْ", 0.35, "ضرب مذيّل (عند المحدثين؛ لا تذكره الجداول الخليلية في التام)"], ["10101100", "متْفاعلانْ", 0.4, "ضرب مذيّل مضمر (عند المحدثين؛ لا تذكره الجداول الخليلية في التام)"]], "single": false, "rare": 0.0, "ending_pairs": {}, "kharm": []}, {"meter": "kamil", "name": "مجزوء", "key": "kamil/مجزوء", "hashw": [[["1110110", "متَفاعلن", 0.0, "متَفاعلن"], ["1010110", "متْفاعلن", 0.05, "متْفاعلن (إضمار)"], ["110110", "مفاعلن", 0.6, "مفاعلن (وقص)"], ["101110", "متْفعلن", 0.6, "متْفعلن (خزل)"]]], "arud": [["1110110", "متفاعلن", 0, "عروض صحيحة"], ["1010110", "متْفاعلن", 0.05, "عروض مضمرة"]], "darb": [["1110110", "متفاعلن", 0, "ضرب صحيح"], ["1010110", "متْفاعلن", 0.05, "ضرب مضمر"], ["11101010", "متفاعلاتن", 0, "ضرب مرفّل"], ["10101010", "متْفاعلاتن", 0.05, "ضرب مرفّل مضمر"], ["11101100", "متفاعلانْ", 0, "ضرب مذيّل"], ["10101100", "متْفاعلانْ", 0.05, "ضرب مذيّل مضمر"], ["111010", "متفاعلْ", 0, "ضرب مقطوع"], ["101010", "متْفاعلْ", 0.05, "ضرب مقطوع مضمر"]], "single": false, "rare": 0.0, "ending_pairs": {}, "kharm": []}, {"meter": "hazaj", "name": "مجزوء وجوبًا", "key": "hazaj/مجزوء وجوبًا", "hashw": [[["1101010", "مفاعيلن", 0.0, "مفاعيلن"], ["110101", "مفاعيلُ", 0.1, "مفاعيلُ (كف)"], ["110110", "مفاعلن", 0.4, "مفاعلن (قبض)"]]], "arud": [["1101010", "مفاعيلن", 0, "عروض صحيحة"], ["110101", "مفاعيلُ", 0.3, "عروض مكفوفة (قليلة)"]], "darb": [["1101010", "مفاعيلن", 0, "ضرب صحيح"], ["11010", "فعولن", 0, "ضرب محذوف"]], "single": false, "rare": 0.0, "ending_pairs": {}, "kharm": [["101010", "فاعيلن", 0.6, "مفعولن (أخرم)"], ["10101", "فاعيلُ", 0.8, "مفعولُ (أخرب: خرم مع كف)"], ["10110", "فاعلن", 0.8, "فاعلن (أشتر: خرم مع قبض)"]]}, {"meter": "rajaz", "name": "تام", "key": "rajaz/تام", "hashw": [[["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"], ["11110", "متعلن", 0.5, "متعلن/فعِلتن (خبل)"]], [["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"], ["11110", "متعلن", 0.5, "متعلن/فعِلتن (خبل)"]]], "arud": [["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"], ["11110", "متعلن", 0.5, "متعلن/فعِلتن (خبل)"], ["101010", "مستفعلْ", 0.3, "عروض مقطوعة (تصريع)"]], "darb": [["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"], ["11110", "متعلن", 0.5, "متعلن/فعِلتن (خبل)"], ["101010", "مستفعلْ", 0, "ضرب مقطوع"], ["11010", "متفعلْ", 0.1, "ضرب مقطوع مخبون"]], "single": false, "rare": 0.0, "ending_pairs": {}, "kharm": []}, {"meter": "rajaz", "name": "مجزوء", "key": "rajaz/مجزوء", "hashw": [[["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"], ["11110", "متعلن", 0.5, "متعلن/فعِلتن (خبل)"]]], "arud": [["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"], ["11110", "متعلن", 0.5, "متعلن/فعِلتن (خبل)"]], "darb": [["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"], ["11110", "متعلن", 0.5, "متعلن/فعِلتن (خبل)"], ["101010", "مستفعلْ", 0.2, "ضرب مقطوع (عند المحدثين)"], ["11010", "متفعلْ", 0.3, "ضرب مقطوع مخبون (عند المحدثين)"]], "single": false, "rare": 0.0, "ending_pairs": {}, "kharm": []}, {"meter": "rajaz", "name": "مشطور", "key": "rajaz/مشطور", "hashw": [[["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"], ["11110", "متعلن", 0.5, "متعلن/فعِلتن (خبل)"]], [["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"], ["11110", "متعلن", 0.5, "متعلن/فعِلتن (خبل)"]]], "arud": [], "darb": [["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"], ["11110", "متعلن", 0.5, "متعلن/فعِلتن (خبل)"], ["101010", "مستفعلْ", 0, "مقطوع"], ["11010", "متفعلْ", 0.1, "مقطوع مخبون"]], "single": true, "rare": 0.0, "ending_pairs": {}, "kharm": []}, {"meter": "rajaz", "name": "منهوك", "key": "rajaz/منهوك", "hashw": [[["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"], ["11110", "متعلن", 0.5, "متعلن/فعِلتن (خبل)"]]], "arud": [], "darb": [["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"], ["11110", "متعلن", 0.5, "متعلن/فعِلتن (خبل)"], ["101010", "مستفعلْ", 0, "مقطوع"]], "single": true, "rare": 0.2, "ending_pairs": {}, "kharm": []}, {"meter": "ramal", "name": "تام", "key": "ramal/تام", "hashw": [[["1011010", "فاعلاتن", 0.0, "فاعلاتن"], ["111010", "فعِلاتن", 0.1, "فعِلاتن (خبن)"], ["101101", "فاعلاتُ", 0.5, "فاعلاتُ (كف)"], ["11101", "فعِلاتُ", 0.7, "فعِلاتُ (شكل)"]], [["1011010", "فاعلاتن", 0.0, "فاعلاتن"], ["111010", "فعِلاتن", 0.1, "فعِلاتن (خبن)"], ["101101", "فاعلاتُ", 0.5, "فاعلاتُ (كف)"], ["11101", "فعِلاتُ", 0.7, "فعِلاتُ (شكل)"]]], "arud": [["10110", "فاعلن", 0, "عروض محذوفة"], ["1110", "فعِلن", 0.05, "عروض محذوفة مخبونة"], ["101100", "فاعلانْ", 0.3, "عروض مقصورة (تصريع)"]], "darb": [["10110", "فاعلن", 0, "ضرب محذوف"], ["1110", "فعِلن", 0.05, "ضرب محذوف مخبون"], ["101100", "فاعلانْ", 0, "ضرب مقصور"], ["1011010", "فاعلاتن", 0.1, "ضرب صحيح"], ["111010", "فعِلاتن", 0.15, "ضرب صحيح مخبون"]], "single": false, "rare": 0.0, "ending_pairs": {}, "kharm": []}, {"meter": "ramal", "name": "مجزوء", "key": "ramal/مجزوء", "hashw": [[["1011010", "فاعلاتن", 0.0, "فاعلاتن"], ["111010", "فعِلاتن", 0.1, "فعِلاتن (خبن)"], ["101101", "فاعلاتُ", 0.5, "فاعلاتُ (كف)"], ["11101", "فعِلاتُ", 0.7, "فعِلاتُ (شكل)"]]], "arud": [["1011010", "فاعلاتن", 0, "عروض صحيحة"], ["111010", "فعِلاتن", 0.1, "عروض صحيحة مخبونة"]], "darb": [["1011010", "فاعلاتن", 0, "ضرب صحيح"], ["111010", "فعِلاتن", 0.1, "ضرب صحيح مخبون"], ["10110100", "فاعلاتانْ", 0, "ضرب مسبّغ"], ["101100", "فاعلانْ", 0.25, "ضرب مقصور (عند المحدثين)"], ["10110", "فاعلن", 0, "ضرب محذوف"], ["1110", "فعِلن", 0.1, "ضرب محذوف مخبون"]], "single": false, "rare": 0.0, "ending_pairs": {}, "kharm": []}, {"meter": "sari", "name": "تام", "key": "sari/تام", "hashw": [[["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"], ["11110", "متعلن", 0.5, "متعلن/فعِلتن (خبل)"]], [["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"], ["11110", "متعلن", 0.5, "متعلن/فعِلتن (خبل)"]]], "arud": [["10110", "فاعلن", 0, "عروض مطوية مكشوفة"], ["1110", "فعِلن", 0.05, "عروض مخبولة مكشوفة"]], "darb": [["10110", "فاعلن", 0, "ضرب مطوي مكشوف"], ["1110", "فعِلن", 0.05, "ضرب مخبول مكشوف"], ["101100", "فاعلانْ", 0, "ضرب مطوي موقوف"], ["1010", "فعْلن", 0, "ضرب أصلم"]], "single": false, "rare": 0.0, "ending_pairs": {}, "kharm": []}, {"meter": "sari", "name": "مشطور", "key": "sari/مشطور", "hashw": [[["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"], ["11110", "متعلن", 0.5, "متعلن/فعِلتن (خبل)"]], [["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"], ["11110", "متعلن", 0.5, "متعلن/فعِلتن (خبل)"]]], "arud": [], "darb": [["1010100", "مفعولاتْ", 0, "ضرب موقوف"], ["101010", "مفعولن", 0, "ضرب مكشوف"]], "single": true, "rare": 0.3, "ending_pairs": {}, "kharm": []}, {"meter": "munsarih", "name": "تام", "key": "munsarih/تام", "hashw": [[["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"]], [["101101", "مفعلاتُ", 0.0, "فاعلاتُ (مفعولاتُ مطوية)"], ["1010101", "مفعولاتُ", 0.2, "مفعولاتُ"], ["110101", "معولاتُ", 0.2, "مفاعيلُ (مفعولاتُ مخبونة)"]]], "arud": [["101110", "مفتعلن", 0, "عروض مطوية"], ["1010110", "مستفعلن", 0.3, "عروض صحيحة"], ["110110", "مفاعلن", 0.2, "عروض مخبونة"]], "darb": [["101110", "مفتعلن", 0, "ضرب مطوي"], ["1010110", "مستفعلن", 0.45, "ضرب صحيح (نادر)"], ["110110", "مفاعلن", 0.2, "ضرب مخبون"], ["101010", "مفعولن", 0.2, "ضرب مقطوع"]], "single": false, "rare": 0.0, "ending_pairs": {}, "kharm": []}, {"meter": "munsarih", "name": "منهوك", "key": "munsarih/منهوك", "hashw": [[["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"]]], "arud": [], "darb": [["1010100", "مفعولاتْ", 0, "ضرب موقوف"], ["101010", "مفعولن", 0, "ضرب مكشوف"]], "single": true, "rare": 0.3, "ending_pairs": {}, "kharm": []}, {"meter": "khafif", "name": "تام", "key": "khafif/تام", "hashw": [[["1011010", "فاعلاتن", 0.0, "فاعلاتن"], ["111010", "فعِلاتن", 0.1, "فعِلاتن (خبن)"], ["101101", "فاعلاتُ", 0.5, "فاعلاتُ (كف)"], ["11101", "فعِلاتُ", 0.7, "فعِلاتُ (شكل)"]], [["1010110", "مستفع لن", 0.0, "مستفع لن"], ["110110", "متفع لن", 0.1, "متفع لن (خبن)"]]], "arud": [["1011010", "فاعلاتن", 0, "عروض صحيحة"], ["111010", "فعِلاتن", 0.05, "عروض صحيحة مخبونة"], ["101010", "فالاتن", 0.2, "عروض مشعّثة"], ["10110", "فاعلن", 0.1, "عروض محذوفة"], ["1110", "فعِلن", 0.1, "عروض محذوفة مخبونة"]], "darb": [["1011010", "فاعلاتن", 0, "ضرب صحيح"], ["111010", "فعِلاتن", 0.05, "ضرب صحيح مخبون"], ["101010", "فالاتن", 0, "ضرب مشعّث"], ["10110", "فاعلن", 0, "ضرب محذوف"], ["1110", "فعِلن", 0.05, "ضرب محذوف مخبون"]], "single": false, "rare": 0.0, "ending_pairs": {}, "kharm": []}, {"meter": "khafif", "name": "مجزوء", "key": "khafif/مجزوء", "hashw": [[["1011010", "فاعلاتن", 0.0, "فاعلاتن"], ["111010", "فعِلاتن", 0.1, "فعِلاتن (خبن)"], ["101101", "فاعلاتُ", 0.5, "فاعلاتُ (كف)"]]], "arud": [["1010110", "مستفع لن", 0, "عروض صحيحة"], ["110110", "متفع لن", 0.1, "عروض مخبونة"]], "darb": [["1010110", "مستفع لن", 0, "ضرب صحيح"], ["110110", "متفع لن", 0.1, "ضرب مخبون"], ["11010", "فعولن", 0, "ضرب مقصور مخبون"]], "single": false, "rare": 0.0, "ending_pairs": {}, "kharm": []}, {"meter": "mudari", "name": "مجزوء وجوبًا", "key": "mudari/مجزوء وجوبًا", "hashw": [[["110101", "مفاعيلُ", 0, "مفاعيلُ (كف)"], ["110110", "مفاعلن", 0.3, "مفاعلن (قبض)"]]], "arud": [["1011010", "فاع لاتن", 0, "عروض صحيحة"]], "darb": [["1011010", "فاع لاتن", 0, "ضرب صحيح"]], "single": false, "rare": 0.3, "ending_pairs": {}, "kharm": [["10101", "فاعيلُ", 0.7, "مفعولُ (أخرب: خرم مع كف)"], ["10110", "فاعلن", 0.7, "فاعلن (أشتر: خرم مع قبض)"]]}, {"meter": "muqtadab", "name": "مجزوء وجوبًا", "key": "muqtadab/مجزوء وجوبًا", "hashw": [[["101101", "مفعلاتُ", 0, "فاعلاتُ (مفعولاتُ مطوية)"], ["110101", "معولاتُ", 0.1, "مفاعيلُ"]]], "arud": [["101110", "مفتعلن", 0, "عروض مطوية"]], "darb": [["101110", "مفتعلن", 0, "ضرب مطوي"]], "single": false, "rare": 0.3, "ending_pairs": {}, "kharm": []}, {"meter": "mujtath", "name": "مجزوء وجوبًا", "key": "mujtath/مجزوء وجوبًا", "hashw": [[["1010110", "مستفع لن", 0.0, "مستفع لن"], ["110110", "متفع لن", 0.1, "متفع لن (خبن)"]]], "arud": [["1011010", "فاعلاتن", 0, "عروض صحيحة"], ["111010", "فعِلاتن", 0.05, "عروض مخبونة"]], "darb": [["1011010", "فاعلاتن", 0, "ضرب صحيح"], ["111010", "فعِلاتن", 0.05, "ضرب مخبون"], ["101010", "فالاتن", 0.1, "ضرب مشعّث"]], "single": false, "rare": 0.0, "ending_pairs": {}, "kharm": []}, {"meter": "mutaqarib", "name": "تام", "key": "mutaqarib/تام", "hashw": [[["11010", "فعولن", 0.0, "فعولن"], ["1101", "فعولُ", 0.1, "فعولُ (قبض)"]], [["11010", "فعولن", 0.0, "فعولن"], ["1101", "فعولُ", 0.1, "فعولُ (قبض)"]], [["11010", "فعولن", 0.0, "فعولن"], ["1101", "فعولُ", 0.1, "فعولُ (قبض)"]]], "arud": [["11010", "فعولن", 0, "عروض صحيحة"], ["1101", "فعولُ", 0.1, "عروض مقبوضة"], ["110", "فعو", 0.05, "عروض محذوفة"], ["1100", "فعولْ", 0.2, "عروض مقصورة (تصريع)"]], "darb": [["11010", "فعولن", 0, "ضرب صحيح"], ["1100", "فعولْ", 0, "ضرب مقصور"], ["110", "فعو", 0, "ضرب محذوف"], ["10", "فعْ", 0, "ضرب أبتر"]], "single": false, "rare": 0.0, "ending_pairs": {}, "kharm": [["1010", "عولن", 0.6, "عولن (أثلم: خرم)"], ["101", "عولُ", 0.8, "عولُ (أثرم: خرم مع قبض)"]]}, {"meter": "mutaqarib", "name": "مجزوء", "key": "mutaqarib/مجزوء", "hashw": [[["11010", "فعولن", 0.0, "فعولن"], ["1101", "فعولُ", 0.1, "فعولُ (قبض)"]], [["11010", "فعولن", 0.0, "فعولن"], ["1101", "فعولُ", 0.1, "فعولُ (قبض)"]]], "arud": [["110", "فعو", 0, "عروض محذوفة"], ["11010", "فعولن", 0.2, "عروض صحيحة (عند المحدثين)"]], "darb": [["110", "فعو", 0, "ضرب محذوف"], ["10", "فعْ", 0, "ضرب أبتر"], ["11010", "فعولن", 0.2, "ضرب صحيح (عند المحدثين)"], ["1100", "فعولْ", 0.2, "ضرب مقصور (عند المحدثين)"]], "single": false, "rare": 0.1, "ending_pairs": {}, "kharm": [["1010", "عولن", 0.6, "عولن (أثلم: خرم)"]]}, {"meter": "mutadarak", "name": "تام", "key": "mutadarak/تام", "hashw": [[["10110", "فاعلن", 0.0, "فاعلن"], ["1110", "فعِلن", 0.0, "فعِلن (خبن)"], ["1010", "فعْلن", 0.1, "فعْلن (تشعيث/قطع)"]], [["10110", "فاعلن", 0.0, "فاعلن"], ["1110", "فعِلن", 0.0, "فعِلن (خبن)"], ["1010", "فعْلن", 0.1, "فعْلن (تشعيث/قطع)"]], [["10110", "فاعلن", 0.0, "فاعلن"], ["1110", "فعِلن", 0.0, "فعِلن (خبن)"], ["1010", "فعْلن", 0.1, "فعْلن (تشعيث/قطع)"]]], "arud": [["10110", "فاعلن", 0.0, "فاعلن"], ["1110", "فعِلن", 0.0, "فعِلن (خبن)"], ["1010", "فعْلن", 0.1, "فعْلن (تشعيث/قطع)"]], "darb": [["10110", "فاعلن", 0.0, "فاعلن"], ["1110", "فعِلن", 0.0, "فعِلن (خبن)"], ["1010", "فعْلن", 0.1, "فعْلن (تشعيث/قطع)"], ["101100", "فاعلانْ", 0.25, "ضرب مذيّل (عند المحدثين في التام)"], ["11100", "فعِلانْ", 0.3, "ضرب مذيّل مخبون (عند المحدثين في التام)"], ["1011010", "فاعلاتن", 0.3, "ضرب مرفّل (عند المحدثين في التام)"]], "single": false, "rare": 0.0, "ending_pairs": {}, "kharm": []}, {"meter": "mutadarak", "name": "مجزوء", "key": "mutadarak/مجزوء", "hashw": [[["10110", "فاعلن", 0.0, "فاعلن"], ["1110", "فعِلن", 0.0, "فعِلن (خبن)"], ["1010", "فعْلن", 0.1, "فعْلن (تشعيث/قطع)"]], [["10110", "فاعلن", 0.0, "فاعلن"], ["1110", "فعِلن", 0.0, "فعِلن (خبن)"], ["1010", "فعْلن", 0.1, "فعْلن (تشعيث/قطع)"]]], "arud": [["10110", "فاعلن", 0.0, "فاعلن"], ["1110", "فعِلن", 0.0, "فعِلن (خبن)"], ["1010", "فعْلن", 0.1, "فعْلن (تشعيث/قطع)"]], "darb": [["10110", "فاعلن", 0.0, "فاعلن"], ["1110", "فعِلن", 0.0, "فعِلن (خبن)"], ["1010", "فعْلن", 0.1, "فعْلن (تشعيث/قطع)"], ["101100", "فاعلانْ", 0, "ضرب مذيّل"], ["11100", "فعِلانْ", 0.05, "ضرب مذيّل مخبون"], ["1011010", "فاعلاتن", 0, "ضرب مرفّل"]], "single": false, "rare": 0.1, "ending_pairs": {}, "kharm": []}], "families": [{"meter": "kamil", "foot": "متفاعلن", "hashw": [["1110110", "متَفاعلن", 0.0, "متَفاعلن"], ["1010110", "متْفاعلن", 0.05, "متْفاعلن (إضمار)"], ["110110", "مفاعلن", 0.4, "وقص"], ["101110", "متْفعلن", 0.4, "خزل"]], "endings": [["111010", "متفاعلْ", 0.0, "متفاعلْ (قطع)"], ["101010", "متْفاعلْ", 0.0, "متْفاعلْ (قطع مع إضمار)"], ["11101100", "متفاعلانْ", 0.0, "متفاعلانْ (تذييل)"], ["10101100", "متْفاعلانْ", 0.0, "متْفاعلانْ (تذييل مع إضمار)"], ["11101010", "متفاعلاتن", 0.0, "متفاعلاتن (ترفيل)"], ["10101010", "متْفاعلاتن", 0.0, "متْفاعلاتن (ترفيل مع إضمار)"], ["1110", "فعِلن", 0.2, "حذذ"], ["1010", "فعْلن", 0.2, "حذذ مع إضمار"]]}, {"meter": "rajaz", "foot": "مستفعلن", "hashw": [["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"], ["11110", "متعلن", 0.5, "متعلن/فعِلتن (خبل)"]], "endings": [["101010", "مستفعلْ", 0.0, "مستفعلْ (قطع)"], ["11010", "متفعلْ", 0.0, "متفعلْ (خبن مع قطع)"], ["10101100", "مستفعلانْ", 0.0, "مستفعلانْ (تذييل)"], ["1101100", "متفعلانْ", 0.0, "متفعلانْ (خبن مع تذييل)"]]}, {"meter": "ramal", "foot": "فاعلاتن", "hashw": [["1011010", "فاعلاتن", 0.0, "فاعلاتن"], ["111010", "فعِلاتن", 0.1, "فعِلاتن (خبن)"], ["101101", "فاعلاتُ", 0.15, "فاعلاتُ (كف)"], ["11101", "فعِلاتُ", 0.7, "فعِلاتُ (شكل)"]], "endings": [["101100", "فاعلانْ", 0.0, "فاعلانْ (قصر)"], ["11100", "فعِلانْ", 0.0, "فعِلانْ (خبن مع قصر)"], ["10110", "فاعلن", 0.0, "فاعلن (حذف)"], ["1110", "فعِلن", 0.0, "فعِلن (خبن مع حذف)"], ["10110100", "فاعلاتانْ", 0.0, "فاعلاتانْ (تسبيغ)"]]}, {"meter": "mutaqarib", "foot": "فعولن", "hashw": [["11010", "فعولن", 0.0, "فعولن"], ["1101", "فعولُ", 0.1, "فعولُ (قبض)"]], "endings": [["1100", "فعولْ", 0.0, "فعولْ (قصر)"], ["110", "فعو", 0.0, "فعو (حذف)"], ["10", "فعْ", 0.2, "فعْ (بتر)"]]}, {"meter": "mutadarak", "foot": "فاعلن", "hashw": [["10110", "فاعلن", 0.0, "فاعلن"], ["1110", "فعِلن", 0.0, "فعِلن (خبن)"], ["1010", "فعْلن", 0.1, "فعْلن (تشعيث/قطع)"]], "endings": [["101100", "فاعلانْ", 0.0, "فاعلانْ (تذييل)"], ["11100", "فعِلانْ", 0.0, "فعِلانْ (خبن مع تذييل)"], ["1011010", "فاعلاتن", 0.2, "فاعلاتن (ترفيل)"], ["111010", "فعِلاتن", 0.25, "فعِلاتن (خبن مع ترفيل)"], ["100", "فاعْ", 0.3, "فاعْ (حذذ)"]]}, {"meter": "hazaj", "foot": "مفاعيلن", "hashw": [["1101010", "مفاعيلن", 0.0, "مفاعيلن"], ["110101", "مفاعيلُ", 0.1, "مفاعيلُ (كف)"]], "endings": [["11010", "فعولن", 0.0, "فعولن (حذف)"], ["110100", "مفاعيلْ", 0.15, "مفاعيلْ (قصر)"], ["11010100", "مفاعيلانْ", 0.2, "مفاعيلانْ (تسبيغ)"]]}, {"meter": "sari", "foot": "مستفعلن", "hashw": [["1010110", "مستفعلن", 0.0, "مستفعلن"], ["110110", "متفعلن", 0.1, "متفعلن/مفاعلن (خبن)"], ["101110", "مستعلن", 0.15, "مستعلن/مفتعلن (طي)"], ["11110", "متعلن", 0.5, "متعلن/فعِلتن (خبل)"]], "endings": [["10110", "فاعلن", 0.0, "فاعلن (طي مع كشف)"], ["1110", "فعِلن", 0.0, "فعِلن (خبل مع كشف)"], ["101100", "فاعلانْ", 0.0, "فاعلانْ (طي مع وقف)"], ["1010", "فعْلن", 0.2, "فعْلن (صلم)"]]}, {"meter": "wafir", "foot": "مفاعلتن", "hashw": [["1101110", "مفاعَلَتن", 0.0, "مفاعَلَتن"], ["1101010", "مفاعلْتن", 0.05, "مفاعلْتن (عصب)"]], "endings": [["11010", "فعولن", 0, "مفاعلْ (مقطوفة)"]]}]};
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script>
@@ -385,6 +518,7 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
   // ------------------------------------------------------------------ text
   function clean(text) {
     text = text.replace(/\s+([\u064b-\u0652\u0670\u0653-\u0655])/g, '$1');
+    text = text.replace(/([\u0621-\u064a])\u064a\u0650(?=\s|$)/g, '$1\u0650\u064a');   // «فيِ» typed with the kasra after the ya = «فِي»
     text = text.replace(/ک/g, 'ك').replace(/ی/g, 'ي').replace(/[ۀہ]/g, 'ه').replace(/ے/g, 'ي').split(TATWEEL).join('');
     let out = '';
     for (const ch of text) out += (LETTERS.has(ch) || MARKS.has(ch)) ? ch : ' ';
@@ -417,6 +551,8 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
   const skeleton = units => units.map(u => u.letter).join('').replace(/[أإٱ]/g, 'ا');
 
   const SPECIAL = {
+    'مائة': 'مِئَة', 'مائتان': 'مِئَتَانِ', 'مائتين': 'مِئَتَيْنِ', 'ذلكن': 'ذَالِكُنَّ', 'اولاء': 'أُلَاءِ',
+    'هاتان': 'هَاتَانِ', 'لكنك': 'لَاكِنَّكَ', 'لكنكم': 'لَاكِنَّكُمْ', 'لكننا': 'لَاكِنَّنَا', 'لكنهم': 'لَاكِنَّهُمْ',
     'هذا': 'هَاذَا', 'هذه': 'هَاذِهِ', 'هذي': 'هَاذِي', 'هذان': 'هَاذَانِ', 'هذين': 'هَاذَيْنِ',
     'هؤلاء': 'هَاؤُلَاءِ', 'هكذا': 'هَاكَذَا', 'ههنا': 'هَاهُنَا',
     'ذلك': 'ذَالِكَ', 'ذلكم': 'ذَالِكُمْ', 'ذلكما': 'ذَالِكُمَا',
@@ -555,13 +691,19 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
 
   function lastPronounced(slots) { for (let k = slots.length - 1; k >= 0; k--) if (slots[k].kind !== 'silent') return k; return null; }
 
-  function joinToWasl(slots) {
+  const QAT_COST = 0.35;   // قطع همزة الوصل: a poetic licence, chosen only when it saves the meter
+  function joinToWasl(slots, article) {
     const k = lastPronounced(slots); if (k === null) return;
-    const s = slots[k];
+    const s = slots[k], orig = s.opts.map(o => opt(o.bits, o.disp.slice(), o.cost, o.note)), origKind = s.kind;
     if (s.kind === 'madd' || s.kind === 'ana') { s.kind = 'silent'; s.opts = [opt('', [], 0, 'حُذف حرف المد لالتقاء الساكنين')]; }
     else if (s.kind === 'cons_tan') { const o = s.opts[0]; s.opts = [opt(o.bits.slice(0, -1) + '1', o.disp, 0, 'تحريك نون التنوين لالتقاء الساكنين')]; }
     else if (['cons_o', 'unk', 'unk_end', 'meem'].includes(s.kind)) { s.kind = 'cons_v'; s.opts = [opt('1', [s.opts[0].disp[0]], 0, 'حُرّك الساكن لالتقاء الساكنين')]; }
     else if (s.kind === 'ha') s.opts = [opt('1', ['ه'], 0)];
+    if (['madd', 'ana', 'cons_tan', 'cons_o', 'unk', 'unk_end', 'meem', 'ha'].includes(origKind)) {
+      const cost = QAT_COST + (article ? 0.2 : 0);
+      s.opts = s.opts.concat(orig.filter(o => o.cost <= 0.1).map(o => opt(o.bits + '1', o.disp.concat(['ء']), o.cost + cost, 'قطع همزة الوصل (ضرورة شعرية)')));
+      if (s.kind === 'silent') s.kind = 'wasl_join';
+    }
   }
 
   function applyEnd(slots) {
@@ -596,7 +738,7 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
     const all = [];
     ws.forEach((units, wi) => {
       const [slots, wasl] = buildWordSlots(units, wi);
-      if (wasl !== null && wi > 0) { slots[wasl].kind = 'silent'; slots[wasl].opts = [opt('', [], 0)]; joinToWasl(all); }
+      if (wasl !== null && wi > 0) { slots[wasl].kind = 'silent'; slots[wasl].opts = [opt('', [], 0)]; joinToWasl(all, units.some((_, k) => isArticle(units, k))); }
       all.push(...slots);
     });
     if (!all.length) return all;
@@ -683,13 +825,19 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
   const TEMPL = new Map();
   const formsAll = () => M.forms;
   function darbGroup(label) { if (!label || !label.startsWith('ضرب')) return 'ضرب صحيح'; return label.split(/\s+/).slice(0, 2).join(' '); }
+  // inner positions of a hemistich; a sadr may open with الخرم in meters that start on a watad
+  function opening(form, part) {
+    const pos = form.hashw.slice();
+    if (form.kharm && form.kharm.length && (part === 'sadr' || form.single) && pos.length) pos[0] = pos[0].concat(form.kharm);
+    return pos;
+  }
   function template(form, part, group, endingPatterns = null, tasriPattern = null) {
     const key = JSON.stringify([form.key, part, group, endingPatterns, tasriPattern]);
     if (!TEMPL.has(key)) {
       let last = (part === 'ajuz' || form.single) ? form.darb : form.arud.filter(v => !v[3].includes('تصريع') || v[0] === tasriPattern);
       if (endingPatterns) last = last.filter(v => endingPatterns.includes(v[0]));
       if (group) last = last.filter(v => darbGroup(v[3]) === group);
-      TEMPL.set(key, last.length ? templateGraph(form.hashw.concat([last])) : null);
+      TEMPL.set(key, last.length ? templateGraph(opening(form, part).concat([last])) : null);
     }
     return TEMPL.get(key);
   }
@@ -771,6 +919,31 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
     return out;
   }
 
+  const LONE_PENALTY = 0.3, TADWIR_PENALTY = 0.2;
+  /** A verse read as مدوّر: both halves scanned as one run, so a foot may end inside a word that the
+   *  next half completes («وَحِيدَ قَلْ * بٍ لَا يَرَى»). Only verses whose seam falls inside a word count. */
+  function scanMudawwar(a, b, form, cap = 4) {
+    const text = a.trim() + ' ' + b.trim(), key = 'full|' + form.key;
+    if (!TEMPL.has(key)) TEMPL.set(key, templateGraph(opening(form, 'sadr').concat([form.arud], form.hashw, [form.darb])));
+    const [L, ws] = lattice(text), T = TEMPL.get(key);
+    const r = align(L, T, cap * 2); if (!r) return null;
+    const full = summarize(L, T, r[0], r[1], form, 'ajuz', ws), k = form.hashw.length + 1, na = words(a).length;
+    const fa = full.feet.slice(0, k), fb = full.feet.slice(k);
+    if (!fa.length || !fb.length || !fa[k - 1].words.length || !fb[0].words.length) return null;
+    const seam = Math.max(...fa[k - 1].words);
+    if (!fb[0].words.includes(seam)) return null;
+    fb.forEach(f => { f.pos -= k; f.words = f.words.filter(w => w >= na).map(w => w - na); });
+    const ea = fa.reduce((s, f) => s + f.errors, 0), eb = fb.reduce((s, f) => s + f.errors, 0);
+    const share = ea + eb ? r[0] * ea / (ea + eb) : 0;
+    const tA = template(form, 'sadr'), tB = template(form, 'ajuz');
+    const ra = { form: form.key, part: 'sadr', cost: share, errors: ea, feet: fa, readings: full.readings.filter(x => x.w < na),
+      ending: fa[k - 1].label, pattern: fa.map(f => f.got).join(''), allowed: tA.positions, tadwir: ws[seam] };
+    const rb = { form: form.key, part: 'ajuz', cost: r[0] - share, errors: eb, feet: fb,
+      readings: full.readings.filter(x => x.w >= na).map(x => Object.assign({}, x, { w: x.w - na })),
+      ending: fb[fb.length - 1].label, pattern: fb.map(f => f.got).join(''), allowed: tB.positions, tadwir: ws[seam] };
+    if (!compatibleEndings(ra, rb, form)) return null;   // the عروض/ضرب pairing still applies to a مدوّر verse
+    return { cost: r[0], sadr: ra, ajuz: rb };
+  }
   function scanLine(i, line, forms, cap = 4) {
     const sp = splitLine(line), cands = sp ? [sp] : autoSplits(line), results = {};
     for (const form of forms) {
@@ -783,6 +956,16 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
           const pair = scanPair(a, b, form, i === 0, cap); if (!pair) continue;
           const c = pair.cost + form.rare;
           if (!best || c < best.cost) best = Object.assign({}, pair, {cost: c});
+        }
+        if (sp && (!best || best.cost > 0.05)) {
+          const m = scanMudawwar(sp[0], sp[1], form, cap);
+          if (m) { const c = m.cost + form.rare + TADWIR_PENALTY; if (!best || c < best.cost) best = { cost: c, sadr: m.sadr, ajuz: m.ajuz, split: sp, tadwir: m.sadr.tadwir }; }
+        }
+        if (!sp) {             // a standalone hemistich (شطر منفرد)
+          for (const part of ['ajuz', 'sadr']) {
+            const r = scanHemistich(line, form, part, cap);
+            if (r) { const c = r.cost + form.rare + LONE_PENALTY; if (!best || c < best.cost) best = { cost: c, sadr: null, ajuz: r, split: null, lone: true }; }
+          }
         }
       }
       if (best) results[form.key] = best;
@@ -798,11 +981,11 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
     for (const form of forms) {
       const per = scans.map(ls => { const r = ls.results[form.key]; return r ? [Math.min(r.cost, LINE_CAP), r] : [LINE_CAP, null]; });
       const darbs = {};
-      per.forEach(([c, r]) => { if (r && r.ajuz.errors === 0) { const g = darbGroup(r.ajuz.ending); darbs[g] = (darbs[g] || 0) + 1; } });
+      per.forEach(([c, r]) => { if (r && r.ajuz.errors === 0 && !r.lone) { const g = darbGroup(r.ajuz.ending); darbs[g] = (darbs[g] || 0) + 1; } });
       let dominant = null, dn = 0; for (const g in darbs) if (darbs[g] > dn) { dn = darbs[g]; dominant = g; }
       if (dominant && !form.single) {
         per.forEach(([c, r], idx) => {
-          if (!exact(r) || darbGroup(r.ajuz.ending) === dominant) return;
+          if (!exact(r) || r.lone || darbGroup(r.ajuz.ending) === dominant) return;
           const aj = r.split ? r.split[1] : scans[idx].text;
           const rr = scanHemistich(aj, form, 'ajuz', 4, dominant);
           if (rr && rr.errors === 0 && compatibleEndings(r.sadr, rr, form, idx === 0)) { const nc = (r.sadr ? r.sadr.cost : 0) + rr.cost + form.rare; per[idx] = [Math.min(nc, LINE_CAP), Object.assign({}, r, { cost: nc, ajuz: rr })]; }
@@ -812,7 +995,7 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
       per.forEach(([c, r], idx) => {
         total += c;
         if (r) exH += (r.sadr && r.sadr.errors === 0 ? 1 : 0) + (r.ajuz.errors === 0 ? 1 : 0);
-        if (exact(r)) { ex++; if (dominant && darbGroup(r.ajuz.ending) !== dominant) { total += DARB_MISMATCH; mism.push(idx); } }
+        if (exact(r)) { ex++; if (dominant && !r.lone && darbGroup(r.ajuz.ending) !== dominant) { total += DARB_MISMATCH; mism.push(idx); } }
       });
       ranking.push({ form, total, exact: ex, exactH: exH, n: scans.length, dominant, darbMismatch: mism, perLine: per });
     }
@@ -846,6 +1029,7 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
       const pair = scanPair(a, b, form, first, 20);
       if (pair && (!best || pair.cost < best.cost)) best = pair;
     }
+    if (sp) { const m = scanMudawwar(sp[0], sp[1], form, 20); if (m && (!best || m.cost + TADWIR_PENALTY < best.cost)) best = { cost: m.cost + TADWIR_PENALTY, sadr: m.sadr, ajuz: m.ajuz, split: sp, tadwir: m.sadr.tadwir }; }
     return best;
   }
 
@@ -878,19 +1062,23 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
     const slots = [];
     lines.forEach((line, li) => { const sl = buildHemistich(line); if (li + 1 < lines.length) addTadwir(sl); sl.forEach(s => { s.line = li; }); slots.push(...sl); });
     const L = latticeGraph(slots), lineEnd = new Set();
-    for (let k = 1; k < slots.length; k++) if (slots[k].line !== slots[k - 1].line) lineEnd.add(L.slotStart[k]);
+    L.endLine = new Map();     // line-end node -> the line it closes
+    for (let k = 1; k < slots.length; k++) if (slots[k].line !== slots[k - 1].line) { lineEnd.add(L.slotStart[k]); L.endLine.set(L.slotStart[k], slots[k - 1].line); }
     lineEnd.add(L.final);
     let changed = true;
     while (changed) {
       changed = false;
       for (let u = 0; u < L.n; u++) {
         if (lineEnd.has(u) || !L.out[u].length) continue;
-        if (L.out[u].every(([w, b]) => b === null && lineEnd.has(w))) { lineEnd.add(u); changed = true; }
+        if (L.out[u].every(([w, b]) => b === null && lineEnd.has(w))) {
+          lineEnd.add(u); changed = true;
+          const t = L.out[u].find(([w]) => L.endLine.has(w)); if (t) L.endLine.set(u, L.endLine.get(t[0]));
+        }
       }
     }
     return [L, lineEnd];
   }
-  function scanFamily(L, lineEnd, fam) {
+  function scanFamily(L, lineEnd, fam, noCross = null) {
     const T = loopTemplate(fam), cost = [], back = [];
     for (let u = 0; u < L.n; u++) { cost.push(new Float64Array(T.n).fill(INF)); back.push(new Array(T.n)); }
     cost[0][0] = 0;
@@ -905,7 +1093,7 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
           const nc = c + INS + ec; if (t > s && nc < cu[t]) { cu[t] = nc; bu[t] = [u, s, 'ins', null, null, pin, ch]; }
         }
         for (const [w, bit, lc, tin] of L.out[u]) {
-          const cw = cost[w], bw = back[w], cross = (lineEnd.has(w) && w !== L.final) ? CROSS : 0;
+          const cw = cost[w], bw = back[w], cross = (lineEnd.has(w) && w !== L.final) ? (noCross && L.endLine && noCross.has(L.endLine.get(w)) ? INF : CROSS) : 0;
           if (bit === null) { const nc = c + lc + (s !== 0 ? cross : 0); if (nc < cw[s]) { cw[s] = nc; bw[s] = [u, s, 'eps', tin, null, null, null]; } continue; }
           let nc = c + lc + DEL + (s !== 0 ? cross : 0); if (nc < cw[s]) { cw[s] = nc; bw[s] = [u, s, 'del', tin, bit, null, null]; }
           for (const [t, ch, ec, pin, endOnly] of T.out[s]) {
@@ -924,6 +1112,29 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
     steps.reverse();
     return { total, steps, T };
   }
+  // lines whose closing foot runs into the next line and still has errors: the run-on only shifts a fault
+  function badCrossings(L, steps) {
+    const out = new Set(); let lines = [], err = 0;
+    const close = () => { const ls = [...new Set(lines)].sort((a, b) => a - b); if (ls.length > 1 && err > 0) for (let i = ls[0]; i < ls[ls.length - 1]; i++) out.add(i); };
+    for (const st of steps) {
+      if (st.pin && st.pin[1] === 0) { close(); lines = []; err = 0; }
+      if (st.op === 'del' && st.tin && lines.length && L.slots[st.tin[0]].line > Math.max(...lines)) continue;
+      if (st.tin && st.tin[2] >= 0) lines.push(L.slots[st.tin[0]].line);
+      if (st.op === 'sub' || st.op === 'del' || st.op === 'ins') err++;
+    }
+    close(); return out;
+  }
+  // a line may run on into the next only through a sound foot; elsewhere it must close on its own
+  function scanFamilyBest(L, lineEnd, fam) {
+    const banned = new Set(); let r = scanFamily(L, lineEnd, fam);
+    for (let i = 0; i < 6; i++) {
+      if (!r) return null;
+      const bad = [...badCrossings(L, r.steps)].filter(x => !banned.has(x)); if (!bad.length) return r;
+      bad.forEach(x => banned.add(x));
+      const r2 = scanFamily(L, lineEnd, fam, banned); if (!r2) return r; r = r2;
+    }
+    return r;
+  }
   function summarizeFree(L, steps, T, lines) {
     const out = lines.map((t, i) => ({ index: i, text: t, feet: [], errors: 0 })); let cur = null; const readings = [];
     const flush = f => {
@@ -932,9 +1143,23 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
       out[li].feet.push({ name: f.name, letters: f.let, got: f.bits, errors: f.err, crosses, words: f.ws.filter(x => x[0] === li).map(x => x[1]), allowed: f.allowed }); out[li].errors += f.err;
       for (const extra of new Set(f.lines.slice(1))) if (extra !== li) out[extra].feet.push({ cont: true, name: f.name, letters: '', got: '', errors: 0, crosses: true });
     };
+    let pend = null;   // extra syllables at the start of a line belong to that line's first foot, not to the foot that closed the line before
     for (const st of steps) {
-      if (st.pin && st.pin[1] === 0) { flush(cur); const v = T.variants[st.pin[0]][0]; cur = { name: v[1], let: '', bits: '', err: 0, lines: [], ws: [], allowed: T.variants.filter(x => !x[1]).map(x => x[0]) }; }
+      if (st.pin && st.pin[1] === 0) {
+        flush(cur); const v = T.variants[st.pin[0]][0]; cur = { name: v[1], let: '', bits: '', err: 0, lines: [], ws: [], allowed: T.variants.filter(x => !x[1]).map(x => x[0]) };
+        if (pend) { Object.assign(cur, { let: pend.let, bits: pend.bits, err: pend.err, lines: pend.lines, ws: pend.ws }); pend = null; }
+      }
       if (!cur) cur = { name: '؟', let: '', bits: '', err: 0, lines: [], ws: [], allowed: [] };
+      if (st.op === 'del' && st.tin && cur.lines.length && L.slots[st.tin[0]].line > Math.max(...cur.lines)) {
+        const sl = L.slots[st.tin[0]], o = sl.opts[st.tin[1]], c = st.tin[2];
+        pend = pend || { let: '', bits: '', err: 0, lines: [], ws: [] };
+        if (c >= 0) { pend.bits += st.bit; pend.let += o.disp[c] || ''; pend.lines.push(sl.line); pend.ws.push([sl.line, sl.w]); }
+        pend.err++; continue;
+      }
+      if (pend && st.tin && L.slots[st.tin[0]].line === pend.lines[0] && !(st.pin && st.pin[1] === 0)) {
+        // the extra syllables were followed by more of the same foot: they stay where they are
+        cur.bits += pend.bits; cur.let += pend.let; cur.err += pend.err; cur.lines.push(...pend.lines); cur.ws.push(...pend.ws); pend = null;
+      }
       if (st.tin) {
         const [k, j, c] = st.tin, sl = L.slots[k], o = sl.opts[j];
         if (c >= 0) { cur.bits += st.bit; cur.let += o.disp[c] || ''; cur.lines.push(sl.line); cur.ws.push([sl.line, sl.w]); }
@@ -943,19 +1168,20 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
       if (st.op === 'sub' || st.op === 'del' || st.op === 'ins') cur.err++;
     }
     flush(cur);
+    if (pend) flush(Object.assign({ name: '؟', allowed: [] }, pend));
     return [out, readings];
   }
   function analyzeFree(lines, onlyMeter) {
     const [L, lineEnd] = buildStream(lines), res = [];
     for (const fam of M.families) {
       if (onlyMeter && fam.meter !== onlyMeter) continue;
-      const r = scanFamily(L, lineEnd, fam); if (!r) continue;
+      const r = scanFamilyBest(L, lineEnd, fam); if (!r) continue;
       const errors = r.steps.filter(s => s.op === 'sub' || s.op === 'del' || s.op === 'ins').length;
       const nbits = r.steps.filter(s => s.bit !== null && s.bit !== undefined).length;
       res.push({ family: fam, total: r.total, errors, nbits, steps: r.steps, T: r.T });
     }
     res.sort((a, b) => a.total - b.total);
-    res.slice(0, 3).forEach(r => { [r.lines, r.readings] = summarizeFree(L, r.steps, r.T, lines); });
+    res.slice(0, 5).forEach(r => { [r.lines, r.readings] = summarizeFree(L, r.steps, r.T, lines); });
     return res;
   }
 
@@ -1019,6 +1245,8 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
       if (sp && !form.single) {
         const pair = scanPair(sp[0], sp[1], form, true, 8);
         if (pair && (!best || pair.cost < best.cost)) best = {cost: pair.cost, parts:[pair.sadr, pair.ajuz], form};
+        const m = scanMudawwar(sp[0], sp[1], form, 8);
+        if (m && (!best || m.cost + TADWIR_PENALTY < best.cost)) best = { cost: m.cost + TADWIR_PENALTY, parts: [m.sadr, m.ajuz], form, tadwir: m.sadr.tadwir };
       } else if (!sp && asHalf && !form.single) {
         for (const part of ['sadr', 'ajuz']) { const r = scanHemistich(text, form, part, 8); if (r && (!best || r.cost < best.cost)) best = { cost: r.cost, parts: [r], form }; }
       } else if (!sp) {
@@ -1027,7 +1255,7 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
       }
     }
     if (!best) return { ok: false, parts: [] };
-    return { ok: best.parts.every(p => p.errors === 0), parts: best.parts, form: best.form, mode };
+    return { ok: best.parts.every(p => p.errors === 0), parts: best.parts, form: best.form, mode, tadwir: best.tadwir || null };
   }
 
   // ------------------------------------------------------------------ display helpers
@@ -1152,6 +1380,21 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
       `<w:tblGrid>${COLS.map(w => `<w:gridCol w:w="${w}"/>`).join('')}</w:tblGrid>${rows}</w:tbl>`;
   }
 
+  // a verse as ONE plain paragraph: «TAB صدر TAB عجز», no table, so it copies as plain text (halves split by tabs).
+  // Two right-aligned tab stops (counted from the right margin in a RTL paragraph) anchor the right edge of each
+  // half: the صدر at the right edge of a block centred on the page, the عجز just past the middle of that block.
+  // The block is sized to the poem's longest half, so short-metre poems are not stretched across the page.
+  const TEXT_W = 9638, GAP = 720;
+  const halfWidth = (t, size) => stripAll(t).replace(/\s+/g, ' ').length * 125 * (size / 28);
+  function verseParas(verses, font, size) {
+    const col = Math.min(Math.round((TEXT_W - GAP) / 2), Math.max(1800, ...verses.flatMap(([a, b]) => [halfWidth(a, size), halfWidth(b || '', size)])));
+    const right = Math.max(0, Math.round((TEXT_W - 2 * col - GAP) / 2)), s1 = Math.max(10, right), s2 = right + col + GAP;
+    const tab = '<w:r><w:tab/></w:r>';
+    return verses.map(([a, b]) => `<w:p><w:pPr><w:keepLines/><w:tabs><w:tab w:val="right" w:pos="${s1}"/><w:tab w:val="right" w:pos="${s2}"/></w:tabs>` +
+      `<w:bidi/><w:spacing w:before="0" w:after="140" w:line="360" w:lineRule="auto"/></w:pPr>` +
+      tab + run(a, { font, size }) + (b ? tab + run(b, { font, size }) : '') + '</w:p>').join('');
+  }
+
   /** one row of foot cells (name over pattern), right to left; halves separated by a narrow ⁞ cell */
   function feetGrid(halves, font) {
     const cells = [];
@@ -1182,11 +1425,13 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
       first = false;
     }
     for (const p of model.poems) {
+      // every poem opens on a new page (the first one too, when a title page precedes it)
       body.push(para(run(p.title || '', { font, size: 44, bold: true }), { pageBreak: !first, keepNext: true, after: 80 }));
       first = false;
       if (p.meter && model.meterUnderTitle !== false) body.push(para(run(p.meter, { font, size: 24, color: '777777' }), { keepNext: true, after: 360 }));
-      if (p.kind === 'verses') body.push(verseTable(p.verses.map(([a, b]) => [level(a, tk), level(b || '', tk)]), font, model.verseSize || 32));
-      else for (const l of p.lines) body.push(para(run(level(l, tk), { font, size: model.verseSize || 32 }), { jc: 'right', after: 80 }));
+      if (p.kind === 'verses') body.push((model.verseLayout === 'table' ? verseTable : verseParas)(p.verses.map(([a, b]) => [level(a, tk), level(b || '', tk)]), font, model.verseSize || 28));
+      // تفعيلة (and single-hemistich forms): one column, each line centred on the page
+      else for (const l of p.lines) body.push(para(run(level(l, tk), { font, size: model.verseSize || 32 }), { jc: 'center', after: 80 }));
     }
     if (model.appendix) {
       body.push(para(run('ملحق: البحور والتقطيع', { font, size: 44, bold: true }), { pageBreak: true, after: 120 }));
@@ -1255,6 +1500,14 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
     }
     const c = a.cands[0];
     out.meter = `${info(c.form.meter)} — ${c.form.name}`;
+    if (c.form.single) {          // مشطور / منهوك: one hemistich per line, so one column like تفعيلة
+      a.scans.forEach((s, i) => {
+        let r = c.perLine[i] ? (c.perLine[i][1] || c.perLine[i][2]) : null; if (!r) r = A.rescan(s.text, c.form);
+        out.scansion.push({ n: i + 1, text: s.text, feet: r ? feetStr(r.ajuz.feet) : '—', broken: !r || r.ajuz.errors > 0,
+          halves: r ? [r.ajuz.feet.map(f => ({ name: f.name, syl: A.syll(f.got), bad: f.errors > 0 }))] : [] });
+      });
+      return out;
+    }
     out.kind = 'verses';
     if (a.layout === 'pairs') {
       for (let i = 0; i < lines.length; i += 2) out.verses.push([lines[i], lines[i + 1] || '']);
@@ -1298,6 +1551,7 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
   let curId = store.get('diwan.cur', null);
   let notation = store.get('diwan.notation', 'syl');
   const layoutCache = new Map();
+  let pendingNew = null;   // a line just added with «+», not saved yet
   let analysis = null, editing = null, openAlts = {}, altResults = {}, openAsk = {}, askState = {}, sampleTools = false;
   const cur = () => poems.find(p => p.id === curId) || null;
   const linesOf = p => (p ? p.text.split('\n') : []);
@@ -1343,11 +1597,72 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
         mode = layoutCache.get(key);
       }
       analysis = A.analyze(ls, { mode, meter: p.meter || null });
+      errCache.set(errKey(p), countErrors(analysis));
     }
     catch (e) { console.error(e); analysis = null; }
   }
   const pat = bits => notation === 'syl' ? A.syll(bits || '') : A.marks(bits || '');
   const meterAr = k => (A.data.info[k] || [k])[0];
+
+  // ---- how many places are broken in a poem (shown in the poem menu)
+  const errCache = new Map();
+  function analysisFor(p) {
+    const ls = linesOf(p).filter(l => A.clean(l)); if (!ls.length) return null;
+    let mode = p.mode || 'auto';
+    if (mode === 'auto' && p.meter) { const a0 = A.analyze(ls, { mode: 'auto' }); mode = a0.mode === 'free' ? 'free' : a0.layout === 'pairs' ? 'pairs' : 'classical'; }
+    return A.analyze(ls, { mode, meter: p.meter || null });
+  }
+  // the number of wrong feet (تفعيلات خاطئة) a candidate leaves in the poem — a clearer measure of fit than broken lines
+  const autoCache = new Map();
+  function candAnalysis() {          // the candidates as if no meter had been picked by hand
+    const p = cur(); if (!p || !analysis || !p.meter) return analysis;
+    const ls = linesOf(p).filter(l => A.clean(l)), mode = analysis.mode === 'free' ? 'free' : analysis.layout === 'pairs' ? 'pairs' : 'classical';
+    const key = mode + '\u0001' + ls.join('\n');
+    if (!autoCache.has(key)) { if (autoCache.size > 20) autoCache.clear(); try { autoCache.set(key, A.analyze(ls, { mode })); } catch (e) { autoCache.set(key, analysis); } }
+    return autoCache.get(key) || analysis;
+  }
+  function feetErrors(a, cand) {
+    if (!a || !cand) return null;
+    if (a.mode === 'free') {
+      if (!cand.lines) return { n: cand.errors, of: 0 };
+      let n = 0, of = 0; cand.lines.forEach(l => (l.feet || []).forEach(f => { if (f.cont) return; of++; if (f.errors) n++; }));
+      return { n, of };
+    }
+    let n = 0, of = 0; const per = (cand.form.hashw.length + 1);
+    cand.perLine.forEach((pl, i) => {
+      let r = pl[1] || pl[2]; if (!r && a.scans[i]) r = A.rescan(a.scans[i].text, cand.form);
+      if (!r) { n += per * 2; of += per * 2; return; }
+      [r.sadr, r.ajuz].forEach(h => { if (!h) return; h.feet.forEach(f => { of++; if (f.errors) n++; }); });
+    });
+    return { n, of };
+  }
+  function countErrors(a) {
+    if (!a) return null;
+    const c = a.mode === 'free' ? a.free && a.free[0] : a.cands && a.cands[0];
+    return feetErrors(a, c);
+  }
+  function feetWord(n) {
+    if (n === 1) return 'تفعيلة خاطئة'; if (n === 2) return 'تفعيلتان خاطئتان';
+    const r = n % 100;
+    return (r >= 3 && r <= 10) ? 'تفعيلات خاطئة' : (r >= 11 || r === 1 || r === 2) && n > 10 ? 'تفعيلةً خاطئةً' : 'تفعيلة خاطئة';
+  }
+  const errKey = p => [p.text, p.mode || 'auto', p.meter || ''].join('\u0001');
+  function poemErr(p) { const k = errKey(p); return errCache.has(k) ? errCache.get(k) : undefined; }
+  let errTimer = null;
+  function queueErrors() {           // fill the menu counts in the background, one poem at a time
+    clearTimeout(errTimer);
+    const todo = poems.find(p => poemErr(p) === undefined); if (!todo) return;
+    errTimer = setTimeout(() => {
+      try { errCache.set(errKey(todo), countErrors(analysisFor(todo))); } catch (e) { errCache.set(errKey(todo), null); }
+      if (pmOpen) renderSelect(); queueErrors();
+    }, 30);
+  }
+  function errLabel(e) {
+    if (e === undefined) return '<span class="ecount wait">يُفحص…</span>';
+    if (e === null) return '';
+    if (!e.n) return '<span class="ecount ok">✓ موزونة</span>';
+    return `<span class="ecount no">✗ ${e.n <= 2 ? '' : AR_DIG(e.n) + ' '}${feetWord(e.n)}</span>`;
+  }
 
   // per visible line: {feet, broken, diag[], words:Set(bad word idx), readings}
   function lineViews() {
@@ -1359,14 +1674,37 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
     }
     return out;
   }
+  function whereName(pos, n, part) {
+    const half = part === 'sadr' ? 'الصدر' : 'العجز';
+    return pos === n - 1 ? (part === 'sadr' ? 'العروض (آخر الصدر)' : 'الضرب (آخر العجز)') : `حشو ${half} — التفعيلة ${AR_DIG(pos + 1)}`;
+  }
+  // the forms allowed at a foot's position: the original foot first, then its زحافات and علل
+  function tipHTML(f) {
+    const rows = (f.allowed || []).map((v, i) => {
+      const m = /\(([^)]+)\)/.exec(v[3] || '');
+      let kind = m ? m[1] : (v[3] && v[3] !== v[1] ? v[3] : '');
+      if (i === 0 && !m) kind = kind ? kind + ' — الأصل' : 'التفعيلة الأصلية';
+      const rare = v[2] >= 0.4 ? '<i>· قليل</i>' : '';
+      const hit = v[0] === f.got ? ' class="hit"' : '';
+      return `<tr${hit}><td class="nm">${esc(v[1])}</td><td class="sy">${esc(pat(v[0]))}</td><td class="k">${esc(kind)}${rare}</td></tr>`;
+    }).join('');
+    return `<div class="th">${esc(f.where || '')}</div>
+      <div class="got">${f.bad ? 'في سطرك' : 'جاءت'}: «${esc(f.letters)}» = <b>${esc(pat(f.got))}</b>${f.bad ? ' — لا تطابق أيًّا مما يلي' : ''}</div>
+      <table><thead><tr><th>المسموح هنا</th><th></th><th></th></tr></thead><tbody>${rows}</tbody></table>`;
+  }
+  let tipFeet = [];
   function viewFor(raw, k) {
     const v = { feet: [], broken: false, diag: [], bad: new Set(), readings: [] };
     if (!analysis) return v;
     if (analysis.mode === 'free') {
       const best = analysis.free[0]; const ln = best && best.lines ? best.lines[k] : null; if (!ln) return v;
-      ln.feet.forEach(f => {
+      const lastI = ln.feet.reduce((m, f, i) => f.cont ? m : i, -1);
+      ln.feet.forEach((f, i) => {
         if (f.cont) { v.feet.push({ cont: true }); return; }
-        v.feet.push({ name: f.name, got: f.got, letters: f.letters, bad: f.errors > 0, crosses: f.crosses });
+        // the last foot of a line may also take the line-final variations (تذييل، ترفيل، قصر، حذف…)
+        const end = i === lastI && !f.crosses;
+        v.feet.push({ name: f.name, got: f.got, letters: f.letters, bad: f.errors > 0, crosses: f.crosses,
+          allowed: end ? best.family.hashw.concat(best.family.endings || []) : best.family.hashw, where: end ? 'آخر السطر — الحشو أو صور الختام' : 'حشو السطر' });
         if (f.errors) { v.broken = true; (f.words || []).forEach(w => v.bad.add(w));
           v.diag.push(`«${f.letters}» = ${pat(f.got)} لا تطابق صور ${best.family.foot}: ` + best.family.hashw.map(x => `${x[1]} (${pat(x[0])})`).join('، ')); }
       });
@@ -1381,7 +1719,7 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
       const h = half ? r.ajuz : r.sadr;
       if (!h) return v;
       h.feet.forEach(f => {
-        v.feet.push({ name: f.name, got: f.got, letters: f.letters, bad: f.errors > 0 });
+        v.feet.push({ name: f.name, got: f.got, letters: f.letters, bad: f.errors > 0, allowed: h.allowed[f.pos], where: whereName(f.pos, h.allowed.length, half ? 'ajuz' : 'sadr') });
         if (f.errors) { v.broken = true; f.words.forEach(w => v.bad.add(w));
           v.diag.push(`التفعيلة ${AR_DIG(f.pos + 1)} (${half ? 'عجز' : 'صدر'}): «${f.letters}» = ${pat(f.got)} — المسموح: ` + h.allowed[f.pos].map(x => `${x[1]} (${pat(x[0])})`).join('، ')); }
       });
@@ -1392,11 +1730,12 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
     if (!r) r = A.rescan(analysis.scans[k].text, c.form);
     if (!r) { v.broken = true; v.diag.push('بعيد جدًّا عن هذا البحر'); return v; }
     const parts = r.sadr ? [r.sadr, r.ajuz] : [r.ajuz];
+    if (r.sadr && r.sadr.tadwir) v.tadwir = r.sadr.tadwir;
     const offs = r.sadr ? [0, A.words(r.split ? r.split[0] : '').length] : [0];
     parts.forEach((h, pi) => {
-      if (pi === 1) v.feet.push({ half: true });
+      if (pi === 1) v.feet.push({ half: true, tadwir: !!v.tadwir });
       h.feet.forEach(f => {
-        v.feet.push({ name: f.name, got: f.got, letters: f.letters, bad: f.errors > 0 });
+        v.feet.push({ name: f.name, got: f.got, letters: f.letters, bad: f.errors > 0, allowed: h.allowed[f.pos], where: whereName(f.pos, h.allowed.length, r.sadr ? (pi === 0 ? 'sadr' : 'ajuz') : 'ajuz') });
         if (f.errors) {
           v.broken = true; f.words.forEach(w => v.bad.add(w + offs[pi]));
           const allowed = h.allowed[f.pos].map(x => `${x[1]} (${pat(x[0])})`).join('، ');
@@ -1404,7 +1743,17 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
         }
       });
       h.readings.forEach(x => v.readings.push(`«${x.word}»: ${x.note}`));
+      // المعاقبة: in these meters two adjacent sababs never both lose their sakin (كفّ then خبن)
+      if (['ramal', 'madid', 'khafif', 'mujtath'].includes(c.form.meter)) h.feet.forEach((f, i) => { const g = h.feet[i + 1];
+        if (g && f.name.endsWith('ُ') && (g.name.startsWith('فعِ') || g.name.startsWith('متفع'))) v.diag.push(`تنبيه — معاقبة: لا يجتمع الكفّ في «${f.name}» والخبن في «${g.name}» بعدها`); });
     });
+    // verse-wide rules: the تصريع forms of the عروض only in a مصرّع opening; الاعتماد before the محذوف darb of الطويل
+    if (r.sadr && !r.sadr.errors && /تصريع/.test(r.sadr.ending || '')) {
+      const same = r.ajuz && r.sadr.feet[r.sadr.feet.length - 1].got === r.ajuz.feet[r.ajuz.feet.length - 1].got;
+      if (k > 0 || !same) v.diag.push(`تنبيه — التصريع: «${r.sadr.ending}» لا تأتي إلا في مطلعٍ مصرَّع`);
+    }
+    if (c.form.meter === 'tawil' && r.ajuz && !r.ajuz.errors && /محذوف/.test(r.ajuz.ending || '') && r.ajuz.feet.length >= 2 && r.ajuz.feet[r.ajuz.feet.length - 2].name === 'فعولن')
+      v.diag.push('تنبيه — الاعتماد: قبل الضرب المحذوف تُقبض «فعولن» عادةً (فعولُ فعولن)');
     if (c.dominant && !v.broken && A.darbGroup(r.ajuz.ending) !== c.dominant) v.diag.push(`الضرب هنا «${r.ajuz.ending}» بخلاف الغالب «${c.dominant}»`);
     return v;
   }
@@ -1435,7 +1784,7 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
             <button class="btn danger" type="button" data-pm="del" data-id="${esc(x.id)}">حذف</button>
             <button class="btn ghost" type="button" data-pm="keep">إلغاء</button></div></div>`
         : `<div class="pmitem" aria-current="${x.id === curId}"><button class="pmopen" type="button" data-pm="open" data-id="${esc(x.id)}">
-            <b>${esc(x.title || 'بلا عنوان')}</b><small>${esc(poemMeta(x))}</small></button>
+            <b>${esc(x.title || 'بلا عنوان')}</b><small>${esc(poemMeta(x))} ${errLabel(poemErr(x))}</small></button>
             <button class="pmdel" type="button" data-pm="ask" data-id="${esc(x.id)}" aria-label="حذف ${esc(x.title || 'القصيدة')}" title="حذف">✕</button></div>`).join('')
         : '<div class="pmempty">لا قصائد بعد. اضغط «+ قصيدة».</div>';
     }
@@ -1453,7 +1802,7 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
       catch (e) { poems.splice(i, 0, gone); render(); toast('تعذّر الحذف'); }
     } else { store.set('diwan.local', poems); toast(`حُذفت «${gone.title || 'القصيدة'}»`); }
   }
-  $('pmBtn').addEventListener('click', () => { pmOpen = !pmOpen; pmConfirm = null; renderSelect(); });
+  $('pmBtn').addEventListener('click', () => { pmOpen = !pmOpen; pmConfirm = null; renderSelect(); if (pmOpen) queueErrors(); });
   $('pmList').addEventListener('click', e => {
     const b = e.target.closest('[data-pm]'); if (!b) return;
     const act = b.dataset.pm, id = b.dataset.id;
@@ -1514,16 +1863,24 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
         اضغط «+ قصيدة» والصق نصّك، أو أرسل القصيدة إلى Claude في المحادثة ليضيفها هنا مشكولة.</li>`; return;
     }
     const all = linesOf(p), views = lineViews();
-    if (!A.clean(p.text || '')) { ol.innerHTML = '<li class="empty"><div class="big">القصيدة فارغة</div>اضغط «تحرير النص كاملًا» والصق الأبيات.</li>'; return; }
+    if (!A.clean(p.text || '') && editing === null) {
+      ol.innerHTML = `<li class="empty"><div class="big">القصيدة فارغة</div>ابدأ الكتابة هنا سطرًا سطرًا، أو اضغط «تحرير النص كاملًا» والصق الأبيات.
+        <div style="margin-top:12px"><button class="btn primary" type="button" data-act="addfirst">+ أضف السطر الأول</button></div></li>`; return;
+    }
     let k = 0;
+    tipFeet = [];
     ol.innerHTML = all.map((raw, li) => {
-      if (!A.clean(raw)) return '';
+      if (!A.clean(raw) && editing !== li) return '';
       const v = views[li]; const n = ++k;
       if (editing === li) {
-        return `<li class="line"><div class="num">${AR_DIG(n)}</div><div>
-          <input class="edit-line" id="edit-${li}" value="${esc(raw)}" aria-label="تحرير السطر ${n}">
+        const free = analysis && analysis.mode === 'free';
+        const ph = free ? 'اكتب السطر…' : 'اكتب البيت: الصدر * العجز';
+        return `<li class="line editing"><div class="num">${AR_DIG(n)}</div><div>
+          <input class="edit-line" id="edit-${li}" value="${esc(raw)}" placeholder="${ph}" aria-label="تحرير السطر ${n}">
           <div class="tools"><button class="mini" data-act="saveline" data-li="${li}" type="button">حفظ</button>
-          <button class="mini" data-act="cancel" type="button">إلغاء</button></div></div></li>`;
+          ${pendingNew === li ? `<button class="mini" data-act="savenext" data-li="${li}" type="button" title="Enter">حفظ وسطر جديد ↵</button>` : ''}
+          <button class="mini" data-act="cancel" type="button">إلغاء</button>
+          ${pendingNew === li ? '<span class="note">Enter يحفظ ويفتح سطرًا جديدًا · Esc لإلغاء السطر</span>' : ''}</div></div></li>`;
       }
       const toks = tokensOf(raw).map(o => {
         if (o.wi < 0) return /[*|]/.test(o.t) ? '<span class="sep">⁂</span>' : `<span class="sep">${esc(o.t)}</span>`;
@@ -1531,15 +1888,17 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
         const cls = ['w', ch ? 'flag' : '', ch && ch.done ? 'done' : '', A.unmarkedCount(o.t) ? 'bare' : '', v && v.bad.has(o.wi) ? 'bad' : ''].join(' ');
         return `<span class="${cls}" tabindex="0" role="button" data-li="${li}" data-wi="${o.wi}">${esc(o.t)}</span>`;
       }).join(' ');
-      const feet = v && v.feet.length ? `<div class="feet">${v.feet.map(f => f.half ? '<span class="halfmark">⁂</span>' : f.cont
+      const feet = v && v.feet.length ? `<div class="feet">${v.feet.map(f => f.half ? (f.tadwir ? '<span class="halfmark" title="بيت مدوّر">↔</span>' : '<span class="halfmark">⁂</span>') : f.cont
         ? '<div class="foot cont"><span class="syl">↩</span><span class="nm">تكملة</span><span class="lt">من السطر السابق</span></div>'
-        : `<div class="foot${f.bad ? ' bad' : ''}" title="${esc(f.letters)}"><span class="syl">${esc(pat(f.got))}</span><span class="nm">${esc(f.name)}${f.crosses ? ' ↵' : ''}</span><span class="lt">${esc(f.letters)}</span></div>`).join('')}</div>` : '';
-      const diag = v && v.diag.length ? `<div class="diag">${v.diag.map(d => `<span>✗ ${esc(d)}</span>`).join('')}</div>` : '';
+        : `<div class="foot${f.bad ? ' bad' : ''}"${f.allowed ? ` tabindex="0" data-tip="${tipFeet.push(f) - 1}" aria-label="${esc(f.name)}: ${f.bad ? 'مكسورة، ' : ''}اعرض الصور المسموحة"` : ''}><span class="syl">${esc(pat(f.got))}</span><span class="nm">${esc(f.name)}${f.crosses ? ' ↵' : ''}</span><span class="lt">${esc(f.letters)}</span></div>`).join('')}</div>` : '';
+      const diag = v && v.diag.length ? `<div class="diag">${v.diag.map(d => d.startsWith('تنبيه') ? `<span class="warnd">⚠ ${esc(d)}</span>` : `<span>✗ ${esc(d)}</span>`).join('')}</div>` : '';
+      const tdw = v && v.tadwir ? `<div class="note tdw">↔ بيت مدوّر: كلمة «${esc(v.tadwir)}» مشتركة بين الشطرين — تبدأ تفعيلتها في آخر الصدر وتكتمل في أول العجز، وهذا جائز.</div>` : '';
       const reads = v && v.readings.length ? `<div class="note">قراءة مفترضة: ${esc([...new Set(v.readings)].join('؛ '))}</div>` : '';
       const alts = openAlts[li] ? renderAlts(li) : '';
       const btn = v && v.broken ? `<button class="mini warn" data-act="alts" data-li="${li}" type="button">${openAlts[li] ? 'إخفاء البدائل' : 'بدائل لتقويم الوزن'}</button>` : '';
-      return `<li class="line${v && v.broken ? ' broken' : ''}"><div class="num">${AR_DIG(n)}<span class="dot"></span></div><div>
-        <div class="verse">${toks}</div>${feet}${diag}${reads}
+      return `<li class="line${v && v.broken ? ' broken' : ''}"><div class="num">${AR_DIG(n)}<span class="dot"></span>
+        <span class="lbtns"><button type="button" data-act="addbelow" data-li="${li}" title="أضف سطرًا بعده" aria-label="أضف سطرًا بعد السطر ${n}">+</button><button type="button" data-act="delline" data-li="${li}" title="احذف السطر" aria-label="احذف السطر ${n}">−</button></span></div><div>
+        <div class="verse">${toks}</div>${feet}${diag}${tdw}${reads}
         <div class="tools">${btn}<button class="mini" data-act="edit" data-li="${li}" type="button">تحرير السطر</button>
         ${sample ? `<button class="mini" data-act="askopen" data-li="${li}" type="button">${openAsk[li] ? 'إخفاء المحادثة' : 'اسأل Claude عن هذا السطر'}</button>` : ''}</div>${alts}${openAsk[li] ? renderAsk(li) : ''}</div></li>`;
     }).join('');
@@ -1555,15 +1914,17 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
       : `${meterAr(analysis.cands[0].form.meter)} — ${analysis.cands[0].form.name}${analysis.layout === 'pairs' ? '، كل سطر شطر (نصف بيت)' : ''}`;
   }
   // a full check used by Claude's tool and by the page: verdict, scansion and the broken foot in words
-  function checkLine(text) {
+  function checkLine(text, li) {
     const meter = currentMeter(); if (!meter) return { text, ok: false, problem: 'لا بحر محدد بعد' };
+    const rp = li === undefined ? null : repeatOf(text, li);
     const r = A.verifyLine(text, meter, analysis.mode === 'free' ? 'free' : 'classical', analysis.layout === 'pairs');
     if (!r) return { text, ok: false, problem: 'تعذّر الفحص' };
     const feet = analysis.mode === 'free' ? (r.feet || []).filter(f => !f.cont).map(f => ({ name: f.name, got: f.got, bad: f.errors > 0, letters: f.letters }))
       : (r.parts || []).flatMap(h => h.feet.map(f => ({ name: f.name, got: f.got, bad: f.errors > 0, letters: f.letters })));
     const bad = feet.filter(f => f.bad);
-    return { text, ok: !!r.ok, scansion: feet.map(f => `${f.name} ${A.syll(f.got)}`).join(' | '),
-      problem: bad.length ? bad.map(f => `«${f.letters}» = ${A.syll(f.got)} لا تصح ${f.name}`).join('؛ ') : '' };
+    const probs = bad.map(f => `«${f.letters}» = ${A.syll(f.got)} لا تصح ${f.name}`);
+    if (rp) probs.push(`${repNote(rp)} — اختر كلمة قافية أخرى`);
+    return { text, ok: !!r.ok && !rp, scansion: feet.map(f => `${f.name} ${A.syll(f.got)}`).join(' | '), problem: probs.join('؛ ') };
   }
 
   function verifyText(text) {
@@ -1571,24 +1932,94 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
     const meter = analysis.mode === 'free' ? analysis.free[0].family.meter : analysis.cands[0].form.meter;
     const r = A.verifyLine(text, meter, analysis.mode === 'free' ? 'free' : 'classical', analysis.layout === 'pairs');
     if (!r) return null;
-    const feet = analysis.mode === 'free' ? r.feet.filter(f => !f.cont).map(f => f.got) : (r.parts || []).flatMap(h => h.feet.map(f => f.got));
-    return { ok: r.ok, syl: feet.map(pat).join('  |  ') };
+    const halves = analysis.mode === 'free' ? [r.feet.filter(f => !f.cont).map(f => ({ name: f.name, got: f.got, bad: f.errors > 0 }))]
+      : (r.parts || []).map(h => h.feet.map(f => ({ name: f.name, got: f.got, bad: f.errors > 0 })));
+    return { ok: r.ok, syl: halves.map(h => h.map(f => pat(f.got)).join('  |  ')).join('  ⁂  '), halves, tadwir: r.tadwir || null };
+  }
+  // ---- إيطاء: a rhyme word may not close two verses of the same poem
+  function rhymeNorm(w) {
+    let x = A.clean(w || '').replace(/[\u064B-\u0652\u0670\u0640]/g, '').replace(/[أإآٱ]/g, 'ا').replace(/ة/g, 'ه').replace(/ى/g, 'ي').replace(/[^\u0621-\u064A]/g, '');
+    return x.replace(/^(وال|فال|بال|كال|لل|ال)(?=..)/, '');
+  }
+  function isRhymeLine(li) {          // in «كل سطر شطر» layout only the second line of each pair carries the rhyme
+    if (!analysis || analysis.layout !== 'pairs') return true;
+    let k = -1; linesOf(cur()).forEach((l, i) => { if (A.clean(l) && i <= li) k++; });
+    return k % 2 === 1;
+  }
+  function usedRhymes(exceptLi) {
+    const out = []; let n = 0, k = -1;
+    linesOf(cur()).forEach((l, i) => {
+      if (!A.clean(l)) return; k++;
+      const pairs = analysis && analysis.layout === 'pairs';
+      if (pairs && k % 2 === 0) return;
+      n++; if (i === exceptLi) return;
+      const ws = A.words(l); if (!ws.length) return;
+      out.push({ word: ws[ws.length - 1], key: rhymeNorm(ws[ws.length - 1]), n });
+    });
+    return out;
+  }
+  function repeatOf(text, li) {
+    if (!isRhymeLine(li)) return null;
+    const ws = A.words(text || ''); if (!ws.length) return null;
+    const key = rhymeNorm(ws[ws.length - 1]); if (!key) return null;
+    return usedRhymes(li).find(u => u.key === key) || null;
+  }
+  // the poem's rhyme ending as written (ردف + رويّ + وصل), e.g. «ود» for الوجود/الصمود, «امي» for أيامي/أوهامي, «م» for القلم/العلم
+  function poemEnding() {
+    const words = usedRhymes(-1).map(u => u.key).filter(Boolean);
+    if (!words.length) return '';
+    const rl = []; let k = -1; const pairs = analysis && analysis.layout === 'pairs';
+    linesOf(cur()).forEach(l => { if (!A.clean(l)) return; k++; if (!pairs || k % 2 === 1) rl.push(l); });
+    let rawi = (A.rhymeCheck(rl) || {}).rawi || '';
+    const vote = arr => { const c = {}; arr.forEach(x => { c[x] = (c[x] || 0) + 1; }); let best = null, n = 0; for (const x in c) if (c[x] > n) { n = c[x]; best = x; } return [best, n]; };
+    const pos = words.map(w => { let i = w.lastIndexOf(rawi); if (i < 0 && rawi === 'ت') i = w.lastIndexOf('ه'); return i; });
+    const ok = words.map((w, j) => [w, pos[j]]).filter(([, i]) => i >= 0);
+    if (!ok.length) return words[0].slice(-2);
+    const [tail, tn] = vote(ok.map(([w, i]) => w.slice(i + 1)));
+    const [ridf, rn] = vote(ok.map(([w, i]) => (i > 0 && 'اوي'.includes(w[i - 1])) ? w[i - 1] : ''));
+    const [rl0] = vote(ok.map(([w, i]) => w[i]));
+    return ((ridf && rn >= 0.6 * ok.length) ? ridf : '') + rl0 + ((tail && tn >= 0.6 * ok.length) ? tail : '');
+  }
+  function repNote(r) { return `إيطاء: «${r.word}» قافية ${analysis && analysis.mode === 'free' ? 'السطر' : 'البيت'} ${AR_DIG(r.n)}`; }
+  function rhymeAvoid(li) {
+    const u = usedRhymes(li); if (!u.length || !isRhymeLine(li)) return '';
+    return `\nكلمات القافية المستعملة في أبيات أخرى من القصيدة — لا تجعل أيًّا منها (ولا ما يرجع إلى لفظها نفسه) آخرَ هذا السطر، فتكرار كلمة القافية (الإيطاء) عيب: ${[...new Set(u.map(x => x.word))].join('، ')}`;
+  }
+
+  // one suggested line, laid out like the poem: the halves side by side, changed words marked, feet under each half
+  function altCard(li, text, note, r, opts = {}) {
+    const orig = new Map(); A.words(linesOf(cur())[li] || '').forEach(w => orig.set(w, (orig.get(w) || 0) + 1));
+    const mark = half => half.split(/(\s+)/).map(t => {
+      if (!t || /^\s+$/.test(t)) return t; const c = A.clean(t);
+      if (c && orig.get(c)) { orig.set(c, orig.get(c) - 1); return esc(t); }
+      return c ? `<mark>${esc(t)}</mark>` : esc(t);
+    }).join('');
+    const sp = A.splitLine(text), halves = sp || [text];
+    const feetRow = h => (h || []).map(f => `<span class="af${f.bad ? ' bad' : ''}"><i>${esc(pat(f.got))}</i>${esc(f.name)}</span>`).join('');
+    const hs = r && r.halves ? r.halves : [];
+    const cols = halves.map((h, i) => `<div class="ah"><div class="av">${mark(h)}</div><div class="afeet">${feetRow(sp ? hs[i] : hs.flat())}</div></div>`)
+      .join(sp ? `<div class="asep" aria-hidden="true">${r && r.tadwir ? '↔' : '⁂'}</div>` : '');
+    return `<div class="acard${r && r.ok && !opts.warn ? '' : ' broken'}"><div class="arow${sp ? '' : ' one'}">${cols}</div>
+      <div class="ameta"><span class="anote">${opts.warn ? `<span class="awarn">${esc(opts.warn)}</span> ` : ''}${esc(note || '')}</span>
+      ${opts.apply === false ? '' : `<button class="btn" type="button" data-act="apply" data-li="${li}" data-text="${esc(text)}">استبدل</button>`}</div></div>`;
   }
   function renderAlts(li) {
     const p = cur();
     const ar = altResults[li] && altResults[li].context === sampleContext(p) ? altResults[li] : {};
     const sug = ((p.suggestions || {})[li + 1] || []).concat(ar.items || []);
     const uniq = [...new Map(sug.map(s => [typeof s === 'string' ? s : s.text, typeof s === 'string' ? { text: s } : s])).values()];
-    const rows = uniq.map(s => ({ s, r: verifyText(s.text) })).filter(x => x.r);
-    rows.sort((a, b) => (b.r.ok ? 1 : 0) - (a.r.ok ? 1 : 0));
-    const good = rows.filter(x => x.r.ok), bad = rows.length - good.length;
-    const head = `<div class="head"><span>${good.length ? `${AR_DIG(good.length)} ${good.length === 1 ? 'بديل موزون' : 'بدائل موزونة'}` : 'لا بدائل موزونة بعد'}${bad ? ` · استُبعد ${AR_DIG(bad)} مكسور` : ''}</span>
-      ${sample ? `<button class="btn" type="button" data-act="ask" data-li="${li}" ${ar.busy ? 'disabled' : ''}>${ar.busy ? 'Claude يكتب…' : (rows.length ? 'اطلب بدائل أخرى' : 'اطلب بدائل من Claude')}</button>` : ''}</div>`;
-    const body = good.length ? `<table><thead><tr><th>البديل</th><th>التقطيع</th><th>الأثر في المعنى</th><th></th></tr></thead><tbody>${good.map(x => `<tr>
-        <td class="v">${esc(x.s.text)}</td><td class="sy">${esc(x.r.syl)}</td><td>${esc(x.s.note || '')}</td>
-        <td><button class="btn" type="button" data-act="apply" data-li="${li}" data-text="${esc(x.s.text)}">استبدل</button></td></tr>`).join('')}</tbody></table>`
+    const rows = uniq.map(s => ({ s, r: verifyText(s.text), rep: repeatOf(s.text, li) })).filter(x => x.r);
+    rows.forEach(x => { x.fine = x.r.ok && !x.rep; });
+    rows.sort((a, b) => (b.fine ? 1 : 0) - (a.fine ? 1 : 0));
+    const good = rows.filter(x => x.fine), bad = rows.length - good.length;
+    const head = `<div class="head"><span>${ar.busy ? `<span class="spin"></span> ${esc(ar.progress || 'Claude يكتب بدائل ويفحصها…')}` : `${good.length ? `${AR_DIG(good.length)} ${good.length === 1 ? 'بديل موزون' : 'بدائل موزونة'}` : 'لا بدائل موزونة بعد'}${bad ? ` · استُبعد ${AR_DIG(bad)} (مكسور أو مكرَّر القافية)` : ''}`}${ar.last && !ar.busy ? ` <span class="note">(آخر طلب: وصل ${AR_DIG(ar.last.got)}، الموزون منها ${AR_DIG(ar.last.ok)})</span>` : ''}</span>
+      <span class="hbtns">${sample ? `<button class="btn" type="button" data-act="ask" data-li="${li}" ${ar.busy ? 'disabled' : ''}>${ar.busy ? 'Claude يكتب…' : (rows.length ? 'اطلب بدائل أخرى' : 'اطلب بدائل من Claude')}</button>` : ''}
+      <button class="mini" type="button" data-act="alts" data-li="${li}" title="طيّ القائمة">▴ طيّ</button></span></div>`;
+    const brokenRows = rows.filter(x => !x.fine);
+    const brokenList = brokenRows.length ? `<details class="badalts"><summary>عرض ${AR_DIG(brokenRows.length)} ${brokenRows.length === 1 ? 'اقتراح مستبعد' : 'اقتراحات مستبعدة'} (للاستئناس)</summary><div class="alist">${brokenRows.map(x => altCard(li, x.s.text, x.s.note, x.r, { apply: false, warn: x.rep ? repNote(x.rep) : '' })).join('')}</div></details>` : '';
+    const body = good.length ? `<div class="alist">${good.map(x => altCard(li, x.s.text, x.s.note, x.r)).join('')}</div>`
       : `<div class="status">${ar.error ? esc(ar.error) : (sample ? 'اطلب من Claude بدائل؛ تظهر هنا الموزونة فقط بعد فحصها.' : 'اطلب البدائل من Claude في المحادثة؛ ستظهر هنا بعد فحصها.')}</div>`;
-    return `<div class="alts">${head}${body}</div>`;
+    return `<div class="alts">${head}${body}${brokenList}</div>`;
   }
 
   function renderSettings() {
@@ -1622,12 +2053,15 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
     let name, form, key, list = [];
     if (analysis.mode === 'free') {
       const f = analysis.free[0]; name = meterAr(f.family.meter); form = `تفعيلة ${f.family.foot}`; key = A.data.info[f.family.meter][2];
-      list = analysis.free.slice(0, 5).map(r => ({ meter: r.family.meter, label: `${meterAr(r.family.meter)} · ${r.family.foot}`, n: `${AR_DIG(r.errors)} خطأ` }));
+      const ca = candAnalysis(), fr = [analysis.free[0]].concat((ca.free || []).filter(r => r.family.meter !== analysis.free[0].family.meter)).slice(0, 5);
+      list = fr.map(r => { const fe = feetErrors(r === analysis.free[0] ? analysis : ca, r); return { meter: r.family.meter, label: `${meterAr(r.family.meter)} · ${r.family.foot}`, fe }; });
     } else {
       const c = analysis.cands[0]; name = meterAr(c.form.meter); form = c.form.name + (analysis.layout === 'pairs' ? ' · كل سطر شطر' : ''); key = A.data.info[c.form.meter][2];
-      list = analysis.cands.slice(0, 5).map(r => ({ meter: r.form.meter, label: `${meterAr(r.form.meter)} · ${r.form.name}`,
-        n: analysis.layout === 'pairs' ? `${AR_DIG(r.exactH)}/${AR_DIG(r.n * 2)} أشطر` : `${AR_DIG(r.exact)}/${AR_DIG(r.n)}` }));
+      const ca = candAnalysis(), cs = [analysis.cands[0]].concat((ca.cands || []).filter(r => r.form.meter !== analysis.cands[0].form.meter)).slice(0, 5);
+      list = cs.map(r => ({ meter: r.form.meter, label: `${meterAr(r.form.meter)} · ${r.form.name}`, fe: feetErrors(r === analysis.cands[0] ? analysis : ca, r) }));
     }
+    list.forEach(x => { x.n = !x.fe ? '' : x.fe.n ? `${AR_DIG(x.fe.n)} ${feetWord(x.fe.n)}` : '✓ بلا أخطاء'; });
+    const fe0 = list[0] && list[0].fe;
     const ratio = n ? (n - broken) / n : 0;
     let conf = 'عالية';
     if (analysis.mode !== 'free') {
@@ -1648,16 +2082,17 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
       كل سطرين بيتٌ من ${esc(meterAr(ph.meter))} ${esc(ph.form)} (السطر شطر). الأشطر السليمة: ${AR_DIG(ph.soundHalves)} من ${AR_DIG(ph.halves)}.
       <div class="tools" style="margin-top:6px"><button class="mini" type="button" data-act="mode" data-m="pairs">اقرأها عموديًّا</button></div></div>`;
     mc.innerHTML = `<h3>البحر${forced ? ' (محدّد يدويًّا)' : ''}</h3>
-      <div class="meter">${esc(name)}<small>${esc(form)}</small></div>
+      <button type="button" class="meter meterbtn" id="meterPick" aria-haspopup="menu" title="اضغط لتغيير البحر">${esc(name)}<span class="caret">▾</span><small>${esc(form)}</small></button>
       <div class="key">${esc(key)}</div>
       <div class="meterline"><span class="pill ${conf === 'عالية' ? 'ok' : conf === 'متوسطة' ? 'flag' : 'no'}">ثقة ${conf}</span>
-        <span class="pill ${broken ? 'no' : 'ok'}">${broken ? `${AR_DIG(broken)} ${broken === 1 ? 'سطر مكسور' : 'أسطر مكسورة'}` : 'كل الأسطر موزونة'}</span>
+        <span class="pill ${fe0 && fe0.n ? 'no' : 'ok'}">${fe0 && fe0.n ? `${AR_DIG(fe0.n)} ${feetWord(fe0.n)}${fe0.of ? ` من ${AR_DIG(fe0.of)}` : ''}` : 'كل التفعيلات صحيحة'}</span>
 </div>
       <div class="bar2" aria-hidden="true"><i style="width:${Math.round(ratio * 100)}%"></i></div>
       <div class="stat">${AR_DIG(n - broken)} من ${AR_DIG(n)} ${analysis.mode === 'free' ? 'أسطر' : (analysis.layout === 'pairs' ? 'أشطر' : 'أبيات')} سليمة</div>${warn}${hint}`;
     const curM = analysis.mode === 'free' ? analysis.free[0].family.meter : analysis.cands[0].form.meter;
     cc.innerHTML = `<h3>البحور المرشّحة — اضغط بحرًا لفحص القصيدة عليه</h3><ul class="cands">${list.map(x =>
-      `<li><button type="button" data-act="force" data-m="${x.meter}" aria-current="${x.meter === curM}"><span>${esc(x.label)}</span><span class="n">${esc(x.n)}</span></button></li>`).join('')}</ul>`;
+      `<li class="crow"><button type="button" data-act="force" data-m="${x.meter}" aria-current="${x.meter === curM}"><span>${esc(x.label)}</span><span class="n">${esc(x.n)}</span></button>${x.meter === curM
+        ? `<button type="button" class="cpick" id="candPick" aria-haspopup="menu" title="اختر بحرًا آخر" aria-label="اختر بحرًا آخر">▾</button>` : ''}</li>`).join('')}</ul>`;
     // rhyme: the qafiya sits at the end of each verse (the ajuz); free verse uses every line
     let ends, sadr1 = null, labels;
     if (analysis.mode === 'free') { ends = analysis.lines; labels = ends.map((_, i) => i + 1); }
@@ -1735,12 +2170,218 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
   });
   document.addEventListener('mousedown', e => { if (!$('pop').hidden && !e.target.closest('#pop') && !e.target.closest('.w')) closePop(); });
 
+  // ---------------------------------------------------------------- foot tooltip: the permitted forms
+  const ftip = document.createElement('div'); ftip.id = 'ftip'; ftip.setAttribute('role', 'tooltip'); ftip.hidden = true; document.body.appendChild(ftip);
+  let tipEl = null;
+  function showTip(el) {
+    const f = tipFeet[+el.dataset.tip]; if (!f) return;
+    tipEl = el; ftip.innerHTML = tipHTML(f); ftip.classList.toggle('bad', !!f.bad); ftip.hidden = false;
+    const r = el.getBoundingClientRect(), w = ftip.offsetWidth, h = ftip.offsetHeight;
+    let x = r.left + r.width / 2 - w / 2; x = Math.max(8, Math.min(x, window.innerWidth - w - 8));
+    let y = r.bottom + 8;                    // below the foot, so the verse above stays visible
+    if (y + h > window.innerHeight - 8) { el.scrollIntoView({ block: 'nearest' }); const r2 = el.getBoundingClientRect(); y = Math.min(r2.bottom + 8, window.innerHeight - h - 8); }
+    ftip.style.left = x + 'px'; ftip.style.top = y + 'px';
+    ftip.classList.toggle('up', y < r.top);
+    ftip.style.setProperty('--cx', Math.max(12, Math.min(w - 12, r.left + r.width / 2 - x)) + 'px');
+  }
+  function hideTip() { ftip.hidden = true; tipEl = null; }
+  $('lines').addEventListener('mouseover', e => { const el = e.target.closest('.foot[data-tip]'); if (el && el !== tipEl) showTip(el); else if (!el && tipEl) hideTip(); });
+  $('lines').addEventListener('mouseleave', hideTip);
+  $('lines').addEventListener('focusin', e => { const el = e.target.closest('.foot[data-tip]'); if (el) showTip(el); });
+  $('lines').addEventListener('focusout', e => { if (e.target.closest('.foot[data-tip]')) hideTip(); });
+  $('lines').addEventListener('click', e => { const el = e.target.closest('.foot[data-tip]'); if (el) { if (tipEl === el) hideTip(); else showTip(el); } });
+  window.addEventListener('scroll', hideTip, { passive: true });
+
+  // ---------------------------------------------------------------- meter picker (click the meter's name)
+  function openMeterPick(btn) {
+    const p = cur(); if (!p || !analysis) return;
+    closeCm();
+    const free = analysis.mode === 'free';
+    const curM = free ? analysis.free[0].family.meter : analysis.cands[0].form.meter;
+    const ca = candAnalysis();
+    let cands = (free ? (ca.free || []).slice(0, 5).map(r => ({ m: r.family.meter, fe: feetErrors(ca, r), lab: r.family.foot }))
+      : (ca.cands || []).slice(0, 5).map(r => ({ m: r.form.meter, fe: feetErrors(ca, r), lab: r.form.name })));
+    if (!cands.some(c => c.m === curM)) cands = [free ? { m: curM, fe: feetErrors(analysis, analysis.free[0]), lab: analysis.free[0].family.foot }
+      : { m: curM, fe: feetErrors(analysis, analysis.cands[0]), lab: analysis.cands[0].form.name }].concat(cands).slice(0, 6);
+    const seen = new Set(cands.map(c => c.m));
+    const others = Object.keys(A.data.info).filter(k => !seen.has(k) && (!free || A.data.families.some(f => f.meter === k)));
+    const row = (m, extra, cnt) => `<button type="button" role="menuitemradio" data-mpick="${m}" aria-current="${m === curM}"><span class="tx">${esc(meterAr(m))}${extra ? ` <small style="color:var(--ink-2)">${esc(extra)}</small>` : ''}</span>${cnt || ''}</button>`;
+    const box = $('cmenu');
+    box.innerHTML = `<div class="cw"><span class="word">اختر البحر</span><span class="rh">${p.meter ? 'محدّد يدويًّا' : 'تلقائي'}</span></div>
+      <button type="button" role="menuitemradio" data-mpick="" aria-current="${!p.meter}"><span class="tx">↺ تلقائي (يختار الأنسب)</span></button><hr>
+      <div class="hd" style="position:static">الأقرب لهذه القصيدة</div>
+      ${cands.map(c => row(c.m, c.lab, c.fe ? `<span class="mcount${c.fe.n ? '' : ' ok'}">${c.fe.n ? AR_DIG(c.fe.n) + ' ✗' : '✓'}</span>` : '')).join('')}
+      ${others.length ? `<hr><div class="hd" style="position:static">بحور أخرى</div>${others.map(m => row(m)).join('')}` : ''}`;
+    box.style.overflowY = 'auto';
+    cmCtx = { meterPick: true };
+    const r = (btn.closest('.crow') || btn).getBoundingClientRect();
+    const below = window.innerHeight - r.bottom - 14, above = r.top - 14;
+    const down = below >= 260 || below >= above;
+    box.style.maxHeight = Math.max(200, Math.min(window.innerHeight * 0.7, down ? below : above)) + 'px';
+    box.hidden = false;
+    const x = r.right - box.offsetWidth;
+    placeAt(box, x, down ? r.bottom + 6 : r.top - 6 - box.offsetHeight);
+    const c0 = box.querySelector('[aria-current="true"]') || box.querySelector('button'); if (c0) c0.focus();
+  }
+  document.addEventListener('click', e => { const b = e.target.closest('#meterPick, #candPick'); if (b) { e.stopPropagation(); if (cmCtx && cmCtx.meterPick && !$('cmenu').hidden) closeCm(); else openMeterPick(b); } });
+
+  // ---------------------------------------------------------------- right-click on a word: delete / same meaning / same rhythm
+  let cmCtx = null, undoBuf = null; const wordAlts = new Map();
+  function wordBits(w) {           // the word's own rhythm, read as if more words follow
+    try { const sl = A.buildHemistich(A.clean(w) + ' مَا'); return sl.filter(x => x.w === 0).map(x => (x.opts[0] || { bits: '' }).bits).join(''); } catch (e) { return ''; }
+  }
+  function lineWith(li, wi, newWord) {
+    const ls = linesOf(cur()); let k = -1;
+    return ls[li].split(/(\s+)/).map(t => { if (t && !/^\s+$/.test(t) && A.clean(t)) { k++; if (k === wi) return newWord; } return t; }).join('').replace(/\s{2,}/g, m => (m.length >= 3 ? m : ' ')).trim();
+  }
+  const ICONS = {
+    syn: '<svg viewBox="0 0 24 24"><path d="M4 7h11M4 12h7M4 17h11"/><path d="M16 10l3 2-3 2"/></svg>',
+    rhy: '<svg viewBox="0 0 24 24"><path d="M3 12h2M7 8v8M11 5v14M15 9v6M19 11v2M21 12h0"/></svg>',
+    edit: '<svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13 7l4 4"/></svg>',
+    del: '<svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/><path d="M10 11v6M14 11v6"/></svg>',
+    qaf: '<svg viewBox="0 0 24 24"><path d="M5 5h10M5 10h7M5 15h10"/><path d="M19 13v6M16 19h6"/></svg>',
+    fit: '<svg viewBox="0 0 24 24"><path d="M3 14c2-4 4-4 6 0s4 4 6 0"/><path d="M15 6l2.5 2.5L22 4"/></svg>',
+    undo: '<svg viewBox="0 0 24 24"><path d="M9 14L4 9l5-5"/><path d="M4 9h10a6 6 0 010 12h-3"/></svg>'
+  };
+  function closeCm() { $('cmenu').hidden = true; $('cmsub').hidden = true; $('cmenu').style.maxHeight = ''; $('cmenu').style.overflowY = ''; cmCtx = null; }
+  function placeAt(el, x, y) {
+    el.hidden = false; const w = el.offsetWidth, h = el.offsetHeight;
+    el.style.left = Math.max(8, Math.min(x, window.innerWidth - w - 8)) + 'px';
+    el.style.top = Math.max(8, Math.min(y, window.innerHeight - h - 8)) + 'px';
+  }
+  function openCm(el, x, y) {
+    hideTip(); closePop();
+    const li = +el.dataset.li, wi = +el.dataset.wi, word = el.textContent;
+    cmCtx = { li, wi, word, el, bits: wordBits(word) };
+    cmCtx.rhyme = wi === A.words(linesOf(cur())[li]).length - 1 && isRhymeLine(li);
+    cmCtx.ending = (cmCtx.rhyme && poemEnding()) || rhymeNorm(word).slice(-2);
+    const p = cur(), last = undoBuf && undoBuf.id === p.id;
+    $('cmenu').innerHTML = `<div class="cw"><span class="word">${esc(word)}</span><span class="rh">${esc(pat(cmCtx.bits))}</span></div>
+      <button type="button" role="menuitem" data-cm="syn" aria-haspopup="true"><span class="ic">${ICONS.syn}</span><span class="tx">بالمعنى نفسه</span><span class="arrow">◂</span></button>
+      <button type="button" role="menuitem" data-cm="rhy" aria-haspopup="true"><span class="ic">${ICONS.rhy}</span><span class="tx">بالتقطيع نفسه</span><span class="arrow">◂</span></button>
+      <button type="button" role="menuitem" data-cm="fit" aria-haspopup="true"><span class="ic">${ICONS.fit}</span><span class="tx">تؤدّي المعنى وتقيم الوزن</span><span class="arrow">◂</span></button>
+      ${cmCtx.rhyme ? `<button type="button" role="menuitem" data-cm="qaf" aria-haspopup="true"><span class="ic">${ICONS.qaf}</span><span class="tx">قوافٍ تنتهي بـ «${esc(cmCtx.ending)}»</span><span class="arrow">◂</span></button>` : ''}
+      <hr>
+      <button type="button" role="menuitem" data-cm="edit"><span class="ic">${ICONS.edit}</span><span class="tx">تعديل وتشكيل</span></button>
+      ${last ? `<button type="button" role="menuitem" data-cm="undo"><span class="ic">${ICONS.undo}</span><span class="tx">تراجع</span></button>` : ''}
+      <button type="button" role="menuitem" class="danger" data-cm="del"><span class="ic">${ICONS.del}</span><span class="tx">حذف الكلمة</span></button>`;
+    $('cmsub').hidden = true;
+    placeAt($('cmenu'), x - $('cmenu').offsetWidth, y);   // opens towards the reading direction
+    placeAt($('cmenu'), x - $('cmenu').offsetWidth, y);
+    $('cmenu').querySelector('button').focus();
+    if (sample) fetchWordAlts();
+  }
+  function altKey() { return cmCtx ? [cmCtx.li, cmCtx.wi, linesOf(cur())[cmCtx.li]].join('|') : ''; }
+  async function fetchWordAlts() {
+    const key = altKey(); if (wordAlts.has(key)) return;
+    const st = { busy: true }; wordAlts.set(key, st);
+    const p = cur(), { li, word, bits } = cmCtx, line = linesOf(p)[li];
+    const isLast = cmCtx.wi === A.words(line).length - 1;
+    const v = lineViews()[li], diag = v && v.diag.length ? v.diag.join(' | ') : 'السطر موزون الآن';
+    const avoid = isLast ? rhymeAvoid(li) : '';
+    const prompt = `أنت شاعر وعروضيّ. في هذا السطر من قصيدة على ${meterLabel() || 'بحر لم يُحدَّد'}:
+${line}
+الكلمة: «${word}» وتقطيعها ${A.syll(bits)} (ب متحرك قصير، − مقطع طويل).
+القصيدة للسياق:
+${poemContext(p)}
+
+حالة السطر: ${diag}${avoid}
+
+أعطني ثلاث قوائم، كل كلمة مشكولة تشكيلًا كاملًا بالإعراب المناسب لموقعها في السطر${isLast ? '، وكلها تحافظ على القافية (الرويّ وحركته) لأنها آخر البيت' : ''}:
+1) synonyms: حتى 8 كلمات أو عبارات قصيرة جدًّا بالمعنى نفسه في هذا السياق (بأي وزن).
+2) same_rhythm: حتى 8 كلمات لها التقطيع نفسه ${A.syll(bits)} تمامًا وتصلح لمعنى السطر قدر الإمكان.
+3) fits_meter: حتى 10 كلمات أو عبارات قصيرة (كلمة أو كلمتان) تؤدي معنى السطر في هذا الموضع، وإذا وُضعت مكان «${word}» صار السطر كله موزونًا على البحر. انظر إلى حالة السطر أعلاه لتعرف كم مقطعًا يزيد أو ينقص، ونوّع الأطوال.
+${isLast ? `4) rhymes: حتى 20 كلمة قافية تصلح لآخر هذا البيت بدل «${word}»: الرويّ نفسه وحركته، والردف أو التأسيس كما في القصيدة (أي تنتهي بـ «${cmCtx.ending}» كما تُكتب)، وبالتقطيع الذي يجعل البيت موزونًا، وتخدم معنى البيت ولو بإعادة صياغة يسيرة.
+` : ''}
+أجب بكائن JSON فقط: {"synonyms":[{"text":"الكلمة","note":"معناها في كلمتين"}],"same_rhythm":[...],"fits_meter":[...]${isLast ? ',"rhymes":[...]' : ''}}`;
+    const clean = arr => (Array.isArray(arr) ? arr : []).filter(x => x && typeof x.text === 'string' && A.clean(x.text)).map(x => ({ text: x.text.trim(), note: String(x.note || '') }));
+    try {
+      const out = await sample.json(prompt, { cache: false });
+      st.syn = clean(out && out.synonyms); st.rhy = clean(out && out.same_rhythm); st.fit = clean(out && out.fits_meter); st.qaf = clean(out && out.rhymes);
+      if (!st.syn.length && !st.rhy.length && !st.fit.length && !st.qaf.length) st.error = 'لم تصل كلمات؛ أعد فتح القائمة.';
+    } catch (e) {
+      st.error = e && (e.code === 'not_granted' || e.code === 'sampling_disabled') ? 'لم يُسمح بالاتصال بـ Claude من هذه الصفحة.' : 'تعذّر الحصول على كلمات؛ أعد فتح القائمة.';
+      if (e && (e.code === 'not_granted' || e.code === 'sampling_disabled')) sample = null;
+      wordAlts.delete(key);
+    } finally { st.busy = false; if (cmCtx && altKey() === key && cmCtx.sub) renderSub(cmCtx.sub); }
+  }
+  function renderSub(kind) {
+    if (!cmCtx) return;
+    cmCtx.sub = kind;
+    const st = wordAlts.get(altKey()), box = $('cmsub');
+    document.querySelectorAll('#cmenu [data-cm="syn"], #cmenu [data-cm="rhy"], #cmenu [data-cm="fit"], #cmenu [data-cm="qaf"]').forEach(b => b.setAttribute('aria-expanded', String(b.dataset.cm === kind)));
+    let body;
+    if (!sample) body = '<div class="msg">هذه القائمة يقترحها Claude، والاتصال به غير متاح في هذه الصفحة الآن.</div>';
+    else if (!st || st.busy) body = '<div class="msg"><span class="spin"></span> يقترح Claude كلمات…</div>';
+    else {
+      const list = (kind === 'syn' ? st.syn : kind === 'rhy' ? st.rhy : kind === 'qaf' ? st.qaf : st.fit) || [];
+      let reps = 0;
+      const rows = list.map(x => {
+        const b = wordBits(x.text), nl = lineWith(cmCtx.li, cmCtx.wi, x.text), r = verifyText(nl);
+        return { x, b, ok: !!(r && r.ok), same: b === cmCtx.bits, rep: repeatOf(nl, cmCtx.li) && !repeatOf(linesOf(cur())[cmCtx.li], cmCtx.li) ? repeatOf(nl, cmCtx.li) : null };
+      }).filter(o => { if (o.rep) { reps++; return false; } return kind === 'syn' || kind === 'qaf' || (kind === 'rhy' ? o.same : o.ok); });
+      rows.sort((a, c) => (c.ok - a.ok));
+      body = rows.length ? rows.map(o => `<button type="button" role="menuitem" class="cand" data-cmpick="${esc(o.x.text)}" title="${o.ok ? 'يستقيم السطر بها' : 'لا يستقيم السطر بها'}">
+          <span class="mark${o.ok ? '' : ' no'}">✓</span><b>${esc(o.x.text)}</b><span class="gl">${esc(o.x.note || '')}</span><span class="rh">${esc(pat(o.b))}</span></button>`).join('')
+        : `<div class="msg">${esc(st.error || (kind === 'rhy' ? 'لم تصل كلمات بالتقطيع نفسه بعد الفحص.' : kind === 'fit' ? 'لم يقم أيّ مما وصل الوزن بعد الفحص. اطلب اقتراحات أخرى.' : kind === 'qaf' ? 'لا قوافٍ جديدة بعد الفحص.' : 'لا كلمات.'))}</div>`;
+      if (reps) body += `<div class="msg">استُبعد ${AR_DIG(reps)} لأنها قافية بيت آخر (إيطاء).</div>`;
+      if (kind === 'qaf') body += `<a class="extlink" href="${encodeURI('https://kalimmat.com/تنتهي-ب/' + cmCtx.ending)}" target="_blank" rel="noopener noreferrer">تصفّح كل ما ينتهي بـ «${esc(cmCtx.ending)}» في موقع كلمات ↗</a>`;
+      body += `<hr><button type="button" role="menuitem" class="more" data-cm="more">اقتراحات أخرى</button>`;
+    }
+    box.innerHTML = `<div class="hd"><span>${kind === 'syn' ? 'بالمعنى نفسه' : kind === 'rhy' ? 'بالتقطيع نفسه ' + esc(pat(cmCtx.bits)) : kind === 'qaf' ? 'قوافٍ غير مستعملة' : 'تؤدّي المعنى وتقيم الوزن'}</span><span>${kind === 'fit' ? 'كلها مفحوصة ✓' : '✓ يستقيم بها'}</span></div>${body}`;
+    const item = $('cmenu').querySelector(`[data-cm="${kind}"]`).getBoundingClientRect(), m = $('cmenu').getBoundingClientRect();
+    box.hidden = false; const w = box.offsetWidth;
+    const x = m.left - w - 4 >= 8 ? m.left - w - 4 : m.right + 4;
+    placeAt(box, x, item.top - 6);
+  }
+  function applyEdit(li, newLine, msg) {
+    const p = cur(); const ls = linesOf(p);
+    undoBuf = { id: p.id, text: p.text };
+    ls[li] = newLine; p.text = ls.join('\n'); save(p); render(); toastUndo(msg);
+  }
+  function toastUndo(m) {
+    const t = $('toast'); t.innerHTML = `${esc(m)}<button type="button" id="undoBtn">تراجع</button>`; t.hidden = false;
+    $('undoBtn').onclick = doUndo; clearTimeout(tt); tt = setTimeout(() => { t.hidden = true; }, 6000);
+  }
+  function doUndo() {
+    const p = cur(); if (!undoBuf || !p || undoBuf.id !== p.id) return;
+    p.text = undoBuf.text; undoBuf = null; save(p); render(); $('toast').hidden = true; toast('أُعيد السطر كما كان');
+  }
+  $('lines').addEventListener('contextmenu', e => {
+    const el = e.target.closest('.w[data-wi]'); if (!el) return;
+    e.preventDefault(); openCm(el, e.clientX, e.clientY);
+  });
+  $('lines').addEventListener('keydown', e => {
+    const el = e.target.closest('.w[data-wi]');
+    if (el && (e.key === 'ContextMenu' || (e.shiftKey && e.key === 'F10'))) { e.preventDefault(); const r = el.getBoundingClientRect(); openCm(el, r.right, r.bottom + 4); }
+  });
+  $('cmenu').addEventListener('mouseover', e => { const b = e.target.closest('[data-cm="syn"],[data-cm="rhy"],[data-cm="fit"],[data-cm="qaf"]'); if (b && cmCtx && cmCtx.sub !== b.dataset.cm) renderSub(b.dataset.cm); });
+  const cmClick = e => {
+    if (!cmCtx) return;
+    const mp = e.target.closest('[data-mpick]');
+    if (mp) { const p = cur(); closeCm(); if (p) { p.meter = mp.dataset.mpick; save(p); render(); toast(p.meter ? `البحر: ${meterAr(p.meter)}` : 'عاد اختيار البحر تلقائيًّا'); } return; }
+    const pick = e.target.closest('[data-cmpick]');
+    if (pick) { const { li, wi, word } = cmCtx, nl = lineWith(li, wi, pick.dataset.cmpick); closeCm(); applyEdit(li, nl, `«${word}» ← «${pick.dataset.cmpick}»`); return; }
+    const b = e.target.closest('[data-cm]'); if (!b) return;
+    const act = b.dataset.cm, { li, wi, word, el } = cmCtx;
+    if (act === 'syn' || act === 'rhy' || act === 'fit' || act === 'qaf') renderSub(act);
+    else if (act === 'more') { wordAlts.delete(altKey()); fetchWordAlts(); renderSub(cmCtx.sub); }
+    else if (act === 'del') { const nl = lineWith(li, wi, ''); closeCm(); applyEdit(li, nl, `حُذفت «${word}»`); }
+    else if (act === 'edit') { closeCm(); openPop(el); }
+    else if (act === 'undo') { closeCm(); doUndo(); }
+  };
+  $('cmenu').addEventListener('click', cmClick); $('cmsub').addEventListener('click', cmClick);
+  document.addEventListener('mousedown', e => { if (!$('cmenu').hidden && !e.target.closest('.cmenu')) closeCm(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('cmenu').hidden) closeCm(); });
+  window.addEventListener('scroll', () => { if (!$('cmenu').hidden) closeCm(); }, { passive: true });
+
   // ---------------------------------------------------------------- Claude (sample)
   function poemContext(p) { return linesOf(p).filter(l => A.clean(l)).map((l, i) => `${i + 1}. ${l}`).join('\n'); }
   async function askAlternatives(li) {
     const p = cur(); if (!p || !sample) return;
     const context = sampleContext(p);
-    const ar = altResults[li] = { context }; ar.busy = true; ar.error = null; renderLines();
+    const prev = altResults[li] && altResults[li].context === context ? altResults[li] : {};
+    const ar = altResults[li] = Object.assign(prev, { context }); ar.busy = true; ar.error = null; ar.progress = ''; openAlts[li] = true; renderLines();
     const v = lineViews()[li];
     const meter = analysis.mode === 'free' ? `شعر تفعيلة على ${analysis.free[0].family.foot} (${meterAr(analysis.free[0].family.meter)})`
       : `${meterAr(analysis.cands[0].form.meter)} — ${analysis.cands[0].form.name}`;
@@ -1749,16 +2390,42 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
 القصيدة:
 ${poemContext(p)}
 
-السطر المكسور: ${linesOf(p)[li]}
+السطر المكسور: ${linesOf(p)[li]}${rhymeAvoid(li)}
 تشخيص الكسر: ${v.diag.join(' | ')}
 
 اكتب 8 بدائل لهذا السطر وحده، مشكولة تشكيلًا كاملًا، تحافظ على المعنى وعلى أكبر قدر من كلمات الشاعر، وعلى القافية (الرويّ وحركته) إن كان السطر مقفّى${analysis.mode === 'free' ? '' : '، وبالصيغة «الصدر * العجز» إن كان بيتًا'}. نوّع الطرق: تبديل كلمة بمرادف، تقديم وتأخير، حذف أو زيادة حرف عطف.
+${sampleTools ? 'افحص كل بديل بأداة check_lines قبل إرساله، وعدّل ما يفشل وأعد فحصه حتى يصح، ولا ترسل إلا ما نجح.' : ''}
 أجب بمصفوفة JSON فقط: [{"text": "البديل مشكولًا", "note": "ما الذي تغيّر وأثره في المعنى، بالعربية في أقل من 12 كلمة"}]`;
+    const opts = { cache: false };
+    if (sampleTools) {
+      delete opts.cache;
+      opts.tools = [{
+        name: 'check_lines',
+        description: 'Checks Arabic lines against the poem\'s meter with the page\'s scanner. Returns, for each line, ok (true/false), its scansion (feet with ب short / − long syllables), and the broken foot if any.',
+        inputSchema: { type: 'object', properties: { lines: { type: 'array', items: { type: 'string' } } }, required: ['lines'] },
+        execute: (input) => {
+          const ls = Array.isArray(input.lines) ? input.lines.slice(0, 12).map(String) : [];
+          ar.progress = `Claude يفحص ${AR_DIG(ls.length)} ${ls.length === 1 ? 'بديلًا' : 'بدائل'} على البحر…`; renderLines();
+          return ls.map(t => checkLine(t, li));
+        }
+      }];
+    }
     try {
-      const out = await sample.json(prompt, { cache: false });
+      const out = await sample.json(prompt, opts);
       if (!contextIsCurrent(context) || altResults[li] !== ar) return;
-      ar.items = (Array.isArray(out) ? out : []).filter(x => x && typeof x.text === 'string').map(x => ({ text: x.text.trim(), note: String(x.note || '') }));
-      if (!ar.items.length) ar.error = 'لم تصل بدائل صالحة؛ حاول مرة أخرى.';
+      const arr = Array.isArray(out) ? out : (out && Array.isArray(out.alternatives) ? out.alternatives : []);
+      const items = arr.filter(x => x && typeof x.text === 'string').map(x => ({ text: x.text.trim(), note: String(x.note || '') }));
+      ar.items = (ar.items || []).concat(items);
+      const ok = items.filter(x => { const r = verifyText(x.text); return r && r.ok && !repeatOf(x.text, li); });
+      ar.last = { got: items.length, ok: ok.length };
+      if (ok.length) {          // keep what passed, so it survives a reload
+        const key = String(li + 1), have = (p.suggestions || {})[key] || [];
+        const seen = new Set(have.map(x => typeof x === 'string' ? x : x.text));
+        p.suggestions = Object.assign({}, p.suggestions || {}, { [key]: have.concat(ok.filter(x => !seen.has(x.text))) });
+        save(p, true);
+      }
+      if (!items.length) ar.error = 'لم تصل بدائل صالحة؛ حاول مرة أخرى.';
+      else if (!ok.length) ar.error = `وصل ${AR_DIG(items.length)} ${items.length <= 10 ? 'اقتراحات' : 'اقتراحًا'}، لكن الفحص وجدها كلها مكسورة. اطلب بدائل أخرى، أو افتح «اسأل Claude» لتوجيهه.`;
     } catch (e) {
       if (!contextIsCurrent(context) || altResults[li] !== ar) return;
       ar.error = e && (e.code === 'not_granted' || e.code === 'sampling_disabled') ? 'لم يُسمح بالاتصال بـ Claude من هذه الصفحة.'
@@ -1770,19 +2437,17 @@ ${poemContext(p)}
     const st = askState[li] && askState[li].context === sampleContext(cur()) ? askState[li] : { msgs: [] };
     const msgs = st.msgs.map(m => {
       if (m.role === 'me') return `<div class="me">${esc(m.text)}</div>`;
-      const rows = (m.items || []).map(x => ({ x, r: verifyText(x.text) })).filter(o => o.r && o.r.ok);
+      const rows = (m.items || []).map(x => ({ x, r: verifyText(x.text) })).filter(o => o.r && o.r.ok && !repeatOf(o.x.text, li));
       const dropped = (m.items || []).length - rows.length;
-      const table = rows.length ? `<div class="alts"><table><thead><tr><th>الاقتراح</th><th>التقطيع</th><th>الملاحظة</th><th></th></tr></thead><tbody>${rows.map(o => `<tr>
-        <td class="v">${esc(o.x.text)}</td><td class="sy">${esc(o.r.syl)}</td><td>${esc(o.x.note || '')}</td>
-        <td><button class="btn" type="button" data-act="apply" data-li="${li}" data-text="${esc(o.x.text)}">استبدل</button></td></tr>`).join('')}</tbody></table></div>` : '';
+      const table = rows.length ? `<div class="alist">${rows.map(o => altCard(li, o.x.text, o.x.note, o.r)).join('')}</div>` : '';
       return `<div class="cl"><p>${esc(m.text)}</p>${table}${dropped > 0 ? `<div class="note">استبعدت الصفحة ${AR_DIG(dropped)} ${dropped === 1 ? 'اقتراحًا مكسورًا' : 'اقتراحات مكسورة'}.</div>` : ''}</div>`;
     }).join('');
     const busy = st.busy ? `<div class="busy">${esc(st.progress || 'Claude يفكّر…')} <button class="mini" type="button" data-act="askstop" data-li="${li}">إيقاف</button></div>` : '';
     const err = st.error ? `<div class="note" style="color:var(--bad)">${esc(st.error)}</div>` : '';
     const chips = !st.msgs.length ? `<div class="chips">${['قوّم الوزن مع الحفاظ على كلماتي', 'لماذا هذا السطر مكسور؟', 'اقترح صورة أقوى بنفس الوزن', 'احتفظ بكلمة … وقوّم الباقي']
       .map(q => `<button class="mini" type="button" data-act="askchip" data-li="${li}" data-q="${esc(q)}">${esc(q)}</button>`).join('')}</div>` : '';
-    return `<div class="ask">${chips}<div class="msgs" id="msgs-${li}">${msgs}${busy}${err}</div>
-      <form data-li="${li}" class="askform"><textarea id="askin-${li}" aria-label="سؤالك عن السطر" placeholder="مثال: أبقِ «آلهة» وقوّم الوزن">${esc(st.draft || '')}</textarea>
+    return `<div class="ask"><div class="askhead"><span>محادثة عن السطر</span><button class="mini" type="button" data-act="askopen" data-li="${li}" title="طيّ المحادثة">▴ طيّ</button></div>${chips}<div class="msgs" id="msgs-${li}">${msgs}${busy}${err}</div>
+      <form data-li="${li}" class="askform"><textarea id="askin-${li}" aria-label="سؤالك عن السطر" placeholder="مثال: أبقِ هذه الكلمة وقوّم الوزن">${esc(st.draft || '')}</textarea>
       <button class="btn primary" type="submit" ${st.busy ? 'disabled' : ''}>أرسل</button></form></div>`;
   }
 
@@ -1807,12 +2472,13 @@ ${poemContext(p)}
 السطر الذي نعمل عليه (رقم ${li + 1}): ${line}
 حالته الآن: ${chk.ok ? 'موزون' : 'مكسور — ' + chk.problem}
 تقطيعه: ${chk.scansion || '—'}
-القافية: الرويّ «${rh ? rh.rawi : ''}» في كلمة «${rh ? rh.word : ''}».
+القافية: الرويّ «${rh ? rh.rawi : ''}» في كلمة «${rh ? rh.word : ''}».${rhymeAvoid(li)}
 
 قواعد:
 - أجب بالعربية باختصار وبلغة واضحة لشاعر، لا لعروضي متخصص.
 - كل سطر تقترحه يكون مشكولًا كاملًا، ويحافظ على المعنى والصورة وأكبر قدر من كلمات الشاعر وعلى القافية.
 - ${sampleTools ? 'افحص كل اقتراح بأداة check_lines قبل إرساله، وعدّل ما يفشل وأعد فحصه، ولا ترسل إلا ما نجح.' : 'تحقق من وزن كل اقتراح بعناية قبل إرساله.'}
+- لا تكرّر في آخر السطر كلمة قافية مستعملة في بيت آخر (الإيطاء).
 - إن لم يطلب الشاعر اقتراحات فلا ترسلها.
 أجب بكائن JSON فقط: {"answer": "ردك", "alternatives": [{"text": "السطر مشكولًا", "note": "ما تغيّر وأثره في المعنى، في أقل من 12 كلمة"}]}` });
     }
@@ -1830,7 +2496,7 @@ ${poemContext(p)}
           if (!contextIsCurrent(context) || askState[li] !== st) throw new Error('stale poem');
           const ls = Array.isArray(input.lines) ? input.lines.slice(0, 12).map(String) : [];
           st.progress = `Claude يفحص ${AR_DIG(ls.length)} ${ls.length === 1 ? 'سطرًا' : 'أسطر'} على البحر…`; renderLines();
-          return ls.map(checkLine);
+          return ls.map(t => checkLine(t, li));
         }
       }];
     }
@@ -1897,14 +2563,46 @@ ${linesOf(p).join('\n')}
     finally { btn.disabled = false; btn.textContent = 'شكّل القصيدة'; render(); }
   }
 
+  // ---------------------------------------------------------------- adding / removing lines
+  function addLineAt(at, fresh) {
+    const p = cur(); if (!p) return;
+    dropPending();
+    const ls = fresh && !A.clean(p.text || '') ? [] : linesOf(p);
+    at = Math.min(at, ls.length);
+    ls.splice(at, 0, ''); p.text = ls.join('\n');
+    pendingNew = at; editing = at; openAlts = {}; openAsk = {};
+    renderLines(); const inp = $('edit-' + at); if (inp) { inp.focus(); inp.scrollIntoView({ block: 'nearest' }); }
+  }
+  function dropPending() {                  // a new line left empty is removed again
+    const p = cur(); if (pendingNew === null || !p) { pendingNew = null; return; }
+    const ls = linesOf(p);
+    if (ls[pendingNew] !== undefined && !A.clean(ls[pendingNew])) { ls.splice(pendingNew, 1); p.text = ls.join('\n'); }
+    pendingNew = null;
+  }
+  function saveLine(li, next) {
+    const p = cur(); const inp = $('edit-' + li); if (!p || !inp) return;
+    const ls = linesOf(p), val = inp.value.trim(), wasNew = pendingNew === li;
+    pendingNew = null; editing = null;
+    if (!A.clean(val)) { ls.splice(li, 1); p.text = ls.join('\n'); if (!wasNew) save(p); render(); return; }
+    ls[li] = val; p.text = ls.join('\n'); save(p); render();
+    if (next) addLineAt(li + 1);
+  }
+
   // ---------------------------------------------------------------- events
   document.addEventListener('click', e => {
     const w = e.target.closest('.w'); if (w) { openPop(w); return; }
     const b = e.target.closest('[data-act]'); if (!b) return;
     const p = cur(), act = b.dataset.act, li = b.dataset.li !== undefined ? +b.dataset.li : null;
-    if (act === 'edit') { editing = li; renderLines(); const inp = $('edit-' + li); if (inp) inp.focus(); }
-    else if (act === 'cancel') { editing = null; renderLines(); }
-    else if (act === 'saveline') { const ls = linesOf(p); ls[li] = $('edit-' + li).value; p.text = ls.join('\n'); editing = null; save(p); render(); }
+    if (act === 'edit') { dropPending(); editing = li; renderLines(); const inp = $('edit-' + li); if (inp) inp.focus(); }
+    else if (act === 'cancel') { dropPending(); editing = null; renderLines(); }
+    else if (act === 'saveline' || act === 'savenext') saveLine(li, act === 'savenext');
+    else if (act === 'addbelow') addLineAt(li + 1);
+    else if (act === 'addfirst') addLineAt(linesOf(p).filter(l => A.clean(l)).length ? linesOf(p).length : 0, true);
+    else if (act === 'delline') {
+      dropPending();
+      const ls = linesOf(p); undoBuf = { id: p.id, text: p.text };
+      ls.splice(li, 1); p.text = ls.join('\n'); editing = null; openAlts = {}; openAsk = {}; save(p); render(); toastUndo('حُذف السطر');
+    }
     else if (act === 'alts') { openAlts[li] = !openAlts[li]; renderLines(); }
     else if (act === 'ask') askAlternatives(li);
     else if (act === 'askopen') { openAsk[li] = !openAsk[li]; renderLines(); const t = $('askin-' + li); if (t) t.focus(); }
@@ -1928,8 +2626,8 @@ ${linesOf(p).join('\n')}
   document.addEventListener('keydown', e => {
     if (e.key === 'Enter' && !e.shiftKey && e.target.id && e.target.id.startsWith('askin-')) { e.preventDefault(); const li = +e.target.id.split('-')[1]; askLine(li, e.target.value); return; }
     if ((e.key === 'Enter' || e.key === ' ') && e.target.classList && e.target.classList.contains('w')) { e.preventDefault(); openPop(e.target); }
-    if (e.key === 'Enter' && e.target.classList && e.target.classList.contains('edit-line')) { e.preventDefault(); const li = +e.target.id.split('-')[1]; document.querySelector(`[data-act="saveline"][data-li="${li}"]`).click(); }
-    if (e.key === 'Escape' && editing !== null) { editing = null; renderLines(); }
+    if (e.key === 'Enter' && e.target.classList && e.target.classList.contains('edit-line')) { e.preventDefault(); const li = +e.target.id.split('-')[1]; saveLine(li, pendingNew === li); }
+    if (e.key === 'Escape' && editing !== null) { dropPending(); editing = null; renderLines(); }
   });
   $('title').addEventListener('change', e => { const p = cur(); if (!p) return; p.title = e.target.value.trim(); save(p); renderSelect(); });
   const setMode = m => { const p = cur(); if (!p) return; p.mode = m; p.meter = ''; save(p); render(); };
@@ -1948,6 +2646,12 @@ ${linesOf(p).join('\n')}
   }
   $('newBtn').onclick = () => { pmOpen = false; renderSelect(); showComposer(true); };
   $('newCancel').onclick = () => showComposer(false);
+  $('newBlank').onclick = () => {
+    const id = 'p' + Date.now().toString(36), order = poems.reduce((m, x) => Math.max(m, x.order || 0), 0) + 1;
+    const p = { id, title: $('newTitle').value.trim() || 'قصيدة جديدة', text: '', choices: [], suggestions: {}, status: 'review', meter: '', mode: 'auto', order };
+    poems.push(p); curId = id; store.set('diwan.cur', id); save(p, true);
+    showComposer(false); render(); addLineAt(0, true);
+  };
   $('newAdd').onclick = () => {
     const text = $('newText').value.replace(/\r/g, '').replace(/\n{3,}/g, '\n\n').trim();
     if (!A.clean(text)) { $('newErr').textContent = 'الصق نص القصيدة أولًا.'; $('newText').focus(); return; }
@@ -1995,7 +2699,7 @@ ${linesOf(p).join('\n')}
     btn.disabled = true; btn.textContent = 'يُجهَّز الملف…';
     try {
       const scope = selectedScope(), model = { tashkeel: selectedTk(), appendix: $('expApp').checked, meterUnderTitle: $('expMeter').checked,
-        font: $('expFont').value, bookTitle: scope === 'all' ? ($('expBook').value.trim() || 'ديوان') : '', poems: exportModel(scope) };
+        font: $('expFont').value, verseLayout: (document.querySelector('input[name="expLay"]:checked') || {}).value || 'paras', bookTitle: scope === 'all' ? ($('expBook').value.trim() || 'ديوان') : '', poems: exportModel(scope) };
       const parts = DiwanExport.build(model), zip = new JSZip();
       zip.file('[Content_Types].xml', parts['[Content_Types].xml']);
       for (const k of Object.keys(parts)) if (k !== '[Content_Types].xml') zip.file(k, parts[k]);

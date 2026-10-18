@@ -22,6 +22,7 @@
   // ------------------------------------------------------------------ text
   function clean(text) {
     text = text.replace(/\s+([\u064b-\u0652\u0670\u0653-\u0655])/g, '$1');
+    text = text.replace(/([\u0621-\u064a])\u064a\u0650(?=\s|$)/g, '$1\u0650\u064a');   // «فيِ» typed with the kasra after the ya = «فِي»
     text = text.replace(/ک/g, 'ك').replace(/ی/g, 'ي').replace(/[ۀہ]/g, 'ه').replace(/ے/g, 'ي').split(TATWEEL).join('');
     let out = '';
     for (const ch of text) out += (LETTERS.has(ch) || MARKS.has(ch)) ? ch : ' ';
@@ -54,6 +55,8 @@
   const skeleton = units => units.map(u => u.letter).join('').replace(/[أإٱ]/g, 'ا');
 
   const SPECIAL = {
+    'مائة': 'مِئَة', 'مائتان': 'مِئَتَانِ', 'مائتين': 'مِئَتَيْنِ', 'ذلكن': 'ذَالِكُنَّ', 'اولاء': 'أُلَاءِ',
+    'هاتان': 'هَاتَانِ', 'لكنك': 'لَاكِنَّكَ', 'لكنكم': 'لَاكِنَّكُمْ', 'لكننا': 'لَاكِنَّنَا', 'لكنهم': 'لَاكِنَّهُمْ',
     'هذا': 'هَاذَا', 'هذه': 'هَاذِهِ', 'هذي': 'هَاذِي', 'هذان': 'هَاذَانِ', 'هذين': 'هَاذَيْنِ',
     'هؤلاء': 'هَاؤُلَاءِ', 'هكذا': 'هَاكَذَا', 'ههنا': 'هَاهُنَا',
     'ذلك': 'ذَالِكَ', 'ذلكم': 'ذَالِكُمْ', 'ذلكما': 'ذَالِكُمَا',
@@ -192,13 +195,19 @@
 
   function lastPronounced(slots) { for (let k = slots.length - 1; k >= 0; k--) if (slots[k].kind !== 'silent') return k; return null; }
 
-  function joinToWasl(slots) {
+  const QAT_COST = 0.35;   // قطع همزة الوصل: a poetic licence, chosen only when it saves the meter
+  function joinToWasl(slots, article) {
     const k = lastPronounced(slots); if (k === null) return;
-    const s = slots[k];
+    const s = slots[k], orig = s.opts.map(o => opt(o.bits, o.disp.slice(), o.cost, o.note)), origKind = s.kind;
     if (s.kind === 'madd' || s.kind === 'ana') { s.kind = 'silent'; s.opts = [opt('', [], 0, 'حُذف حرف المد لالتقاء الساكنين')]; }
     else if (s.kind === 'cons_tan') { const o = s.opts[0]; s.opts = [opt(o.bits.slice(0, -1) + '1', o.disp, 0, 'تحريك نون التنوين لالتقاء الساكنين')]; }
     else if (['cons_o', 'unk', 'unk_end', 'meem'].includes(s.kind)) { s.kind = 'cons_v'; s.opts = [opt('1', [s.opts[0].disp[0]], 0, 'حُرّك الساكن لالتقاء الساكنين')]; }
     else if (s.kind === 'ha') s.opts = [opt('1', ['ه'], 0)];
+    if (['madd', 'ana', 'cons_tan', 'cons_o', 'unk', 'unk_end', 'meem', 'ha'].includes(origKind)) {
+      const cost = QAT_COST + (article ? 0.2 : 0);
+      s.opts = s.opts.concat(orig.filter(o => o.cost <= 0.1).map(o => opt(o.bits + '1', o.disp.concat(['ء']), o.cost + cost, 'قطع همزة الوصل (ضرورة شعرية)')));
+      if (s.kind === 'silent') s.kind = 'wasl_join';
+    }
   }
 
   function applyEnd(slots) {
@@ -233,7 +242,7 @@
     const all = [];
     ws.forEach((units, wi) => {
       const [slots, wasl] = buildWordSlots(units, wi);
-      if (wasl !== null && wi > 0) { slots[wasl].kind = 'silent'; slots[wasl].opts = [opt('', [], 0)]; joinToWasl(all); }
+      if (wasl !== null && wi > 0) { slots[wasl].kind = 'silent'; slots[wasl].opts = [opt('', [], 0)]; joinToWasl(all, units.some((_, k) => isArticle(units, k))); }
       all.push(...slots);
     });
     if (!all.length) return all;
@@ -320,13 +329,19 @@
   const TEMPL = new Map();
   const formsAll = () => M.forms;
   function darbGroup(label) { if (!label || !label.startsWith('ضرب')) return 'ضرب صحيح'; return label.split(/\s+/).slice(0, 2).join(' '); }
+  // inner positions of a hemistich; a sadr may open with الخرم in meters that start on a watad
+  function opening(form, part) {
+    const pos = form.hashw.slice();
+    if (form.kharm && form.kharm.length && (part === 'sadr' || form.single) && pos.length) pos[0] = pos[0].concat(form.kharm);
+    return pos;
+  }
   function template(form, part, group, endingPatterns = null, tasriPattern = null) {
     const key = JSON.stringify([form.key, part, group, endingPatterns, tasriPattern]);
     if (!TEMPL.has(key)) {
       let last = (part === 'ajuz' || form.single) ? form.darb : form.arud.filter(v => !v[3].includes('تصريع') || v[0] === tasriPattern);
       if (endingPatterns) last = last.filter(v => endingPatterns.includes(v[0]));
       if (group) last = last.filter(v => darbGroup(v[3]) === group);
-      TEMPL.set(key, last.length ? templateGraph(form.hashw.concat([last])) : null);
+      TEMPL.set(key, last.length ? templateGraph(opening(form, part).concat([last])) : null);
     }
     return TEMPL.get(key);
   }
@@ -408,6 +423,31 @@
     return out;
   }
 
+  const LONE_PENALTY = 0.3, TADWIR_PENALTY = 0.2;
+  /** A verse read as مدوّر: both halves scanned as one run, so a foot may end inside a word that the
+   *  next half completes («وَحِيدَ قَلْ * بٍ لَا يَرَى»). Only verses whose seam falls inside a word count. */
+  function scanMudawwar(a, b, form, cap = 4) {
+    const text = a.trim() + ' ' + b.trim(), key = 'full|' + form.key;
+    if (!TEMPL.has(key)) TEMPL.set(key, templateGraph(opening(form, 'sadr').concat([form.arud], form.hashw, [form.darb])));
+    const [L, ws] = lattice(text), T = TEMPL.get(key);
+    const r = align(L, T, cap * 2); if (!r) return null;
+    const full = summarize(L, T, r[0], r[1], form, 'ajuz', ws), k = form.hashw.length + 1, na = words(a).length;
+    const fa = full.feet.slice(0, k), fb = full.feet.slice(k);
+    if (!fa.length || !fb.length || !fa[k - 1].words.length || !fb[0].words.length) return null;
+    const seam = Math.max(...fa[k - 1].words);
+    if (!fb[0].words.includes(seam)) return null;
+    fb.forEach(f => { f.pos -= k; f.words = f.words.filter(w => w >= na).map(w => w - na); });
+    const ea = fa.reduce((s, f) => s + f.errors, 0), eb = fb.reduce((s, f) => s + f.errors, 0);
+    const share = ea + eb ? r[0] * ea / (ea + eb) : 0;
+    const tA = template(form, 'sadr'), tB = template(form, 'ajuz');
+    const ra = { form: form.key, part: 'sadr', cost: share, errors: ea, feet: fa, readings: full.readings.filter(x => x.w < na),
+      ending: fa[k - 1].label, pattern: fa.map(f => f.got).join(''), allowed: tA.positions, tadwir: ws[seam] };
+    const rb = { form: form.key, part: 'ajuz', cost: r[0] - share, errors: eb, feet: fb,
+      readings: full.readings.filter(x => x.w >= na).map(x => Object.assign({}, x, { w: x.w - na })),
+      ending: fb[fb.length - 1].label, pattern: fb.map(f => f.got).join(''), allowed: tB.positions, tadwir: ws[seam] };
+    if (!compatibleEndings(ra, rb, form)) return null;   // the عروض/ضرب pairing still applies to a مدوّر verse
+    return { cost: r[0], sadr: ra, ajuz: rb };
+  }
   function scanLine(i, line, forms, cap = 4) {
     const sp = splitLine(line), cands = sp ? [sp] : autoSplits(line), results = {};
     for (const form of forms) {
@@ -420,6 +460,16 @@
           const pair = scanPair(a, b, form, i === 0, cap); if (!pair) continue;
           const c = pair.cost + form.rare;
           if (!best || c < best.cost) best = Object.assign({}, pair, {cost: c});
+        }
+        if (sp && (!best || best.cost > 0.05)) {
+          const m = scanMudawwar(sp[0], sp[1], form, cap);
+          if (m) { const c = m.cost + form.rare + TADWIR_PENALTY; if (!best || c < best.cost) best = { cost: c, sadr: m.sadr, ajuz: m.ajuz, split: sp, tadwir: m.sadr.tadwir }; }
+        }
+        if (!sp) {             // a standalone hemistich (شطر منفرد)
+          for (const part of ['ajuz', 'sadr']) {
+            const r = scanHemistich(line, form, part, cap);
+            if (r) { const c = r.cost + form.rare + LONE_PENALTY; if (!best || c < best.cost) best = { cost: c, sadr: null, ajuz: r, split: null, lone: true }; }
+          }
         }
       }
       if (best) results[form.key] = best;
@@ -435,11 +485,11 @@
     for (const form of forms) {
       const per = scans.map(ls => { const r = ls.results[form.key]; return r ? [Math.min(r.cost, LINE_CAP), r] : [LINE_CAP, null]; });
       const darbs = {};
-      per.forEach(([c, r]) => { if (r && r.ajuz.errors === 0) { const g = darbGroup(r.ajuz.ending); darbs[g] = (darbs[g] || 0) + 1; } });
+      per.forEach(([c, r]) => { if (r && r.ajuz.errors === 0 && !r.lone) { const g = darbGroup(r.ajuz.ending); darbs[g] = (darbs[g] || 0) + 1; } });
       let dominant = null, dn = 0; for (const g in darbs) if (darbs[g] > dn) { dn = darbs[g]; dominant = g; }
       if (dominant && !form.single) {
         per.forEach(([c, r], idx) => {
-          if (!exact(r) || darbGroup(r.ajuz.ending) === dominant) return;
+          if (!exact(r) || r.lone || darbGroup(r.ajuz.ending) === dominant) return;
           const aj = r.split ? r.split[1] : scans[idx].text;
           const rr = scanHemistich(aj, form, 'ajuz', 4, dominant);
           if (rr && rr.errors === 0 && compatibleEndings(r.sadr, rr, form, idx === 0)) { const nc = (r.sadr ? r.sadr.cost : 0) + rr.cost + form.rare; per[idx] = [Math.min(nc, LINE_CAP), Object.assign({}, r, { cost: nc, ajuz: rr })]; }
@@ -449,7 +499,7 @@
       per.forEach(([c, r], idx) => {
         total += c;
         if (r) exH += (r.sadr && r.sadr.errors === 0 ? 1 : 0) + (r.ajuz.errors === 0 ? 1 : 0);
-        if (exact(r)) { ex++; if (dominant && darbGroup(r.ajuz.ending) !== dominant) { total += DARB_MISMATCH; mism.push(idx); } }
+        if (exact(r)) { ex++; if (dominant && !r.lone && darbGroup(r.ajuz.ending) !== dominant) { total += DARB_MISMATCH; mism.push(idx); } }
       });
       ranking.push({ form, total, exact: ex, exactH: exH, n: scans.length, dominant, darbMismatch: mism, perLine: per });
     }
@@ -483,6 +533,7 @@
       const pair = scanPair(a, b, form, first, 20);
       if (pair && (!best || pair.cost < best.cost)) best = pair;
     }
+    if (sp) { const m = scanMudawwar(sp[0], sp[1], form, 20); if (m && (!best || m.cost + TADWIR_PENALTY < best.cost)) best = { cost: m.cost + TADWIR_PENALTY, sadr: m.sadr, ajuz: m.ajuz, split: sp, tadwir: m.sadr.tadwir }; }
     return best;
   }
 
@@ -515,19 +566,23 @@
     const slots = [];
     lines.forEach((line, li) => { const sl = buildHemistich(line); if (li + 1 < lines.length) addTadwir(sl); sl.forEach(s => { s.line = li; }); slots.push(...sl); });
     const L = latticeGraph(slots), lineEnd = new Set();
-    for (let k = 1; k < slots.length; k++) if (slots[k].line !== slots[k - 1].line) lineEnd.add(L.slotStart[k]);
+    L.endLine = new Map();     // line-end node -> the line it closes
+    for (let k = 1; k < slots.length; k++) if (slots[k].line !== slots[k - 1].line) { lineEnd.add(L.slotStart[k]); L.endLine.set(L.slotStart[k], slots[k - 1].line); }
     lineEnd.add(L.final);
     let changed = true;
     while (changed) {
       changed = false;
       for (let u = 0; u < L.n; u++) {
         if (lineEnd.has(u) || !L.out[u].length) continue;
-        if (L.out[u].every(([w, b]) => b === null && lineEnd.has(w))) { lineEnd.add(u); changed = true; }
+        if (L.out[u].every(([w, b]) => b === null && lineEnd.has(w))) {
+          lineEnd.add(u); changed = true;
+          const t = L.out[u].find(([w]) => L.endLine.has(w)); if (t) L.endLine.set(u, L.endLine.get(t[0]));
+        }
       }
     }
     return [L, lineEnd];
   }
-  function scanFamily(L, lineEnd, fam) {
+  function scanFamily(L, lineEnd, fam, noCross = null) {
     const T = loopTemplate(fam), cost = [], back = [];
     for (let u = 0; u < L.n; u++) { cost.push(new Float64Array(T.n).fill(INF)); back.push(new Array(T.n)); }
     cost[0][0] = 0;
@@ -542,7 +597,7 @@
           const nc = c + INS + ec; if (t > s && nc < cu[t]) { cu[t] = nc; bu[t] = [u, s, 'ins', null, null, pin, ch]; }
         }
         for (const [w, bit, lc, tin] of L.out[u]) {
-          const cw = cost[w], bw = back[w], cross = (lineEnd.has(w) && w !== L.final) ? CROSS : 0;
+          const cw = cost[w], bw = back[w], cross = (lineEnd.has(w) && w !== L.final) ? (noCross && L.endLine && noCross.has(L.endLine.get(w)) ? INF : CROSS) : 0;
           if (bit === null) { const nc = c + lc + (s !== 0 ? cross : 0); if (nc < cw[s]) { cw[s] = nc; bw[s] = [u, s, 'eps', tin, null, null, null]; } continue; }
           let nc = c + lc + DEL + (s !== 0 ? cross : 0); if (nc < cw[s]) { cw[s] = nc; bw[s] = [u, s, 'del', tin, bit, null, null]; }
           for (const [t, ch, ec, pin, endOnly] of T.out[s]) {
@@ -561,6 +616,29 @@
     steps.reverse();
     return { total, steps, T };
   }
+  // lines whose closing foot runs into the next line and still has errors: the run-on only shifts a fault
+  function badCrossings(L, steps) {
+    const out = new Set(); let lines = [], err = 0;
+    const close = () => { const ls = [...new Set(lines)].sort((a, b) => a - b); if (ls.length > 1 && err > 0) for (let i = ls[0]; i < ls[ls.length - 1]; i++) out.add(i); };
+    for (const st of steps) {
+      if (st.pin && st.pin[1] === 0) { close(); lines = []; err = 0; }
+      if (st.op === 'del' && st.tin && lines.length && L.slots[st.tin[0]].line > Math.max(...lines)) continue;
+      if (st.tin && st.tin[2] >= 0) lines.push(L.slots[st.tin[0]].line);
+      if (st.op === 'sub' || st.op === 'del' || st.op === 'ins') err++;
+    }
+    close(); return out;
+  }
+  // a line may run on into the next only through a sound foot; elsewhere it must close on its own
+  function scanFamilyBest(L, lineEnd, fam) {
+    const banned = new Set(); let r = scanFamily(L, lineEnd, fam);
+    for (let i = 0; i < 6; i++) {
+      if (!r) return null;
+      const bad = [...badCrossings(L, r.steps)].filter(x => !banned.has(x)); if (!bad.length) return r;
+      bad.forEach(x => banned.add(x));
+      const r2 = scanFamily(L, lineEnd, fam, banned); if (!r2) return r; r = r2;
+    }
+    return r;
+  }
   function summarizeFree(L, steps, T, lines) {
     const out = lines.map((t, i) => ({ index: i, text: t, feet: [], errors: 0 })); let cur = null; const readings = [];
     const flush = f => {
@@ -569,9 +647,23 @@
       out[li].feet.push({ name: f.name, letters: f.let, got: f.bits, errors: f.err, crosses, words: f.ws.filter(x => x[0] === li).map(x => x[1]), allowed: f.allowed }); out[li].errors += f.err;
       for (const extra of new Set(f.lines.slice(1))) if (extra !== li) out[extra].feet.push({ cont: true, name: f.name, letters: '', got: '', errors: 0, crosses: true });
     };
+    let pend = null;   // extra syllables at the start of a line belong to that line's first foot, not to the foot that closed the line before
     for (const st of steps) {
-      if (st.pin && st.pin[1] === 0) { flush(cur); const v = T.variants[st.pin[0]][0]; cur = { name: v[1], let: '', bits: '', err: 0, lines: [], ws: [], allowed: T.variants.filter(x => !x[1]).map(x => x[0]) }; }
+      if (st.pin && st.pin[1] === 0) {
+        flush(cur); const v = T.variants[st.pin[0]][0]; cur = { name: v[1], let: '', bits: '', err: 0, lines: [], ws: [], allowed: T.variants.filter(x => !x[1]).map(x => x[0]) };
+        if (pend) { Object.assign(cur, { let: pend.let, bits: pend.bits, err: pend.err, lines: pend.lines, ws: pend.ws }); pend = null; }
+      }
       if (!cur) cur = { name: '؟', let: '', bits: '', err: 0, lines: [], ws: [], allowed: [] };
+      if (st.op === 'del' && st.tin && cur.lines.length && L.slots[st.tin[0]].line > Math.max(...cur.lines)) {
+        const sl = L.slots[st.tin[0]], o = sl.opts[st.tin[1]], c = st.tin[2];
+        pend = pend || { let: '', bits: '', err: 0, lines: [], ws: [] };
+        if (c >= 0) { pend.bits += st.bit; pend.let += o.disp[c] || ''; pend.lines.push(sl.line); pend.ws.push([sl.line, sl.w]); }
+        pend.err++; continue;
+      }
+      if (pend && st.tin && L.slots[st.tin[0]].line === pend.lines[0] && !(st.pin && st.pin[1] === 0)) {
+        // the extra syllables were followed by more of the same foot: they stay where they are
+        cur.bits += pend.bits; cur.let += pend.let; cur.err += pend.err; cur.lines.push(...pend.lines); cur.ws.push(...pend.ws); pend = null;
+      }
       if (st.tin) {
         const [k, j, c] = st.tin, sl = L.slots[k], o = sl.opts[j];
         if (c >= 0) { cur.bits += st.bit; cur.let += o.disp[c] || ''; cur.lines.push(sl.line); cur.ws.push([sl.line, sl.w]); }
@@ -580,19 +672,20 @@
       if (st.op === 'sub' || st.op === 'del' || st.op === 'ins') cur.err++;
     }
     flush(cur);
+    if (pend) flush(Object.assign({ name: '؟', allowed: [] }, pend));
     return [out, readings];
   }
   function analyzeFree(lines, onlyMeter) {
     const [L, lineEnd] = buildStream(lines), res = [];
     for (const fam of M.families) {
       if (onlyMeter && fam.meter !== onlyMeter) continue;
-      const r = scanFamily(L, lineEnd, fam); if (!r) continue;
+      const r = scanFamilyBest(L, lineEnd, fam); if (!r) continue;
       const errors = r.steps.filter(s => s.op === 'sub' || s.op === 'del' || s.op === 'ins').length;
       const nbits = r.steps.filter(s => s.bit !== null && s.bit !== undefined).length;
       res.push({ family: fam, total: r.total, errors, nbits, steps: r.steps, T: r.T });
     }
     res.sort((a, b) => a.total - b.total);
-    res.slice(0, 3).forEach(r => { [r.lines, r.readings] = summarizeFree(L, r.steps, r.T, lines); });
+    res.slice(0, 5).forEach(r => { [r.lines, r.readings] = summarizeFree(L, r.steps, r.T, lines); });
     return res;
   }
 
@@ -656,6 +749,8 @@
       if (sp && !form.single) {
         const pair = scanPair(sp[0], sp[1], form, true, 8);
         if (pair && (!best || pair.cost < best.cost)) best = {cost: pair.cost, parts:[pair.sadr, pair.ajuz], form};
+        const m = scanMudawwar(sp[0], sp[1], form, 8);
+        if (m && (!best || m.cost + TADWIR_PENALTY < best.cost)) best = { cost: m.cost + TADWIR_PENALTY, parts: [m.sadr, m.ajuz], form, tadwir: m.sadr.tadwir };
       } else if (!sp && asHalf && !form.single) {
         for (const part of ['sadr', 'ajuz']) { const r = scanHemistich(text, form, part, 8); if (r && (!best || r.cost < best.cost)) best = { cost: r.cost, parts: [r], form }; }
       } else if (!sp) {
@@ -664,7 +759,7 @@
       }
     }
     if (!best) return { ok: false, parts: [] };
-    return { ok: best.parts.every(p => p.errors === 0), parts: best.parts, form: best.form, mode };
+    return { ok: best.parts.every(p => p.errors === 0), parts: best.parts, form: best.form, mode, tadwir: best.tadwir || null };
   }
 
   // ------------------------------------------------------------------ display helpers

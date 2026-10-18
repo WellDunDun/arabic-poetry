@@ -114,7 +114,7 @@ editing into direct manipulation instead of long chat messages:
   any of the 16), a line saying what was detected vs. chosen, and one
   «↺ العودة إلى التلقائي» button; a hand-picked meter keeps the detected layout;
 - «اسأل Claude عن هذا السطر» under every line opens a short conversation about
-  that line ("keep «آلهة» and fix the meter", "why is this broken?"); Claude
+  that line ("keep this word and fix the meter", "why is this broken?"); Claude
   there has a `check_lines` tool backed by the page's scanner and must verify
   its suggestions with it, and the page re-verifies and shows only lines that scan;
 - scanning runs inside the page on every edit (no AI call); Claude is called
@@ -272,7 +272,9 @@ Words written differently from how they are pronounced (هٰذا، ذٰلك، ل
       (one ✓/✗ line each; drop `--brief` for the full تقطيع of the winners).
    4. `verify` checks weight only. For each passing candidate also check
       yourself: grammar and agreement (e.g. «الطيورُ العابرُ» scans but is wrong),
-      the rhyme word (same rawi, rawi vowel, ridf/ta'sis as the poem), and that
+      the rhyme word (same rawi, rawi vowel, ridf/ta'sis as the poem, and **never a
+      rhyme word that already ends another verse** — إيطاء; pass `--poem poem.txt
+      --line N` to `verify` and it flags such candidates), and that
       the meaning stays the poet's. Then put the chosen line into the poem copy
       and re-run `analyze` on the whole poem to confirm darb and rhyme.
    5. Show the poet only candidates that pass all of this (2–3 is plenty), each
@@ -322,6 +324,24 @@ rest of the poem.
 Permitted zihafat are not errors; a rare one (كفّ in الطويل، وقص in الكامل) is
 allowed but heavier — mention it as a stylistic note, not a fault.
 
+**⚠ warnings (not breaks)** cover rules that span more than one foot:
+- **التصريع** — an عروض in its تصريع form (e.g. مفاعيلن in الطويل) outside a
+  مصرّع opening verse.
+- **الاعتماد** — in الطويل, فعولن (unchanged) right before the محذوف darb; the
+  usual form is فعولُ فعولن.
+- **المعاقبة** — in الرمل، المديد، الخفيف، المجتث, a كفّ foot followed by a خبن
+  foot (both sakins of adjacent sababs dropped).
+Report them as stylistic or classical-rule notes the poet may choose to fix.
+Forms marked «عند المحدثين» (e.g. ضرب مرفّل in تام الخبب، ضرب مقطوع in مجزوء
+الرجز) are later practice, not Khalilian — accepted, but say so if it matters.
+**قطع همزة الوصل** — mid-line, a hamzat wasl is dropped and the sakin or
+tanween before it moves (نَجْمٌ اخْتَفَى → نَجْ مُ نِخْ تَ فَى). Pronouncing it as a
+full hamza (نَجْ مُنْ إِخْ تَ فَى) is a recognised poetic licence: the scanner takes
+it only when it saves the meter and shows it as «قطع همزة الوصل (ضرورة شعرية)».
+Tell the poet it is a licence, not the default reading.
+الخرم (dropping the first moving letter of a verse in الطويل، الوافر، الهزج،
+المتقارب، المضارع) is accepted at the opening foot only, as a rare licence.
+
 ## Presenting to the poet
 
 Lead with the answer, then the evidence, then the offers:
@@ -342,18 +362,17 @@ Chat layout for results and fixes (when the workbench is not used):
 
 | # | السطر | التقطيع | الحالة |
 |---|---|---|---|
-| ٢ | وَاتْرُكِ الْهَاتِفَ … | − ب − − ⁞ ب ب − ب − ✗ ⁞ − ب − − | تفعيلة زائدة متحركًا |
+| ٢ | قُمْ وَاتْرُكِ الْأَحْزَانَ … | − ✗ ⁞ − ب − − ⁞ − ب − − ⁞ − ب = | مقطع زائد في أول السطر |
 
 | البديل | التقطيع | الأثر في المعنى |
 |---|---|---|
-| وَاتْرُكِ الْهَاتِفَ، مَا رَدَّتْ عَنُود | − ب − − ⁞ ب ب − − ⁞ − ب − − | الماضي بدل المستقبل |
+| وَاتْرُكِ الْأَحْزَانَ لِلَّيْلِ الطَّوِيلْ | − ب − − ⁞ − ب − − ⁞ − ب = | حذف «قُمْ» والمعنى باقٍ |
 
 Number lines with Arabic digits, separate feet with ⁞, keep one table per
 purpose, and end with the single question the poet needs to answer.
 
 ## Reference files (load when needed)
 
-- [Primary sources and coverage limits](references/sources.md): consult for rule checks and unfamiliar variants.
 - `references/meters.md` — the 16 meters, their forms, feet, zihafat and the
   rhythm "feel" of each; mnemonic lines (مفاتيح البحور).
 - `references/zihafat.md` — zihaf and 'illa definitions and where each applies.
@@ -363,6 +382,9 @@ purpose, and end with the single question the poet needs to answer.
 - `references/free-verse.md` — taf'ila poetry rules, endings, تدوير.
 - `references/fixing.md` — practical repair techniques and licensed poetic
   necessities (الضرورات الشعرية).
+- [`references/sources.md`](references/sources.md) — primary sources, coverage limits, and
+  the source behind each rule the scanner applies, where it lives in the code, and which rules are later practice,
+  licences or engineering choices. Cite it when the poet asks "according to whom?".
 
 ## Limits (say so when relevant)
 

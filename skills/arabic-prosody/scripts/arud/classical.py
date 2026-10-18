@@ -10,8 +10,10 @@ from .lattice import build_hemistich, clean
 from .aligner import LatticeGraph, TemplateGraph, align
 from .meters import FORMS, METER_INFO, darb_group
 
+LONE_PENALTY = 0.3    # a line scanned as one hemistich instead of a verse
 LINE_CAP = 6.0          # a hopeless line can't contribute more than this to a meter's total
 DARB_MISMATCH = 0.75    # penalty when a line's darb differs from the poem's dominant darb
+TADWIR_PENALTY = 0.2    # a verse read as مدوّر (one word shared by both halves)
 
 _TEMPLATE_CACHE = {}
 
@@ -23,8 +25,16 @@ def template(form, part, ending_patterns=None, tasri_pattern=None):
             v for v in form.arud if 'تصريع' not in v[3] or v[0] == tasri_pattern]
         if ending_patterns is not None:
             last = [v for v in last if v[0] in ending_patterns]
-        _TEMPLATE_CACHE[key] = TemplateGraph(form.hashw + [last]) if last else None
+        _TEMPLATE_CACHE[key] = TemplateGraph(_opening(form, part) + [last]) if last else None
     return _TEMPLATE_CACHE[key]
+
+
+def _opening(form, part):
+    """Inner positions of a hemistich; a sadr may open with الخرم in meters that start on a watad."""
+    pos = list(form.hashw)
+    if form.kharm and (part == 'sadr' or form.single) and pos:
+        pos[0] = list(pos[0]) + list(form.kharm)
+    return pos
 
 
 def restricted_template(form, group):
@@ -209,6 +219,51 @@ def scan_pair(a, b, form, first=False, cap=4.0):
 SEPARATORS = re.compile(r'\s*(?:\t+|\*+|\|+|…+|\.\.\.+|٭+|⁂|\s{3,}|//+|-{2,}|—+|،\s{2,})\s*')
 
 
+def full_template(form):
+    key = (form.key, 'full')
+    if key not in _TEMPLATE_CACHE:
+        _TEMPLATE_CACHE[key] = TemplateGraph(_opening(form, 'sadr') + [form.arud] + form.hashw + [form.darb])
+    return _TEMPLATE_CACHE[key]
+
+
+def scan_mudawwar(sadr, ajuz, form, cap=4.0):
+    """Read a verse as مدوّر: the halves are scanned as one run so that a foot may end inside a
+    word and the next half continue it (e.g. «وَحِيدَ قَلْ * بٍ لَا يَرَى»).  Returns (cost, sadr, ajuz)
+    or None; only verses whose seam really falls inside a word are reported."""
+    text = sadr.strip() + ' ' + ajuz.strip()
+    key = ('full', text)
+    if key not in _LATTICE_CACHE:
+        _LATTICE_CACHE[key] = (LatticeGraph(build_hemistich(text)), clean(text).split(' '))
+    L, words = _LATTICE_CACHE[key]
+    T = full_template(form)
+    r = align(L, T, cap * 2)
+    if r is None:
+        return None
+    cost, steps = r
+    full = summarize(L, T, cost, steps, form, 'ajuz', words)
+    k = len(form.hashw) + 1
+    fa, fb = full.feet[:k], full.feet[k:]
+    if not fa or not fb or not fa[-1].words or not fb[0].words:
+        return None
+    seam = fa[-1].words[-1]
+    if seam not in fb[0].words:
+        return None                       # the halves meet at a word boundary: the ordinary scan covers it
+    na = len(clean(sadr).split(' '))
+    for f in fb:
+        f.pos -= k
+        f.words = [w - na for w in f.words if w >= na]
+    ea, eb = sum(f.errors for f in fa), sum(f.errors for f in fb)
+    share = cost * ea / (ea + eb) if ea + eb else 0.0
+    ra = HemiResult(form.key, 'sadr', share, ea, fa, full.readings, fa[-1].label,
+                    ' '.join(f.letters for f in fa), ''.join(f.got for f in fa), full.sukun_hint, full.n_unmarked)
+    rb = HemiResult(form.key, 'ajuz', cost - share, eb, fb, [], fb[-1].label,
+                    ' '.join(f.letters for f in fb), ''.join(f.got for f in fb))
+    if not compatible_endings(ra, rb, form):
+        return None                       # the عروض/ضرب pairing still applies to a مدوّر verse
+    ra.tadwir = rb.tadwir = words[seam]
+    return cost, ra, rb
+
+
 def split_line(line):
     parts = [p for p in SEPARATORS.split(line.strip()) if p.strip()]
     if len(parts) == 2:
@@ -260,6 +315,21 @@ def scan_line(i, line, forms=FORMS, auto_split=True):
                 c = pair[0] + form.rare
                 if best is None or c < best[0]:
                     best = (c, ra, rb, (a, b))
+            if sp and (best is None or best[0] > 0.05):
+                m = scan_mudawwar(sp[0], sp[1], form)
+                if m is not None:
+                    c = m[0] + form.rare + TADWIR_PENALTY
+                    if best is None or c < best[0]:
+                        best = (c, m[1], m[2], sp)
+            if not sp:
+                # a standalone hemistich (شطر منفرد), e.g. a closing half-line
+                for part in ('ajuz', 'sadr'):
+                    r = scan_hemistich(line, form, part)
+                    if r is not None:
+                        c = r.cost + form.rare + LONE_PENALTY
+                        if best is None or c < best[0]:
+                            r.lone = True
+                            best = (c, None, r, None)
         if best is not None:
             ls.results[form.key] = best
     if sp:
@@ -279,13 +349,13 @@ def rank_poem(lines: List[LineScan], forms=FORMS):
                 per_line.append((LINE_CAP, None))
                 continue
             per_line.append((min(r[0], LINE_CAP), r))
-            if r[2] is not None and r[2].errors == 0:
+            if r[2] is not None and r[2].errors == 0 and not getattr(r[2], 'lone', False):
                 darbs[darb_group(r[2].ending_label)] += 1
         dominant = darbs.most_common(1)[0][0] if darbs else None
         # second pass: lines whose ending is ambiguous are re-read to agree with the poem's darb
         if dominant and not form.single:
             for idx, (c, r) in enumerate(per_line):
-                if r is None or r[2].errors or (r[1] is not None and r[1].errors):
+                if r is None or r[2].errors or (r[1] is not None and r[1].errors) or getattr(r[2], 'lone', False):
                     continue
                 if darb_group(r[2].ending_label) == dominant:
                     continue
@@ -303,7 +373,7 @@ def rank_poem(lines: List[LineScan], forms=FORMS):
             total += c
             if r is not None and (r[1] is None or r[1].errors == 0) and r[2].errors == 0:
                 exact += 1
-                if dominant and darb_group(r[2].ending_label) != dominant:
+                if dominant and darb_group(r[2].ending_label) != dominant and not getattr(r[2], 'lone', False):
                     total += DARB_MISMATCH
                     mismatched_darb.append(idx)
         exact_h = sum(((r[1] is not None and r[1].errors == 0) + (r[2].errors == 0)) for c, r in per_line if r is not None)
@@ -356,4 +426,8 @@ def rescan(ls, form, cap=20.0):
         pair = scan_pair(a, b, form, first=ls.index == 0, cap=cap)
         if pair and (best is None or pair[0] < best[0]):
             best = pair
+    if sp:
+        m = scan_mudawwar(sp[0], sp[1], form, cap)
+        if m is not None and (best is None or m[0] + TADWIR_PENALTY < best[0]):
+            best = (m[0] + TADWIR_PENALTY, m[1], m[2], sp)
     return best

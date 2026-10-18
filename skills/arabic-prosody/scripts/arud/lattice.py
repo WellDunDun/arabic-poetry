@@ -79,6 +79,8 @@ def clean(text: str) -> str:
     text = text.replace(TATWEEL, '')
     text = re.sub(r'\s+([\u064b-\u0652\u0670\u0653-\u0655])', r'\1', text)   # a mark typed after a space belongs to the previous letter
     text = text.replace('آ', 'آ')
+    # a kasra typed after a word-final ya («فيِ») belongs to the letter before it: «فِي»
+    text = re.sub(r'([\u0621-\u064a])\u064a\u0650(?=\s|$)', '\\1\u0650\u064a', text)
     out = []
     for ch in text:
         if ch in LETTERS or ch in VOWEL_OF or ch in TANWIN_OF or ch in (SUKUN, SHADDA, DAGGER, MADDA_MARK, HAMZA_ABOVE, HAMZA_BELOW):
@@ -135,6 +137,8 @@ SPECIAL = {
     'اولئك': 'أُلَائِكَ', 'اولو': 'أُلُو', 'اولي': 'أُلِي', 'اولات': 'أُلَاتُ',
     'الرحمن': 'الرَّحْمَانُ', 'رحمن': 'رَحْمَانُ', 'عمرو': 'عَمْرُ', 'داود': 'دَاوُودُ', 'طاوس': 'طَاوُوسُ',
     'السموات': 'السَّمَاوَاتُ', 'سموات': 'سَمَاوَاتُ',
+    'مائة': 'مِئَة', 'مائتان': 'مِئَتَانِ', 'مائتين': 'مِئَتَيْنِ', 'ذلكن': 'ذَالِكُنَّ', 'اولاء': 'أُلَاءِ',
+    'هاتان': 'هَاتَانِ', 'لكنك': 'لَاكِنَّكَ', 'لكنكم': 'لَاكِنَّكُمْ', 'لكننا': 'لَاكِنَّنَا', 'لكنهم': 'لَاكِنَّهُمْ',
 }
 PREFIX_LETTERS = set('وفبكل')
 
@@ -338,7 +342,7 @@ def build_hemistich(text: str) -> List[Slot]:
         if wasl is not None and wi > 0:
             slots[wasl].kind = 'silent'
             slots[wasl].fixed('', [])
-            _join_to_wasl(all_slots)
+            _join_to_wasl(all_slots, article=any(_is_article(units, k) for k in range(len(units))))
         word_ranges.append((len(all_slots), len(all_slots) + len(slots)))
         all_slots.extend(slots)
     if not all_slots:
@@ -355,12 +359,19 @@ def _last_pronounced(slots):
     return None
 
 
-def _join_to_wasl(slots):
-    """Previous word meets a hamzat wasl followed by sakin (iltiqa' as-sakinayn)."""
+QAT_COST = 0.35          # قطع همزة الوصل: a poetic licence, chosen only when it saves the meter
+
+
+def _join_to_wasl(slots, article=False):
+    """Previous word meets a hamzat wasl followed by sakin (iltiqa' as-sakinayn).
+    The standard reading drops the wasl and moves/drops the preceding sakin; the licence
+    قطع همزة الوصل (pronouncing it as a full hamza) is kept as a costlier alternative."""
     k = _last_pronounced(slots)
     if k is None:
         return
     s = slots[k]
+    orig = [Opt(o.bits, list(o.disp), o.cost, o.note) for o in s.opts]
+    orig_kind = s.kind
     if s.kind in ('madd', 'ana'):
         s.kind = 'silent'; s.fixed('', [], 'حُذف حرف المد لالتقاء الساكنين')
     elif s.kind == 'cons_tan':
@@ -370,6 +381,12 @@ def _join_to_wasl(slots):
         s.kind = 'cons_v'; s.fixed('1', [s.opts[0].disp[0]], 'حُرّك الساكن لالتقاء الساكنين')
     elif s.kind == 'ha':
         s.fixed('1', ['ه'])
+    if orig_kind in ('madd', 'ana', 'cons_tan', 'cons_o', 'unk', 'unk_end', 'meem', 'ha'):
+        note = 'قطع همزة الوصل (ضرورة شعرية)'
+        cost = QAT_COST + (0.2 if article else 0.0)
+        s.opts = list(s.opts) + [Opt(o.bits + '1', o.disp + ['ء'], o.cost + cost, note) for o in orig if o.cost <= 0.1]
+        if s.kind == 'silent':
+            s.kind = 'wasl_join'
 
 
 def _apply_end(slots):

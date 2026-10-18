@@ -67,9 +67,10 @@ def build_stream(lines):
         slots.extend(sl)
     L = LatticeGraph(slots)
     line_end = set()
+    L.end_line = {}          # line-end node -> the line it closes
     for k in range(1, len(slots)):
         if slots[k].line != slots[k - 1].line:
-            line_end.add(L.slot_start[k])
+            line_end.add(L.slot_start[k]); L.end_line[L.slot_start[k]] = slots[k - 1].line
     line_end.add(L.final)
     # nodes followed only by silent (epsilon) edges into a line end are line ends too
     changed = True
@@ -80,10 +81,13 @@ def build_stream(lines):
                 continue
             if all(b is None and w in line_end for (w, b, _, _) in L.out[u]):
                 line_end.add(u); changed = True
+                tgt = [L.end_line[w] for (w, _, _, _) in L.out[u] if w in L.end_line]
+                if tgt:
+                    L.end_line[u] = tgt[0]
     return L, line_end
 
 
-def scan_family(L, line_end, family):
+def scan_family(L, line_end, family, no_cross=frozenset()):
     T = LoopTemplate(family)
     cost = [dict() for _ in range(L.n)]
     back = [dict() for _ in range(L.n)]
@@ -106,7 +110,8 @@ def scan_family(L, line_end, family):
                     cu[t] = nc; bu[t] = (u, s, 'ins', None, None, pin, ch)
             for (w, bit, lc, tin) in L.out[u]:
                 cw, bw = cost[w], back[w]
-                cross = CROSS if (w in line_end and w != L.final) else 0.0
+                cross = ((INF if getattr(L, 'end_line', {}).get(w) in no_cross else CROSS)
+                         if (w in line_end and w != L.final) else 0.0)
                 if bit is None:
                     nc = c + lc + (cross if s != 0 else 0)
                     if nc < cw.get(s, INF):
@@ -153,13 +158,30 @@ def summarize(L, steps, T, lines):
             if extra != li:
                 out[extra].feet.append(('↩ ' + foot['name'], '', '', 0, True))
 
+    pend = None   # extra syllables at a line's start belong to that line's first foot
     for (op, tin, bit, pin, ch) in steps:
         if pin is not None and pin[1] == 0:
             flush(cur)
             var = T.variants[pin[0]][0]
             cur = {'name': var[1], 'let': '', 'bits': '', 'err': 0, 'lines': []}
+            if pend:
+                cur.update(pend); pend = None
         if cur is None:
             cur = {'name': '؟', 'let': '', 'bits': '', 'err': 0, 'lines': []}
+        if op == 'del' and tin is not None and cur['lines'] and L.slots[tin[0]].line > max(cur['lines']):
+            k, j, c = tin
+            o = L.slots[k].opts[j]
+            pend = pend or {'let': '', 'bits': '', 'err': 0, 'lines': []}
+            if c >= 0:
+                pend['bits'] += bit
+                pend['let'] += o.disp[c] if c < len(o.disp) else ''
+                pend['lines'].append(L.slots[k].line)
+            pend['err'] += 1
+            continue
+        if pend and tin is not None and pend['lines'] and L.slots[tin[0]].line == pend['lines'][0]:
+            for key in ('let', 'bits'):
+                cur[key] += pend[key]
+            cur['err'] += pend['err']; cur['lines'] += pend['lines']; pend = None
         if tin is not None:
             k, j, c = tin
             o = L.slots[k].opts[j]
@@ -171,10 +193,50 @@ def summarize(L, steps, T, lines):
                 readings.append((L.slots[k].line, o.note))
         if op in ('sub', 'del', 'ins'):
             cur['err'] += 1
-            if not cur['lines'] and tin is None:
-                pass
     flush(cur)
+    if pend:
+        flush(dict(pend, name='؟'))
     return out, readings
+
+
+def bad_crossings(L, steps):
+    """Lines whose closing foot runs into the next line and still has errors: there the run-on
+    (تدوير) only shifts a fault instead of completing a foot."""
+    out, lines, err = set(), [], 0
+    def close():
+        ls = sorted(set(lines))
+        if len(ls) > 1 and err > 0:
+            out.update(range(ls[0], ls[-1]))
+    for (op, tin, bit, pin, ch) in steps:
+        if pin is not None and pin[1] == 0:
+            close(); lines, err = [], 0
+        if op == 'del' and tin is not None and lines and L.slots[tin[0]].line > max(lines):
+            continue
+        if tin is not None and tin[2] >= 0:
+            lines.append(L.slots[tin[0]].line)
+        if op in ('sub', 'del', 'ins'):
+            err += 1
+    close()
+    return out
+
+
+def scan_family_best(L, line_end, fam):
+    """A line may run on into the next only through a sound foot; where a crossing foot is broken,
+    that line is made to close on its own and the poem is rescanned."""
+    banned = set()
+    r = scan_family(L, line_end, fam)
+    for _ in range(6):
+        if r is None:
+            return None
+        bad = bad_crossings(L, r[1]) - banned
+        if not bad:
+            return r
+        banned |= bad
+        r2 = scan_family(L, line_end, fam, frozenset(banned))
+        if r2 is None:
+            return r
+        r = r2
+    return r
 
 
 def analyze(lines, meter=None):
@@ -184,7 +246,7 @@ def analyze(lines, meter=None):
     for fam in FAMILIES:
         if meter and fam.meter != meter:
             continue
-        r = scan_family(L, line_end, fam)
+        r = scan_family_best(L, line_end, fam)
         if r is None:
             continue
         total, steps, T = r

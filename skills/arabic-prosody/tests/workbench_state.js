@@ -21,8 +21,11 @@ function harness(initial) {
     return elements.get(id);
   };
   const context = { console, AbortController,
-    window: { Arud: { data: { info: {} }, load() {}, clean: s => s, rhymeCheck: () => ({ rows: [] }) } },
-    document: { getElementById: element, addEventListener() {}, querySelectorAll: () => [], activeElement: null },
+    window: { addEventListener() {}, innerWidth: 1200, innerHeight: 800, Arud: { data: { info: {} }, load() {}, clean: s => s, rhymeCheck: () => ({ rows: [] }) } },
+    document: { getElementById: element, addEventListener() {}, querySelectorAll: () => [], querySelector: () => null, activeElement: null,
+      createElement: tag => ({ tag, hidden: true, dataset: {}, style: {}, classList: { add() {}, remove() {}, toggle() {} }, listeners: {},
+        addEventListener(type, fn) { this.listeners[type] = fn; }, setAttribute() {}, appendChild() {} }),
+      body: { appendChild(el) { if (el.id) element(el.id); } } },
     localStorage: { getItem: k => storage.has(k) ? storage.get(k) : null, setItem: (k, v) => storage.set(k, v) },
     setTimeout(fn) { const id = ++timerId; timers.set(id, fn); return id; }, clearTimeout(id) { timers.delete(id); } };
   vm.createContext(context);

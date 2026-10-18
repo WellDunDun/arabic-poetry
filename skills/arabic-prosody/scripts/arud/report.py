@@ -52,8 +52,25 @@ def word_fixes(text, form, part):
     return hits
 
 
+MUAQABA = ('ramal', 'madid', 'khafif', 'mujtath')
+
+
+def verse_warnings(idx, r, form):
+    """Rules that span a whole verse: the تصريع forms of the عروض, and الاعتماد in الطويل."""
+    out = []
+    sadr, ajuz = r[1], r[2]
+    if sadr is not None and sadr.errors == 0 and 'تصريع' in (sadr.ending_label or ''):
+        same = ajuz is not None and sadr.feet[-1].got == ajuz.feet[-1].got
+        if idx > 0 or not same:
+            out.append(f'التصريع: «{sadr.ending_label}» لا تأتي إلا في مطلعٍ مصرَّع (العروض فيه على صورة الضرب)')
+    if form.meter == 'tawil' and ajuz is not None and ajuz.errors == 0 and 'محذوف' in (ajuz.ending_label or '') \
+            and len(ajuz.feet) >= 2 and ajuz.feet[-2].name == 'فعولن':
+        out.append('الاعتماد: قبل الضرب المحذوف تُقبض «فعولن» عادةً (فعولُ فعولن)')
+    return out
+
+
 def render_hemi(h, part_name, form, show_ok=True, text=None):
-    T = template(form, 'ajuz' if (part_name in ('العجز', 'الشطر') or form.single) else 'sadr')
+    T = template(form, h.part if part_name == 'شطر منفرد' else ('ajuz' if (part_name in ('العجز', 'الشطر') or form.single) else 'sadr'))
     lines = []
     status = 'سليم' if h.errors == 0 else f'مكسور ({h.errors} خطأ)'
     lines.append(f'  - **{part_name}** [{status}]  الكتابة العروضية: `{h.arudi}`'
@@ -61,6 +78,11 @@ def render_hemi(h, part_name, form, show_ok=True, text=None):
     feet_str = ' | '.join((f'{f.name} {to_marks(f.got)}' if not f.errors
                            else f'؟ {to_marks(f.got)} ✗ (المتوقع {f.name})') for f in h.feet)
     lines.append(f'    التفاعيل: {feet_str}')
+    for a_, b_ in zip(h.feet, h.feet[1:]):
+        if form.meter in MUAQABA and a_.name.endswith('ُ') and (b_.name.startswith('فعِ') or b_.name.startswith('متفع')):
+            lines.append(f'    ⚠ معاقبة: لا يجتمع الكفّ في «{a_.name}» والخبن في «{b_.name}» بعدها (يسقط ساكنا السببين المتجاورين معًا)')
+    if getattr(h, 'tadwir', None) and part_name == 'الصدر' and h.errors == 0:
+        lines.append(f'    ↔ بيت مدوّر: كلمة «{h.tadwir}» مشتركة بين الشطرين، تبدأ تفعيلتها في الصدر وتكتمل في العجز')
     for f in h.feet:
         if f.errors:
             lines.append(f'    ✗ التفعيلة {f.pos + 1} («{f.letters}»): ' + diagnose(f, T.positions[f.pos]))
@@ -133,8 +155,10 @@ def render_classical(scans, ranking, cands, qaf=None, top_n=4):
         sad_t, aj_t = (r[3] if r[3] else (None, ls.text))
         if r[1] is not None:
             out.extend(render_hemi(r[1], 'الصدر', form, text=sad_t))
-        out.extend(render_hemi(r[2], 'العجز' if r[1] is not None else 'الشطر', form, text=aj_t))
-        if r[1] is not None and r[1].errors == 0 and r[2].errors == 0 and best['dominant_darb'] \
+        out.extend(render_hemi(r[2], 'العجز' if r[1] is not None else ('شطر منفرد' if getattr(r[2], 'lone', False) else 'الشطر'), form, text=aj_t))
+        for w in verse_warnings(idx, r, form):
+            out.append('    ⚠ ' + w)
+        if r[1] is not None and r[1].errors == 0 and r[2].errors == 0 and best['dominant_darb'] and not getattr(r[2], 'lone', False) \
                 and darb_group(r[2].ending_label) != best['dominant_darb']:
             out.append(f'    ⚠ الضرب هنا «{r[2].ending_label}» بخلاف الغالب «{best["dominant_darb"]}»')
     if qaf:

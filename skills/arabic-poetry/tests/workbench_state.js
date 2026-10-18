@@ -23,7 +23,7 @@ function harness(initial) {
     return elements.get(id);
   };
   const context = { console, AbortController,
-    window: { addEventListener() {}, innerWidth: 1200, innerHeight: 800, Arud: { data: { info: {} }, load() {}, clean: s => s, words: s => s.split(/\s+/).filter(Boolean), syll: s => s, rhymeCheck: () => ({ rows: [] }) } },
+    window: { addEventListener() {}, innerWidth: 1200, innerHeight: 800, Arud: { data: { info: {} }, load() {}, clean: s => s, words: s => s.split(/\s+/).filter(Boolean), syll: s => s, verifyLine: () => ({ok:true,feet:[]}), rhymeCheck: () => ({ rows: [] }) } },
     document: { getElementById: element, addEventListener(type, fn) { if (!listeners.has(type)) listeners.set(type, []); listeners.get(type).push(fn); }, querySelectorAll: () => [], querySelector: () => null, activeElement: null,
       createElement: tag => ({ tag, hidden: true, dataset: {}, style: {}, classList: { add() {}, remove() {}, toggle() {} }, listeners: {},
         addEventListener(type, fn) { this.listeners[type] = fn; }, setAttribute() {}, appendChild() {} }),
@@ -57,7 +57,10 @@ function harness(initial) {
     const fn = listeners.get('click').find(f => f.toString().includes("act === 'edit'"));
     fn({ target: { closest: query => query === '[data-act]' ? { dataset: { act, li: String(li) } } : null } });
   }
-  return { api, select, receive, elements, timers, click };
+  return { api, select, receive, elements, timers, click, dialogMouseDown() {
+    const fn = listeners.get('mousedown').find(f => f.toString().includes("$('cmenu')"));
+    fn({target:{closest: selector => selector.includes('.agent-exchange') ? {} : null}});
+  } };
 }
 
 async function staleSave() {
@@ -202,11 +205,22 @@ async function manualWordMenu() {
   assert(h.elements.get('cmsub').innerHTML.includes('اضغط لطلب'));
   h.elements.get('cmenu').listeners.click({target:{closest:selector=>selector==='[data-cm]'?button:null}});
   assert.equal(requests.length, 1, 'an explicit AI choice queues the requested handoff');
-  requests[0].done.resolve({synonyms:[]});
-  await Promise.resolve();
+  h.dialogMouseDown();
+  requests[0].done.resolve({synonyms:[{text:'جديد',note:'اقتراح'}]});
+  await new Promise(setImmediate);
+  assert.equal(h.elements.get('cmsub').hidden, false);
+  assert(h.elements.get('cmsub').innerHTML.includes('جديد'), 'handoff results appear without reopening the word menu');
+}
+
+async function approvalReadback() {
+  const local = harness([poem('a')]); local.click('confirm', 0);
+  assert.equal(local.api.poems[0].status, 'confirmed');
+  assert(local.elements.get('toast').textContent.includes('انسخ القصيدة والصقها'), 'local approval must request the latest text, not imply agent access to browser storage');
+  const hosted = harness([poem('a')]); hosted.api.db({}); hosted.click('confirm', 0);
+  assert(hosted.elements.get('toast').textContent.includes('انتهيت'), 'connected host retains the original readback workflow');
 }
 
 (async () => {
-  await staleSave(); await conversations(); await staleAlternatives(); await diacritics(); await lineEditing(); await wordContext(); await manualWordMenu();
+  await staleSave(); await conversations(); await staleAlternatives(); await diacritics(); await lineEditing(); await wordContext(); await manualWordMenu(); await approvalReadback();
   console.log('PASS workbench state: revision-safe saves, isolated conversations, stale responses, preserved wording/marks, line identities/metadata and word context');
 })().catch(error => { console.error(error); process.exitCode = 1; });

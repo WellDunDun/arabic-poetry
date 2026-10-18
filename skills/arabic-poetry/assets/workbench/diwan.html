@@ -1,6 +1,7 @@
 <meta charset="utf-8">
 <title>ديوان العروض</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap">
@@ -1662,7 +1663,7 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
       label: injected.label || 'وكيل متصل',
       sample: injected.sample || chatExchange(),
       db: injected.db || null,
-      downloads: injected.downloads || browserDownloads(),
+      downloads: Object.prototype.hasOwnProperty.call(injected, 'downloads') ? injected.downloads : browserDownloads(),
     };
     if (root.DiwanLocal) return { label: 'محادثتك عبر اتصال محلي', sample: localQueue(root.DiwanLocal),
       db: null, downloads: browserDownloads() };
@@ -1670,7 +1671,7 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
       const use = async name => { try { return await root.claude.use(name); } catch (e) { return null; } };
       const [sample, db, downloads] = await Promise.all([use('sample'), use('db'), use('downloads')]);
       return { label: sample ? 'Claude' : 'محادثتك عبر النسخ واللصق', sample: sample || chatExchange(), db,
-        downloads: downloads || browserDownloads() };
+        downloads: downloads || null };
     }
     return { label: 'محادثتك عبر النسخ واللصق', sample: chatExchange(), db: null, downloads: browserDownloads() };
   }
@@ -2442,7 +2443,7 @@ ${isLast ? `4) rhymes: حتى 20 كلمة قافية تصلح لآخر هذا ا
       st.syn = clean(out && out.synonyms); st.rhy = clean(out && out.same_rhythm); st.fit = clean(out && out.fits_meter); st.qaf = clean(out && out.rhymes);
       if (!st.syn.length && !st.rhy.length && !st.fit.length && !st.qaf.length) st.error = 'لم تصل كلمات؛ أعد فتح القائمة.';
     } catch (e) {
-      st.error = e && (e.code === 'not_granted' || e.code === 'sampling_disabled') ? 'لم يُسمح بالاتصال بـ الوكيل من هذه الصفحة.' : 'تعذّر الحصول على كلمات؛ أعد فتح القائمة.';
+      st.error = e && (e.code === 'not_granted' || e.code === 'sampling_disabled') ? 'لم يُسمح بالاتصال بالوكيل من هذه الصفحة.' : 'تعذّر الحصول على كلمات؛ أعد فتح القائمة.';
       if (e && (e.code === 'not_granted' || e.code === 'sampling_disabled')) sample = null;
       wordAlts.delete(key);
     } finally { st.busy = false; if (cmCtx && altKey() === key && cmCtx.sub) renderSub(cmCtx.sub); }
@@ -2514,7 +2515,7 @@ ${isLast ? `4) rhymes: حتى 20 كلمة قافية تصلح لآخر هذا ا
     else if (act === 'undo') { closeCm(); doUndo(); }
   };
   $('cmenu').addEventListener('click', cmClick); $('cmsub').addEventListener('click', cmClick);
-  document.addEventListener('mousedown', e => { if (!$('cmenu').hidden && !e.target.closest('.cmenu')) closeCm(); });
+  document.addEventListener('mousedown', e => { if (!$('cmenu').hidden && !e.target.closest('.cmenu, .agent-exchange')) closeCm(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('cmenu').hidden) closeCm(); });
   window.addEventListener('scroll', () => { if (!$('cmenu').hidden) closeCm(); }, { passive: true });
 
@@ -2771,7 +2772,7 @@ ${linesOf(p).join('\n')}
     else if (act === 'askchip') { const q = b.dataset.q; if (q.includes('…')) { const t = $('askin-' + li); t.value = q; t.focus(); } else askLine(li, q); }
     else if (act === 'askstop') { const st = askState[li]; if (st && st.ctl) st.ctl.abort(); }
     else if (act === 'apply') { const ls = linesOf(p); ls[li] = b.dataset.text; p.text = ls.join('\n'); openAlts[li] = false; save(p); render(); toast('استُبدل السطر'); }
-    else if (act === 'confirm') { p.status = 'confirmed'; (p.choices || []).forEach(c => { c.done = true; }); save(p, true); render(); toast('اعتُمد التشكيل — أخبر الوكيل في المحادثة بأنك انتهيت'); }
+    else if (act === 'confirm') { p.status = 'confirmed'; (p.choices || []).forEach(c => { c.done = true; }); save(p, true); render(); toast(db ? 'اعتُمد التشكيل — أخبر الوكيل في المحادثة بأنك انتهيت' : 'اعتُمد التشكيل — انسخ القصيدة والصقها في المحادثة ليقرأ الوكيل أحدث نص'); }
     else if (act === 'diac') askDiacritics();
     else if (act === 'reopen') { p.status = 'review'; save(p); render(); }
     else if (act === 'nextflag') { const f = [...document.querySelectorAll('.w.flag:not(.done)')][0]; if (f) { f.scrollIntoView({ block: 'center' }); openPop(f); } }

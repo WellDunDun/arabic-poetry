@@ -43,7 +43,7 @@ For Codex, Claude Code or another agent with local file/command access, start th
 python3 scripts/serve_diwan.py serve --workspace /absolute/path/to/poems
 ```
 
-Open the exact localhost URL printed by the command through an available browser capability. Keep the server process running for the editing session. Use a fixed `--port` on later starts if you need the same browser storage origin. The bridge binds only to `127.0.0.1`, uses a random session URL, rejects foreign Host/Origin headers and executes no agent/model commands.
+Open the exact localhost URL printed by the command through an available browser capability. Keep the server process running for the editing session. The bridge saves its chosen port in the workspace and reuses it on later starts, keeping the same browser-storage origin. If that port is busy, it stops with an actionable message rather than switching silently to an empty collection. For an existing collection from an older bridge, start once with its original `--port` value. An explicit different port, including `--port 0`, selects a separate browser-storage origin. The bridge binds only to `127.0.0.1`, uses a random session URL, rejects foreign Host/Origin headers and executes no agent/model commands.
 
 When the user clicks an AI button, the page queues a prompt in `<workspace>/.diwan/requests/` and waits. The user tells the existing chat to handle the Diwan request. If the chat does not know the workspace yet, the dialog's copy button supplies a message containing the real workspace, bridge path and request ID. Do not claim the editor can wake the chat automatically.
 
@@ -81,7 +81,7 @@ window.DiwanHost = {
 
 This is an adapter contract, not a working model connection by itself. `input` is either a prompt string or an array of `{role, content}` turns. Set `sample.requiresUserHandoff: true` if a request needs a user dialog or chat handoff; word menus then wait for an explicit AI choice before requesting suggestions. Honor `options.signal` cancellation. Advertise `tools: true` only if the adapter actually supports `options.tools`, including executing each supplied tool callback and returning its result to the model. Otherwise the page verifies proposed lines after receiving the response.
 
-Optional `db` and `downloads` properties use the existing collection/document and `save({filename, data})` contracts below. Missing capabilities fall back individually to browser storage, native downloads and the manual request dialog. An adapter must implement its provider's real authentication and permission requirements outside the poem UI. Never put provider secrets in shipped HTML. Do not claim an agent connection merely because an adapter name is shown.
+Optional `db` and `downloads` properties use the existing collection/document and `save({filename, data})` contracts below. Ordinary browsers use local storage, native downloads and the manual request dialog. A Claude host with no granted downloads capability keeps its original unavailable-download message; do not assume its sandbox permits native blob downloads. An injected host may set `downloads: null` to disable downloads explicitly; an omitted field uses the ordinary-browser fallback. An adapter must implement its provider's real authentication and permission requirements outside the poem UI. Never put provider secrets in shipped HTML. Do not claim an agent connection merely because an adapter name is shown.
 
 Codex's [App Server documentation](https://developers.openai.com/codex/app-server/) describes an integration for conversations, approvals and streamed events. This package uses the local file queue above for existing chats, not an automatic Codex App Server adapter. Its queue and portable request dialog require no separate API key or agent run. Agents need access to the skill and local execution to run the Python scanner; the browser scanner works independently.
 
@@ -89,7 +89,7 @@ Codex's [App Server documentation](https://developers.openai.com/codex/app-serve
 
 Only if actual host tools expose these capabilities, look for the poet's existing workbench titled «ديوان العروض» and reuse it rather than creating duplicates. The original contribution uses Artifact/ArtifactData names; treat the following as its data contract, not proof that the current host supports those tools.
 
-If host creation supports capability declarations, the page requires database, sampling and downloads, historically `{"db": {}, "sample": {}, "downloads": {}}`. Request/use only real granted capabilities. If unavailable, keep the local/chat workflow.
+For the original fully connected workflow, host capability declarations historically included database, sampling and downloads, `{"db": {}, "sample": {}, "downloads": {}}`. Request/use only real granted capabilities: the database enables shared collection storage, sampling enables AI buttons and downloads enables host file delivery. Use the documented fallback or unavailable state for each missing capability.
 
 The collection is `poems`, one document per poem with a short stable ID:
 

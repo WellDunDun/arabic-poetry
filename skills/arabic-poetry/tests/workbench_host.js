@@ -66,10 +66,12 @@ function harness(claude) {
   assert.deepEqual(calls.sort(), ['db', 'downloads', 'sample']);
   const fallback = await harness({ async use() { throw new Error('not granted'); } }).connect();
   assert.equal(fallback.db, null); assert.equal((await fallback.sample.limits()).tools, false);
+  assert.equal(fallback.downloads, null, 'a Claude host without downloads must keep the unavailable-download guard');
 
   const injected = await h.connect({ label: 'Codex adapter', sample: services.sample });
   assert.equal(injected.label, 'Codex adapter');
   assert.equal(injected.sample, services.sample);
   assert.equal(injected.db, null);
+  assert.equal((await h.connect({ downloads: null })).downloads, null, 'an embedder can explicitly disable downloads');
   console.log('PASS workbench host: portable exchange, invalid input, cancellation, native download, optional host adapters');
 })().catch(error => { console.error(error); process.exitCode = 1; });

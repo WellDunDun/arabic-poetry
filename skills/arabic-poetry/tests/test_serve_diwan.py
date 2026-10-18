@@ -9,6 +9,10 @@ import time
 import unittest
 from unittest import mock
 from urllib.parse import urlsplit
+from pathlib import Path
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / 'scripts'))
 
 import serve_diwan as bridge
 
@@ -106,7 +110,10 @@ class LocalBridgeTests(unittest.TestCase):
         old = time.time() - 601
         os.utime(queue / 'requests' / (expired + '.json'), (old, old))
         bridge.respond(self.temp.name, answered, {'answer': 'done'})
+        old_port = self.server.server_port
+        self.server.shutdown(); self.server.server_close()
         restarted, _ = bridge.make_server(self.temp.name)
+        self.assertEqual(restarted.server_port, old_port, 'the same workspace keeps the same browser-storage origin')
         self.addCleanup(restarted.server_close)
         self.assertEqual(bridge.pending(self.temp.name), [])
         for identity in [live, expired]:
@@ -119,9 +126,19 @@ class LocalBridgeTests(unittest.TestCase):
     def test_failed_restart_preserves_active_requests(self):
         """Failing to bind an occupied port must not cancel the active session."""
         identity = self.create()
-        with self.assertRaises(OSError):
-            bridge.make_server(self.temp.name, self.server.server_port)
+        for port in [None, self.server.server_port]:
+            with self.subTest(port=port), self.assertRaises(OSError):
+                bridge.make_server(self.temp.name, port)
         self.assertEqual([r['id'] for r in bridge.pending(self.temp.name)], [identity])
+
+    def test_invalid_saved_port_requires_explicit_choice(self):
+        """Corrupt port metadata cannot silently open an empty browser origin."""
+        identity = self.create()
+        path = bridge.queue_dirs(self.temp.name) / 'port.json'
+        path.write_text('{"port": "not a port"}')
+        with self.assertRaisesRegex(ValueError, 'saved Diwan port'):
+            bridge.make_server(self.temp.name)
+        self.assertEqual([row['id'] for row in bridge.pending(self.temp.name)], [identity])
 
     def test_queue_ignore_file_is_created_and_preserved(self):
         """New queue data is ignored without overwriting an existing ignore policy."""

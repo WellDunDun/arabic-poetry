@@ -49,9 +49,17 @@ def open_requests(queue):
             and not (queue / 'cancelled' / path.name).exists()]
 
 
-def make_server(workspace, port=0):
+def make_server(workspace, port=None):
     """Start a loopback session and invalidate requests from earlier sessions."""
     queue = queue_dirs(workspace)
+    port_file = queue / 'port.json'
+    if port is None:
+        port = 0
+        if port_file.exists():
+            saved = json.loads(port_file.read_text(encoding='utf-8'))
+            if not isinstance(saved, dict) or type(saved.get('port')) is not int or not 1 <= saved['port'] <= 65535:
+                raise ValueError('Invalid saved Diwan port; use --port to choose one explicitly')
+            port = saved['port']
     assets = Path(__file__).resolve().parent.parent / 'assets' / 'workbench'
     token = secrets.token_urlsafe(32)
     prefix = '/' + token
@@ -148,8 +156,12 @@ def make_server(workspace, port=0):
             else:
                 self.send(404, {'error': 'Not found'})
 
-    server = ThreadingHTTPServer(('127.0.0.1', port), Handler)
     try:
+        server = ThreadingHTTPServer(('127.0.0.1', port), Handler)
+    except OSError as error:
+        raise OSError(f'Diwan port {port} is unavailable. Stop the existing server or choose --port explicitly; a different port uses separate browser storage.') from error
+    try:
+        write_json(port_file, {'port': server.server_port})
         for stale in open_requests(queue):
             write_json(queue / 'cancelled' / stale.name, {'cancelled': True})
     except OSError:
@@ -191,12 +203,15 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('action', choices=('serve', 'pending', 'respond'))
     parser.add_argument('--workspace', required=True, help='Writable poem workspace, outside the installed skill')
-    parser.add_argument('--port', type=int, default=0, help='Local port; default chooses a free port')
+    parser.add_argument('--port', type=int, help='Override the saved workspace port; 0 chooses a new free port')
     parser.add_argument('--id', help='Request ID for respond')
     parser.add_argument('--response', type=Path, help='UTF-8 JSON answer file for respond')
     args = parser.parse_args()
     if args.action == 'serve':
-        server, url = make_server(args.workspace, args.port)
+        try:
+            server, url = make_server(args.workspace, args.port)
+        except (OSError, ValueError) as error:
+            parser.exit(1, str(error) + '\n')
         print(url, flush=True)
         print('Uses the existing agent via local request files. No agent is started automatically.', flush=True)
         try:

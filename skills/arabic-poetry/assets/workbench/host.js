@@ -123,7 +123,7 @@
       label: injected.label || 'وكيل متصل',
       sample: injected.sample || chatExchange(),
       db: injected.db || null,
-      downloads: injected.downloads || browserDownloads(),
+      downloads: Object.prototype.hasOwnProperty.call(injected, 'downloads') ? injected.downloads : browserDownloads(),
     };
     if (root.DiwanLocal) return { label: 'محادثتك عبر اتصال محلي', sample: localQueue(root.DiwanLocal),
       db: null, downloads: browserDownloads() };
@@ -131,7 +131,7 @@
       const use = async name => { try { return await root.claude.use(name); } catch (e) { return null; } };
       const [sample, db, downloads] = await Promise.all([use('sample'), use('db'), use('downloads')]);
       return { label: sample ? 'Claude' : 'محادثتك عبر النسخ واللصق', sample: sample || chatExchange(), db,
-        downloads: downloads || browserDownloads() };
+        downloads: downloads || null };
     }
     return { label: 'محادثتك عبر النسخ واللصق', sample: chatExchange(), db: null, downloads: browserDownloads() };
   }

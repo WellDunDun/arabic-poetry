@@ -1,0 +1,244 @@
+{
+  "condition": "combined",
+  "cases": [
+    {
+      "id": "prose-compose",
+      "request": "اكتب قصيدة نثر من خمسة أسطر عن مفتاح بقي في جيب معطف بعد انتقال صاحبه إلى بيت جديد. بلغة يومية هادئة، ومن غير موعظة أو شرح بعد القصيدة.",
+      "response": "في جيب المعطف بقي المفتاح القديم.\nعلّق صاحبه المعطف خلف باب البيت الجديد، ونسيه.\nكلما مدّ يده إلى الجيب، اصطدمت أصابعه بأسنانه.\nصار يتركه هناك، إلى جانب إيصال البقالة.\nوفي الصباح يأخذ المفتاح الآخر من فوق الطاولة.",
+      "commands": [],
+      "artifacts": []
+    },
+    {
+      "id": "close-reading",
+      "request": "اشرح الصورة في هذا النص من غير إعادة كتابته: «كل مساء أترك الكرسي قبالة الباب، وأرفع عن المقعد غبار يوم آخر». هل يثبت النص أن الغائب مات؟",
+      "response": "«كل مساء» تجعل الانتظار عادة تتجدد. ووضع الكرسي «قبالة الباب» يوجّه المكان نحو احتمال دخول الغائب؛ فالكرسي يُهيَّأ لشخص لم يصل. أمّا «غبار يوم آخر» فيجمع غبار المقعد بمرور الوقت: تنظيفه يمحو أثر يوم من الغياب، ثم يعيد الاستعداد للقاء.\n\nلا يثبت النص أن الغائب مات. لا يذكر موتًا أو سببًا للغياب؛ وقد يحتمل سفرًا أو فراقًا أو موتًا، لكن اختيار أحدها يحتاج إلى سياق إضافي.",
+      "commands": [],
+      "artifacts": []
+    },
+    {
+      "id": "classical-scan",
+      "request": "Explain in English which meter this verse fits, show one compact supporting scan, and distinguish its rhyme letter from its final pronounced sound. Keep this in chat; no editor. قِفَا نَبْكِ مِنْ ذِكْرَى حَبِيبٍ وَمَنْزِلِ * بِسِقْطِ اللِّوَى بَيْنَ الدَّخُولِ فَحَوْمَلِ",
+      "response": "This verse fits al-Ṭawīl (البحر الطويل). The local scanner matched both halves with the reading supplied, treating tanwīn as pronounced and lengthening the final kasra to /ī/.\n\nOne compact scan of the first half is:\nقِفَا نَبْ | كِ مِنْ ذِكْرَى | حَبِيبِنْ | وَمَنْزِلِي\nفعولن | مفاعيلن | فعولن | مفاعلن\nب − − | ب − − − | ب − − | ب − ب −\n\nHere ب marks a short syllable and − a long syllable; read the groups in the Arabic phrase order. The second half also fits: فعولن | مفاعيلن | فعولُ | مفاعلن. فعولُ is the shortened form produced by قبض.\n\nThe rhyme letter (الروي) is ل, the lām in حَوْمَلِ, also echoed in مَنْزِلِ. Under the stated verse-end lengthening, the final pronounced sound is /ī/—a yāʾ of الوصل produced by إشباع الكسرة—not a different rhyme letter. A strict pause with حَوْمَلْ would be a different ending reading.",
+      "commands": [
+        {
+          "command": [
+            "python3",
+            "/private/tmp/poetry-pr3-manual-evals-20261018/packages/combined-pr3/skills/arabic-poetry/scripts/scan.py",
+            "verify",
+            "--meter",
+            "tawil",
+            "قِفَا نَبْكِ مِنْ ذِكْرَى حَبِيبٍ وَمَنْزِلِ * بِسِقْطِ اللِّوَى بَيْنَ الدَّخُولِ فَحَوْمَلِ"
+          ],
+          "exit_code": 0,
+          "stdout": "— «قِفَا نَبْكِ مِنْ ذِكْرَى حَبِيبٍ وَمَنْزِلِ * بِسِقْطِ اللِّوَى بَيْنَ الدَّخُولِ فَحَوْمَلِ»\n  ✓ موزون على الطويل (al-Tawil) — تام\n    - **الصدر** [سليم]  الكتابة العروضية: `قفانب كمنذكرى حبيبن ومنزلي`\n      التفاعيل: فعولن ب − − | مفاعيلن ب − − − | فعولن ب − − | مفاعلن ب − ب −\n    - **العجز** [سليم]  الكتابة العروضية: `بسقطل لوىبيند دخول فحوملي`\n      التفاعيل: فعولن ب − − | مفاعيلن ب − − − | فعولُ ب − ب | مفاعلن ب − ب −\n",
+          "stderr": ""
+        }
+      ],
+      "artifacts": []
+    },
+    {
+      "id": "provisional-reading",
+      "request": "ما البحر المحتمل لعبارة «يا قلب لا تسأل عن الغائبين»؟ أريد جوابًا أوليًا مختصرًا. ليست عندي بقية القصيدة ولا تسجيل للإلقاء.",
+      "response": "يُحتمل السريع، إذا قرأنا: «يَا قَلْبُ لَا تَسْأَلْ عَنِ الْغَائِبِينْ»، بالوصل داخل العبارة والوقف في آخرها. طابق الفحص المحلي: مستفعلن | مستفعلن | فاعلانْ، وهي نهاية تصلح للضرب. هذا احتمال أولي؛ فالعبارة وحدها لا تثبت بحر القصيدة أو موضعها منها، وتتأثر النتيجة بقراءة النهاية.",
+      "commands": [
+        {
+          "command": [
+            "python3",
+            "/private/tmp/poetry-pr3-manual-evals-20261018/packages/combined-pr3/skills/arabic-poetry/scripts/scan.py",
+            "weigh",
+            "يَا قَلْبُ لَا تَسْأَلْ عَنِ الْغَائِبِينَ"
+          ],
+          "exit_code": 0,
+          "stdout": "النص: يَا قَلْبُ لَا تَسْأَلْ عَنِ الْغَائِبِينَ\nالكتابة العروضية: ياقلبلاتسألعنلغائبينا\nالوزن: − − ب − − − ب − − ب − −   (21 حرفًا عروضيًّا: 12 متحرك، 9 ساكن)\nالكلمات (قراءة افتراضية؛ آخر كلمة تُعامل كآخر شطر):\n  يَا: −\n  قَلْبُ: − ب\n  لَا: −\n  تَسْأَلْ: − −\n  عَنِ: ب ب\n  الْغَائِبِينَ: ◌ْ − ب − −\n",
+          "stderr": ""
+        },
+        {
+          "command": [
+            "python3",
+            "/private/tmp/poetry-pr3-manual-evals-20261018/packages/combined-pr3/skills/arabic-poetry/scripts/scan.py",
+            "analyze",
+            "/private/tmp/poetry-pr3-manual-evals-20261018/outputs/combined-pr3/provisional.txt",
+            "--json"
+          ],
+          "exit_code": 0,
+          "stdout": "{\n \"meter\": \"rajaz\",\n \"meter_ar\": \"الرجز\",\n \"form\": \"مشطور\",\n \"confidence\": \"منخفضة\",\n \"candidates\": [\n  {\n   \"form\": \"rajaz/مشطور\",\n   \"total\": 1.0,\n   \"exact\": 0\n  },\n  {\n   \"form\": \"tawil/تام\",\n   \"total\": 1.3,\n   \"exact\": 0\n  },\n  {\n   \"form\": \"sari/تام\",\n   \"total\": 1.3,\n   \"exact\": 0\n  },\n  {\n   \"form\": \"kamil/تام\",\n   \"total\": 1.4,\n   \"exact\": 0\n  },\n  {\n   \"form\": \"mutadarak/تام\",\n   \"total\": 1.7,\n   \"exact\": 0\n  }\n ],\n \"dominant_darb\": null,\n \"darb_mismatch_lines\": [],\n \"verses\": [\n  {\n   \"n\": 1,\n   \"text\": \"يَا قَلْبُ لَا تَسْأَلْ عَنِ الْغَائِبِينَ\",\n   \"sadr\": null,\n   \"ajuz\": {\n    \"arudi\": \"ياقلبلا تسألعنل غائبينا\",\n    \"pattern\": \"− − ب − − − ب − − ب − −\",\n    \"errors\": 1,\n    \"ending\": \"مقطوع\",\n    \"readings\": [],\n    \"unmarked\": 0,\n    \"feet\": [\n     {\n      \"name\": \"مستفعلن\",\n      \"expected\": \"− − ب −\",\n      \"got\": \"− − ب −\",\n      \"letters\": \"ياقلبلا\",\n      \"errors\": 0\n     },\n     {\n      \"name\": \"مستفعلن\",\n      \"expected\": \"− − ب −\",\n      \"got\": \"− − ب −\",\n      \"letters\": \"تسألعنل\",\n      \"errors\": 0\n     },\n     {\n      \"name\": \"مستفعلْ\",\n      \"expected\": \"− − −\",\n      \"got\": \"− ب − −\",\n      \"letters\": \"غائبينا\",\n      \"errors\": 1\n     }\n    ]\n   }\n  }\n ],\n \"qafiya\": {\n  \"rawi\": \"ن\",\n  \"ha_wasl\": false,\n  \"majra\": \"a\",\n  \"majra_ar\": \"فتحة\",\n  \"mutlaqa\": true,\n  \"ridf\": \"وي\",\n  \"tasis\": false,\n  \"type\": null,\n  \"tasree\": null,\n  \"issues\": []\n }\n}\n",
+          "stderr": ""
+        },
+        {
+          "command": [
+            "python3",
+            "/private/tmp/poetry-pr3-manual-evals-20261018/packages/combined-pr3/skills/arabic-poetry/scripts/scan.py",
+            "verify",
+            "--meter",
+            "sari",
+            "--part",
+            "ajuz",
+            "يَا قَلْبُ لَا تَسْأَلْ عَنِ الْغَائِبِينْ"
+          ],
+          "exit_code": 0,
+          "stdout": "— «يَا قَلْبُ لَا تَسْأَلْ عَنِ الْغَائِبِينْ»\n  ✓ موزون على السريع (al-Sari') — تام\n    - **العجز** [سليم]  الكتابة العروضية: `ياقلبلا تسألعنل غائبين`\n      التفاعيل: مستفعلن − − ب − | مستفعلن − − ب − | فاعلانْ − ب =\n",
+          "stderr": ""
+        }
+      ],
+      "artifacts": [
+        "/private/tmp/poetry-pr3-manual-evals-20261018/outputs/combined-pr3/provisional.txt"
+      ]
+    },
+    {
+      "id": "review-only",
+      "request": "شكّل هذا السطر فقط: «لَمْ أبع الوعد ولم أنسَ وجهك». لا تغيّر أي كلمة أو حركة كتبتها، ولا تقلب النفي إلى إثبات. اعرض قراءتك ثم توقف وانتظر موافقتي، ولا تحلل الوزن الآن.",
+      "response": "لَمْ أَبِعِ الْوَعْدَ وَلَمْ أَنْسَ وَجْهَكَ.\n\nأنتظر موافقتك على هذه القراءة.",
+      "commands": [],
+      "artifacts": []
+    },
+    {
+      "id": "bounded-repair",
+      "request": "هذا تمرين وزني: «قَرِيبٌ صَدِيقِي بَعِيدٌ جِدًّا مَكَانِي». أريد أربع تفعيلات فعولن بلا زحاف. أصلحه بأقل تغيير، واحتفظ بكلمات قريب وصديقي وبعيد ومكاني. بيّن أثر التغيير في المعنى وأرني دليل الوزن قبل التغيير وبعده. التشكيل المعطى هو قراءتي المقصودة.",
+      "response": "قَرِيبٌ صَدِيقِي بَعِيدٌ مَكَانِي\n\nأقل تعديل هو حذف «جِدًّا» وحدها، مع إبقاء الكلمات الأربع وتشكيلها. يبقى الصديق قريبًا والمكان بعيدًا، ويزول توكيد شدة البعد.\n\nبالوصل ونطق التنوين، قبل التعديل:\nقَرِيبُنْ | صَدِيقِي | بَعِيدُنْ | جِدْدَنْ | مَكَانِي\nب − − | ب − − | ب − − | − − | ب − −\n\nكل من الكلمات الأربع المطلوبة يساوي فعولن، لكن «جِدًّا» تضيف مقطعين طويلين، فلا تستقيم أربع فعولن بهذه القراءة.\n\nبعد التعديل:\nقَرِيبُنْ | صَدِيقِي | بَعِيدُنْ | مَكَانِي\nب − − | ب − − | ب − − | ب − −\nفعولن | فعولن | فعولن | فعولن\n\nب مقطع قصير، و− مقطع طويل. فشل الأصل في الفحص المحلي للتفعيلة، ونجح البديل؛ ثم أُعيد تحليل النسخة المحفوظة فظهرت أربع فعولن سليمة، بلا زحاف.",
+      "commands": [
+        {
+          "command": [
+            "python3",
+            "/private/tmp/poetry-pr3-manual-evals-20261018/packages/combined-pr3/skills/arabic-poetry/scripts/scan.py",
+            "verify",
+            "--meter",
+            "mutaqarib",
+            "--free",
+            "قَرِيبٌ صَدِيقِي بَعِيدٌ جِدًّا مَكَانِي",
+            "قَرِيبٌ صَدِيقِي بَعِيدٌ مَكَانِي"
+          ],
+          "exit_code": 0,
+          "stdout": "— «قَرِيبٌ صَدِيقِي بَعِيدٌ جِدًّا مَكَانِي»\n  ✗ مكسور على تفعيلة فعولن: فعولن ب − − | فعولن ب − − | فعولن ب − − | فعولن − − ✗ | فعولن ب − −\n— «قَرِيبٌ صَدِيقِي بَعِيدٌ مَكَانِي»\n  ✓ موزون على تفعيلة فعولن: فعولن ب − − | فعولن ب − − | فعولن ب − − | فعولن ب − −\n",
+          "stderr": ""
+        },
+        {
+          "command": [
+            "python3",
+            "/private/tmp/poetry-pr3-manual-evals-20261018/packages/combined-pr3/skills/arabic-poetry/scripts/scan.py",
+            "weigh",
+            "قَرِيبٌ صَدِيقِي بَعِيدٌ جِدًّا مَكَانِي",
+            "قَرِيبٌ صَدِيقِي بَعِيدٌ مَكَانِي"
+          ],
+          "exit_code": 0,
+          "stdout": "النص: قَرِيبٌ صَدِيقِي بَعِيدٌ جِدًّا مَكَانِي قَرِيبٌ صَدِيقِي بَعِيدٌ مَكَانِي\nالكتابة العروضية: قريبنصديقيبعيدنجددنمكانيقريبنصديقيبعيدنمكاني\nالوزن: ب − − ب − − ب − − − − ب − − ب − − ب − − ب − − ب − −   (44 حرفًا عروضيًّا: 26 متحرك، 18 ساكن)\nالكلمات (قراءة افتراضية؛ آخر كلمة تُعامل كآخر شطر):\n  قَرِيبٌ: ب − −\n  صَدِيقِي: ب − −\n  بَعِيدٌ: ب − −\n  جِدًّا: − −\n  مَكَانِي: ب − −\n  قَرِيبٌ: ب − −\n  صَدِيقِي: ب − −\n  بَعِيدٌ: ب − −\n  مَكَانِي: ب − −\n",
+          "stderr": ""
+        },
+        {
+          "command": [
+            "python3",
+            "/private/tmp/poetry-pr3-manual-evals-20261018/packages/combined-pr3/skills/arabic-poetry/scripts/scan.py",
+            "analyze",
+            "/private/tmp/poetry-pr3-manual-evals-20261018/outputs/combined-pr3/repaired.txt",
+            "--mode",
+            "free",
+            "--meter",
+            "mutaqarib",
+            "--json"
+          ],
+          "exit_code": 0,
+          "stdout": "[\n {\n  \"meter\": \"mutaqarib\",\n  \"foot\": \"فعولن\",\n  \"total\": 0.0,\n  \"errors\": 0,\n  \"lines\": [\n   {\n    \"line\": 1,\n    \"feet\": [\n     {\n      \"name\": \"فعولن\",\n      \"letters\": \"قريبن\",\n      \"pattern\": \"11010\",\n      \"errors\": 0,\n      \"tadwir\": false\n     },\n     {\n      \"name\": \"فعولن\",\n      \"letters\": \"صديقي\",\n      \"pattern\": \"11010\",\n      \"errors\": 0,\n      \"tadwir\": false\n     },\n     {\n      \"name\": \"فعولن\",\n      \"letters\": \"بعيدن\",\n      \"pattern\": \"11010\",\n      \"errors\": 0,\n      \"tadwir\": false\n     },\n     {\n      \"name\": \"فعولن\",\n      \"letters\": \"مكاني\",\n      \"pattern\": \"11010\",\n      \"errors\": 0,\n      \"tadwir\": false\n     }\n    ]\n   }\n  ]\n }\n]\n",
+          "stderr": ""
+        }
+      ],
+      "artifacts": [
+        "/private/tmp/poetry-pr3-manual-evals-20261018/outputs/combined-pr3/repaired.txt"
+      ]
+    },
+    {
+      "id": "tafila-boundary",
+      "request": "أقرأ هذا النص موصولًا مع نطق نون التنوين: «يَدٌ\nتَاهَتْ». هل يصح وصفه بأنه تفعيلة كامل سليمة؟ افحص هذه القراءة نفسها ولا تغيّر الألفاظ أو تسقط التنوين.",
+      "response": "لا، بهذه القراءة الموصولة مع نطق نون التنوين لا تستقيم تفعيلة كامل.\n\nالكتابة العروضية: يَدُنْ تَاهَتْ\nالمقاطع: يَ | دُنْ | تَا | هَتْ\nوزنها: ب − − −، بينما متفاعلن السليمة: ب ب − ب −. وحتى صورتها المضمرة متْفاعلن، − − ب −، لا تطابقها. ب مقطع قصير و− طويل.\n\nفحصت السطرين محليًا، ثم فحصت «يَدٌ تَاهَتْ» موصولة للتأكد من الحد بينهما؛ لم ينجح الفحص على الكامل. تقسيم السطر لا يسقط نون التنوين ولا يصنع تفعيلة صحيحة.",
+      "commands": [
+        {
+          "command": [
+            "python3",
+            "/private/tmp/poetry-pr3-manual-evals-20261018/packages/combined-pr3/skills/arabic-poetry/scripts/scan.py",
+            "analyze",
+            "/private/tmp/poetry-pr3-manual-evals-20261018/outputs/combined-pr3/tafila.txt",
+            "--mode",
+            "free",
+            "--meter",
+            "kamil",
+            "--json"
+          ],
+          "exit_code": 0,
+          "stdout": "[\n {\n  \"meter\": \"kamil\",\n  \"foot\": \"متفاعلن\",\n  \"total\": 1.4,\n  \"errors\": 1,\n  \"lines\": [\n   {\n    \"line\": 1,\n    \"feet\": [\n     {\n      \"name\": \"فعِلن\",\n      \"letters\": \"يدن\",\n      \"pattern\": \"110\",\n      \"errors\": 1,\n      \"tadwir\": false\n     }\n    ]\n   },\n   {\n    \"line\": 2,\n    \"feet\": [\n     {\n      \"name\": \"فعْلن\",\n      \"letters\": \"تاهت\",\n      \"pattern\": \"1010\",\n      \"errors\": 0,\n      \"tadwir\": false\n     }\n    ]\n   }\n  ]\n }\n]\n",
+          "stderr": ""
+        },
+        {
+          "command": [
+            "python3",
+            "/private/tmp/poetry-pr3-manual-evals-20261018/packages/combined-pr3/skills/arabic-poetry/scripts/scan.py",
+            "verify",
+            "--free",
+            "--meter",
+            "kamil",
+            "يَدٌ تَاهَتْ"
+          ],
+          "exit_code": 0,
+          "stdout": "— «يَدٌ تَاهَتْ»\n  ✗ مكسور على تفعيلة متفاعلن: متفاعلْ ب − − − ✗\n",
+          "stderr": ""
+        }
+      ],
+      "artifacts": [
+        "/private/tmp/poetry-pr3-manual-evals-20261018/outputs/combined-pr3/tafila.txt"
+      ]
+    },
+    {
+      "id": "workbench-export",
+      "request": "أريد فتح محرر الديوان وحفظ قصيدة بعنوان «مسافة» نصها «قَرِيبٌ صَدِيقِي بَعِيدٌ مَكَانِي»، ثم تصديرها Word. استخدم ما يتاح فعليًا هنا، ووضّح أين حُفظت وما إذا كانت ستظهر في محادثة أخرى.",
+      "response": "حفظت «مسافة» بالنص الذي أعطيتني، وجهّزت نسخة محلية من محرر الديوان بالقصيدة كنص ابتدائي، وصدّرتها إلى Word:\n\n- [ملف Word](/private/tmp/poetry-pr3-manual-evals-20261018/outputs/combined-pr3/masafa.docx)\n- [محرر الديوان المحلي](/private/tmp/poetry-pr3-manual-evals-20261018/outputs/combined-pr3/diwan-masafa.html)\n- [القصيدة المحفوظة بصيغة JSON](/private/tmp/poetry-pr3-manual-evals-20261018/outputs/combined-pr3/poems.json)\n- [نسخة نصية](/private/tmp/poetry-pr3-manual-evals-20261018/outputs/combined-pr3/masafa.txt)\n\nنطاق التنفيذ هنا لا يتيح تشغيل متصفح، لذا لم أفتح المحرر أو أحفظها في تخزين المتصفح. صفحة المحرر تحتفظ بنسبة العمل إلى Firas F. Khabour وDaniel Petro، وتتضمن اعتماديات خارجية للخطوط وتصدير Word داخل المتصفح؛ التصدير الذي أنجزته استخدم الأداة المحلية. فحصت سلامة حزمة Word ووجود العنوان والنص المشكول فيها، ولم أفحص شكلها بصريًا في Word.\n\nهذه ملفات محلية؛ لن تظهر القصيدة تلقائيًا في محادثة أخرى، ولا يوجد هنا دليل على مزامنة أو تخزين مشترك بين المحادثات.",
+      "commands": [
+        {
+          "command": [
+            "python3",
+            "-c",
+            "import pathlib,json; out=pathlib.Path(\"/private/tmp/poetry-pr3-manual-evals-20261018/outputs/combined-pr3\"); src=pathlib.Path(\"/private/tmp/poetry-pr3-manual-evals-20261018/packages/combined-pr3/skills/arabic-poetry/assets/workbench/diwan.html\"); poems=[{\"id\":\"masafa\",\"title\":\"مسافة\",\"text\":\"قَرِيبٌ صَدِيقِي بَعِيدٌ مَكَانِي\",\"status\":\"review\",\"mode\":\"free\",\"meter\":\"mutaqarib\",\"order\":0,\"choices\":[],\"suggestions\":{}}]; (out/\"poems.json\").write_text(json.dumps(poems,ensure_ascii=False,indent=2)+\"\\n\"); html=src.read_text(); needle=\"poems = store.get(\\x27diwan.local\\x27, []);\"; assert html.count(needle)==1; html=html.replace(needle,\"poems = store.get(\\x27diwan.local\\x27, \"+json.dumps(poems,ensure_ascii=False)+\");\"); (out/\"diwan-masafa.html\").write_text(html); assert \"Firas F. Khabour &amp; Daniel Petro\" in html; print(\"Saved poems.json and prepared diwan-masafa.html with fallback poem; package footer credit preserved. Browser not opened.\")"
+          ],
+          "exit_code": 0,
+          "stdout": "Saved poems.json and prepared diwan-masafa.html with fallback poem; package footer credit preserved. Browser not opened.\n",
+          "stderr": ""
+        },
+        {
+          "command": [
+            "python3",
+            "/private/tmp/poetry-pr3-manual-evals-20261018/packages/combined-pr3/skills/arabic-poetry/scripts/export_book.py",
+            "/private/tmp/poetry-pr3-manual-evals-20261018/outputs/combined-pr3/poems.json",
+            "/private/tmp/poetry-pr3-manual-evals-20261018/outputs/combined-pr3/masafa.docx",
+            "--text",
+            "/private/tmp/poetry-pr3-manual-evals-20261018/outputs/combined-pr3/masafa.txt"
+          ],
+          "exit_code": 0,
+          "stdout": "wrote /private/tmp/poetry-pr3-manual-evals-20261018/outputs/combined-pr3/masafa.docx\nwrote /private/tmp/poetry-pr3-manual-evals-20261018/outputs/combined-pr3/masafa.txt\n",
+          "stderr": ""
+        },
+        {
+          "command": [
+            "python3",
+            "-c",
+            "import pathlib,zipfile,xml.etree.ElementTree as E,json; out=pathlib.Path(\"/private/tmp/poetry-pr3-manual-evals-20261018/outputs/combined-pr3\"); p=out/\"masafa.docx\"; z=zipfile.ZipFile(p); assert z.testzip() is None; docs={n:E.fromstring(z.read(n)) for n in z.namelist() if n.endswith(\".xml\") or n.endswith(\".rels\")}; ns={\"w\":\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\"}; text=\"\".join(docs[\"word/document.xml\"].itertext()); assert \"مسافة\" in text; assert \"قَرِيبٌ صَدِيقِي بَعِيدٌ مَكَانِي\" in text; print(json.dumps({\"zip_integrity\":\"pass\",\"xml_parts_parsed\":len(docs),\"title_and_exact_poem_present\":True,\"visual_word_validation\":False,\"bytes\":p.stat().st_size},ensure_ascii=False))"
+          ],
+          "exit_code": 0,
+          "stdout": "{\"zip_integrity\": \"pass\", \"xml_parts_parsed\": 6, \"title_and_exact_poem_present\": true, \"visual_word_validation\": false, \"bytes\": 2405}\n",
+          "stderr": ""
+        },
+        {
+          "command": [
+            "python3",
+            "-c",
+            "import sys,subprocess,json; print(json.dumps({\"python\":sys.version,\"node\":subprocess.check_output([\"node\",\"--version\"],text=True).strip()},ensure_ascii=False))"
+          ],
+          "exit_code": 0,
+          "stdout": "{\"python\": \"3.14.2 (main, Dec  5 2025, 16:49:16) [Clang 17.0.0 (clang-1700.4.4.1)]\", \"node\": \"v25.8.1\"}\n",
+          "stderr": ""
+        }
+      ],
+      "artifacts": [
+        "/private/tmp/poetry-pr3-manual-evals-20261018/outputs/combined-pr3/diwan-masafa.html",
+        "/private/tmp/poetry-pr3-manual-evals-20261018/outputs/combined-pr3/poems.json",
+        "/private/tmp/poetry-pr3-manual-evals-20261018/outputs/combined-pr3/masafa.docx",
+        "/private/tmp/poetry-pr3-manual-evals-20261018/outputs/combined-pr3/masafa.txt"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "model": "Inherited parent model; no override. Exact serving model identifier not exposed to this worker.",
+  "runtime": "Local Python and Node command execution only; Python commands set PYTHONDONTWRITEBYTECODE=1.",
+  "batch": "Eight cases in exact order in one shared context; cases are not isolated independent contexts.",
+  "read_scope": "Assigned combined-pr3 Arabic poetry package and prompts.json only. No rubric, competing condition, expected answer, prior trial output, repository, research or review findings consulted.",
+  "capability_caveats": [
+    "No network, browser, external host API, installs, publishing, or global font modifications.",
+    "Local HTML preparation cannot establish browser opening or interaction.",
+    "DOCX structural inspection cannot establish visual rendering in Word.",
+    "Local files and hypothetical browser storage cannot establish cross-chat storage."
+  ],
+  "capture_caveats": [
+    "Case commands include actual argv, exit code, stdout and stderr captured by subprocess. Initial package and prompt discovery commands were read-only shell calls before case command capture.",
+    "Responses are authored by the executing agent; no grading, delegation, or separate agent used.",
+    "The bounded-repair weigh command received two text arguments and concatenated them; its per-word output was inspected, while separate verify candidates and a full saved repaired-line analysis establish the before/after verdict.",
+    "No nonzero command exits occurred. Scanner metrical rejection is represented by its stdout; its process exit status remains zero."
+  ],
+  "runtime_versions": {
+    "python": "3.14.2 (main, Dec  5 2025, 16:49:16) [Clang 17.0.0 (clang-1700.4.4.1)]",
+    "node": "v25.8.1"
+  },
+  "environment": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "export_TMPDIR": "/private/tmp/poetry-pr3-manual-evals-20261018/outputs/combined-pr3/.tmp"
+  },
+  "editor_copy": "Copied shipped HTML with its credit intact; only the empty default local collection was replaced by the requested poem as a fallback seed. No browser or localStorage interaction executed. Existing browser collection, if any, would take precedence.",
+  "docx_validation": {
+    "zip_integrity": "pass",
+    "xml_parts_parsed": 6,
+    "exact_title_and_poem_present": true,
+    "visual_validation": false
+  },
+  "network": "No network calls made; copied editor HTML retains original CDN references, which were not fetched.",
+  "writes": "Only the assigned output directory; exporter temporary workspace redirected under its .tmp subdirectory. No PDF export, font installation, package rebuild or package modification.",
+  "pre_case_read_receipts": "Initial package instructions, five workflow references, free-verse/rhyme references, export script source, and relevant editor source lines were read through local shell commands; those read-only discovery command outputs were returned by exec tools, not duplicated into per-case command arrays."
+}

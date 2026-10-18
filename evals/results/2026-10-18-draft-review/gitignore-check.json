@@ -1,0 +1,16 @@
+{
+  "command": [
+    "git",
+    "-C",
+    "/private/var/folders/ry/n2x9qf1j21n1r38t0pdfxt2m0000gn/T/diwan-ignore-proof-taz45_vn",
+    "check-ignore",
+    ".diwan/requests/11111111111111111111111111111111.json",
+    ".diwan/responses/11111111111111111111111111111111.json",
+    ".diwan/cancelled/11111111111111111111111111111111.json"
+  ],
+  "exit_code": 0,
+  "stdout": ".diwan/requests/11111111111111111111111111111111.json\n.diwan/responses/11111111111111111111111111111111.json\n.diwan/cancelled/11111111111111111111111111111111.json\n",
+  "stderr": "",
+  "status_porcelain": "",
+  "capture_note": "Initial proof script failed while comparing macOS symlinked /var and resolved /private/var temporary paths. This rerun resolves the workspace consistently; package code was not changed."
+}

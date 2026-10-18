@@ -1,0 +1,12 @@
+{
+  "skills/arabic-poetry/SKILL.md": "f5c3d849403770dd47763fd189407408d6a2769245ac8173ad7aeccc3e0a44a4",
+  "skills/arabic-poetry/references/CRAFT.md": "57faf5c1cb7a0622ac369fe8ce73c179d1daad92a969ba9f94998ad7f4064896",
+  "skills/arabic-poetry/references/EXAMPLES.md": "924c700448ad01d877f2285c2d9c63c3ebe5a18e3f29b8563905c78a5d766d4d",
+  "skills/arabic-poetry/references/PROSODY.md": "2e255336cf4604ed6cfefe9d825a6870eacee019b756540de46c35dbaecc2581",
+  "skills/arabic-poetry/references/READING.md": "5c5f640fb11b8c2eafd766a1782295ab9158593a15d834402a4a65da151c95e5",
+  "skills/arabic-poetry/references/SIMILAR_SKILLS.md": "4992bf1c569f535043e1000572625ceba68216eb4c1213c5866936dc6cf58d25",
+  "skills/arabic-poetry/references/SOURCES.md": "2610670cbe8e62ddfd420adaa52856440010e4bc9b876f92a3c8ab978bb2ea69",
+  "skills/arabic-poetry/references/TOOLS.md": "e68d3a57ef776e96aaca145ef3dffd90d39f585f30b1ebb73fc0bca434a26543",
+  "skills/arabic-poetry/scripts/check_scansion.py": "63a441e4952ed8685242f7d407aa92438c079ef8622d2c164fbcaeace7c56610",
+  "skills/arabic-poetry/scripts/test_check_scansion.py": "9856a4182fe013fd1b2de6b3a45260d1aa16bb75b27ca40001ca93e8233b82b2"
+}

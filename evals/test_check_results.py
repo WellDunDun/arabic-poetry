@@ -27,7 +27,7 @@ class EvidenceIntegrityTests(unittest.TestCase):
         shutil.copytree(source.parent / 'skills', self.repo / 'skills',
                         ignore=shutil.ignore_patterns('__pycache__', '*.pyc'))
         self.results = self.root / 'results'
-        shutil.copytree(source / 'results/2026-10-16', self.results)
+        shutil.copytree(source / 'results/2026-10-18', self.results)
 
     @staticmethod
     def sha(path):
@@ -57,6 +57,7 @@ class EvidenceIntegrityTests(unittest.TestCase):
 
     def test_false_pass_is_rejected(self):
         """A failed criterion cannot be hidden by a passing case summary."""
+        self.update('grades.json', lambda data: data['current-both']['provisional-reading']['criteria'][0].update(status='fail'))
         self.update('grades.json', lambda data: data['current-both']['provisional-reading'].update(status='pass'))
         with self.assertRaisesRegex(ValueError, 'case status'):
             self.check()

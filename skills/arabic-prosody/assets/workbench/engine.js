@@ -763,16 +763,15 @@
   }
 
   // ------------------------------------------------------------------ display helpers
-  /** prosodic bits -> classical syllable notation: ب short (/), − long (/0), = overlong (/00) */
+  /** prosodic bits -> classical syllable notation: ب short (moving letter alone), − long (moving + still), = overlong (moving + two still) */
   function syll(bits) {
     const t = [];
     for (let i = 0; i < bits.length; i++) {
       if (bits[i] === '1') { if (bits[i + 1] === '0') { t.push('−'); i++; } else t.push('ب'); }
-      else { if (t.length && t[t.length - 1] === '−') t[t.length - 1] = '='; else t.push('٠'); }
+      else { if (t.length && t[t.length - 1] === '−') t[t.length - 1] = '='; else t.push('◌ْ'); }   // a stray still letter (only in broken feet)
     }
     return t.join(' ');
   }
-  const marks = bits => [...bits].map(b => b === '1' ? '/' : '0').join('');
 
   /** letters a word needs marked but lacks (for highlighting) */
   function unmarkedCount(word) {
@@ -817,7 +816,7 @@
     return { rawi, rows: rows.map(r => r ? Object.assign({}, r, { ok: r.rawi === rawi || r.alt === rawi }) : null) };
   }
 
-  const API = { pairLines, load, clean, words, parseWord, buildHemistich, analyze, verifyLine, rescan, discriminating, splitLine, syll, marks,
+  const API = { pairLines, load, clean, words, parseWord, buildHemistich, analyze, verifyLine, rescan, discriminating, splitLine, syll,
     unmarkedCount, rhymeCheck, scanHemistich, darbGroup, get data() { return M; } };
   if (typeof module !== 'undefined' && module.exports) module.exports = API; else root.Arud = API;
 })(typeof window !== 'undefined' ? window : globalThis);

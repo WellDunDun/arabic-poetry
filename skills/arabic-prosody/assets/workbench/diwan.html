@@ -374,10 +374,6 @@ input, textarea, select { box-sizing: border-box }
     </div>
     <button class="btn" id="newBtn" type="button">+ قصيدة</button>
     <span class="spacer"></span>
-    <div class="seg" role="group" aria-label="رموز التقطيع">
-      <button type="button" id="nSyl" aria-pressed="true">ب −</button>
-      <button type="button" id="nMarks" aria-pressed="false">/ ٠</button>
-    </div>
     <button class="btn" id="copyBtn" type="button">نسخ القصيدة</button>
     <button class="btn" id="exportBtn" type="button">تصدير</button>
     <div class="setrow">
@@ -434,9 +430,9 @@ input, textarea, select { box-sizing: border-box }
       <div class="card">
         <h3>مفتاح الرموز</h3>
         <div class="legend">
-          <div><span class="sw">ب</span>مقطع قصير: متحرك (/)</div>
-          <div><span class="sw">−</span>مقطع طويل: متحرك فساكن (/٠)</div>
-          <div><span class="sw">=</span>مقطع زائد الطول آخر السطر (/٠٠)</div>
+          <div><span class="sw">ب</span>مقطع قصير: حرف متحرك وحده (بِـ)</div>
+          <div><span class="sw">−</span>مقطع طويل: متحرك فساكن (بَلْ، بَا)</div>
+          <div><span class="sw">=</span>مقطع زائد الطول آخر السطر (بَابْ)</div>
           <div><span class="sw" style="background:var(--flag-soft);color:var(--flag)">كلمة</span>تشكيل يحتاج تأكيدك</div>
           <div><span class="sw" style="border-bottom:2px dotted var(--ink-2)">كلمة</span>حروف بلا تشكيل</div>
           <div><span class="sw" style="color:var(--bad)">كلمة</span>في تفعيلة مكسورة</div>
@@ -1259,16 +1255,15 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
   }
 
   // ------------------------------------------------------------------ display helpers
-  /** prosodic bits -> classical syllable notation: ب short (/), − long (/0), = overlong (/00) */
+  /** prosodic bits -> classical syllable notation: ب short (moving letter alone), − long (moving + still), = overlong (moving + two still) */
   function syll(bits) {
     const t = [];
     for (let i = 0; i < bits.length; i++) {
       if (bits[i] === '1') { if (bits[i + 1] === '0') { t.push('−'); i++; } else t.push('ب'); }
-      else { if (t.length && t[t.length - 1] === '−') t[t.length - 1] = '='; else t.push('٠'); }
+      else { if (t.length && t[t.length - 1] === '−') t[t.length - 1] = '='; else t.push('◌ْ'); }   // a stray still letter (only in broken feet)
     }
     return t.join(' ');
   }
-  const marks = bits => [...bits].map(b => b === '1' ? '/' : '0').join('');
 
   /** letters a word needs marked but lacks (for highlighting) */
   function unmarkedCount(word) {
@@ -1313,7 +1308,7 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
     return { rawi, rows: rows.map(r => r ? Object.assign({}, r, { ok: r.rawi === rawi || r.alt === rawi }) : null) };
   }
 
-  const API = { pairLines, load, clean, words, parseWord, buildHemistich, analyze, verifyLine, rescan, discriminating, splitLine, syll, marks,
+  const API = { pairLines, load, clean, words, parseWord, buildHemistich, analyze, verifyLine, rescan, discriminating, splitLine, syll,
     unmarkedCount, rhymeCheck, scanHemistich, darbGroup, get data() { return M; } };
   if (typeof module !== 'undefined' && module.exports) module.exports = API; else root.Arud = API;
 })(typeof window !== 'undefined' ? window : globalThis);
@@ -1549,7 +1544,6 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
   let db = null, sample = null;
   let poems = [];                 // [{id, title, text, choices, suggestions, status, meter, mode, order}]
   let curId = store.get('diwan.cur', null);
-  let notation = store.get('diwan.notation', 'syl');
   const layoutCache = new Map();
   let pendingNew = null;   // a line just added with «+», not saved yet
   let analysis = null, editing = null, openAlts = {}, altResults = {}, openAsk = {}, askState = {}, sampleTools = false;
@@ -1601,7 +1595,7 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
     }
     catch (e) { console.error(e); analysis = null; }
   }
-  const pat = bits => notation === 'syl' ? A.syll(bits || '') : A.marks(bits || '');
+  const pat = bits => A.syll(bits || '');
   const meterAr = k => (A.data.info[k] || [k])[0];
 
   // ---- how many places are broken in a poem (shown in the poem menu)
@@ -1788,8 +1782,6 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
             <button class="pmdel" type="button" data-pm="ask" data-id="${esc(x.id)}" aria-label="حذف ${esc(x.title || 'القصيدة')}" title="حذف">✕</button></div>`).join('')
         : '<div class="pmempty">لا قصائد بعد. اضغط «+ قصيدة».</div>';
     }
-    $('nSyl').setAttribute('aria-pressed', String(notation === 'syl'));
-    $('nMarks').setAttribute('aria-pressed', String(notation !== 'syl'));
   }
   async function deletePoem(id) {
     const i = poems.findIndex(x => x.id === id); if (i < 0) return;
@@ -2634,8 +2626,6 @@ ${linesOf(p).join('\n')}
   document.querySelectorAll('#modeSeg button').forEach(b => { b.onclick = () => setMode(b.dataset.mode); });
   $('meterSel').onchange = e => { const p = cur(); if (!p) return; p.meter = e.target.value; save(p); render(); };
   $('resetBtn').onclick = () => { const p = cur(); if (!p) return; p.mode = 'auto'; p.meter = ''; save(p); render(); toast('عاد الاكتشاف التلقائي'); };
-  $('nSyl').onclick = () => { notation = 'syl'; store.set('diwan.notation', notation); render(); };
-  $('nMarks').onclick = () => { notation = 'marks'; store.set('diwan.notation', notation); render(); };
   $('bulkBtn').onclick = () => { const p = cur(); if (!p) return; $('bulk').value = p.text; $('bulkWrap').hidden = false; $('lines').hidden = true; $('bulk').focus(); };
   $('bulkCancel').onclick = () => { $('bulkWrap').hidden = true; $('lines').hidden = false; };
   $('bulkSave').onclick = () => { const p = cur(); p.text = $('bulk').value.replace(/\r/g, '').replace(/\n{3,}/g, '\n\n').trim(); $('bulkWrap').hidden = true; $('lines').hidden = false; save(p); render(); };

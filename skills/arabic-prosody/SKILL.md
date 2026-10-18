@@ -63,7 +63,7 @@ there and the counting here.
    a ⚠ إعادة فحص line when this applies.
 7. **Easy to read, easy to answer.** Show scansion in the classical syllable
    notation the scanner prints — ب short (متحرك)، − long (متحرك فساكن)، = overlong —
-   never raw `/0` strings unless asked. Put alternatives, candidates and
+   never letter-by-letter moving/still strings. Put alternatives, candidates and
    per-line results in tables. Prefer the Diwan workbench (below) for any
    review or editing the poet does.
 
@@ -296,11 +296,11 @@ rest of the poem.
   lists the verses that fit the winner but not the runner-up — mention them.
   "التباس" means every line fits both meters; well-known twins:
   - مجزوء الوافر vs الهزج — identical when every foot is مفاعلْتن (عصب); one
-    مفاعَلَتن (//0///0) anywhere proves الوافر.
-  - الكامل vs الرجز — متْفاعلن (مضمر) = مستفعلن; one متَفاعلن (///0//0) proves الكامل.
+    مفاعَلَتن (ب − ب ب −) anywhere proves الوافر.
+  - الكامل vs الرجز — متْفاعلن (مضمر) = مستفعلن; one متَفاعلن (ب ب − ب −) proves الكامل.
   - المتدارك/الخبب under the implemented shared-family convention vs other short lines; المجتث/المقتضب/المضارع are rare —
     prefer a common meter on a tie and say so.
-- **Per verse**: arudi writing split by foot, each foot with name and /0
+- **Per verse**: arudi writing split by foot, each foot with name and −
   pattern. ✗ marks a broken foot with a diagnosis ("زيادة/نقص/حركة في موضع
   سكون") and the patterns allowed at that position.
 - `ـ` in arudi writing is a lengthening (إشباع) letter whose vowel was not marked.

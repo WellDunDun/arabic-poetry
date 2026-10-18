@@ -62,7 +62,7 @@ Return the revised passage and a few actionable notes. Preserve the user's autho
 
 For a concise answer, give the likely form and meter, one compact scan, and any pronunciation assumption. For a full analysis, use columns for النص، الكتابة العروضية، التقطيع، الملاحظة.
 
-Use the notation shared with arabic-prosody and its Diwan workbench: **ب** short syllable (متحرك), **−** long (متحرك فساكن), **=** overlong (only in pause at a line end); feet separated by **⁞**, each foot named over or beside its pattern (فعولن ب − −); a broken foot marked ✗; lines numbered with Arabic digits (١، ٢). Name a زحاف by its foot form (فعولُ، فعِلن، مستعلن). Explain the symbols once before using them, and do not switch to `/0` or `1/0` strings unless the user asks.
+Use the notation shared with arabic-prosody and its Diwan workbench: **ب** short syllable (متحرك), **−** long (متحرك فساكن), **=** overlong (only in pause at a line end); feet separated by **⁞**, each foot named over or beside its pattern (فعولن ب − −); a broken foot marked ✗; lines numbered with Arabic digits (١، ٢). Name a زحاف by its foot form (فعولُ، فعِلن، مستعلن). Explain the symbols once before using them, and keep to this notation rather than letter-by-letter moving/still strings.
 
 ## Evidence and final check
 

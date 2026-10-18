@@ -23,7 +23,7 @@ Use the notation that arabic-prosody and the Diwan workbench display:
 | ⁞ | foot boundary |
 | ✗ | broken foot |
 
-Read the pattern right to left with the Arabic text. Name each foot with its pattern (فعولن ب − −), and name a variation by its foot form (فعولُ ب − ب). Do not switch to `/0` or `1/0` strings unless the user asks; when quoting a source or tool that uses them, convert and say so.
+Read the pattern right to left with the Arabic text. Name each foot with its pattern (فعولن ب − −), and name a variation by its foot form (فعولُ ب − ب). Keep to this notation rather than letter-by-letter moving/still strings; when a source or tool writes letters that way, convert its pattern to syllables and say so.
 
 | Foot | Pattern |
 | --- | --- |

@@ -12,7 +12,7 @@ is surplus — often a filler conjunction or particle.
 
 | problem | techniques |
 |---|---|
-| one extra moving letter | drop a و/ف/ثم; a shorter synonym (يَقُولُ //0/ → قَالَ /0/); «لكنَّ» → «لكنْ» |
+| one extra moving letter | drop a و/ف/ثم; a shorter synonym (يَقُولُ ب − ب → قَالَ − ب); «لكنَّ» → «لكنْ» |
 | one extra sakin | put an indefinite word in إضافة (drops its tanwin)، حذف ألف «أنا» لفظًا، a synonym without a long vowel |
 | one missing moving letter | add و/ف/لـ/بـ or vocative يا; a longer synonym |
 | one missing sakin | make a word indefinite (adds tanwin), lengthen هاء الضمير after a moving letter (لَهُ → لَهُو)، a form with a long vowel (كَتَبَ → كاتِب) |
@@ -22,8 +22,8 @@ is surplus — often a filler conjunction or particle.
 
 ## 3. Use the weight tool
 `scan.py weigh "كلمة"` gives a word's pattern; build a phrase whose pattern
-fills exactly the gap (e.g. the foot needs `//0/0` and you have `//0`: add a
-`/0` word or swap for a `//0/0` synonym).
+fills exactly the gap (e.g. the foot needs ب − − and you have ب −: add a
+word weighing − or swap for a ب − − synonym).
 
 ## 4. الضرورات الشعرية (licences — use sparingly, and name them to the poet)
 - صرف الممنوع من الصرف (يُنوَّن): «مساجدٍ».

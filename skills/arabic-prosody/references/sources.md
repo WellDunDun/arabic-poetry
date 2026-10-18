@@ -32,7 +32,7 @@ Code locations: meter tables in `scripts/arud/meters.py` (exported to `assets/wo
 | --- | --- | --- |
 | H1 | Ahmad al-Hashimi, [ميزان الذهب في صناعة شعر العرب: مقدمات علم العروض](https://www.safahat.org/books/50259706/1.1/) | Feet (التفاعيل العشرة), الأسباب والأوتاد, الزحاف والعلل, تقطيع |
 | H2 | Al-Hashimi, [ميزان الذهب: دروس علم العروض — البحور](https://www.safahat.org/books/50259706/1.2/) | Each meter's forms, أعاريض and أضرب, permitted زحافات per meter |
-| H3 | Al-Hashimi, [ميزان الذهب: في حروف القافية الستة](https://www.safahat.org/books/50259706/2.1/) | الروي، الوصل، الخروج، الردف، التأسيس، الدخيل; القافية المطلقة والمقيدة; عيوب القافية |
+| H3 | Al-Hashimi, [ميزان الذهب: في حروف القافية الستة](https://www.safahat.org/books/50259706/2.1/) | الروي، الوصل، الخروج، الردف، التأسيس، الدخيل; القافية المطلقة والمقيدة; [عيوب القافية](https://www.safahat.org/books/50259706/2.5/) |
 | D | Badr al-Din al-Damamini, العيون الغامزة على خبايا الرامزة (commentary on the خزرجية), Shamela book 5421: [المعاقبة والمراقبة والمكانفة](https://shamela.ws/book/5421/28), [علل الأجزاء: الخرم](https://shamela.ws/book/5421/39), meter chapters [p.51](https://shamela.ws/book/5421/51), [p.52](https://shamela.ws/book/5421/52), [p.55](https://shamela.ws/book/5421/55) | المعاقبة/المراقبة; الخرم and the five meters that take it; the forms of individual meters |
 | T | Al-Khatib al-Tabrizi, الكافي في العروض والقوافي (standard classical tables) | Cross-check of أعاريض/أضرب counts per meter |
 | R | Imam Muhammad ibn Saud Islamic University, Dr Badr al-Rashid, [مقدمة في العروض](https://units.imamu.edu.sa/deanships/admission/activities/Pages/news10.aspx) | الكتابة العروضية: what is written but not pronounced and vice versa, shadda, tanwin, connected reading |
@@ -54,7 +54,7 @@ Code locations: meter tables in `scripts/arud/meters.py` (exported to `assets/wo
 | ألف التنوين، ألف الفارقة (كتبوا) silent | R | |
 | إشباع at the end of a hemistich; هاء الضمير and ميم الجمع lengthened after a moving letter | R, H1 | Ishbaʿ of هاء الضمير after a sakin is offered only as a costly licence |
 | قطع همزة الوصل mid-line | G | **Licence (ضرورة)**: used only when it saves the meter, and reported as such |
-| A kasra typed after a word-final ya («فيِ») read on the letter before it («فِي») | — | **Engineering choice**: a common typing slip, not a prosodic rule |
+| Supplied vowel marks stay on their original letters, including a possible typo such as «فيِ» | — | **Input-preservation boundary**: ask about a doubtful reading rather than silently relocating a vowel |
 
 #### Feet, زحافات and علل
 
@@ -94,7 +94,7 @@ Code locations: meter tables in `scripts/arud/meters.py` (exported to `assets/wo
 | Rule | Source | Note |
 | --- | --- | --- |
 | الروي، المجرى، الردف، التأسيس، الوصل; القافية المطلقة والمقيدة | H3 | qafiya.py |
-| عيوب القافية: الإيطاء، الإقواء، الإصراف، السناد، اختلاف الروي | H3 | الإيطاء is also enforced on suggestions: no rhyme word may close two verses |
+| عيوب القافية: الإيطاء، الإقواء، الإصراف، السناد، اختلاف الروي | H3 | The suggestion filter deliberately blocks repeated rhyme-word spellings. This is a stricter editing heuristic, not a complete definition of الإيطاء: the source distinguishes meaning and permits repetition after an interval. The scanner cannot resolve those semantic conditions. |
 | In free verse the rhyme may change or be absent | N | Not reported as a fault |
 
 ### Limits of the rule map

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Human-readable (Markdown) reports. Patterns are shown with / (moving) and 0 (still)."""
+"""Human-readable (Markdown) reports. Patterns are shown with ب (short), − (long), and = (overlong in pause)."""
 from .meters import METER_INFO, FORMS_BY_KEY, darb_group
 from .classical import to_marks, discriminating_lines, template, rescan
 

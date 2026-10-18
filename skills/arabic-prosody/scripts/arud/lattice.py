@@ -79,8 +79,6 @@ def clean(text: str) -> str:
     text = text.replace(TATWEEL, '')
     text = re.sub(r'\s+([\u064b-\u0652\u0670\u0653-\u0655])', r'\1', text)   # a mark typed after a space belongs to the previous letter
     text = text.replace('آ', 'آ')
-    # a kasra typed after a word-final ya («فيِ») belongs to the letter before it: «فِي»
-    text = re.sub(r'([\u0621-\u064a])\u064a\u0650(?=\s|$)', '\\1\u0650\u064a', text)
     out = []
     for ch in text:
         if ch in LETTERS or ch in VOWEL_OF or ch in TANWIN_OF or ch in (SUKUN, SHADDA, DAGGER, MADDA_MARK, HAMZA_ABOVE, HAMZA_BELOW):

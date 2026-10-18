@@ -514,7 +514,6 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
   // ------------------------------------------------------------------ text
   function clean(text) {
     text = text.replace(/\s+([\u064b-\u0652\u0670\u0653-\u0655])/g, '$1');
-    text = text.replace(/([\u0621-\u064a])\u064a\u0650(?=\s|$)/g, '$1\u0650\u064a');   // «فيِ» typed with the kasra after the ya = «فِي»
     text = text.replace(/ک/g, 'ك').replace(/ی/g, 'ي').replace(/[ۀہ]/g, 'ه').replace(/ے/g, 'ي').split(TATWEEL).join('');
     let out = '';
     for (const ch of text) out += (LETTERS.has(ch) || MARKS.has(ch)) ? ch : ' ';
@@ -1764,6 +1763,7 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
   }
   function renderSelect() {
     if (assistantPoemId !== curId) {
+      dropPending(null, poems.find(p => p.id === assistantPoemId) || null); editing = null;
       for (const st of Object.values(askState)) if (st.ctl) st.ctl.abort();
       askState = {}; openAsk = {}; altResults = {}; openAlts = {};
       assistantPoemId = curId; assistantEpoch++;
@@ -1928,7 +1928,7 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
       : (r.parts || []).map(h => h.feet.map(f => ({ name: f.name, got: f.got, bad: f.errors > 0 })));
     return { ok: r.ok, syl: halves.map(h => h.map(f => pat(f.got)).join('  |  ')).join('  ⁂  '), halves, tadwir: r.tadwir || null };
   }
-  // ---- إيطاء: a rhyme word may not close two verses of the same poem
+  // ---- Strict editing filter for repeated rhyme-word spellings; not a semantic verdict
   function rhymeNorm(w) {
     let x = A.clean(w || '').replace(/[\u064B-\u0652\u0670\u0640]/g, '').replace(/[أإآٱ]/g, 'ا').replace(/ة/g, 'ه').replace(/ى/g, 'ي').replace(/[^\u0621-\u064A]/g, '');
     return x.replace(/^(وال|فال|بال|كال|لل|ال)(?=..)/, '');
@@ -1972,10 +1972,10 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
     const [rl0] = vote(ok.map(([w, i]) => w[i]));
     return ((ridf && rn >= 0.6 * ok.length) ? ridf : '') + rl0 + ((tail && tn >= 0.6 * ok.length) ? tail : '');
   }
-  function repNote(r) { return `إيطاء: «${r.word}» قافية ${analysis && analysis.mode === 'free' ? 'السطر' : 'البيت'} ${AR_DIG(r.n)}`; }
+  function repNote(r) { return `تكرار قافية (إيطاء محتمل): «${r.word}» قافية ${analysis && analysis.mode === 'free' ? 'السطر' : 'البيت'} ${AR_DIG(r.n)}`; }
   function rhymeAvoid(li) {
     const u = usedRhymes(li); if (!u.length || !isRhymeLine(li)) return '';
-    return `\nكلمات القافية المستعملة في أبيات أخرى من القصيدة — لا تجعل أيًّا منها (ولا ما يرجع إلى لفظها نفسه) آخرَ هذا السطر، فتكرار كلمة القافية (الإيطاء) عيب: ${[...new Set(u.map(x => x.word))].join('، ')}`;
+    return `\nكلمات القافية المستعملة في أبيات أخرى من القصيدة — لا تجعل أيًّا منها (ولا ما يرجع إلى لفظها نفسه) آخرَ هذا السطر، وذلك لتجنّب التكرار في هذه الاقتراحات: ${[...new Set(u.map(x => x.word))].join('، ')}`;
   }
 
   // one suggested line, laid out like the poem: the halves side by side, changed words marked, feet under each half
@@ -2263,7 +2263,7 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
     $('cmenu').querySelector('button').focus();
     if (sample) fetchWordAlts();
   }
-  function altKey() { return cmCtx ? [cmCtx.li, cmCtx.wi, linesOf(cur())[cmCtx.li]].join('|') : ''; }
+  function altKey() { return cmCtx && cur() ? JSON.stringify([sampleContext(cur()), cmCtx.li, cmCtx.wi]) : ''; }
   async function fetchWordAlts() {
     const key = altKey(); if (wordAlts.has(key)) return;
     const st = { busy: true }; wordAlts.set(key, st);
@@ -2316,7 +2316,7 @@ ${isLast ? `4) rhymes: حتى 20 كلمة قافية تصلح لآخر هذا ا
       body = rows.length ? rows.map(o => `<button type="button" role="menuitem" class="cand" data-cmpick="${esc(o.x.text)}" title="${o.ok ? 'يستقيم السطر بها' : 'لا يستقيم السطر بها'}">
           <span class="mark${o.ok ? '' : ' no'}">✓</span><b>${esc(o.x.text)}</b><span class="gl">${esc(o.x.note || '')}</span><span class="rh">${esc(pat(o.b))}</span></button>`).join('')
         : `<div class="msg">${esc(st.error || (kind === 'rhy' ? 'لم تصل كلمات بالتقطيع نفسه بعد الفحص.' : kind === 'fit' ? 'لم يقم أيّ مما وصل الوزن بعد الفحص. اطلب اقتراحات أخرى.' : kind === 'qaf' ? 'لا قوافٍ جديدة بعد الفحص.' : 'لا كلمات.'))}</div>`;
-      if (reps) body += `<div class="msg">استُبعد ${AR_DIG(reps)} لأنها قافية بيت آخر (إيطاء).</div>`;
+      if (reps) body += `<div class="msg">استُبعد ${AR_DIG(reps)} لتكرار كلمة قافية بيت آخر؛ وهذا فحص لفظي لا يحسم الإيطاء.</div>`;
       if (kind === 'qaf') body += `<a class="extlink" href="${encodeURI('https://kalimmat.com/تنتهي-ب/' + cmCtx.ending)}" target="_blank" rel="noopener noreferrer">تصفّح كل ما ينتهي بـ «${esc(cmCtx.ending)}» في موقع كلمات ↗</a>`;
       body += `<hr><button type="button" role="menuitem" class="more" data-cm="more">اقتراحات أخرى</button>`;
     }
@@ -2328,7 +2328,7 @@ ${isLast ? `4) rhymes: حتى 20 كلمة قافية تصلح لآخر هذا ا
   }
   function applyEdit(li, newLine, msg) {
     const p = cur(); const ls = linesOf(p);
-    undoBuf = { id: p.id, text: p.text };
+    undoBuf = poemSnapshot(p);
     ls[li] = newLine; p.text = ls.join('\n'); save(p); render(); toastUndo(msg);
   }
   function toastUndo(m) {
@@ -2337,7 +2337,7 @@ ${isLast ? `4) rhymes: حتى 20 كلمة قافية تصلح لآخر هذا ا
   }
   function doUndo() {
     const p = cur(); if (!undoBuf || !p || undoBuf.id !== p.id) return;
-    p.text = undoBuf.text; undoBuf = null; save(p); render(); $('toast').hidden = true; toast('أُعيد السطر كما كان');
+    p.text = undoBuf.text; p.choices = undoBuf.choices; p.suggestions = undoBuf.suggestions; undoBuf = null; save(p); render(); $('toast').hidden = true; toast('أُعيد السطر كما كان');
   }
   $('lines').addEventListener('contextmenu', e => {
     const el = e.target.closest('.w[data-wi]'); if (!el) return;
@@ -2470,7 +2470,7 @@ ${poemContext(p)}
 - أجب بالعربية باختصار وبلغة واضحة لشاعر، لا لعروضي متخصص.
 - كل سطر تقترحه يكون مشكولًا كاملًا، ويحافظ على المعنى والصورة وأكبر قدر من كلمات الشاعر وعلى القافية.
 - ${sampleTools ? 'افحص كل اقتراح بأداة check_lines قبل إرساله، وعدّل ما يفشل وأعد فحصه، ولا ترسل إلا ما نجح.' : 'تحقق من وزن كل اقتراح بعناية قبل إرساله.'}
-- لا تكرّر في آخر السطر كلمة قافية مستعملة في بيت آخر (الإيطاء).
+- لا تكرّر في آخر السطر كلمة قافية مستعملة في بيت آخر؛ هذا قيد على الاقتراحات لتجنّب التكرار.
 - إن لم يطلب الشاعر اقتراحات فلا ترسلها.
 أجب بكائن JSON فقط: {"answer": "ردك", "alternatives": [{"text": "السطر مشكولًا", "note": "ما تغيّر وأثره في المعنى، في أقل من 12 كلمة"}]}` });
     }
@@ -2556,26 +2556,45 @@ ${linesOf(p).join('\n')}
   }
 
   // ---------------------------------------------------------------- adding / removing lines
+  function poemSnapshot(p) {
+    return JSON.parse(JSON.stringify({ id: p.id, text: p.text, choices: p.choices || [], suggestions: p.suggestions || {} }));
+  }
+  function spliceLines(p, at, count, inserted = []) {
+    const ls = linesOf(p); ls.splice(at, count, ...inserted); p.text = ls.join('\n');
+    const moved = n => n <= at ? n : n > at + count ? n + inserted.length - count : null;
+    p.choices = (p.choices || []).flatMap(c => { const line = moved(c.line); return line === null ? [] : [Object.assign({}, c, { line })]; });
+    p.suggestions = Object.fromEntries(Object.entries(p.suggestions || {}).flatMap(([key, value]) => {
+      const line = moved(Number(key)); return line === null ? [] : [[String(line), value]];
+    }));
+    for (const st of Object.values(askState)) if (st.ctl) st.ctl.abort();
+    openAlts = {}; altResults = {}; openAsk = {}; askState = {};
+  }
   function addLineAt(at, fresh) {
     const p = cur(); if (!p) return;
-    dropPending();
-    const ls = fresh && !A.clean(p.text || '') ? [] : linesOf(p);
-    at = Math.min(at, ls.length);
-    ls.splice(at, 0, ''); p.text = ls.join('\n');
-    pendingNew = at; editing = at; openAlts = {}; openAsk = {};
+    at = dropPending(at);
+    if (fresh && !A.clean(p.text || '')) { p.text = ''; at = 0; }
+    at = Math.min(at, linesOf(p).length);
+    // An empty poem already has one editable empty row.
+    if (p.text !== '') spliceLines(p, at, 0, ['']);
+    else at = 0;
+    pendingNew = at; editing = at;
     renderLines(); const inp = $('edit-' + at); if (inp) { inp.focus(); inp.scrollIntoView({ block: 'nearest' }); }
   }
-  function dropPending() {                  // a new line left empty is removed again
-    const p = cur(); if (pendingNew === null || !p) { pendingNew = null; return; }
+  function dropPending(target = null, poem = cur()) {     // return the target's index after removing an earlier draft row
+    const p = poem, at = pendingNew; pendingNew = null;
+    if (at === null || !p) return target;
     const ls = linesOf(p);
-    if (ls[pendingNew] !== undefined && !A.clean(ls[pendingNew])) { ls.splice(pendingNew, 1); p.text = ls.join('\n'); }
-    pendingNew = null;
+    if (ls[at] !== undefined && !A.clean(ls[at])) {
+      spliceLines(p, at, 1);
+      if (target !== null && target > at) target--;
+    }
+    return target;
   }
   function saveLine(li, next) {
     const p = cur(); const inp = $('edit-' + li); if (!p || !inp) return;
     const ls = linesOf(p), val = inp.value.trim(), wasNew = pendingNew === li;
     pendingNew = null; editing = null;
-    if (!A.clean(val)) { ls.splice(li, 1); p.text = ls.join('\n'); if (!wasNew) save(p); render(); return; }
+    if (!A.clean(val)) { spliceLines(p, li, 1); if (!wasNew) save(p); render(); return; }
     ls[li] = val; p.text = ls.join('\n'); save(p); render();
     if (next) addLineAt(li + 1);
   }
@@ -2585,15 +2604,15 @@ ${linesOf(p).join('\n')}
     const w = e.target.closest('.w'); if (w) { openPop(w); return; }
     const b = e.target.closest('[data-act]'); if (!b) return;
     const p = cur(), act = b.dataset.act, li = b.dataset.li !== undefined ? +b.dataset.li : null;
-    if (act === 'edit') { dropPending(); editing = li; renderLines(); const inp = $('edit-' + li); if (inp) inp.focus(); }
+    if (act === 'edit') { editing = dropPending(li); renderLines(); const inp = $('edit-' + editing); if (inp) inp.focus(); }
     else if (act === 'cancel') { dropPending(); editing = null; renderLines(); }
     else if (act === 'saveline' || act === 'savenext') saveLine(li, act === 'savenext');
     else if (act === 'addbelow') addLineAt(li + 1);
     else if (act === 'addfirst') addLineAt(linesOf(p).filter(l => A.clean(l)).length ? linesOf(p).length : 0, true);
     else if (act === 'delline') {
-      dropPending();
-      const ls = linesOf(p); undoBuf = { id: p.id, text: p.text };
-      ls.splice(li, 1); p.text = ls.join('\n'); editing = null; openAlts = {}; openAsk = {}; save(p); render(); toastUndo('حُذف السطر');
+      const target = dropPending(li);
+      undoBuf = poemSnapshot(p);
+      spliceLines(p, target, 1); editing = null; save(p); render(); toastUndo('حُذف السطر');
     }
     else if (act === 'alts') { openAlts[li] = !openAlts[li]; renderLines(); }
     else if (act === 'ask') askAlternatives(li);

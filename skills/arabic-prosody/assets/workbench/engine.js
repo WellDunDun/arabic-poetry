@@ -22,7 +22,6 @@
   // ------------------------------------------------------------------ text
   function clean(text) {
     text = text.replace(/\s+([\u064b-\u0652\u0670\u0653-\u0655])/g, '$1');
-    text = text.replace(/([\u0621-\u064a])\u064a\u0650(?=\s|$)/g, '$1\u0650\u064a');   // «فيِ» typed with the kasra after the ya = «فِي»
     text = text.replace(/ک/g, 'ك').replace(/ی/g, 'ي').replace(/[ۀہ]/g, 'ه').replace(/ے/g, 'ي').split(TATWEEL).join('');
     let out = '';
     for (const ch of text) out += (LETTERS.has(ch) || MARKS.has(ch)) ? ch : ' ';

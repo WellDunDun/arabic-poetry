@@ -16,7 +16,7 @@
 These are the implementation's supported families, not a complete taxonomy of modern Arabic rhythm. The shared المتدارك/الخبب label is an implementation convention; keep theoretical distinctions visible when relevant. See [coverage and sources](SCANNER-SOURCES.md).
 | التفعيلة | البحر | صور الحشو | نهايات السطر الشائعة |
 |---|---|---|---|
-| متفاعلن | الكامل | متَفاعلن ///0//0، متْفاعلن /0/0//0 | متفاعلْ، متفاعلانْ، متفاعلاتن، فعِلن |
+| متفاعلن | الكامل | متَفاعلن ب ب − ب −، متْفاعلن − − ب − | متفاعلْ، متفاعلانْ، متفاعلاتن، فعِلن |
 | مستفعلن | الرجز | مستفعلن، متفعلن، مستعلن | مستفعلْ، متفعلْ، مستفعلانْ |
 | فاعلاتن | الرمل | فاعلاتن، فعِلاتن | فاعلانْ، فاعلن، فعِلن، فاعلاتانْ |
 | فعولن | المتقارب | فعولن، فعولُ | فعولْ، فعو، فعْ |

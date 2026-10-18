@@ -16,7 +16,7 @@
   // No provider endpoint, API key, or automatic message sending is involved.
   function chatExchange() {
     let active = false;
-    return { async limits() { return { tools: false }; }, json(input, opts = {}) {
+    return { requiresUserHandoff: true, async limits() { return { tools: false }; }, json(input, opts = {}) {
       if (active) return Promise.reject(new Error('أكمل الطلب المفتوح أو ألغِه أولًا.'));
       if (opts.signal && opts.signal.aborted) return Promise.reject(new DOMException('Cancelled', 'AbortError'));
       active = true;
@@ -67,7 +67,7 @@
 
   function localQueue(config) {
     let active = false;
-    return { async limits() { return { tools: false }; }, async json(input, opts = {}) {
+    return { requiresUserHandoff: true, async limits() { return { tools: false }; }, async json(input, opts = {}) {
       if (active) throw new Error('أكمل الطلب المفتوح أو ألغِه أولًا.');
       active = true;
       const ctl = new AbortController(), cancel = () => ctl.abort();

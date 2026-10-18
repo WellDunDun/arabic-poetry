@@ -10,7 +10,7 @@ Primary teaching source: Imam Muhammad ibn Saud Islamic University, Dr Badr Muha
 
 The page teaches a pronunciation-based sequence: write the pronounced form, mark moving/static letters, then match feet and candidate meters. It explains splitting shadda, converting pronounced tanwin into a static nun, restoring spoken unwritten long vowels, dropping hamzat al-wasl in connected speech, solar-lam assimilation, and removing unpronounced spelling letters. A pronoun ha is lengthened only if pronounced that way. It describes lengthening the moving final rhyme letter into a matching long vowel.
 
-Agent implications: preserve the original spelling, display assumed vocalization separately, then show **الكتابة العروضية → الرموز → التفعيلات**. Explain symbols before using them: the source uses `/` for a moving letter and `0` for a static letter; the skill uses `1` and `0` respectively. Do not silently mix character and syllable notation. Start/connected-speech rules differ. Do not automatically lengthen every pronoun ha or mechanically freeze every final vowel: identify the intended reading and rhyme ending first. Unknown vocalization should yield alternatives or a narrowly targeted question, not an invented confident result.
+Agent implications: preserve the original spelling, display assumed vocalization separately, then show **الكتابة العروضية → الرموز → التفعيلات**. Explain symbols before using them: the source marks moving and static letters one by one; since 2026-10-18 the skill converts these to the ب − syllable notation shared with arabic-prosody. Do not silently mix character and syllable notation. Start/connected-speech rules differ. Do not automatically lengthen every pronoun ha or mechanically freeze every final vowel: identify the intended reading and rhyme ending first. Unknown vocalization should yield alternatives or a narrowly targeted question, not an invented confident result.
 
 ## 2. Legal variations depend on meter and position
 
@@ -32,12 +32,12 @@ Verified public-domain teaching example, supplied without a named poet in the ا
 
 > هَزَجْنَا فِي أَغَانِيكُمْ ** وَشَاقَتْنَا مَعَانِيكُمْ
 
-| Part | Pronounced grouping | Letters | Feet |
+| Part | Pronounced grouping | Syllables | Feet |
 | --- | --- | --- | --- |
-| الصدر | هَزَجْنَا فِي / أَغَانِيكُمْ | `1101010 | 1101010` | مفاعيلن مفاعيلن |
-| العجز | وَشَاقَتْنَا / مَعَانِيكُمْ | `1101010 | 1101010` | مفاعيلن مفاعيلن |
+| الصدر | هَزَجْنَا فِي ⁞ أَغَانِيكُمْ | ب − − − ⁞ ب − − − | مفاعيلن مفاعيلن |
+| العجز | وَشَاقَتْنَا ⁞ مَعَانِيكُمْ | ب − − − ⁞ ب − − − | مفاعيلن مفاعيلن |
 
-Result: الهزج, two feet per hemistich. Here `1` marks a moving letter, `0` a static letter, and ` | ` separates feet; read the symbol string from left to right.
+Result: الهزج, two feet per hemistich. Here ب marks a short syllable, − a long one, and ⁞ separates feet.
 
 Additional verified example: Al Jazeera Learning, [قفا نبك](https://learning.aljazeera.net/en/languageofmedia/%D9%82%D9%81%D8%A7-%D9%86%D8%A8%D9%83), has a full worked الطويل scansion. Both halves and the third-foot فعولُ in the عجز match the skill's transcription. The pronounced ending حَوْمَلِي has لام as روي and terminal ياء as وصل.
 

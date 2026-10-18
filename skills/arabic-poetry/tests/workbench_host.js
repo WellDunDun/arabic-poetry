@@ -25,6 +25,7 @@ function harness(claude) {
 (async () => {
   const h = harness(), host = await h.connect();
   assert.equal(host.db, null);
+  assert.equal(host.sample.requiresUserHandoff, true);
   assert.equal((await host.sample.limits()).tools, false);
   const pending = host.sample.json('شكّل سلام، وأجب بكائن JSON');
   const dialog = h.nodes[0];

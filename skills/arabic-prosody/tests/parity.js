@@ -44,3 +44,24 @@ if (process.argv[2]) {
   const result = A.analyze(lines);
   console.log('poem', result.mode, result.mode === 'free' ? result.free[0].family.meter : result.cands[0].form.key);
 }
+
+// a run-on verse (مدوّر): «قَلْبٍ» is shared by the two halves
+{
+  const t = 'وَمَشَيْتُ فِي دَرْبِ الْحَيَاةِ وَحِيدَ قَلْبٍ * لَا يَرَى إِلَّا الْكِتَابَ الْأَخْضَرَا';
+  const r = A.verifyLine(t, 'kamil', 'classical', false);
+  if (!r.ok || !r.tadwir) { console.log('FAIL tadwir', r.ok, r.tadwir); process.exitCode = 1; } else console.log('tadwir kamil', r.tadwir);
+}
+
+// a line whose last foot is complete must not be run on into the next line just to carry a fault
+{
+  const ls = ['وَمَشَيْتُ طَوِيلًا فِي اللَّيْلِ', 'فَصَحَائِفُهُ صَارَتْ بَالِيَهْ', 'وَكُلُّ حُرُوفِهِ تَبْكِي ذَاهِبَةْ', 'وَخُطُوطُ يَدَيْهِ مُبَعْثَرَةْ'];
+  const a = A.analyze(ls, { mode: 'free', meter: 'mutadarak' }), l2 = a.free[0].lines[1].feet, last = l2[l2.length - 1];
+  if (last.crosses || last.errors) { console.log('FAIL run-on: line 2 ends', last.name, last.got, last.crosses); process.exitCode = 1; } else console.log('run-on kept only where sound');
+}
+
+// قطع همزة الوصل is a licence: taken only when it saves the meter, and reported as such
+{
+  const r = A.verifyLine('نَجْمٌ اخْتَفَى فِي السَّحَرْ', 'mutadarak', 'free');
+  const r2 = A.verifyLine('نَجْمُ اخْتَفَى فِي السَّحَرْ', 'mutadarak', 'free');
+  if (!r.ok || r2.ok) { console.log('FAIL qat\' al-wasl', r.ok, r2.ok); process.exitCode = 1; } else console.log('qat\' al-wasl as licence');
+}

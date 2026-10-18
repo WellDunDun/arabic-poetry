@@ -16,7 +16,7 @@ Keep research in `docs/research/`; distinguish source findings, proposed workflo
 
 Support classical and modern forms equally. Ground technical assertions in pronunciation, actual sound sequences, and appropriate Arabic sources. Preserve the user's meaning, dialect, authorship, and editing scope. Keep ambiguity and source limitations visible. Do not import an analyzer's marketing claims or faulty patterns as authority.
 
-The bundled checker verifies declared transcription arithmetic and exact foot coverage. It does not infer vocalization or certify meter legality, originality, or literary quality. Keep these limits explicit in documentation and outputs.
+The scanner compares supported vocalized readings with implemented metrical forms. Its spelling-based rhyme-repeat filter is an editing heuristic; neither a matching scan nor a repeated spelling certifies full metrical legality, a semantic rhyme fault, originality or literary quality. Keep these limits explicit in documentation and outputs.
 
 Update `.claude-plugin/plugin.json` and README.md when changing the served layout. The published installation slug is `WellDunDun/arabic-poetry`.
 
@@ -26,7 +26,6 @@ Run from the repository root:
 
 ```sh
 skills-ref validate skills/arabic-poetry
-PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s skills/arabic-poetry/scripts -p 'test_*.py'
 python3 -m json.tool .claude-plugin/plugin.json >/dev/null
 skills-ref validate skills/arabic-prosody
 PYTHONDONTWRITEBYTECODE=1 python3 skills/arabic-prosody/tests/run_gold.py

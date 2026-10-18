@@ -17,7 +17,7 @@ Support classical and modern Arabic poetry equally. Judge each poem by its inten
 - Infer routine choices. If an unspecified form would substantially change the result, ask one focused question; otherwise choose a suitable form and state the assumption briefly. Never require a beginner to name a بحر before helping.
 - Keep dialectal poetry in its dialect. For نبطي، زجل، شعر شعبي, establish pronunciation and the relevant tradition before applying a meter label. Do not silently convert it to الفصحى.
 
-Read [craft and revision](references/CRAFT.md) for composition or editing, [close reading](references/READING.md) for explanation or literary critique, [prosody](references/PROSODY.md) for metrical or rhyme claims, and [worked examples](references/EXAMPLES.md) when teaching or checking the output shape. Read [optional tools](references/TOOLS.md) for analyzer audits or the local arithmetic checker. [Sources](references/SOURCES.md) and [similar skills](references/SIMILAR_SKILLS.md) explain the evidence and its limits.
+Read [craft and revision](references/CRAFT.md) for composition or editing, [close reading](references/READING.md) for explanation or literary critique, [prosody](references/PROSODY.md) for metrical or rhyme claims, and [worked examples](references/EXAMPLES.md) when teaching or checking the output shape. For counting, use the companion [arabic-prosody](../arabic-prosody/SKILL.md) scanner when it is installed. [Sources](references/SOURCES.md) and [similar skills](references/SIMILAR_SKILLS.md) explain the evidence and its limits.
 
 ## Explain and read closely
 
@@ -54,17 +54,19 @@ Return the revised passage and a few actionable notes. Preserve the user's autho
 
 1. Preserve the exact wording and line breaks. Separate the supplied text, an inferred vocalization, and any proposed correction.
 2. Establish pronunciation, then write the relevant passage in الكتابة العروضية. Record meaningful alternatives for unvocalized words and for الوصل والوقف.
-3. Show the sound sequence, foot boundaries, and actual تفعيلات. Ensure foot segments cover every sound exactly once and that binary patterns agree with the transcription; use the optional checker for detailed scans. Account for each claimed زحاف or علة by its position and permitted use in that meter.
+3. Show the sound sequence, foot boundaries, and actual تفعيلات. Ensure foot segments cover every sound exactly once and that the syllable pattern agrees with the transcription; run the arabic-prosody scanner (`scan.py analyze`) for detailed scans when it is available. Account for each claimed زحاف or علة by its position and permitted use in that meter.
 4. Compare the entire supplied passage with candidate meters. Locate a mismatch in the actual pronounced span before proposing a repair. A recognizable phrase or memorized attribution is not a substitute for scanning this wording; a first or nearest tool match does not establish uniqueness.
 5. For a بيت, examine both hemistichs. For تفعيلة, examine the rhythmic sequence across line breaks where appropriate. A short fragment may fit several meters or establish a rhythm without establishing the whole form.
 6. Analyze الروي and the pronounced rhyme ending separately. Do not label the final printed letter as الروي automatically.
 7. State what the evidence supports: clear fit, plausible candidates with the distinguishing reading, or insufficient evidence. If no fit is established, show the mismatch; do not conclude that the text is قصيدة نثر solely from a failed scan.
 
-For a concise answer, give the likely form and meter, one compact scan, and any pronunciation assumption. For a full analysis, use columns for النص، القراءة، الكتابة العروضية، التفعيلات، الملاحظة. Explain symbols before using them.
+For a concise answer, give the likely form and meter, one compact scan, and any pronunciation assumption. For a full analysis, use columns for النص، الكتابة العروضية، التقطيع، الملاحظة.
+
+Use the notation shared with arabic-prosody and its Diwan workbench: **ب** short syllable (متحرك), **−** long (متحرك فساكن), **=** overlong (only in pause at a line end); feet separated by **⁞**, each foot named over or beside its pattern (فعولن ب − −); a broken foot marked ✗; lines numbered with Arabic digits (١، ٢). Name a زحاف by its foot form (فعولُ، فعِلن، مستعلن). Explain the symbols once before using them, and keep to this notation rather than letter-by-letter moving/still strings.
 
 ## Evidence and final check
 
 - Verify unfamiliar meter variants, rhyme rules, and dialectal conventions against an appropriate reference. Use the linked sources when accessible; name unavailable evidence and keep the claim provisional. Do not invent a citation, poetic necessity, or license to excuse a mismatch.
-- Treat analyzer output as a candidate. Preserve the original and tool-normalized reading, record the tool/version when used, and inspect its transformations, input coverage, and variant rules. A local checker passes arithmetic only, not pronunciation or meter legality.
+- Treat scanner output as alignment evidence, not a verdict. Check its assumed pronunciation (shown as «قراءات مفترضة») and the licensed forms it accepted; zero errors does not prove the intended reading. Third-party analyzers, when used, need the same audit: record the tool, its normalized input, and what it changed.
 - Quote existing poems accurately and verify attribution when requested. Do not present generated lines as a historical poet's words. If provenance is uncertain, say so.
 - Review adherence to the request, technical validity where applicable, language/meaning, and literary effect separately. Confirm form, dialect, length, editing scope, and preserved voice. Evidence for meter does not prove artistry, originality, or historical attribution; do not promise a "perfect" poem.

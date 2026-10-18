@@ -58,6 +58,21 @@
       `<w:tblGrid>${COLS.map(w => `<w:gridCol w:w="${w}"/>`).join('')}</w:tblGrid>${rows}</w:tbl>`;
   }
 
+  // a verse as ONE plain paragraph: «TAB صدر TAB عجز», no table, so it copies as plain text (halves split by tabs).
+  // Two right-aligned tab stops (counted from the right margin in a RTL paragraph) anchor the right edge of each
+  // half: the صدر at the right edge of a block centred on the page, the عجز just past the middle of that block.
+  // The block is sized to the poem's longest half, so short-metre poems are not stretched across the page.
+  const TEXT_W = 9638, GAP = 720;
+  const halfWidth = (t, size) => stripAll(t).replace(/\s+/g, ' ').length * 125 * (size / 28);
+  function verseParas(verses, font, size) {
+    const col = Math.min(Math.round((TEXT_W - GAP) / 2), Math.max(1800, ...verses.flatMap(([a, b]) => [halfWidth(a, size), halfWidth(b || '', size)])));
+    const right = Math.max(0, Math.round((TEXT_W - 2 * col - GAP) / 2)), s1 = Math.max(10, right), s2 = right + col + GAP;
+    const tab = '<w:r><w:tab/></w:r>';
+    return verses.map(([a, b]) => `<w:p><w:pPr><w:keepLines/><w:tabs><w:tab w:val="right" w:pos="${s1}"/><w:tab w:val="right" w:pos="${s2}"/></w:tabs>` +
+      `<w:bidi/><w:spacing w:before="0" w:after="140" w:line="360" w:lineRule="auto"/></w:pPr>` +
+      tab + run(a, { font, size }) + (b ? tab + run(b, { font, size }) : '') + '</w:p>').join('');
+  }
+
   /** one row of foot cells (name over pattern), right to left; halves separated by a narrow ⁞ cell */
   function feetGrid(halves, font) {
     const cells = [];
@@ -88,11 +103,13 @@
       first = false;
     }
     for (const p of model.poems) {
+      // every poem opens on a new page (the first one too, when a title page precedes it)
       body.push(para(run(p.title || '', { font, size: 44, bold: true }), { pageBreak: !first, keepNext: true, after: 80 }));
       first = false;
       if (p.meter && model.meterUnderTitle !== false) body.push(para(run(p.meter, { font, size: 24, color: '777777' }), { keepNext: true, after: 360 }));
-      if (p.kind === 'verses') body.push(verseTable(p.verses.map(([a, b]) => [level(a, tk), level(b || '', tk)]), font, model.verseSize || 32));
-      else for (const l of p.lines) body.push(para(run(level(l, tk), { font, size: model.verseSize || 32 }), { jc: 'right', after: 80 }));
+      if (p.kind === 'verses') body.push((model.verseLayout === 'table' ? verseTable : verseParas)(p.verses.map(([a, b]) => [level(a, tk), level(b || '', tk)]), font, model.verseSize || 28));
+      // تفعيلة (and single-hemistich forms): one column, each line centred on the page
+      else for (const l of p.lines) body.push(para(run(level(l, tk), { font, size: model.verseSize || 32 }), { jc: 'center', after: 80 }));
     }
     if (model.appendix) {
       body.push(para(run('ملحق: البحور والتقطيع', { font, size: 44, bold: true }), { pageBreak: true, after: 120 }));
@@ -161,6 +178,14 @@
     }
     const c = a.cands[0];
     out.meter = `${info(c.form.meter)} — ${c.form.name}`;
+    if (c.form.single) {          // مشطور / منهوك: one hemistich per line, so one column like تفعيلة
+      a.scans.forEach((s, i) => {
+        let r = c.perLine[i] ? (c.perLine[i][1] || c.perLine[i][2]) : null; if (!r) r = A.rescan(s.text, c.form);
+        out.scansion.push({ n: i + 1, text: s.text, feet: r ? feetStr(r.ajuz.feet) : '—', broken: !r || r.ajuz.errors > 0,
+          halves: r ? [r.ajuz.feet.map(f => ({ name: f.name, syl: A.syll(f.got), bad: f.errors > 0 }))] : [] });
+      });
+      return out;
+    }
     out.kind = 'verses';
     if (a.layout === 'pairs') {
       for (let i = 0; i < lines.length; i += 2) out.verses.push([lines[i], lines[i + 1] || '']);

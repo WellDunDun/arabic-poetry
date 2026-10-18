@@ -19,8 +19,9 @@ Prosody counts what is **pronounced**, not what is written.
 - **إشباع ميم الجمع** optionally: «لَهُمْ» or «لَهُمُو».
 
 ## Moving vs still
-- حرف عليه حركة أو تنوين (أوله) = متحرك `/`.
-- حرف ساكن، حرف مد (ا، و بعد ضم، ي بعد كسر)، نون التنوين، أول المشدد = ساكن `0`.
+- حرف عليه حركة أو تنوين (أوله) = متحرك.
+- حرف ساكن، حرف مد (ا، و بعد ضم، ي بعد كسر)، نون التنوين، أول المشدد = ساكن.
+- A متحرك followed by a ساكن is a long syllable −; a متحرك followed by another متحرك is a short syllable ب; a long vowel or متحرك followed by two ساكن (only in pause) is overlong =.
 - The last letter of every hemistich is counted ساكن (sukun or the ishba' letter).
 - Two sakins never meet inside a line; if they seem to, re-check the reading (wasl, madd before sakin, etc.).
 
@@ -30,7 +31,7 @@ Prosody counts what is **pronounced**, not what is written.
 | قطع همزة الوصل للضرورة | adds a moving letter |
 | تسهيل/حذف الهمزة («شيءٍ» → «شيٍ» rare) | removes a letter |
 | صرف الممنوع من الصرف للضرورة | adds tanwin (نون ساكنة) |
-| إسكان المتحرك للضرورة | changes / to 0 |
+| إسكان المتحرك للضرورة | turns a moving letter still (ب ب → −) |
 | «أنا» بإثبات الألف أو حذفها لفظًا | 0 or nothing |
 | الإشباع / عدمه في هاء الضمير وميم الجمع | adds or removes a sakin |
 

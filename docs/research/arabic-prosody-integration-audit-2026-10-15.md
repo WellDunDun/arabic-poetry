@@ -29,7 +29,7 @@ Separate standards and behavior reviews inspected the Python scanner, browser en
 | Priority | Finding | Repair and evidence |
 | --- | --- | --- |
 | P1 | Enjambment could delete the pronounced nun of tanwin, falsely accepting `يَدٌ\nتَاهَتْ` as sound Kamil. | Preserve tanwin in both engines; test that this reading has errors in Kamil and remains sound under the supported Hazaj reading. |
-| P1 | Alif before a paused final consonant was deleted: `كِتَابْ` became `كتب`, changing the ending classification. | Preserve `كتاب` / `1100`; assert the مقصور ending in Python and JavaScript. |
+| P1 | Alif before a paused final consonant was deleted: `كِتَابْ` became `كتب`, changing the ending classification. | Preserve `كتاب` / ب = ; assert the مقصور ending in Python and JavaScript. |
 | P1 | Conditional تصريع endings were accepted without first-verse, matching-weight and rhyme context. | Add contextual paired-half scanning; reject inappropriate standalone and later-verse use. Include matching/mismatching and historical opening-verse regressions. |
 | P1 | Independently enumerated مديد endings admitted incompatible عروض/ضرب combinations. | Encode and enforce supported ending pairs in both engines and exported meter tables; add accepted and rejected pair regressions. |
 | P2 | Full البسيط accepted `فاعلن` endings outside the forms stated in the checked source. | Remove those two unsupported entries; test both halves and the browser verifier. |

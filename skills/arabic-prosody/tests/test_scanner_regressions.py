@@ -11,11 +11,15 @@ sys.path.insert(0, str(SKILL / 'scripts'))
 
 from arud import freeverse
 from arud.classical import scan_hemistich, scan_pair, scan_line, rank_poem, compatible_endings, same_rhyme
-from arud.lattice import build_hemistich, describe
+from arud.lattice import build_hemistich, describe, clean
 from arud.meters import FORMS_BY_KEY
 
 
 class ScannerRegressions(unittest.TestCase):
+    def test_supplied_final_ya_kasra_is_not_relocated(self):
+        self.assertEqual(clean('سعيِ'), 'سعيِ')
+        self.assertEqual(clean('فيِ'), 'فيِ')
+
     def test_tanwin_survives_enjambment(self):
         results, _ = freeverse.analyze(['يَدٌ', 'تَاهَتْ'], meter='kamil')
         self.assertGreater(results[0]['errors'], 0)
@@ -112,6 +116,7 @@ const slots = A.buildHemistich('كِتَابْ');
 const half = A.verifyLine('فَعُولُنْ فَعُولُنْ فَعُولُنْ كِتَابْ', 'mutaqarib', 'classical');
 console.log(JSON.stringify({errors: result.errors,
   letters: result.lines.flatMap(l => l.feet.map(f => f.letters)).join(''),
+  preservedKasra: A.clean('سعيِ'),
   pattern: slots.map(s => s.opts[0].bits).join(''),
   ending: half.parts[0].ending,
   tasri: A.verifyLine('فَعُولُنْ مَفَاعِيلُنْ فَعُولُنْ مَفَاعِيلُنْ * فَعُولُنْ مَفَاعِيلُنْ فَعُولُنْ مَفَاعِلُنْ', 'tawil', 'classical').ok,
@@ -124,6 +129,7 @@ console.log(JSON.stringify({errors: result.errors,
         run = subprocess.run(['node', '-e', script], cwd=SKILL, check=True,
                              text=True, capture_output=True)
         result = json.loads(run.stdout)
+        self.assertEqual(result['preservedKasra'], 'سعيِ')
         self.assertGreater(result['errors'], 0)
         self.assertIn('يدن', result['letters'])
         self.assertEqual(result['pattern'], '1100')

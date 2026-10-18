@@ -123,7 +123,7 @@
       label: injected.label || 'وكيل متصل',
       sample: injected.sample || chatExchange(),
       db: injected.db || null,
-      downloads: Object.prototype.hasOwnProperty.call(injected, 'downloads') ? injected.downloads : browserDownloads(),
+      downloads: 'downloads' in injected ? injected.downloads : browserDownloads(),
     };
     if (root.DiwanLocal) return { label: 'محادثتك عبر اتصال محلي', sample: localQueue(root.DiwanLocal),
       db: null, downloads: browserDownloads() };

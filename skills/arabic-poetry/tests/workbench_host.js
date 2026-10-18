@@ -73,5 +73,7 @@ function harness(claude) {
   assert.equal(injected.sample, services.sample);
   assert.equal(injected.db, null);
   assert.equal((await h.connect({ downloads: null })).downloads, null, 'an embedder can explicitly disable downloads');
+  const inherited = Object.create({ downloads: services.downloads });
+  assert.equal((await h.connect(inherited)).downloads, services.downloads, 'inherited adapter capabilities must be honored');
   console.log('PASS workbench host: portable exchange, invalid input, cancellation, native download, optional host adapters');
 })().catch(error => { console.error(error); process.exitCode = 1; });

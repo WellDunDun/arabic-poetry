@@ -28,7 +28,7 @@ Arabic poetry needs more than fluent phrasing or a guessed meter. This skill con
 
 ## Skill
 
-[arabic-poetry](skills/arabic-poetry/SKILL.md) supports composition, continuation, revision, close reading, and form, meter, and rhyme identification. It includes worked examples and an optional local checker for declared sound-pattern arithmetic. The checker does not establish pronunciation or metrical legality by itself.
+[arabic-poetry](skills/arabic-poetry/SKILL.md) supports composition, continuation, revision, close reading, and form, meter, and rhyme identification. It includes worked examples and relies on `arabic-prosody` for scansion, using the same ب − notation.
 
 [arabic-prosody](skills/arabic-prosody/SKILL.md) scans poems with a rule-based engine. It reads the text as it is pronounced, tries the plausible readings (sung or stopped endings, optional lengthenings), matches every half-verse against implemented forms of the 16 meters and their configured variations, and decides the meter across the whole poem. It reports broken feet in the classical ب − notation, checks the rhyme letter at the end of each verse, and checks the alignment of suggested repairs before showing them. Its ranking is heuristic, its rhyme audit is spelling-based, and a zero-error match still needs a plausible pronunciation and an independent rule check.
 

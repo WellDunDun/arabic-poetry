@@ -348,7 +348,7 @@ Lead with the answer, then the evidence, then the offers:
 
 1. **Verdict**: the meter (and form: تام، مجزوء، مخلّع...), confidence in plain
    words, and the decisive lines if there was a rival.
-2. **Line by line**: for each verse, its تقطيع (taf'ilat with /0 patterns).
+2. **Line by line**: for each verse, its تقطيع (taf'ilat with ب − patterns, feet separated by ⁞).
    For long poems show all sound verses compactly and spend the detail on
    problems.
 3. **Problems**: each broken foot in plain language — what the ear hears,

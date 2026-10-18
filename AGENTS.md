@@ -26,7 +26,6 @@ Run from the repository root:
 
 ```sh
 skills-ref validate skills/arabic-poetry
-PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s skills/arabic-poetry/scripts -p 'test_*.py'
 python3 -m json.tool .claude-plugin/plugin.json >/dev/null
 skills-ref validate skills/arabic-prosody
 PYTHONDONTWRITEBYTECODE=1 python3 skills/arabic-prosody/tests/run_gold.py

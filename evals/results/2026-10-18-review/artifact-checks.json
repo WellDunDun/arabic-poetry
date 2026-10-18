@@ -32,15 +32,15 @@
   {
     "condition": "combined",
     "case": "workbench-export",
-    "artifact": "/private/tmp/poetry-coderabbit-evals-20261018/outputs/combined-pr2/diwan.html",
+    "artifact": "/private/tmp/poetry-coderabbit-evals-20261018/outputs/combined-pr3/diwan.html",
     "check": "node --check on executable inline scripts",
-    "scripts": 4,
+    "scripts": 5,
     "status": "pass"
   },
   {
     "condition": "combined",
     "case": "workbench-export",
-    "artifact": "/private/tmp/poetry-coderabbit-evals-20261018/outputs/combined-pr2/masafa.docx",
+    "artifact": "/private/tmp/poetry-coderabbit-evals-20261018/outputs/combined-pr3/masafa.docx",
     "check": "DOCX ZIP, all XML, literal title and supplied poem",
     "status": "pass"
   }

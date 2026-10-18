@@ -488,7 +488,7 @@
       "criteria": [
         {
           "status": "pass",
-          "evidence": "combined.responses.json case classical-scan: Names الطويل, maps both complete halves to feet/syllables and explicitly segments the first as قِفَا نَبْ ⁞ كِ مِنْ ذِكْرَى ⁞ حَبِيبِنْ ⁞ وَمَنْزِلِي."
+          "evidence": "combined.responses.json case classical-scan: Names الطويل and maps each complete hemistich to four feet with short/long syllable patterns."
         },
         {
           "status": "pass",
@@ -509,7 +509,7 @@
       "criteria": [
         {
           "status": "pass",
-          "evidence": "combined.responses.json case provisional-reading: Conditionally proposes السريع with final pause, and says the short fragment cannot establish the whole poem meter."
+          "evidence": "combined.responses.json case provisional-reading: Calls الرجز a preliminary possibility and explicitly says the supplied fragment does not fully match under its assumed reading."
         },
         {
           "status": "pass",
@@ -517,7 +517,7 @@
         },
         {
           "status": "pass",
-          "evidence": "combined.responses.json case provisional-reading: Gives مستفعلن ⁞ مستفعلن ⁞ فاعلانْ briefly and discloses that the connected final vowel did not fully match; no confirmation turn is required."
+          "evidence": "combined.responses.json case provisional-reading: Explains that the opening fits two مستفعلن but the ending fails to fully match, so it withholds a definite meter instead of requiring confirmation."
         }
       ],
       "status": "pass"
@@ -530,7 +530,7 @@
         },
         {
           "status": "pass",
-          "evidence": "combined.responses.json case review-only: Presents a vocalized reading for the requested review without reversing negation or silently changing a word; it does not claim the proposal was confirmed."
+          "evidence": "combined.responses.json case review-only: Explicitly marks the linking kasra in أبعِ and masculine address as proposed choices, and waits for the requested review."
         },
         {
           "status": "pass",
@@ -581,19 +581,19 @@
       "criteria": [
         {
           "status": "pass",
-          "evidence": "combined.responses.json case workbench-export: Links actual local Word, editor HTML, collection JSON and TXT files; states no browser opening occurred and distinguishes files from browser-local storage."
+          "evidence": "combined.responses.json case workbench-export: Lists local DOCX, collection JSON, TXT and an unchanged shipped editor copy; explicitly says the editor was not opened and the JSON poem was not loaded into editor storage."
         },
         {
           "status": "pass",
-          "evidence": "combined.responses.json case workbench-export: Explicitly says these local files do not guarantee appearance in another chat; no successful host, sampling, download API or shared-store claim is made."
+          "evidence": "combined.responses.json case workbench-export: Says there is no shared database or automatic appearance in another chat, and does not claim unavailable host APIs worked."
         },
         {
           "status": "pass",
-          "evidence": "combined.responses.json case workbench-export: Created masafa.docx and a Diwan HTML copy seeded with the poem. Actual export and ZIP/XML/title/text verification receipts support the files; the initial footer-string assertion failed and the corrected preparation is retained."
+          "evidence": "combined.responses.json case workbench-export: Copied usable diwan.html and exported masafa.docx, with actual ZIP/XML/title/text verification. The poem is in separate JSON/TXT, not claimed as an editor-storage write; failed literal credit checks and their corrected markup-aware check remain in the receipts."
         },
         {
           "status": "pass",
-          "evidence": "combined.responses.json case workbench-export: States resources still depend on the internet and Word layout was not visually reviewed; does not claim PDF, full-offline operation or live host integration."
+          "evidence": "combined.responses.json case workbench-export: Makes no PDF, fully offline, visual-layout or working-host claim; reports local artifact creation only."
         }
       ],
       "status": "pass"

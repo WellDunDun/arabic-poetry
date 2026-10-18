@@ -41,14 +41,14 @@
     },
     "combined": {
       "record": "combined.responses.json",
-      "record_sha256": "4a7808a07613bf665a515bd375f1931f3df85a31def9534683874fee0ab736ad",
+      "record_sha256": "47f24cdcb2564cb5741385ec760cdeaa6a47b79a6f9b748b58be68eff84bbb69",
       "package_manifest": "combined.package-hashes.json",
-      "package_manifest_sha256": "383660a3c451db092b6bd91152c603207a1f2125e24ca2b19dbf4352485a4fdc",
-      "source": "2049f56a5b2e99f8523be71826657e9b6010af4d",
+      "package_manifest_sha256": "0bab1cf66f21b2979920359ed2288a20b052ecfea9697e1dd202aeda3c9c1722",
+      "source": "a7f418e53ea6a77fea76c4fa2a2ee0f33b2ff4b9",
       "notes": "Fresh independent follow-up after integrated scanner guidance fix; exact current package verified. See combined.execution-notes.json."
     }
   },
-  "artifacts_sha256": "d723a751af8e9a6446046bbff1c7b2ca5111d52cc719d3cdf26b14b5f91f3946",
+  "artifacts_sha256": "e1d14ce169fb522dca15cf9e6f9ab59978e28001eb07635b3cd7a43edbe8304a",
   "supersedes_for_current_package": "New combined trial on the single changed PROSODY.md instruction file. Previous raw records and frozen corpus remain intact.",
   "previous_trial": "2026-10-18"
 }

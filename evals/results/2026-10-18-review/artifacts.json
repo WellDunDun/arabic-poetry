@@ -644,55 +644,55 @@
   "combined": [
     {
       "case_id": "classical-scan",
-      "path": "/private/tmp/poetry-coderabbit-evals-20261018/outputs/combined-pr2/classical.txt",
+      "path": "/private/tmp/poetry-coderabbit-evals-20261018/outputs/combined-pr3/classical-scan.txt",
       "sha256": "b71faf2a8500375d35eed2e223f0cc005c732f3b11add0c21b589732764bf249",
       "bytes": 175
     },
     {
       "case_id": "provisional-reading",
-      "path": "/private/tmp/poetry-coderabbit-evals-20261018/outputs/combined-pr2/provisional.txt",
+      "path": "/private/tmp/poetry-coderabbit-evals-20261018/outputs/combined-pr3/provisional-reading.txt",
       "sha256": "814207277b20643893f67fa4aaa0221ef3764248fc5f603964923c3339851269",
       "bytes": 80
     },
     {
       "case_id": "bounded-repair",
-      "path": "/private/tmp/poetry-coderabbit-evals-20261018/outputs/combined-pr2/repair-before.txt",
+      "path": "/private/tmp/poetry-coderabbit-evals-20261018/outputs/combined-pr3/bounded-repair-before.txt",
       "sha256": "5ad4d8b835d7b0356f47e5cc34aca1939800af12d29eb7244498f3c7c8c38e74",
       "bytes": 77
     },
     {
       "case_id": "bounded-repair",
-      "path": "/private/tmp/poetry-coderabbit-evals-20261018/outputs/combined-pr2/repair-after.txt",
+      "path": "/private/tmp/poetry-coderabbit-evals-20261018/outputs/combined-pr3/bounded-repair-after.txt",
       "sha256": "6b74fa3d50af0f080dce2b100399a3c515a38894e4d3302fb37dd37db873c323",
       "bytes": 64
     },
     {
       "case_id": "tafila-boundary",
-      "path": "/private/tmp/poetry-coderabbit-evals-20261018/outputs/combined-pr2/tafila.txt",
+      "path": "/private/tmp/poetry-coderabbit-evals-20261018/outputs/combined-pr3/tafila-boundary.txt",
       "sha256": "cc5d06caf9935b9a59d62a4915473c3b066634cd496d91f3012d0cb7df4806ce",
       "bytes": 24
     },
     {
       "case_id": "workbench-export",
-      "path": "/private/tmp/poetry-coderabbit-evals-20261018/outputs/combined-pr2/poems.json",
-      "sha256": "e3e154c2fe200d2059ab3fff10734d230fe45ee81a94c872f0e3b8623827ea72",
-      "bytes": 256
+      "path": "/private/tmp/poetry-coderabbit-evals-20261018/outputs/combined-pr3/diwan.html",
+      "sha256": "bcbb8aa95775da904db1d41e0a24bcaead960bd8159478f869f9e6c9875e9e8d",
+      "bytes": 245857
     },
     {
       "case_id": "workbench-export",
-      "path": "/private/tmp/poetry-coderabbit-evals-20261018/outputs/combined-pr2/diwan.html",
-      "sha256": "ff9cee9df675034cb3aab514438f341fd02df3ca949d534c05fb3342a7300a41",
-      "bytes": 236291
+      "path": "/private/tmp/poetry-coderabbit-evals-20261018/outputs/combined-pr3/poems.json",
+      "sha256": "f610786d47b2f1977e0da70a85eeb1d1e375e865e606ac48b1f58f67fd61f4a6",
+      "bytes": 153
     },
     {
       "case_id": "workbench-export",
-      "path": "/private/tmp/poetry-coderabbit-evals-20261018/outputs/combined-pr2/masafa.docx",
-      "sha256": "2f2f9568b61968e89049f726fdb2aacdcb1fa8a561720dfffaa1b44902204fe2",
+      "path": "/private/tmp/poetry-coderabbit-evals-20261018/outputs/combined-pr3/masafa.docx",
+      "sha256": "f301c37f00b8d5a470141500bcd71181d79fdf74221ae7d21a4dc9f5733eef49",
       "bytes": 2425
     },
     {
       "case_id": "workbench-export",
-      "path": "/private/tmp/poetry-coderabbit-evals-20261018/outputs/combined-pr2/masafa.txt",
+      "path": "/private/tmp/poetry-coderabbit-evals-20261018/outputs/combined-pr3/masafa.txt",
       "sha256": "ce91c6a21af52ff75975acada23a805025f4ecf17846911e91163a5de87f817f",
       "bytes": 76
     }

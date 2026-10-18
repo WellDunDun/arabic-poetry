@@ -1,71 +1,42 @@
 {
   "condition": "combined",
-  "suite_id": "poetry-consolidation-v1",
-  "model": "Inherited parent Codex model; no model override. Exact serving model identifier is not exposed to this subagent.",
-  "runtime_receipts": [
-    {
-      "command": [
-        "python3",
-        "--version"
-      ],
-      "exit_code": 0,
-      "stdout": "Python 3.14.2\n",
-      "stderr": ""
-    },
-    {
-      "command": [
-        "node",
-        "--version"
-      ],
-      "exit_code": 0,
-      "stdout": "v25.8.1\n",
-      "stderr": ""
-    }
-  ],
-  "execution_mode": "Single shared-context batch: eight exact requests in prompts.json order. No delegation or grading.",
-  "capabilities": {
-    "used": [
-      "local file reads and writes",
-      "Python standard library",
-      "Node local CLI exporter"
-    ],
-    "unavailable_or_not_used": [
-      "network",
-      "browser",
-      "external host APIs",
-      "installs",
-      "publishing",
-      "global font mutation",
-      "visual Word inspection",
-      "cross-chat storage"
-    ]
+  "model": "Inherited parent model; no override; precise backend model identifier unavailable to the worker",
+  "runtime": {
+    "python": "3.14.2 (main, Dec  5 2025, 16:49:16) [Clang 17.0.0 (clang-1700.4.4.1)]",
+    "platform": "macOS-26.6-arm64-arm-64bit-Mach-O",
+    "node": "v25.8.1"
   },
-  "context_caveats": [
-    "Only assigned skill package and prompts.json were read as task source context; outputs were read back for continuation and verification.",
-    "Skill entrypoint and relevant references were loaded together before case execution; all eight prompts share this context.",
-    "No rubric, other conditions, other results, repository, research, review findings or expected answers were read.",
-    "No memory lookup was performed because this is an explicitly isolated frozen-suite trial."
+  "context": "Single shared-context batch of eight requests in suite order; same assigned read-only package",
+  "capabilities": [
+    "local files",
+    "Python standard library",
+    "Node.js"
   ],
-  "capture_caveats": [
-    "Per-case command receipts contain actual subprocess argv, exit code, stdout and stderr. File preparation and response authoring are saved as local scripts; setup/reference reads are visible in tool transcript, not repeated as case scanner receipts.",
-    "A mismatch verdict uses exit code 0 in this scanner; the stdout receipt records the failed metrical fit.",
-    "No browser opening or visual Word review is claimed. Structural XML/ZIP verification does not establish rendered document appearance.",
-    "The exported HTML was prepared with an embedded fallback collection; no browser localStorage or host database was written.",
-    "Scanner output is inspected as heuristic evidence rather than an accuracy guarantee.",
-    "The first local editor preparation failed on an overly literal footer assertion because the shipped footer contains inline HTML markup. The assertion was corrected to match that existing markup, preparation reran successfully, and both actual receipts are retained. The shipped footer itself was preserved."
+  "caveats": [
+    "No network, browser, external host APIs, installs, publishing or global-font changes used.",
+    "No browser opening, visual Word review or cross-chat storage can be claimed.",
+    "Only assigned skill package and prompts.json were read as task source material.",
+    "Receipts contain actual subprocess invocations and outputs; no grading was performed."
   ],
-  "artifacts_dir": "/private/tmp/poetry-coderabbit-evals-20261018/outputs/combined-pr2",
-  "source_reads": [
-    "SKILL.md",
-    "references/CRAFT.md",
-    "references/READING.md",
-    "references/PROSODY.md",
-    "references/SCANNER.md",
-    "references/DIWAN.md",
-    "references/meters.md (targeted excerpts)",
-    "references/free-verse.md",
-    "scripts/export_book.py",
-    "scripts/export_book.js",
-    "assets/workbench/diwan.html (targeted storage/footer inspection, then full local copy)"
-  ]
+  "capture": {
+    "method": "Per-case subprocess.run argv, returncode, stdout and stderr serialized immediately to responses.json; content-only cases have empty command lists. File writes for inputs, responses and trial harness use Python directly.",
+    "read_sources": [
+      "assigned SKILL.md",
+      "assigned references/CRAFT.md",
+      "assigned references/READING.md",
+      "assigned references/PROSODY.md",
+      "assigned references/SCANNER.md",
+      "assigned references/DIWAN.md",
+      "assigned references/fixing.md",
+      "assigned references/free-verse.md",
+      "assigned references/qafiya.md",
+      "assigned scripts/export_book.py",
+      "prompts.json"
+    ],
+    "review_limits": [
+      "The literal footer search printed False; an HTML-decoded substring assertion then failed (exit 1). Inspection found nested span markup and an ampersand entity. The copy was verified byte-identical, and a final markup-stripped/entity-decoded credit-and-date assertion passed. All receipts are retained.",
+      "No external or visual acceptance is established by DOCX XML checks.",
+      "Python calls inherited PYTHONDONTWRITEBYTECODE=1; no bytecode writes to read-only package requested."
+    ]
+  }
 }

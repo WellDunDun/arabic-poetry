@@ -1,6 +1,6 @@
 # CodeRabbit follow-up trial
 
-The updated combined package is `2049f56a5b2e99f8523be71826657e9b6010af4d` (combined-pr2). Only `skills/arabic-poetry/references/PROSODY.md` differs from the previous evaluated package: it identifies the integrated scanner rather than a separately installed companion. A new independent worker completed all eight unchanged frozen requests on these exact bytes. Requests, criteria and baseline Git pins are unchanged.
+The updated combined package is `a7f418e53ea6a77fea76c4fa2a2ee0f33b2ff4b9` (combined-pr3). Only `skills/arabic-poetry/references/PROSODY.md` differs from the previous evaluated package: it identifies the integrated scanner rather than a separately installed companion. A new independent worker completed all eight unchanged frozen requests on these exact bytes. Requests, criteria and baseline Git pins are unchanged.
 
 | Condition | Cases meeting all frozen criteria | Execution |
 | --- | --- | --- |

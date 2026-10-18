@@ -1,6 +1,6 @@
 # Prosody and rhyme
 
-Use this page to judge metrical and rhyme claims while composing, revising or explaining. The detailed rules live in the companion skill [arabic-prosody](../SKILL.md): pronunciation in [arudi-writing](arudi-writing.md), meters and forms in [meters](meters.md), variations in [zihafat](zihafat.md), rhyme in [qafiya](qafiya.md), free verse in [free-verse](free-verse.md), and the source behind each rule in [sources](SCANNER-SOURCES.md). When that skill is installed, let its scanner do the counting and use this page for the judgement around it.
+Use this page to judge metrical and rhyme claims while composing, revising or explaining. The integrated [arabic-poetry skill](../SKILL.md) includes the scanner. Consult [arudi-writing](arudi-writing.md), [meters](meters.md), [zihafat](zihafat.md), [qafiya](qafiya.md), [free-verse](free-verse.md), and [scanner sources](SCANNER-SOURCES.md) for detailed rules. When execution is available, use the bundled scanner for counting and this page to judge its results.
 
 ## Keep four layers separate
 

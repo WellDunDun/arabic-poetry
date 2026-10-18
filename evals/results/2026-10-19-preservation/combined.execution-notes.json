@@ -1,0 +1,48 @@
+{
+  "condition": "combined",
+  "package": "/private/tmp/poetry-preservation-evals-final-20261019/packages/combined-pr2/skills/arabic-poetry",
+  "model": "Inherited parent model with no override. The exact provider model or build identifier is not exposed by the local tool surface.",
+  "context_caveat": "This is a new execution against the final frozen package, but the same child context contains the earlier batch and its responses. No earlier output files were read and no deliberate consultation or copying of earlier responses was performed. This is not a clean context-independent replicate; prior-context carry-over cannot be excluded.",
+  "request_order": "All eight exact requests were processed in the prompts.json order as one shared-context batch. No grading or delegation was performed.",
+  "source_scope": "Only the assigned final combined-pr2 package and final prompts.json were consulted as source material. No rubric, review findings, original snapshots, other-condition outputs, repository or research was read.",
+  "capabilities": "Local filesystem, shell text inspection, Python standard library, Node and assigned bundled scripts. No browser, network, host APIs, package installation, publishing, PDF conversion or global font changes.",
+  "environment": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "TMPDIR": "/private/tmp/poetry-preservation-evals-final-20261019/outputs/combined-pr2/tmp",
+    "temp_directory": "Precreated before export; exporter temporary writes remain under the assigned output directory."
+  },
+  "runtime_receipts": [
+    {
+      "command": [
+        "python3",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": "Python 3.14.2\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": "v25.8.1\n",
+      "stderr": ""
+    }
+  ],
+  "capture": "responses.json contains exact subprocess argv, exit_code, stdout and stderr for scanner checks, preparation, export and structural validation. Source reads and response-file assembly commands remain in the task transcript. No subprocess execution failures occurred in this run; negative metrical checks are retained in their stdout.",
+  "delivery_caveats": [
+    "HTML was prepared but not opened. Its seed targets localStorage only when a browser opens it; no completed browser save is claimed.",
+    "DOCX ZIP/XML and exact title/text presence were checked, without visual rendering.",
+    "No shared storage, synchronization or future-chat availability is claimed.",
+    "The shipped credit footer is retained. No font binary was copied or font cache command invoked."
+  ],
+  "source_sha256": {
+    "SKILL.md": "468a8f25a62e009e9e4881f6b2f8c1aec1c049e32d5a2c316c26b976973cf5c4",
+    "references/SCANNER.md": "e5f74dbd9317445c12b106f01babd6da4ef34887287ca37cfe12e11dab29574f",
+    "references/DIWAN.md": "32c015a2521c3e8d278350424f149171115858abc22b3a1cba49be1a7af3f6cd",
+    "scripts/scan.py": "3f6a1fbc2d850ac6b99baca5a1aba19527d05df4d6d02607e23ddd882106ae47",
+    "scripts/export_book.py": "7589468c07563550c9cf2756196996f60a7bb91212c5dda1a854895b8e3248bf"
+  }
+}

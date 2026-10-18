@@ -152,7 +152,7 @@ def check(root, results):
 def main():
     """Run saved evidence validation without regenerating or regrading responses."""
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--results', type=Path, default=Path(__file__).parent / 'results/2026-10-18-review')
+    parser.add_argument('--results', type=Path, default=Path(__file__).parent / 'results/2026-10-19-preservation')
     args = parser.parse_args()
     try:
         check(Path(__file__).parent, args.results)

@@ -51,7 +51,7 @@ def scan_restricted(text, form, group, cap=4.0):
 
 
 def to_marks(bits):
-    """Classical syllable notation, read right to left: ب short (/), − long (/0), = overlong (/00)."""
+    """Classical syllable notation, read right to left: ب short (moving letter alone), − long (moving + still), = overlong (moving + two still)."""
     t = []
     i = 0
     while i < len(bits):
@@ -63,13 +63,9 @@ def to_marks(bits):
             if t and t[-1] == '−':
                 t[-1] = '='
             else:
-                t.append('٠')
+                t.append('◌ْ')  # a stray still letter (only in broken feet)
         i += 1
     return ' '.join(t)
-
-
-def to_slashes(bits):
-    return ''.join('/' if b == '1' else '0' for b in bits)
 
 
 @dataclass

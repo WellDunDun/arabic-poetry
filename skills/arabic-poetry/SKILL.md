@@ -12,7 +12,7 @@ Support classical and modern Arabic poetry equally. Judge each poem by its inten
 - For composition, continuation, revision or critique, read [craft and revision](references/CRAFT.md). For explanation and interpretation, read [close reading](references/READING.md).
 - For meter or rhyme claims, read [prosody](references/PROSODY.md) and the [scanner workflow](references/SCANNER.md). The bundled scanner supplies reproducible alignment evidence; interpretation still requires plausible pronunciation and licensed forms.
 - For a requested editor, a collection or export, read [Diwan](references/DIWAN.md). Keep ordinary writing, critique and quick analysis in chat unless an editor helps the requested work. Diwan is optional; unavailable host capabilities must not block chat or local-file work.
-- Use [worked examples](references/EXAMPLES.md) when teaching or checking a detailed scan. [Tools](references/TOOLS.md) distinguishes the scanner, arithmetic checker and external analyzers. [Sources](references/SOURCES.md), [scanner coverage](references/SCANNER-SOURCES.md) and [similar skills](references/SIMILAR_SKILLS.md) explain evidence and limits. Load only relevant resources.
+- Use [worked examples](references/EXAMPLES.md) when teaching or checking a detailed scan. [Tools](references/TOOLS.md) covers the scanner and external analyzers. [Sources](references/SOURCES.md), [scanner coverage](references/SCANNER-SOURCES.md) and [similar skills](references/SIMILAR_SKILLS.md) explain evidence and limits. Load only relevant resources.
 
 ## Establish intent and preserve the text
 
@@ -50,17 +50,17 @@ Support classical and modern Arabic poetry equally. Judge each poem by its inten
 ## Identify, scan and explain
 
 1. Establish pronunciation before metrical classification. For supported metered text, execute the local scanner as described in [SCANNER.md](references/SCANNER.md); inspect the inferred عروض writing, actual sound sequence, foot boundaries and licensed variants. Never invent a tool run.
-2. Keep notation explicit and cover all sounds exactly once. The optional arithmetic checker checks a declared transcription and coverage; it does not identify meter or license a variant.
+2. Cover all sounds exactly once. Write scans in ب short, − long, = overlong (pause only), with feet separated by ⁞, a broken foot marked ✗ and lines numbered with Arabic digits; name a زحاف by its foot form (فعولُ، فعِلن). Do not switch to letter-by-letter moving/still strings.
 3. Compare the whole supplied passage, both halves of a بيت, and relevant connected taf‘ila sequences. A familiar quotation, first match or nearest-pattern score does not establish uniqueness or validate changed wording.
 4. Analyze الروي and the pronounced rhyme ending separately. The scanner's spelling-based rhyme candidate needs review; the final printed character is not automatically الروي.
 5. Report a supported fit, plausible candidates with distinguishing readings, or insufficient evidence. Locate mismatches before proposing repair. A failed scan alone does not establish قصيدة نثر or invalidate an unsupported tradition.
-6. For a concise request, give the likely form/meter, compact evidence and consequential assumptions. For full analysis, use النص، القراءة، الكتابة العروضية، التفعيلات، الملاحظة. Explain symbols and keep technical detail proportional.
+6. For a concise request, give the likely form/meter, compact evidence and consequential assumptions. For full analysis, use النص، الكتابة العروضية، التقطيع، الملاحظة. Explain the symbols once and keep technical detail proportional.
 7. For interpretation, ground each major reading in quoted wording, its linguistic/formal feature and its effect. Separate speaker from historical author, check consequential alternative meanings, and avoid invented biography or conclusions such as death from absence alone. Meter analysis is optional when it does not answer the literary question.
 
 ## Evidence, tools and delivery
 
 - Verify unfamiliar variants, rhyme rules, dialectal conventions and historical attribution against appropriate sources. Name unavailable evidence and keep claims provisional; do not invent a poetic license or citation.
 - Treat scanner ranking and confidence as heuristic, not accuracy probabilities. Its implemented pronunciation alternatives and metrical forms are incomplete. Inspect normalized readings; two runtimes agreeing does not establish linguistic correctness.
-- If execution is unavailable, explain that limit, give checkable manual analysis where justified, and keep unresolved claims provisional. Never present an unrun scanner or arithmetic check as completed evidence.
+- If execution is unavailable, explain that limit, give checkable manual analysis where justified, and keep unresolved claims provisional. Never present an unrun scan as completed evidence.
 - Use the editor and exporter only through capabilities actually available. Local files/browser storage do not imply host synchronization or future-chat access. Preserve Firas F. Khabour's scanner/Diwan credit and the Amiri font license when copying or rebuilding assets.
 - Review request adherence, technical validity, language/meaning and literary effect separately. Do not promise a perfect poem, originality, attribution or comprehensive accuracy on the basis of a scan.

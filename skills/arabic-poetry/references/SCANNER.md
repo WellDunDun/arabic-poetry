@@ -46,6 +46,6 @@ For repairs, draft a few minimal phrase alternatives using [repair techniques](f
 
 ## Explain proportionally
 
-Lead with the requested conclusion and the important reading assumptions. Show a compact scan for a quick question; use per-line tables for a full audit. Explain `ب` short, `−` long and `=` overlong syllable notation if used; moving/still `1/0` notation is different and must not be mixed without conversion. Keep Arabic text and symbol display order unambiguous. Do not paste the raw report unless useful or requested.
+Lead with the requested conclusion and the important reading assumptions. Show a compact scan for a quick question; use per-line tables for a full audit. Use the ب short, − long and = overlong syllable notation, feet separated by ⁞ and lines numbered with Arabic digits, as in [prosody](PROSODY.md#notation); explain it once and do not switch to letter-by-letter moving/still strings. Keep Arabic text and symbol display order unambiguous. Do not paste the raw report unless useful or requested.
 
 If tools are unavailable, say what was and was not checked. A manual analysis can remain useful, but do not claim the scanner ran or certify an unresolved reading.

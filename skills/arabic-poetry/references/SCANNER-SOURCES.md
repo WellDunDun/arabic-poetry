@@ -4,7 +4,7 @@ Use pronunciation and the intended poetic convention to judge a scan. The implem
 
 ## Primary references
 
-- Ahmad al-Hashimi, [ميزان الذهب: مقدمات علم العروض](https://www.safahat.org/books/50259706/1.1/), sections on feet, cause/peg structure, and الزحاف والعلل. Check arithmetic and structural variants rather than importing changes solely from matching binary strings.
+- Ahmad al-Hashimi, [ميزان الذهب: مقدمات علم العروض](https://www.safahat.org/books/50259706/1.1/), sections on feet, cause/peg structure, and الزحاف والعلل. Check arithmetic and structural variants rather than importing changes solely from matching syllable patterns.
 - Al-Hashimi, [دروس علم العروض البحور](https://www.safahat.org/books/50259706/1.2/), the relevant meter's chapter. The الطويل summary conditions تصريع on a first verse with matching ending weight and rhyme; المديد has paired عروض/ضرب forms. The full البسيط summary gives فعِلن for عروض outside تصريع and فعِلن/فعْلن for ضرب. Generic independent ending lists are insufficient for those cases. Further pair and position coverage remains limited to what the implementation actually encodes.
 - Al-Hashimi, [حروف القافية](https://www.safahat.org/books/50259706/2.1/). Read the pronounced ending before deciding الروي، الوصل، الردف، التأسيس and named defects. The spelling-based audit remains provisional.
 - Imam University, [مقدمة في العروض](https://units.imamu.edu.sa/deanships/admission/activities/Pages/news10.aspx), الكتابة العروضية and تقطيع الشعر. Preserve pronounced long vowels and tanwin. A foot continuing across a visual break does not authorize deleting a pronounced tanwin nun.

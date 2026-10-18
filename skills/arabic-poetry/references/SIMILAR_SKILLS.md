@@ -14,9 +14,9 @@ The Hurmoz design also appears in [Mkhlab's Hermes copy](https://github.com/Mosh
 
 ## Technical material checked rather than inherited
 
-In arud-skill's [variation reference](https://github.com/cnemri/arud-skill/blob/ed0fbe77429a60729aeb2595178a78d001feb4ba/references/zihafs_ilal_reference.md), deleting the second still position from `10110` gives `1110`, and from `1011010` gives `111010`. The inspected الخبن examples instead print `11010` and `1101010`. These are internally inconsistent transformations; they are not runtime findings about every output of PyArud. Its [meter reference](https://github.com/cnemri/arud-skill/blob/ed0fbe77429a60729aeb2595178a78d001feb4ba/references/buhur_reference.md) claims guaranteed meter separation through costs without an independently verified benchmark here.
+In arud-skill's [variation reference](https://github.com/cnemri/arud-skill/blob/ed0fbe77429a60729aeb2595178a78d001feb4ba/references/zihafs_ilal_reference.md), الخبن deletes the second still letter, so فاعلن − ب − becomes فعِلن ب ب − and فاعلاتن − ب − − becomes فعِلاتن ب ب − −. The inspected الخبن examples instead give the patterns of فعولن ب − − and مفاعيلن ب − − −. These are internally inconsistent transformations; they are not runtime findings about every output of PyArud. Its [meter reference](https://github.com/cnemri/arud-skill/blob/ed0fbe77429a60729aeb2595178a78d001feb4ba/references/buhur_reference.md) claims guaranteed meter separation through costs without an independently verified benchmark here.
 
-Our response is to preserve the sound-to-pattern evidence, check exact coverage, and validate the interpretation against Arabic prosody sources. The [optional tools](TOOLS.md) guide explains the deliberately limited arithmetic helper.
+Our response is to preserve the sound-to-pattern evidence, check exact coverage, and validate the interpretation against Arabic prosody sources. In this skill the bundled [scanner](SCANNER.md) does the counting in ب − notation.
 
 ## How these comparisons changed this skill
 

@@ -1,6 +1,6 @@
 # Worked examples
 
-These examples illustrate evidence and editing scope. They are not fixed templates for every creative response. In all symbol strings below, `1` means متحرك and `0` means ساكن, read from left to right. Vertical bars divide feet.
+These examples illustrate evidence and editing scope. They are not fixed templates for every creative response. Scans use the shared notation: ب short syllable, − long, = overlong in pause, ⁞ between feet, ✗ for a broken foot. The patterns match the output of the bundled scanner for the same vocalized text.
 
 ## Identify a complete classical بيت
 
@@ -11,10 +11,10 @@ Use the public-domain line by امرئ القيس, with the reading and full sca
 > قِفَا نَبْكِ مِنْ ذِكْرَى حَبِيبٍ وَمَنْزِلِ
 > بِسِقْطِ اللِّوَى بَيْنَ الدَّخُولِ فَحَوْمَلِ
 
-| Part | عروض writing divided by feet | Symbols | Actual feet |
+| # | الشطر | الكتابة العروضية | التقطيع |
 | --- | --- | --- | --- |
-| الصدر | قِفَا نَبْ / كِ مِنْ ذِكْرَى / حَبِيبِنْ / وَمَنْزِلِي | `11010 | 1101010 | 11010 | 110110` | فعولن / مفاعيلن / فعولن / مفاعلن |
-| العجز | بِسِقْطِلْ / لِوَى بَيْنَدْ / دَخُولِ / فَحَوْمَلِي | `11010 | 1101010 | 1101 | 110110` | فعولن / مفاعيلن / فعولُ / مفاعلن |
+| ١ | الصدر | قِفَا نَبْ ⁞ كِ مِنْ ذِكْرَى ⁞ حَبِيبِنْ ⁞ وَمَنْزِلِي | فعولن ب − − ⁞ مفاعيلن ب − − − ⁞ فعولن ب − − ⁞ مفاعلن ب − ب − |
+| ١ | العجز | بِسِقْطِلْ ⁞ لِوَى بَيْنَدْ ⁞ دَخُولِ ⁞ فَحَوْمَلِي | فعولن ب − − ⁞ مفاعيلن ب − − − ⁞ فعولُ ب − ب ⁞ مفاعلن ب − ب − |
 
 Conclusion: **البحر الطويل**. The last foot in each half is مفاعلن, and the third foot of the عجز is فعولُ with القبض. These documented forms are not metrical errors. The transcription includes pronounced tanwin, solar assimilation, and terminal إشباع of the kasra to ياء. The ending's **روي is لام**, while the resulting ياء is وصل, not the rhyme's anchor.
 
@@ -26,11 +26,11 @@ Request: "هذا تمرين على الهزج، أصلح الوزن بأقل ت�
 
 The unmodified teaching بيت appears in [al-Hashimi's الهزج chapter](https://www.safahat.org/books/50259706/1.2/). The added كُلُّ is a deliberately constructed fault, not a quoted source variant.
 
-| Passage | Pronounced grouping | Symbols |
-| --- | --- | --- |
-| Original صدر | هَزَجْنَا فِي / أَغَانِيكُمْ | `1101010 | 1101010` |
-| Supplied عجز | وَشَاقَتْنَا / كُلْلُ / مَعَانِيكُمْ | `1101010 | 101 | 1101010` |
-| Proposed عجز | وَشَاقَتْنَا / مَعَانِيكُمْ | `1101010 | 1101010` |
+| الموضع | الكتابة العروضية | التقطيع | الحالة |
+| --- | --- | --- | --- |
+| الصدر | هَزَجْنَا فِي ⁞ أَغَانِيكُمْ | مفاعيلن ب − − − ⁞ مفاعيلن ب − − − | سليم |
+| العجز كما ورد | وَشَاقَتْنَا كُلْلُ ⁞ مَعَانِيكُمْ | ب − − − − ب ✗ ⁞ مفاعيلن ب − − − | زيادة «كُلُّ»: − ب |
+| العجز المقترح | وَشَاقَتْنَا ⁞ مَعَانِيكُمْ | مفاعيلن ب − − − ⁞ مفاعيلن ب − − − | سليم |
 
 Proposal: **وَشَاقَتْنَا مَعَانِيكُمْ**. It restores مفاعيلن مفاعيلن in the stated exercise. Removing كُلُّ preserves the central meaning but drops the explicit emphasis on "all"; disclose that change. Do not offer a memorized base pattern as proof that the faulty wording already fits.
 
@@ -44,13 +44,13 @@ This is an original teaching example, not a quotation or a claim of literary exc
 > بِلَادِي وَأَمْشِي
 > وَحِيدًا
 
-| Line | عروض writing | Symbols | Feet |
+| # | السطر | الكتابة العروضية | التقطيع |
 | --- | --- | --- | --- |
-| أُنَادِي | أُنَادِي | `11010` | فعولن |
-| بِلَادِي وَأَمْشِي | بِلَادِي / وَأَمْشِي | `11010 | 11010` | فعولن فعولن |
-| وَحِيدًا | وَحِيدَا, with final وقف | `11010` | فعولن |
+| ١ | أُنَادِي | أُنَادِي | فعولن ب − − |
+| ٢ | بِلَادِي وَأَمْشِي | بِلَادِي ⁞ وَأَمْشِي | فعولن ب − − ⁞ فعولن ب − − |
+| ٣ | وَحِيدًا | وَحِيدَا، بالوقف | فعولن ب − − |
 
-The requested taf‘ila exercise uses the rhythmic basis of المتقارب with one, two, and one feet. The final accusative tanwin is read with وقف as a long alif. With connected تنوين pronunciation, وَحِيدَنْ also gives `11010`. Explain the local reading rather than mixing the two transcriptions.
+The requested taf‘ila exercise uses the rhythmic basis of المتقارب with one, two, and one feet. The final accusative tanwin is read with وقف as a long alif. With connected تنوين pronunciation, وَحِيدَنْ also gives ب − −. Explain the local reading rather than mixing the two transcriptions.
 
 If these same words are supplied for identification without a form contract, report the recurring فعولن basis and the limits of a short sample. Typography by itself does not establish the form of a whole poem.
 
@@ -70,7 +70,7 @@ Explain that the revision replaces repeated declarations of sadness with an acti
 
 Request: "ما بحر: يا ليل؟".
 
-Under وقف, يَا لَيْلْ produces `10100`. This tiny fragment cannot establish a unique meter or an entire poem's form. State the reading and ask for the surrounding line if a meter identification is needed. Do not assign الليل to a genre or meter by association.
+Under وقف, يَا لَيْلْ produces − =, an overlong syllable that belongs only at a line end. This tiny fragment cannot establish a unique meter or an entire poem's form. State the reading and ask for the surrounding line if a meter identification is needed. Do not assign الليل to a genre or meter by association.
 
 For "ما نوع الشعر الحر؟", explain that usage varies: the user may mean metered تفعيلة or nonmetrical writing. Name the intended operational form instead of treating the phrase as a unique meter.
 
@@ -84,11 +84,11 @@ If revising, changing the first clause to "غادرني صوتك" reverses its p
 
 ## Check an asserted foot transformation
 
-The [al-Hashimi introduction](https://www.safahat.org/books/50259706/1.1/) defines الخبن as deleting the second ساكن and illustrates فاعلن becoming فَعِلُنْ. The sound patterns independently confirm this:
+The [al-Hashimi introduction](https://www.safahat.org/books/50259706/1.1/) defines الخبن as deleting the second ساكن and illustrates فاعلن becoming فعِلن. In syllables, the first long syllable splits into two short ones:
 
 | Before | Operation | After |
 | --- | --- | --- |
-| فَاعِلُنْ, `10110` | Remove the second position, `0` | فَعِلُنْ, `1110` |
-| فَاعِلَاتُنْ, `1011010` | Remove the second position, `0` | فَعِلَاتُنْ, `111010` |
+| فاعلن − ب − | Delete the ساكن of the first سبب | فعِلن ب ب − |
+| فاعلاتن − ب − − | Delete the ساكن of the first سبب | فعِلاتن ب ب − − |
 
-The [local checker](TOOLS.md) can reject an asserted `11010` pattern for فَعِلُنْ. Correct arithmetic still does not authorize الخبن in every foot of every meter; consult the candidate meter and position separately.
+A pattern such as ب − − claimed for فعِلن is therefore wrong. Correct arithmetic still does not authorize الخبن in every foot of every meter; consult the candidate meter and position separately.

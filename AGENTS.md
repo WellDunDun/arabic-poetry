@@ -8,7 +8,7 @@ This is a collaborative Arabic poetry Agent Skill. Keep README.md user-facing: p
 
 Keep the served skill at `skills/arabic-poetry/`, with `SKILL.md`, one-level `references/`, and deterministic helpers in `scripts/`. Its frontmatter name must match its directory. Keep the entrypoint under 100 lines when practical. Use relative reference links and do not require maintainer research notes to install the skill.
 
-There is one served skill. Its `scripts/` include the scanner (`scan.py`, pure Python) and the separate transcription arithmetic checker. `assets/workbench/` holds the Diwan page sources (`page.html`, `engine.js`, `export.js`, `host.js`, `meters.json`) and built `diwan.html`; `assets/fonts/` holds Amiri and its license. `scripts/arud/meters.py` is the meter-table source: after changing tables or browser code, run `python3 skills/arabic-poetry/scripts/build_workbench.py` and keep parity passing. Put scanner and workbench procedures in their references rather than expanding the shared entrypoint.
+There is one served skill. Its `scripts/` include the scanner (`scan.py`, pure Python). `assets/workbench/` holds the Diwan page sources (`page.html`, `engine.js`, `export.js`, `host.js`, `meters.json`) and built `diwan.html`; `assets/fonts/` holds Amiri and its license. `scripts/arud/meters.py` is the meter-table source: after changing tables or browser code, run `python3 skills/arabic-poetry/scripts/build_workbench.py` and keep parity passing. Put scanner and workbench procedures in their references rather than expanding the shared entrypoint.
 
 Keep research in `docs/research/`; distinguish source findings, proposed workflow, and validation evidence. Do not add unrelated artifacts, screenshots, or app prototypes to the root. Preserve unrelated changes.
 
@@ -16,7 +16,7 @@ Keep research in `docs/research/`; distinguish source findings, proposed workflo
 
 Support classical and modern forms equally. Ground technical assertions in pronunciation, actual sound sequences, and appropriate Arabic sources. Preserve the user's meaning, dialect, authorship, and editing scope. Keep ambiguity and source limitations visible. Do not import an analyzer's marketing claims or faulty patterns as authority.
 
-The arithmetic checker verifies a declared transcription and exact foot coverage. The scanner compares supported vocalized readings with implemented forms. Neither certifies intended pronunciation, complete meter legality, originality or literary quality. Preserve the distinction and the scanner/Diwan contributor credit.
+The scanner compares supported vocalized readings with implemented forms and displays them in ب − = notation. It does not certify intended pronunciation, complete meter legality, originality or literary quality. Preserve the distinction and the scanner/Diwan contributor credit.
 
 Update `.claude-plugin/plugin.json` and README.md when changing the served layout. The published installation slug is `WellDunDun/arabic-poetry`.
 

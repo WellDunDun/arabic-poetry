@@ -36,7 +36,7 @@ An independently prompted agent read the skill, produced actual Arabic responses
 | Request | Observed response and executed evidence | Limit |
 | --- | --- | --- |
 | Explain an empty chair facing a door; ask whether death follows | Linked wording to absence/expectation; declined to infer death or author biography. | Supported interpretation, not proof of intent. |
-| Identify «أنادي بلادي / وأمشي وحيدا» | Stated vocalization and وقف, scanned four فعولن, retained whole-form uncertainty. Checker exit `0`, sequence `11010110101101011010`. | Overlaps the worked exercise; limited generalization evidence. |
-| Repair «أُنَادِي بِلَادِي وَأَمْشِي هُنَا وَحِيدًا» to four unmodified فعولن | Deleted هنا, disclosed loss of location reference, rescanned the line. Original sequence `11010110101101011011010`, mismatch exit `1`; repaired sequence `11010110101101011010`, exit `0`. | One viable one-word repair, not exhaustive search or pronunciation proof. |
+| Identify «أنادي بلادي / وأمشي وحيدا» | Stated vocalization and وقف, scanned four فعولن, retained whole-form uncertainty. Checker exit `0`, sequence ب − − ⁞ ب − − ⁞ ب − − ⁞ ب − −. | Overlaps the worked exercise; limited generalization evidence. |
+| Repair «أُنَادِي بِلَادِي وَأَمْشِي هُنَا وَحِيدًا» to four unmodified فعولن | Deleted هنا, disclosed loss of location reference, rescanned the line. Original sequence ب − − ⁞ ب − − ⁞ ب − − ⁞ ب − ب − −, mismatch exit `1`; repaired sequence ب − − ⁞ ب − − ⁞ ب − − ⁞ ب − −, exit `0`. (The checker has since been removed in favour of the arabic-prosody scanner.) | One viable one-word repair, not exhaustive search or pronunciation proof. |
 
 No execution difficulty was reported. No external integration was tested. Broader unseen examples, representative poets, dialectal traditions, and human literary review remain outside this trial.

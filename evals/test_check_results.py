@@ -27,7 +27,7 @@ class EvidenceIntegrityTests(unittest.TestCase):
         shutil.copytree(source.parent / 'skills', self.repo / 'skills',
                         ignore=shutil.ignore_patterns('__pycache__', '*.pyc'))
         self.results = self.root / 'results'
-        shutil.copytree(source / 'results/2026-10-18', self.results)
+        shutil.copytree(source / 'results/2026-10-18-review', self.results)
 
     @staticmethod
     def sha(path):

@@ -1,0 +1,426 @@
+{
+  "condition": "prosody-only",
+  "cases": [
+    {
+      "id": "prose-compose",
+      "request": "اكتب قصيدة نثر من خمسة أسطر عن مفتاح بقي في جيب معطف بعد انتقال صاحبه إلى بيت جديد. بلغة يومية هادئة، ومن غير موعظة أو شرح بعد القصيدة.",
+      "response": "المفتاح ما زال في جيب المعطف.\nانتقلنا، ولم نحتج إليه في البيت الجديد.\nألمسه وأنا أبحث عن بعض الفكة.\nأخرجه قليلًا، ثم أعيده إلى الجيب.\nغدًا سأعلّق المعطف قرب الباب.",
+      "commands": [],
+      "artifacts": [
+        "/private/tmp/poetry-evals-20261018/outputs/prosody-only/prose-compose/commands.json",
+        "/private/tmp/poetry-evals-20261018/outputs/prosody-only/prose-compose/request.txt",
+        "/private/tmp/poetry-evals-20261018/outputs/prosody-only/prose-compose/response.txt"
+      ]
+    },
+    {
+      "id": "close-reading",
+      "request": "اشرح الصورة في هذا النص من غير إعادة كتابته: «كل مساء أترك الكرسي قبالة الباب، وأرفع عن المقعد غبار يوم آخر». هل يثبت النص أن الغائب مات؟",
+      "response": "وضع الكرسي قبالة الباب يجعل الانتظار عادةً تتكرر كل مساء، كأن للغائب مكانًا محفوظًا وطريقًا متوقعًا للعودة. وإزالة «غبار يوم آخر» تجمع بين فعل يومي صغير ومرور الوقت؛ فالغبار أثر بقاء المقعد بلا استعمال، ومسحه عناية بهذا المكان واستمرار في الانتظار.\n\nلا يثبت النص أن الغائب مات. قد يكون مسافرًا أو مفارقًا أو متعذر العودة، وقد تُقرأ الصورة بوصفها حدادًا، لكن الموت احتمال تأويلي يحتاج إلى قرينة أخرى، وليس خبرًا صريحًا في النص.",
+      "commands": [],
+      "artifacts": [
+        "/private/tmp/poetry-evals-20261018/outputs/prosody-only/close-reading/commands.json",
+        "/private/tmp/poetry-evals-20261018/outputs/prosody-only/close-reading/request.txt",
+        "/private/tmp/poetry-evals-20261018/outputs/prosody-only/close-reading/response.txt"
+      ]
+    },
+    {
+      "id": "classical-scan",
+      "request": "Explain in English which meter this verse fits, show one compact supporting scan, and distinguish its rhyme letter from its final pronounced sound. Keep this in chat; no editor. قِفَا نَبْكِ مِنْ ذِكْرَى حَبِيبٍ وَمَنْزِلِ * بِسِقْطِ اللِّوَى بَيْنَ الدَّخُولِ فَحَوْمَلِ",
+      "response": "This verse fits بحر الطويل (al-Ṭawīl), in its complete form. A compact scan of the first hemistich is:\n\nقِفَا نَبْ | كِ مِنْ ذِكْرَى | حَبِيبِنْ | وَمَنْزِلِي\n\nفعولن ⁞ مفاعيلن ⁞ فعولن ⁞ مفاعلن\nب − − ⁞ ب − − − ⁞ ب − − ⁞ ب − ب −\n\nHere ب is a short syllable and − a long one. The final مفاعلن is the contracted form (قبض) of مفاعيلن. The scanner also fits the second hemistich, with فعولُ in its third position, an allowed contraction. This supports the identification for the supplied verse, without establishing the consistency of a whole poem.\n\nThe rhyme letter (رويّ) is ل, with kasra. In the metrical recitation used here, the final kasra is lengthened: فَحَوْمَلِي ends in /iː/. That final yāʾ sound is the rhyme extension (وصل), not the رويّ itself. A recital that pauses differently would have a different final sound; the scan above uses the lengthened ending.",
+      "commands": [
+        {
+          "command": [
+            "python3",
+            "scripts/scan.py",
+            "coverage",
+            "/private/tmp/poetry-evals-20261018/outputs/prosody-only/classical-scan/poem.txt"
+          ],
+          "exit_code": 0,
+          "stdout": "tashkeel coverage: 95% (full)\nOK to scan directly (confirm only real ambiguities).\n",
+          "stderr": ""
+        },
+        {
+          "command": [
+            "python3",
+            "scripts/scan.py",
+            "analyze",
+            "/private/tmp/poetry-evals-20261018/outputs/prosody-only/classical-scan/poem.txt"
+          ],
+          "exit_code": 0,
+          "stdout": "## البحر: الطويل (al-Tawil) — تام\nالثقة: **عالية** — أبيات سليمة 1/1، الضرب الغالب: ضرب مقبوض\nمفتاح البحر: طويلٌ له دون البحور فضائلُ — فعولن مفاعيلن فعولن مفاعلُ\n\n### المرشّحون (الأقل تكلفة أرجح)\n| البحر/الصيغة | التكلفة | أبيات سليمة | أشطر سليمة |\n|---|---|---|---|\n| الطويل (al-Tawil) — تام | 0.10 | 1/1 | 2/2 |\n| الكامل (al-Kamil) — تام | 3.10 | 0/1 | 0/2 |\n| الرجز (al-Rajaz) — تام | 4.00 | 0/1 | 0/2 |\n| المنسرح (al-Munsarih) — تام | 5.80 | 0/1 | 0/2 |\n\nالأبيات التي تحسم لصالح الطويل على الكامل: 1\n\n### تقطيع الأبيات\n**1.** قِفَا نَبْكِ مِنْ ذِكْرَى حَبِيبٍ وَمَنْزِلِ * بِسِقْطِ اللِّوَى بَيْنَ الدَّخُولِ فَحَوْمَلِ\n  - **الصدر** [سليم]  الكتابة العروضية: `قفانب كمنذكرى حبيبن ومنزلي`\n    التفاعيل: فعولن ب − − | مفاعيلن ب − − − | فعولن ب − − | مفاعلن ب − ب −\n  - **العجز** [سليم]  الكتابة العروضية: `بسقطل لوىبيند دخول فحوملي`\n    التفاعيل: فعولن ب − − | مفاعيلن ب − − − | فعولُ ب − ب | مفاعلن ب − ب −\n\n### القافية\nالرويّ: **ل**، حركته (المجرى): كسرة — قافية مطلقة، نوعها: متدارك\nالمطلع مصرَّع.\nلا عيوب ظاهرة في القافية.\n",
+          "stderr": ""
+        }
+      ],
+      "artifacts": [
+        "/private/tmp/poetry-evals-20261018/outputs/prosody-only/classical-scan/commands.json",
+        "/private/tmp/poetry-evals-20261018/outputs/prosody-only/classical-scan/poem.txt",
+        "/private/tmp/poetry-evals-20261018/outputs/prosody-only/classical-scan/request.txt",
+        "/private/tmp/poetry-evals-20261018/outputs/prosody-only/classical-scan/response.txt"
+      ]
+    },
+    {
+      "id": "provisional-reading",
+      "request": "ما البحر المحتمل لعبارة «يا قلب لا تسأل عن الغائبين»؟ أريد جوابًا أوليًا مختصرًا. ليست عندي بقية القصيدة ولا تسجيل للإلقاء.",
+      "response": "مبدئيًا، السريع مرشّح إذا كانت قراءتك: «يَا قَلْبُ لَا تَسْأَلْ عَنِ الْغَائِبِينْ»، بالوقف على النون. أعطى الفاحص: مستفعلن ⁞ مستفعلن ⁞ فاعلانْ. أمّا مع إشباع فتحة النهاية فلم يستقم الفحص؛ لذا فهذا احتمال مرتبط بهذه القراءة، ولا يكفي وحده لتعيين بحر قصيدة كاملة.",
+      "commands": [
+        {
+          "command": [
+            "python3",
+            "scripts/scan.py",
+            "coverage",
+            "/private/tmp/poetry-evals-20261018/outputs/prosody-only/provisional-reading/raw.txt"
+          ],
+          "exit_code": 0,
+          "stdout": "tashkeel coverage: 0% (none)\n  line 1: 0%\nDiacritize the whole poem and ask the poet to confirm before scanning.\n",
+          "stderr": ""
+        },
+        {
+          "command": [
+            "python3",
+            "scripts/scan.py",
+            "analyze",
+            "/private/tmp/poetry-evals-20261018/outputs/prosody-only/provisional-reading/draft.txt"
+          ],
+          "exit_code": 0,
+          "stdout": "## البحر: الرجز (al-Rajaz) — مشطور\nالثقة: **منخفضة** — أبيات سليمة 0/1\nمفتاح البحر: في أبحر الأرجاز بحرٌ يسهلُ — مستفعلن مستفعلن مستفعلُ\n\n### المرشّحون (الأقل تكلفة أرجح)\n| البحر/الصيغة | التكلفة | أبيات سليمة | أشطر سليمة |\n|---|---|---|---|\n| الرجز (al-Rajaz) — مشطور | 1.00 | 0/1 | 0/1 |\n| السريع (al-Sari') — مشطور | 1.30 | 0/1 | 0/1 |\n| الهزج (al-Hazaj) — مجزوء وجوبًا | 3.20 | 0/1 | 0/2 |\n| الكامل (al-Kamil) — مجزوء | 3.70 | 0/1 | 1/2 |\n\n⚠ التباس بين الرجز والسريع: كل الأبيات تصلح للبحرين بالقراءة الحالية؛ أضف أبياتًا أو راجع التشكيل.\n\n### تقطيع الأبيات\n**1.** يَا قَلْبُ لَا تَسْأَلْ عَنِ الْغَائِبِينَ\n  - **الشطر** [مكسور (1 خطأ)]  الكتابة العروضية: `ياقلبلا تسألعنل غائبينا`\n    التفاعيل: مستفعلن − − ب − | مستفعلن − − ب − | ؟ − ب − − ✗ (المتوقع مستفعلْ)\n    ✗ التفعيلة 3 («غائبينا»): زيادة 1 حرف/حروف — وُجد − ب − − والمسموح هنا: مستفعلن − − ب −، متفعلن ب − ب −، مستعلن − ب ب −، متعلن ب ب ب −، مستفعلْ − − −، متفعلْ ب − −\n\n### القافية\nالرويّ: **ن**، حركته (المجرى): فتحة — قافية مطلقة، الردف: وي\nلا عيوب ظاهرة في القافية.\n",
+          "stderr": ""
+        },
+        {
+          "command": [
+            "python3",
+            "scripts/scan.py",
+            "analyze",
+            "/private/tmp/poetry-evals-20261018/outputs/prosody-only/provisional-reading/pause.txt",
+            "--meter",
+            "sari"
+          ],
+          "exit_code": 0,
+          "stdout": "## البحر: السريع (al-Sari') — مشطور\nالثقة: **عالية** — أبيات سليمة 1/1، الضرب الغالب: ضرب صحيح\nمفتاح البحر: بحرٌ سريعٌ ماله ساحلُ — مستفعلن مستفعلن فاعلُ\n\n### المرشّحون (الأقل تكلفة أرجح)\n| البحر/الصيغة | التكلفة | أبيات سليمة | أشطر سليمة |\n|---|---|---|---|\n| السريع (al-Sari') — مشطور | 0.30 | 1/1 | 1/1 |\n\n### تقطيع الأبيات\n**1.** يَا قَلْبُ لَا تَسْأَلْ عَنِ الْغَائِبِينْ\n  - **الشطر** [سليم]  الكتابة العروضية: `ياقلبلا تسألعنل غائبين`\n    التفاعيل: مستفعلن − − ب − | مستفعلن − − ب − | فاعلانْ − ب =\n\n### القافية\nالرويّ: **ن**، حركته (المجرى): سكون — قافية مقيّدة، الردف: وي، نوعها: مترادف (ساكنان متتاليان)\nلا عيوب ظاهرة في القافية.\n",
+          "stderr": ""
+        },
+        {
+          "command": [
+            "python3",
+            "scripts/scan.py",
+            "analyze",
+            "/private/tmp/poetry-evals-20261018/outputs/prosody-only/provisional-reading/pause.txt",
+            "--mode",
+            "free",
+            "--meter",
+            "rajaz"
+          ],
+          "exit_code": 0,
+          "stdout": "## شعر التفعيلة — التفعيلة: مستفعلن (من الرجز / al-Rajaz)\nالحكم: **موزون مع مواضع خلل** — أخطاء 1 في 20 حرفًا عروضيًّا\n\n| التفعيلة | التكلفة | الأخطاء |\n|---|---|---|\n| مستفعلن (الرجز) | 1.00 | 1 |\n\n### تقطيع الأسطر\n**1.** يَا قَلْبُ لَا تَسْأَلْ عَنِ الْغَائِبِينْ\n   مستفعلن − − ب − | مستفعلن − − ب − | متفعلانْ − ب = ✗   — عدد التفعيلات: 3\n   ✗ «غائبين» = − ب = لا يطابق صور مستفعلن المسموحة: مستفعلن − − ب −، متفعلن ب − ب −، مستعلن − ب ب −، متعلن ب ب ب −\n\n↵ = تفعيلة مدوَّرة تمتد إلى السطر التالي · ب مقطع قصير، − طويل، = زائد الطول\n",
+          "stderr": ""
+        }
+      ],
+      "artifacts": [
+        "/private/tmp/poetry-evals-20261018/outputs/prosody-only/provisional-reading/commands.json",
+        "/private/tmp/poetry-evals-20261018/outputs/prosody-only/provisional-reading/draft.txt",
+        "/private/tmp/poetry-evals-20261018/outputs/prosody-only/provisional-reading/pause.txt",
+        "/private/tmp/poetry-evals-20261018/outputs/prosody-only/provisional-reading/raw.txt",
+        "/private/tmp/poetry-evals-20261018/outputs/prosody-only/provisional-reading/request.txt",
+        "/private/tmp/poetry-evals-20261018/outputs/prosody-only/provisional-reading/response.txt"
+      ]
+    },
+    {
+      "id": "review-only",
+      "request": "شكّل هذا السطر فقط: «لَمْ أبع الوعد ولم أنسَ وجهك». لا تغيّر أي كلمة أو حركة كتبتها، ولا تقلب النفي إلى إثبات. اعرض قراءتك ثم توقف وانتظر موافقتي، ولا تحلل الوزن الآن.",
+      "response": "لَمْ أَبِعِ الْوَعْدَ وَلَمْ أَنْسَ وَجْهَكَ.\n\nكسرتُ عين «أَبِعِ» للتخلّص من التقاء الساكنين عند وصلها بـ«الْوَعْدَ»، وافترضتُ أن المخاطَب مذكّر. أبقيتُ كلماتك وحركاتك المكتوبة والنفي كما هي. هل توافق على هذه القراءة؟",
+      "commands": [
+        {
+          "command": [
+            "python3",
+            "scripts/scan.py",
+            "coverage",
+            "/private/tmp/poetry-evals-20261018/outputs/prosody-only/review-only/raw.txt"
+          ],
+          "exit_code": 0,
+          "stdout": "tashkeel coverage: 16% (none)\n  line 1: 16%\nDiacritize the whole poem and ask the poet to confirm before scanning.\n",
+          "stderr": ""
+        }
+      ],
+      "artifacts": [
+        "/private/tmp/poetry-evals-20261018/outputs/prosody-only/review-only/commands.json",
+        "/private/tmp/poetry-evals-20261018/outputs/prosody-only/review-only/draft.txt",
+        "/private/tmp/poetry-evals-20261018/outputs/prosody-only/review-only/raw.txt",
+        "/private/tmp/poetry-evals-20261018/outputs/prosody-only/review-only/request.txt",
+        "/private/tmp/poetry-evals-20261018/outputs/prosody-only/review-only/response.txt"
+      ]
+    },
+    {
+      "id": "bounded-repair",
+      "request": "هذا تمرين وزني: «قَرِيبٌ صَدِيقِي بَعِيدٌ جِدًّا مَكَانِي». أريد أربع تفعيلات فعولن بلا زحاف. أصلحه بأقل تغيير، واحتفظ بكلمات قريب وصديقي وبعيد ومكاني. بيّن أثر التغيير في المعنى وأرني دليل الوزن قبل التغيير وبعده. التشكيل المعطى هو قراءتي المقصودة.",
+      "response": "أقل تعديل هو حذف «جِدًّا» وحدها:\n\nقَرِيبٌ صَدِيقِي بَعِيدٌ مَكَانِي\n\nحُفظت الكلمات الأربع وتشكيلها. بقي قرب الصديق وبُعد المكان، وحُذف توكيد شدّة البُعد فقط.\n\n| القراءة | الدليل المقطعي | النتيجة |\n|---|---|---|\n| قبل الحذف | ب − − ⁞ ب − − ⁞ ب − − ⁞ − − ⁞ ب − − | «جِدًّا» = − −، زيادة بين أربع تفعيلات |\n| بعد الحذف | ب − − ⁞ ب − − ⁞ ب − − ⁞ ب − − | فعولن ⁞ فعولن ⁞ فعولن ⁞ فعولن |\n\nب مقطع قصير، و− مقطع طويل. والكتابة العروضية بعد الحذف: «قَرِيبُنْ صَدِيقِي بَعِيدُنْ مَكَانِي»؛ كل كلمة تساوي فعولن سالمة. فحصتُ الأصل، ثم تحققتُ من البديل وأعدتُ تحليله: أربع تفعيلات، وصفر أخطاء محاذاة. ويتفق ذلك مع العدّ الموضح؛ لا يحتاج الإصلاح إلى زحاف أو تغيير قراءة.",
+      "commands": [
+        {
+          "command": [
+            "python3",
+            "scripts/scan.py",
+            "coverage",
+            "/private/tmp/poetry-evals-20261018/outputs/prosody-only/bounded-repair/poem.txt"
+          ],
+          "exit_code": 0,
+          "stdout": "tashkeel coverage: 100% (full)\nOK to scan directly (confirm only real ambiguities).\n",
+          "stderr": ""
+        },
+        {
+          "command": [
+            "python3",
+            "scripts/scan.py",
+            "analyze",
+            "/private/tmp/poetry-evals-20261018/outputs/prosody-only/bounded-repair/poem.txt",
+            "--mode",
+            "free",
+            "--meter",
+            "mutaqarib"
+          ],
+          "exit_code": 0,
+          "stdout": "## شعر التفعيلة — التفعيلة: فعولن (من المتقارب / al-Mutaqarib)\nالحكم: **موزون مع مواضع خلل** — أخطاء 1 في 24 حرفًا عروضيًّا\n\n| التفعيلة | التكلفة | الأخطاء |\n|---|---|---|\n| فعولن (المتقارب) | 1.00 | 1 |\n\n### تقطيع الأسطر\n**1.** قَرِيبٌ صَدِيقِي بَعِيدٌ جِدًّا مَكَانِي\n   فعولن ب − − | فعولن ب − − | فعولن ب − − | فعولن − − ✗ | فعولن ب − −   — عدد التفعيلات: 5\n   ✗ «جددن» = − − لا يطابق صور فعولن المسموحة: فعولن ب − −، فعولُ ب − ب\n\n↵ = تفعيلة مدوَّرة تمتد إلى السطر التالي · ب مقطع قصير، − طويل، = زائد الطول\n",
+          "stderr": ""
+        },
+        {
+          "command": [
+            "python3",
+            "scripts/scan.py",
+            "weigh",
+            "قَرِيبٌ",
+            "صَدِيقِي",
+            "بَعِيدٌ",
+            "جِدًّا",
+            "مَكَانِي"
+          ],
+          "exit_code": 0,
+          "stdout": "النص: قَرِيبٌ صَدِيقِي بَعِيدٌ جِدًّا مَكَانِي\nالكتابة العروضية: قريبنصديقيبعيدنجددنمكاني\nالوزن: ب − − ب − − ب − − − − ب − −   (24 حرفًا عروضيًّا: 14 متحرك، 10 ساكن)\nالكلمات (قراءة افتراضية؛ آخر كلمة تُعامل كآخر شطر):\n  قَرِيبٌ: ب − −\n  صَدِيقِي: ب − −\n  بَعِيدٌ: ب − −\n  جِدًّا: − −\n  مَكَانِي: ب − −\n",
+          "stderr": ""
+        },
+        {
+          "command": [
+            "python3",
+            "scripts/scan.py",
+            "verify",
+            "--meter",
+            "mutaqarib",
+            "--free",
+            "قَرِيبٌ صَدِيقِي بَعِيدٌ مَكَانِي"
+          ],
+          "exit_code": 0,
+          "stdout": "— «قَرِيبٌ صَدِيقِي بَعِيدٌ مَكَانِي»\n  ✓ موزون على تفعيلة فعولن: فعولن ب − − | فعولن ب − − | فعولن ب − − | فعولن ب − −\n",
+          "stderr": ""
+        },
+        {
+          "command": [
+            "python3",
+            "scripts/scan.py",
+            "analyze",
+            "/private/tmp/poetry-evals-20261018/outputs/prosody-only/bounded-repair/repaired.txt",
+            "--mode",
+            "free",
+            "--meter",
+            "mutaqarib"
+          ],
+          "exit_code": 0,
+          "stdout": "## شعر التفعيلة — التفعيلة: فعولن (من المتقارب / al-Mutaqarib)\nالحكم: **موزون** — أخطاء 0 في 20 حرفًا عروضيًّا\n\n| التفعيلة | التكلفة | الأخطاء |\n|---|---|---|\n| فعولن (المتقارب) | 0.00 | 0 |\n\n### تقطيع الأسطر\n**1.** قَرِيبٌ صَدِيقِي بَعِيدٌ مَكَانِي\n   فعولن ب − − | فعولن ب − − | فعولن ب − − | فعولن ب − −   — عدد التفعيلات: 4\n\n↵ = تفعيلة مدوَّرة تمتد إلى السطر التالي · ب مقطع قصير، − طويل، = زائد الطول\n",
+          "stderr": ""
+        }
+      ],
+      "artifacts": [
+        "/private/tmp/poetry-evals-20261018/outputs/prosody-only/bounded-repair/commands.json",
+        "/private/tmp/poetry-evals-20261018/outputs/prosody-only/bounded-repair/poem.txt",
+        "/private/tmp/poetry-evals-20261018/outputs/prosody-only/bounded-repair/repaired.txt",
+        "/private/tmp/poetry-evals-20261018/outputs/prosody-only/bounded-repair/request.txt",
+        "/private/tmp/poetry-evals-20261018/outputs/prosody-only/bounded-repair/response.txt"
+      ]
+    },
+    {
+      "id": "tafila-boundary",
+      "request": "أقرأ هذا النص موصولًا مع نطق نون التنوين: «يَدٌ\nتَاهَتْ». هل يصح وصفه بأنه تفعيلة كامل سليمة؟ افحص هذه القراءة نفسها ولا تغيّر الألفاظ أو تسقط التنوين.",
+      "response": "لا، لا يصح وصف هذه القراءة نفسها بأنها تفعيلة كامل سليمة. مع وصل السطرين ونطق نون التنوين تكون الكتابة العروضية «يَدُنْ تَاهَتْ»، والتقطيع:\n\nيَ ⁞ دُنْ ⁞ تَا ⁞ هَتْ = ب − − −\n\nوهذا لا يساوي متفاعلن (ب ب − ب −)، ولا صورتها المضمرة متْفاعلن (− − ب −). فحصتُ النص بسطرين ثم موصولًا في سطر واحد، وأبقيتُ التنوين في الحالتين؛ أظهر الفاحص خللًا واحدًا، ولم يُصلح التدوير هذا الاختلاف. رفض هذا الوصف الوزني لا يكفي وحده لتصنيف النص قصيدة نثر.",
+      "commands": [
+        {
+          "command": [
+            "python3",
+            "scripts/scan.py",
+            "analyze",
+            "/private/tmp/poetry-evals-20261018/outputs/prosody-only/tafila-boundary/poem.txt",
+            "--mode",
+            "free",
+            "--meter",
+            "kamil"
+          ],
+          "exit_code": 0,
+          "stdout": "## شعر التفعيلة — التفعيلة: متفاعلن (من الكامل / al-Kamil)\nالحكم: **لا يتّسق على تفعيلة واحدة — ربما قصيدة نثر أو مزج تفاعيل** — أخطاء 1 في 7 حرفًا عروضيًّا\n⚠ **إعادة فحص:** الخلل في 1 من 2 أسطر. راجع التشكيل، وجرّب التفعيلات الأخرى (`--meter`) أو `--mode classical`.\n\n| التفعيلة | التكلفة | الأخطاء |\n|---|---|---|\n| متفاعلن (الكامل) | 1.15 | 1 |\n\n### تقطيع الأسطر\n**1.** يَدٌ\n   متفاعلْ ب − − − ✗ ↵   — عدد التفعيلات: 1\n   ✗ «يدنتاهت» = ب − − − لا يطابق صور متفاعلن المسموحة: متَفاعلن ب ب − ب −، متْفاعلن − − ب −، مفاعلن ب − ب −، متْفعلن − ب ب −\n**2.** تَاهَتْ\n   (تكملة تفعيلة من السطر السابق)   — عدد التفعيلات: 0\n\n↵ = تفعيلة مدوَّرة تمتد إلى السطر التالي · ب مقطع قصير، − طويل، = زائد الطول\n",
+          "stderr": ""
+        },
+        {
+          "command": [
+            "python3",
+            "scripts/scan.py",
+            "weigh",
+            "يَدٌ تَاهَتْ"
+          ],
+          "exit_code": 0,
+          "stdout": "النص: يَدٌ تَاهَتْ\nالكتابة العروضية: يدنتاهت\nالوزن: ب − − −   (7 حرفًا عروضيًّا: 4 متحرك، 3 ساكن)\nالكلمات (قراءة افتراضية؛ آخر كلمة تُعامل كآخر شطر):\n  يَدٌ: ب −\n  تَاهَتْ: − −\n",
+          "stderr": ""
+        },
+        {
+          "command": [
+            "python3",
+            "scripts/scan.py",
+            "analyze",
+            "/private/tmp/poetry-evals-20261018/outputs/prosody-only/tafila-boundary/connected.txt",
+            "--mode",
+            "free",
+            "--meter",
+            "kamil"
+          ],
+          "exit_code": 0,
+          "stdout": "## شعر التفعيلة — التفعيلة: متفاعلن (من الكامل / al-Kamil)\nالحكم: **لا يتّسق على تفعيلة واحدة — ربما قصيدة نثر أو مزج تفاعيل** — أخطاء 1 في 7 حرفًا عروضيًّا\n\n| التفعيلة | التكلفة | الأخطاء |\n|---|---|---|\n| متفاعلن (الكامل) | 1.00 | 1 |\n\n### تقطيع الأسطر\n**1.** يَدٌ تَاهَتْ\n   متفاعلْ ب − − − ✗   — عدد التفعيلات: 1\n   ✗ «يدنتاهت» = ب − − − لا يطابق صور متفاعلن المسموحة: متَفاعلن ب ب − ب −، متْفاعلن − − ب −، مفاعلن ب − ب −، متْفعلن − ب ب −\n\n↵ = تفعيلة مدوَّرة تمتد إلى السطر التالي · ب مقطع قصير، − طويل، = زائد الطول\n",
+          "stderr": ""
+        }
+      ],
+      "artifacts": [
+        "/private/tmp/poetry-evals-20261018/outputs/prosody-only/tafila-boundary/commands.json",
+        "/private/tmp/poetry-evals-20261018/outputs/prosody-only/tafila-boundary/connected.txt",
+        "/private/tmp/poetry-evals-20261018/outputs/prosody-only/tafila-boundary/poem.txt",
+        "/private/tmp/poetry-evals-20261018/outputs/prosody-only/tafila-boundary/request.txt",
+        "/private/tmp/poetry-evals-20261018/outputs/prosody-only/tafila-boundary/response.txt"
+      ]
+    },
+    {
+      "id": "workbench-export",
+      "request": "أريد فتح محرر الديوان وحفظ قصيدة بعنوان «مسافة» نصها «قَرِيبٌ صَدِيقِي بَعِيدٌ مَكَانِي»، ثم تصديرها Word. استخدم ما يتاح فعليًا هنا، ووضّح أين حُفظت وما إذا كانت ستظهر في محادثة أخرى.",
+      "response": "جهّزت نسخة محلية من محرّر الديوان، وفيها القصيدة بعنوان «مسافة» وبالنص نفسه، وصدّرتها فعليًا إلى Word:\n\n- [محرّر الديوان المحلي](/private/tmp/poetry-evals-20261018/outputs/prosody-only/workbench-export/diwan-masafa.html)\n- [ملف Word](/private/tmp/poetry-evals-20261018/outputs/prosody-only/workbench-export/masafa.docx)\n- [نسخة بيانات محفوظة](/private/tmp/poetry-evals-20261018/outputs/prosody-only/workbench-export/poems.json)\n\nلم أفتح نافذة متصفح أو أختبر التفاعل بصريًا هنا؛ المتاح في هذه الجولة إنشاء الملفات محليًا. تحققت من سلامة شيفرة الصفحة ومن وجود العنوان والنص في ملف Word. أزلت اعتماد النسخة المحلية على تحميل الخطوط وJSZip من الشبكة؛ التصدير المرفق أُنجز بأداة الحزمة المحلية، وأزرار الذكاء الاصطناعي والتنزيل داخل الصفحة تحتاج قدرات مضيف غير متاحة هنا.\n\nالقصيدة محفوظة في الملفات أعلاه ومضمّنة في صفحة المحرّر. عند فتحها وتعديلها، يحاول المحرّر حفظ التعديلات في التخزين المحلي للمتصفح؛ ذلك يتوقف على سماح المتصفح به لملف محلي. لن تظهر تلقائيًا في محادثة أخرى، ولا يوجد حفظ سحابي أو ربط بين المحادثات. يمكنك إرفاق نسخة البيانات أو النص هناك.",
+      "commands": [
+        {
+          "command": [
+            "python3",
+            "-c",
+            "from pathlib import Path; p=Path(\"assets/workbench/diwan.html\"); s=p.read_text(); print(\"bytes\",p.stat().st_size); print(\"\\n\".join(line for line in s.splitlines() if any(x in line for x in (\"localStorage\", \"getItem\", \"setItem\", \"cdn\", \"src=\", \"function\", \"capabilities\")))[:22000])"
+          ],
+          "exit_code": 0,
+          "stdout": "bytes 171509\n<script src=\"https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js\"></script>\n(function (root) {\n  function load(data) { M = data; TEMPL.clear(); }\n  function clean(text) {\n  function parseWord(word) {\n  function rewriteSpecial(units) {\n  function isArticle(units, k) {\n  function buildWordSlots(units, wi) {\n  function lastPronounced(slots) { for (let k = slots.length - 1; k >= 0; k--) if (slots[k].kind !== 'silent') return k; return null; }\n  function joinToWasl(slots) {\n  function applyEnd(slots) {\n  function constrain(slots) {\n  function words(text) { return clean(text).split(' ').filter(Boolean); }\n  function buildHemistich(text) {\n  function latticeGraph(slots) {\n  function templateGraph(positions) {\n  function align(L, T, cap = 4) {\n  function darbGroup(label) { if (!label || !label.startsWith('ضرب')) return 'ضرب صحيح'; return label.split(/\\s+/).slice(0, 2).join(' '); }\n  function template(form, part, group, endingPatterns = null, tasriPattern = null) {\n  function lattice(text) {\n  function summarize(L, T, cost, steps, form, part, ws) {\n  function scanHemistich(text, form, part, cap = 4, group = null, endingPatterns = null, tasriPattern = null) {\n  function sameRhyme(a, b) {\n  function compatibleEndings(ra, rb, form, first = false) {\n  function scanPair(a, b, form, first = false, cap = 4) {\n  function splitLine(line) { const p = line.trim().split(SEP).filter(x => x.trim()); return p.length === 2 ? p : null; }\n  function autoSplits(line) {\n  function scanLine(i, line, forms, cap = 4) {\n  function rankPoem(scans, forms) {\n  function discriminating(a, b) {\n  function rescan(text, form, first = false) {\n  function loopTemplate(fam) {\n  function addTadwir(slots) {\n  function buildStream(lines) {\n  function scanFamily(L, lineEnd, fam) {\n  function summarizeFree(L, steps, T, lines) {\n  function analyzeFree(lines, onlyMeter) {\n  function patternLen(line) { const sl = buildHemistich(line); return sl.reduce((a, s) => a + Math.min(...s.opts.map(o => o.bits.length)), 0); }\n  function pairLines(lines) { const out = []; for (let i = 0; i + 1 < lines.length; i += 2) out.push(lines[i] + ' * ' + lines[i + 1]); return out; }\n  function analyze(lines, opts = {}) {\n  function verifyLine(text, meter, mode, asHalf) {\n  function syll(bits) {\n  function unmarkedCount(word) {\n  function lineRhyme(text) {\n  function rhymeCheck(endTexts) {\n(function (root) {\n  function stripAll(s) { return s.replace(/[ً-ْٰ]/g, ''); }\n  function lighten(s) {\n  function level(s, how) { return how === 'none' ? stripAll(s) : how === 'light' ? lighten(s) : s; }\n  function run(text, o = {}) {\n  function para(runs, o = {}) {\n  function cell(width, inner) {\n  function verseTable(verses, font, size) {\n  function feetGrid(halves, font) {\n  function build(model) {\n  function plainText(model) {\n  function poemModel(p, A) {\n(function () {\n  const store = { get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },\n    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} } };\n  function save(p, now) {\n  async function flush(id) {\n  function runAnalysis() {\n  function lineViews() {\n  function viewFor(raw, k) {\n  function render() {\n  function poemMeta(p) {\n  function renderSelect() {\n  async function deletePoem(id) {\n  function coverage(p) {\n  function renderHead() {\n  function tokensOf(line) { // keep punctuation; index words the way the engine does\n  function wordSkel(w) { return A.clean(w).replace(/[ً-ْٰ]/g, ''); }\n  function choiceFor(p, li, word) {\n  function renderLines() {\n  function currentMeter() {\n  function meterLabel() {\n  function checkLine(text) {\n  function verifyText(text) {\n  function renderAlts(li) {\n  function renderSettings() {\n  function renderPanel() {\n  function openPop(el) {\n  function closePop() { $('pop').hidden = true; popCtx = null; }\n  function replaceWord(li, wi, newWord, markDone) {\n  function setEndMark(word, mark) {\n  function poemContext(p) { return linesOf(p).filter(l => A.clean(l)).map((l, i) => `${i + 1}. ${l}`).join('\\n'); }\n  async function askAlternatives(li) {\n  function renderAsk(li) {\n  async function askLine(li, question) {\n  function preservesDiacritics(before, after) {\n  async function askDiacritics() {\n  function showComposer(on) {\n  function exportModel(scope) {\n  function selectedTk() { return (document.querySelector('input[name=\"expTk\"]:checked') || {}).value || 'full'; }\n  function selectedScope() { return (document.querySelector('input[name=\"expScope\"]:checked') || {}).value || 'one'; }\n  async function copyText(text, okMsg) {\n  let tt; function toast(m) { const t = $('toast'); t.textContent = m; t.hidden = false; clearTimeout(tt); tt = setTimeout(() => { t.hidden = true; }, 2600); }\n",
+          "stderr": ""
+        },
+        {
+          "command": [
+            "python3",
+            "-c",
+            "from pathlib import Path; print(Path(\"assets/workbench/store.js\").read_text())"
+          ],
+          "exit_code": 1,
+          "stdout": "",
+          "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n    from pathlib import Path; print(Path(\"assets/workbench/store.js\").read_text())\n                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^\n  File \"/opt/homebrew/Cellar/python@3.14/3.14.2/Frameworks/Python.framework/Versions/3.14/lib/python3.14/pathlib/__init__.py\", line 787, in read_text\n    with self.open(mode='r', encoding=encoding, errors=errors, newline=newline) as f:\n         ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.14/3.14.2/Frameworks/Python.framework/Versions/3.14/lib/python3.14/pathlib/__init__.py\", line 771, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: 'assets/workbench/store.js'\n"
+        },
+        {
+          "command": [
+            "python3",
+            "-c",
+            "from pathlib import Path; s=Path(\"assets/workbench/diwan.html\").read_text(); a=s.index(\"  const store =\"); print(s[a:a+9500]); print(s[-5000:])"
+          ],
+          "exit_code": 0,
+          "stdout": "  const store = { get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },\n    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} } };\n\n  // ---------------------------------------------------------------- state\n  let db = null, sample = null;\n  let poems = [];                 // [{id, title, text, choices, suggestions, status, meter, mode, order}]\n  let curId = store.get('diwan.cur', null);\n  let notation = store.get('diwan.notation', 'syl');\n  const layoutCache = new Map();\n  let analysis = null, editing = null, openAlts = {}, altResults = {}, openAsk = {}, askState = {}, sampleTools = false;\n  const cur = () => poems.find(p => p.id === curId) || null;\n  const linesOf = p => (p ? p.text.split('\\n') : []);\n  const sampleContext = p => JSON.stringify([p.id, p.text, p.mode, p.meter, assistantEpoch, revisions.get(p.id)]);\n  const contextIsCurrent = context => cur() && sampleContext(cur()) === context;\n  let assistantPoemId = curId, assistantEpoch = 0;\n\n  // ---------------------------------------------------------------- persistence\n  const pending = new Map(), writing = new Set(), dirty = new Set(), revisions = new Map();\n  function save(p, now) {\n    revisions.set(p.id, (revisions.get(p.id) || 0) + 1);\n    if (!db) { store.set('diwan.local', poems); return; }\n    dirty.add(p.id);\n    clearTimeout(pending.get(p.id));\n    pending.set(p.id, setTimeout(() => flush(p.id), now ? 0 : 700));\n  }\n  async function flush(id) {\n    if (writing.has(id)) { pending.set(id, setTimeout(() => flush(id), 400)); return; }\n    const p = poems.find(x => x.id === id); if (!p) return;\n    writing.add(id);\n    const revision = revisions.get(id);\n    const body = JSON.parse(JSON.stringify({ title: p.title || '', text: p.text || '', choices: p.choices || [], suggestions: p.suggestions || {},\n      status: p.status || 'review', meter: p.meter || '', mode: p.mode || 'auto', order: p.order || 0 }));\n    try {\n      await db.collection('poems').doc(id).set(body);\n      if (revisions.get(id) === revision) dirty.delete(id);\n    }\n    catch (e) { toast(e && e.code === 'invalid_argument' ? 'لا تملك صلاحية الحفظ هنا' : 'تعذّر الحفظ، حاول مجددًا'); }\n    finally { writing.delete(id); }\n  }\n\n  // ---------------------------------------------------------------- analysis\n  function runAnalysis() {\n    const p = cur(); analysis = null;\n    if (!p) return;\n    const ls = linesOf(p).filter(l => A.clean(l));\n    if (!ls.length) return;\n    try {\n      let mode = p.mode || 'auto';\n      if (mode === 'auto' && p.meter) {          // a hand-picked meter keeps the layout found automatically\n        const key = ls.join('\\n');\n        if (!layoutCache.has(key)) { const a0 = A.analyze(ls, { mode: 'auto' }); layoutCache.set(key, a0.mode === 'free' ? 'free' : a0.layout === 'pairs' ? 'pairs' : 'classical'); }\n        mode = layoutCache.get(key);\n      }\n      analysis = A.analyze(ls, { mode, meter: p.meter || null });\n    }\n    catch (e) { console.error(e); analysis = null; }\n  }\n  const pat = bits => notation === 'syl' ? A.syll(bits || '') : A.marks(bits || '');\n  const meterAr = k => (A.data.info[k] || [k])[0];\n\n  // per visible line: {feet, broken, diag[], words:Set(bad word idx), readings}\n  function lineViews() {\n    const p = cur(); const all = linesOf(p); const out = [];\n    let k = 0; // index among non-empty lines\n    for (const raw of all) {\n      if (!A.clean(raw)) { out.push(null); continue; }\n      out.push(viewFor(raw, k++));\n    }\n    return out;\n  }\n  function viewFor(raw, k) {\n    const v = { feet: [], broken: false, diag: [], bad: new Set(), readings: [] };\n    if (!analysis) return v;\n    if (analysis.mode === 'free') {\n      const best = analysis.free[0]; const ln = best && best.lines ? best.lines[k] : null; if (!ln) return v;\n      ln.feet.forEach(f => {\n        if (f.cont) { v.feet.push({ cont: true }); return; }\n        v.feet.push({ name: f.name, got: f.got, letters: f.letters, bad: f.errors > 0, crosses: f.crosses });\n        if (f.errors) { v.broken = true; (f.words || []).forEach(w => v.bad.add(w));\n          v.diag.push(`«${f.letters}» = ${pat(f.got)} لا تطابق صور ${best.family.foot}: ` + best.family.hashw.map(x => `${x[1]} (${pat(x[0])})`).join('، ')); }\n      });\n      return v;\n    }\n    const c = analysis.cands[0]; if (!c) return v;\n    if (analysis.layout === 'pairs') {\n      const pi = Math.floor(k / 2), half = k % 2;\n      let r = c.perLine[pi] ? (c.perLine[pi][1] || c.perLine[pi][2]) : null;\n      if (!r && analysis.scans[pi]) r = A.rescan(analysis.scans[pi].text, c.form);\n      if (!r) { v.broken = true; v.diag.push('بعيد جدًّا عن هذا البحر'); return v; }\n      const h = half ? r.ajuz : r.sadr;\n      if (!h) return v;\n      h.feet.forEach(f => {\n        v.feet.push({ name: f.name, got: f.got, letters: f.letters, bad: f.errors > 0 });\n        if (f.errors) { v.broken = true; f.words.forEach(w => v.bad.add(w));\n          v.diag.push(`التفعيلة ${AR_DIG(f.pos + 1)} (${half ? 'عجز' : 'صدر'}): «${f.letters}» = ${pat(f.got)} — المسموح: ` + h.allowed[f.pos].map(x => `${x[1]} (${pat(x[0])})`).join('، ')); }\n      });\n      h.readings.forEach(x => v.readings.push(`«${x.word}»: ${x.note}`));\n      return v;\n    }\n    let r = c.perLine[k][1] || c.perLine[k][2];\n    if (!r) r = A.rescan(analysis.scans[k].text, c.form);\n    if (!r) { v.broken = true; v.diag.push('بعيد جدًّا عن هذا البحر'); return v; }\n    const parts = r.sadr ? [r.sadr, r.ajuz] : [r.ajuz];\n    const offs = r.sadr ? [0, A.words(r.split ? r.split[0] : '').length] : [0];\n    parts.forEach((h, pi) => {\n      if (pi === 1) v.feet.push({ half: true });\n      h.feet.forEach(f => {\n        v.feet.push({ name: f.name, got: f.got, letters: f.letters, bad: f.errors > 0 });\n        if (f.errors) {\n          v.broken = true; f.words.forEach(w => v.bad.add(w + offs[pi]));\n          const allowed = h.allowed[f.pos].map(x => `${x[1]} (${pat(x[0])})`).join('، ');\n          v.diag.push(`التفعيلة ${AR_DIG(f.pos + 1)} من ${pi === 0 && r.sadr ? 'الصدر' : (r.sadr ? 'العجز' : 'الشطر')}: «${f.letters}» = ${pat(f.got)} — المسموح: ${allowed}`);\n        }\n      });\n      h.readings.forEach(x => v.readings.push(`«${x.word}»: ${x.note}`));\n    });\n    if (c.dominant && !v.broken && A.darbGroup(r.ajuz.ending) !== c.dominant) v.diag.push(`الضرب هنا «${r.ajuz.ending}» بخلاف الغالب «${c.dominant}»`);\n    return v;\n  }\n\n  // ---------------------------------------------------------------- rendering\n  function render() {\n    renderSelect(); renderHead(); runAnalysis(); renderLines(); renderPanel();\n  }\n  let pmOpen = false, pmConfirm = null;\n  function poemMeta(p) {\n    const n = linesOf(p).filter(l => A.clean(l)).length;\n    const cnt = n === 1 ? 'سطر واحد' : n === 2 ? 'سطران' : n <= 10 ? `${AR_DIG(n)} أسطر` : `${AR_DIG(n)} سطرًا`;\n    return `${cnt} · ${p.status === 'confirmed' ? 'التشكيل معتمد' : 'قيد المراجعة'}`;\n  }\n  function renderSelect() {\n    if (assistantPoemId !== curId) {\n      for (const st of Object.values(askState)) if (st.ctl) st.ctl.abort();\n      askState = {}; openAsk = {}; altResults = {}; openAlts = {};\n      assistantPoemId = curId; assistantEpoch++;\n    }\n    const p = cur();\n    $('pmTitle').textContent = p ? (p.title || 'بلا عنوان') : (poems.length ? 'اختر قصيدة' : 'لا قصائد بعد');\n    $('pmBtn').setAttribute('aria-expanded', String(pmOpen));\n    const list = $('pmList'); list.hidden = !pmOpen;\n    if (pmOpen) {\n      list.innerHTML = poems.length ? poems.map(x => pmConfirm === x.id\n        ? `<div class=\"pmitem\"><div class=\"pmconfirm\"><span>حذف «${esc(x.title || 'بلا عنوان')}» من الديوان نهائيًّا؟</span>\n            <button class=\"btn danger\" type=\"button\" data-pm=\"del\" data-id=\"${esc(x.id)}\">حذف</button>\n            <button class=\"btn ghost\" type=\"button\" data-pm=\"keep\">إلغاء</button></div></div>`\n        : `<div class=\"pmitem\" aria-current=\"${x.id === curId}\"><button class=\"pmopen\" type=\"button\" data-pm=\"open\" data-id=\"${esc(x.id)}\">\n            <b>${esc(x.title || 'بلا عنوان')}</b><small>${esc(poemMeta(x))}</small></button>\n            <button class=\"pmdel\" type=\"button\" data-pm=\"ask\" data-id=\"${esc(x.id)}\" aria-label=\"حذف ${esc(x.title || 'القصيدة')}\" title=\"حذف\">✕</button></div>`).join('')\n        : '<div class=\"pmempty\">لا قصائد بعد. اضغط «+ قصيدة».</div>';\n    }\n    $('nSyl').setAttribute('aria-pressed', String(notation === 'syl'));\n    $('nMarks').setAttribute('aria-pressed', String(notation !== 'syl'));\n  }\n  async function deletePoem(id) {\n    const i = poems.findIndex(x => x.id === id); if (i < 0) return;\n    const [gone] = poems.splice(i, 1);\n    clearTimeout(pending.get(id)); dirty.delete(id);\n    if (curId === id) { curId = poems.length ? poems[Math.max(0, i - 1)].id : null; store.set('diwan.cur', curId); }\n    pmConfirm = null; render();\n    if (db) {\n      try { await db.collection('poems').doc(id).delete(); toast(`حُذفت «${gone.title || 'القصيدة'}»`); }\n      catch (e) { poems.splice(i, 0, gone); render(); toast('تعذّر الحذف'); }\n    } else { store.set('diwan.local', poems); toast(`حُذفت «${gone.title || 'القصيدة'}»`); }\n  }\n  $('pmBtn').addEventListener('click', () => { pmOpen = !pmOpen; pmConfirm = null; renderSelect(); });\n  $('pmList').addEventListener('click', e => {\n    const b = e.target.closest('[data-pm]'); if (!b) return;\n    const act = b.dataset.pm, id = b.dataset.id;\n    if (act === 'open') { curId = id; store.set('diwan.cur', id); pmOpen = false; openAlts = {}; altResults\nnction selectedScope() { return (document.querySelector('input[name=\"expScope\"]:checked') || {}).value || 'one'; }\n  async function copyText(text, okMsg) {\n    try { await navigator.clipboard.writeText(text); toast(okMsg); return true; }\n    catch (e) { $('bulk').value = text; $('bulkWrap').hidden = false; $('lines').hidden = true; $('bulk').select(); toast('حدّد النص وانسخه'); return false; }\n  }\n  $('copyBtn').onclick = () => {\n    const p = cur(); if (!p) return;\n    copyText(DiwanExport.plainText({ tashkeel: 'full', poems: exportModel('one') }), 'نُسخت القصيدة — الشطران بينهما خمس مسافات');\n  };\n  $('exportBtn').onclick = () => {\n    if (!poems.length) { toast('لا قصائد للتصدير'); return; }\n    $('expCount').textContent = `(${AR_DIG(poems.length)})`; $('expErr').textContent = '';\n    $('bookTitleRow').hidden = selectedScope() !== 'all';\n    $('exportDlg').hidden = false; $('expGo').focus();\n  };\n  document.querySelectorAll('input[name=\"expScope\"]').forEach(r => r.addEventListener('change', () => { $('bookTitleRow').hidden = selectedScope() !== 'all'; }));\n  $('expClose').onclick = () => { $('exportDlg').hidden = true; };\n  $('exportDlg').addEventListener('mousedown', e => { if (e.target.id === 'exportDlg') $('exportDlg').hidden = true; });\n  $('expCopy').onclick = () => {\n    copyText(DiwanExport.plainText({ tashkeel: selectedTk(), poems: exportModel(selectedScope()) }), 'نُسخ النص');\n  };\n  $('expGo').onclick = async () => {\n    const btn = $('expGo'); $('expErr').textContent = '';\n    if (!downloads) { $('expErr').textContent = 'التنزيل غير متاح في هذا العرض؛ اطلب الملف من Claude في المحادثة، أو انسخه نصًّا.'; return; }\n    if (typeof JSZip === 'undefined') { $('expErr').textContent = 'تعذّر تحميل أداة إنشاء الملف؛ أعد فتح الصفحة.'; return; }\n    btn.disabled = true; btn.textContent = 'يُجهَّز الملف…';\n    try {\n      const scope = selectedScope(), model = { tashkeel: selectedTk(), appendix: $('expApp').checked, meterUnderTitle: $('expMeter').checked,\n        font: $('expFont').value, bookTitle: scope === 'all' ? ($('expBook').value.trim() || 'ديوان') : '', poems: exportModel(scope) };\n      const parts = DiwanExport.build(model), zip = new JSZip();\n      zip.file('[Content_Types].xml', parts['[Content_Types].xml']);\n      for (const k of Object.keys(parts)) if (k !== '[Content_Types].xml') zip.file(k, parts[k]);\n      const data = await zip.generateAsync({ type: 'uint8array', compression: 'DEFLATE', mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });\n      const base = scope === 'all' ? (model.bookTitle || 'ديوان') : (cur().title || 'قصيدة');\n      await downloads.save({ filename: base.replace(/[\\\\/:*?\"<>|]/g, '').slice(0, 60) + '.docx', data });\n      $('exportDlg').hidden = true; toast('جُهّز ملف Word');\n    } catch (e) {\n      const c = e && e.code;\n      $('expErr').textContent = (c === 'cancelled' || c === 'declined' || c === 'dismissed') ? 'أُلغي التنزيل.'\n        : (c === 'unavailable' || c === 'not_granted' || c === 'extension_not_enabled') ? 'التنزيل غير متاح هنا؛ اطلب الملف من Claude في المحادثة.' : 'تعذّر إنشاء الملف؛ حاول مرة أخرى.';\n    } finally { btn.disabled = false; btn.textContent = 'تنزيل ملف Word'; }\n  };\n  let tt; function toast(m) { const t = $('toast'); t.textContent = m; t.hidden = false; clearTimeout(tt); tt = setTimeout(() => { t.hidden = true; }, 2600); }\n\n  // ---------------------------------------------------------------- boot\n  render();\n  (async () => {\n    try { sample = await claude.use('sample'); } catch (e) { sample = null; }\n    if (sample) { try { const lim = await sample.limits(); sampleTools = !!(lim && lim.tools); } catch (e) { sampleTools = false; } }\n    try { downloads = await claude.use('downloads'); } catch (e) { downloads = null; }\n    try { db = await claude.use('db'); } catch (e) { db = null; }\n    if (!db) { poems = store.get('diwan.local', []); if (!cur() && poems.length) curId = poems[0].id; render(); return; }\n    db.collection('poems').onSnapshot(snap => {\n      const incoming = snap.docs.map(d => Object.assign({ id: d.id }, d.data()));\n      // keep local edits that are still waiting to be written\n      const local = new Map(poems.map(p => [p.id, p]));\n      poems = incoming.map(x => (dirty.has(x.id) && local.has(x.id)) ? local.get(x.id) : JSON.parse(JSON.stringify(x)));\n      for (const id of dirty) if (!poems.find(p => p.id === id) && local.has(id)) poems.push(local.get(id));\n      for (const p of poems) { p.choices = p.choices || []; p.suggestions = p.suggestions || {}; }\n      poems.sort((a, b) => (a.order || 0) - (b.order || 0));\n      if (!cur() && poems.length) curId = poems[poems.length - 1].id;\n      const typing = document.activeElement && document.activeElement.id && document.activeElement.id.startsWith('askin-');\n      if (editing === null && $('bulkWrap').hidden && $('pop').hidden && !typing) render(); else renderSelect();\n    }, () => { toast('انقطع الاتصال بالديوان'); });\n  })();\n})();\n</script>\n\n",
+          "stderr": ""
+        },
+        {
+          "command": [
+            "python3",
+            "/private/tmp/poetry-evals-20261018/outputs/prosody-only/workbench-export/make_local.py"
+          ],
+          "exit_code": 1,
+          "stdout": "",
+          "stderr": "  File \"/private/tmp/poetry-evals-20261018/outputs/prosody-only/workbench-export/make_local.py\", line 14\n    csp='<meta http-equiv=\"Content-Security-Policy\" content=\"default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; font-src 'none'; base-uri 'none'; form-action 'none'\">'\n                                                                          ^^^^\nSyntaxError: invalid syntax. Is this intended to be part of the string?\n"
+        },
+        {
+          "command": [
+            "python3",
+            "scripts/export_book.py",
+            "/private/tmp/poetry-evals-20261018/outputs/prosody-only/workbench-export/poems.json",
+            "/private/tmp/poetry-evals-20261018/outputs/prosody-only/workbench-export/masafa.docx",
+            "--text",
+            "/private/tmp/poetry-evals-20261018/outputs/prosody-only/workbench-export/masafa.txt"
+          ],
+          "exit_code": 1,
+          "stdout": "",
+          "stderr": "Traceback (most recent call last):\n  File \"/private/tmp/poetry-evals-20261018/packages/prosody-only/skills/arabic-prosody/scripts/export_book.py\", line 73, in <module>\n    main()\n    ~~~~^^\n  File \"/private/tmp/poetry-evals-20261018/packages/prosody-only/skills/arabic-prosody/scripts/export_book.py\", line 40, in main\n    poems = json.load(open(a.poems, encoding='utf-8'))\n                      ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: '/private/tmp/poetry-evals-20261018/outputs/prosody-only/workbench-export/poems.json'\n"
+        },
+        {
+          "command": [
+            "python3",
+            "-c",
+            "from pathlib import Path; import subprocess,zipfile,json,xml.etree.ElementTree as E; p=Path(\"/private/tmp/poetry-evals-20261018/outputs/prosody-only/workbench-export\"); result=[]; files=sorted(p.glob(\"inline-*.js\")); print(\"inline script count\",len(files)); [result.append({\"command\":[\"node\",\"--check\",str(f)],\"exit_code\":(r:=subprocess.run([\"node\",\"--check\",str(f)],capture_output=True,text=True)).returncode,\"stdout\":r.stdout,\"stderr\":r.stderr}) for f in files]; print(json.dumps(result,ensure_ascii=False,indent=2)); z=zipfile.ZipFile(p/\"masafa.docx\"); print(\"zip_test\",z.testzip()); root=E.fromstring(z.read(\"word/document.xml\")); texts=[e.text or \"\" for e in root.iter() if e.tag.endswith(\"}t\")]; print(json.dumps({\"document_text\":texts,\"title_present\":\"مسافة\" in texts,\"poem_text_preserved\":\"قَرِيبٌ صَدِيقِي بَعِيدٌ مَكَانِي\" in \" \".join(texts),\"all_inline_syntax_valid\":all(x[\"exit_code\"]==0 for x in result)},ensure_ascii=False,indent=2)); assert all(x[\"exit_code\"]==0 for x in result); assert \"مسافة\" in texts; assert \"قَرِيبٌ صَدِيقِي بَعِيدٌ مَكَانِي\" in \" \".join(texts)"
+          ],
+          "exit_code": 1,
+          "stdout": "inline script count 0\n[]\n",
+          "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n    from pathlib import Path; import subprocess,zipfile,json,xml.etree.ElementTree as E; p=Path(\"/private/tmp/poetry-evals-20261018/outputs/prosody-only/workbench-export\"); result=[]; files=sorted(p.glob(\"inline-*.js\")); print(\"inline script count\",len(files)); [result.append({\"command\":[\"node\",\"--check\",str(f)],\"exit_code\":(r:=subprocess.run([\"node\",\"--check\",str(f)],capture_output=True,text=True)).returncode,\"stdout\":r.stdout,\"stderr\":r.stderr}) for f in files]; print(json.dumps(result,ensure_ascii=False,indent=2)); z=zipfile.ZipFile(p/\"masafa.docx\"); print(\"zip_test\",z.testzip()); root=E.fromstring(z.read(\"word/document.xml\")); texts=[e.text or \"\" for e in root.iter() if e.tag.endswith(\"}t\")]; print(json.dumps({\"document_text\":texts,\"title_present\":\"مسافة\" in texts,\"poem_text_preserved\":\"قَرِيبٌ صَدِيقِي بَعِيدٌ مَكَانِي\" in \" \".join(texts),\"all_inline_syntax_valid\":all(x[\"exit_code\"]==0 for x in result)},ensure_ascii=False,indent=2)); assert all(x[\"exit_code\"]==0 for x in result); assert \"مسافة\" in texts; assert \"قَرِيبٌ صَدِيقِي بَعِيدٌ مَكَانِي\" in \" \".join(texts)\n                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^\n  File \"/opt/homebrew/Cellar/python@3.14/3.14.2/Frameworks/Python.framework/Versions/3.14/lib/python3.14/zipfile/__init__.py\", line 1453, in __init__\n    self.fp = io.open(file, filemode)\n              ~~~~~~~^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: '/private/tmp/poetry-evals-20261018/outputs/prosody-only/workbench-export/masafa.docx'\n"
+        },
+        {
+          "command": [
+            "python3",
+            "-c",
+            "from pathlib import Path; p=Path(\"/private/tmp/poetry-evals-20261018/outputs/prosody-only/workbench-export/make_local.py\"); s=p.read_text(); lines=s.splitlines(); lines=[\"csp=\"+repr(\"<meta http-equiv=\\\"Content-Security-Policy\\\" content=\\\"default-src &apos;none&apos;; script-src &apos;unsafe-inline&apos;; style-src &apos;unsafe-inline&apos;; img-src data:; connect-src &apos;none&apos;; font-src &apos;none&apos;; base-uri &apos;none&apos;; form-action &apos;none&apos;\\\">\") if l.startswith(\"csp=\") else l for l in lines]; p.write_text(\"\\n\".join(lines)+\"\\n\"); print(\"corrected local generation script CSP string\")"
+          ],
+          "exit_code": 0,
+          "stdout": "corrected local generation script CSP string\n",
+          "stderr": ""
+        },
+        {
+          "command": [
+            "python3",
+            "/private/tmp/poetry-evals-20261018/outputs/prosody-only/workbench-export/make_local.py"
+          ],
+          "exit_code": 0,
+          "stdout": "{\n  \"html\": \"/private/tmp/poetry-evals-20261018/outputs/prosody-only/workbench-export/diwan-masafa.html\",\n  \"poems\": \"/private/tmp/poetry-evals-20261018/outputs/prosody-only/workbench-export/poems.json\",\n  \"inline_scripts\": 4,\n  \"network_scripts_removed\": true,\n  \"font_links_removed\": true,\n  \"csp_connect_src\": \"none\",\n  \"browser_opened\": false\n}\n",
+          "stderr": ""
+        },
+        {
+          "command": [
+            "python3",
+            "scripts/export_book.py",
+            "/private/tmp/poetry-evals-20261018/outputs/prosody-only/workbench-export/poems.json",
+            "/private/tmp/poetry-evals-20261018/outputs/prosody-only/workbench-export/masafa.docx",
+            "--text",
+            "/private/tmp/poetry-evals-20261018/outputs/prosody-only/workbench-export/masafa.txt"
+          ],
+          "exit_code": 0,
+          "stdout": "wrote /private/tmp/poetry-evals-20261018/outputs/prosody-only/workbench-export/masafa.docx\nwrote /private/tmp/poetry-evals-20261018/outputs/prosody-only/workbench-export/masafa.txt\n",
+          "stderr": ""
+        },
+        {
+          "command": [
+            "python3",
+            "-c",
+            "from pathlib import Path; import subprocess,zipfile,json,xml.etree.ElementTree as E; p=Path(\"/private/tmp/poetry-evals-20261018/outputs/prosody-only/workbench-export\"); result=[]; files=sorted(p.glob(\"inline-*.js\")); print(\"inline script count\",len(files)); [result.append({\"command\":[\"node\",\"--check\",str(f)],\"exit_code\":(r:=subprocess.run([\"node\",\"--check\",str(f)],capture_output=True,text=True)).returncode,\"stdout\":r.stdout,\"stderr\":r.stderr}) for f in files]; print(json.dumps(result,ensure_ascii=False,indent=2)); z=zipfile.ZipFile(p/\"masafa.docx\"); print(\"zip_test\",z.testzip()); root=E.fromstring(z.read(\"word/document.xml\")); texts=[e.text or \"\" for e in root.iter() if e.tag.endswith(\"}t\")]; print(json.dumps({\"document_text\":texts,\"title_present\":\"مسافة\" in texts,\"poem_text_preserved\":\"قَرِيبٌ صَدِيقِي بَعِيدٌ مَكَانِي\" in \" \".join(texts),\"all_inline_syntax_valid\":all(x[\"exit_code\"]==0 for x in result)},ensure_ascii=False,indent=2)); assert files and all(x[\"exit_code\"]==0 for x in result); assert \"مسافة\" in texts; assert \"قَرِيبٌ صَدِيقِي بَعِيدٌ مَكَانِي\" in \" \".join(texts)"
+          ],
+          "exit_code": 0,
+          "stdout": "inline script count 4\n[\n  {\n    \"command\": [\n      \"node\",\n      \"--check\",\n      \"/private/tmp/poetry-evals-20261018/outputs/prosody-only/workbench-export/inline-0.js\"\n    ],\n    \"exit_code\": 0,\n    \"stdout\": \"\",\n    \"stderr\": \"\"\n  },\n  {\n    \"command\": [\n      \"node\",\n      \"--check\",\n      \"/private/tmp/poetry-evals-20261018/outputs/prosody-only/workbench-export/inline-1.js\"\n    ],\n    \"exit_code\": 0,\n    \"stdout\": \"\",\n    \"stderr\": \"\"\n  },\n  {\n    \"command\": [\n      \"node\",\n      \"--check\",\n      \"/private/tmp/poetry-evals-20261018/outputs/prosody-only/workbench-export/inline-2.js\"\n    ],\n    \"exit_code\": 0,\n    \"stdout\": \"\",\n    \"stderr\": \"\"\n  },\n  {\n    \"command\": [\n      \"node\",\n      \"--check\",\n      \"/private/tmp/poetry-evals-20261018/outputs/prosody-only/workbench-export/inline-3.js\"\n    ],\n    \"exit_code\": 0,\n    \"stdout\": \"\",\n    \"stderr\": \"\"\n  }\n]\nzip_test None\n{\n  \"document_text\": [\n    \"مسافة\",\n    \"شعر تفعيلة — فعولن (المتقارب)\",\n    \"قَرِيبٌ صَدِيقِي بَعِيدٌ مَكَانِي\"\n  ],\n  \"title_present\": true,\n  \"poem_text_preserved\": true,\n  \"all_inline_syntax_valid\": true\n}\n",
+          "stderr": ""
+        },
+        {
+          "command": [
+            "python3",
+            "-c",
+            "import sys,subprocess,json; r=subprocess.run([\"node\",\"--version\"],capture_output=True,text=True); print(json.dumps({\"python_version\":sys.version,\"python_executable\":sys.executable,\"node_command\":[\"node\",\"--version\"],\"node_exit_code\":r.returncode,\"node_stdout\":r.stdout,\"node_stderr\":r.stderr},indent=2))"
+          ],
+          "exit_code": 0,
+          "stdout": "{\n  \"python_version\": \"3.14.2 (main, Dec  5 2025, 16:49:16) [Clang 17.0.0 (clang-1700.4.4.1)]\",\n  \"python_executable\": \"/opt/homebrew/opt/python@3.14/bin/python3.14\",\n  \"node_command\": [\n    \"node\",\n    \"--version\"\n  ],\n  \"node_exit_code\": 0,\n  \"node_stdout\": \"v25.8.1\\n\",\n  \"node_stderr\": \"\"\n}\n",
+          "stderr": ""
+        }
+      ],
+      "artifacts": [
+        "/private/tmp/poetry-evals-20261018/outputs/prosody-only/workbench-export/commands.json",
+        "/private/tmp/poetry-evals-20261018/outputs/prosody-only/workbench-export/diwan-masafa.html",
+        "/private/tmp/poetry-evals-20261018/outputs/prosody-only/workbench-export/inline-0.js",
+        "/private/tmp/poetry-evals-20261018/outputs/prosody-only/workbench-export/inline-1.js",
+        "/private/tmp/poetry-evals-20261018/outputs/prosody-only/workbench-export/inline-2.js",
+        "/private/tmp/poetry-evals-20261018/outputs/prosody-only/workbench-export/inline-3.js",
+        "/private/tmp/poetry-evals-20261018/outputs/prosody-only/workbench-export/make_local.py",
+        "/private/tmp/poetry-evals-20261018/outputs/prosody-only/workbench-export/masafa.docx",
+        "/private/tmp/poetry-evals-20261018/outputs/prosody-only/workbench-export/masafa.txt",
+        "/private/tmp/poetry-evals-20261018/outputs/prosody-only/workbench-export/poems.json",
+        "/private/tmp/poetry-evals-20261018/outputs/prosody-only/workbench-export/request.txt",
+        "/private/tmp/poetry-evals-20261018/outputs/prosody-only/workbench-export/response.txt"
+      ]
+    }
+  ]
+}

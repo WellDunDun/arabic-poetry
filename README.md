@@ -8,61 +8,25 @@ Use it for عمودي، تفعيلة، قصيدة نثر, evidence-led meter and
 
 ### Let your agent install it
 
-Copy either prompt below and paste it into your agent's chat. The agent will check which installation method your app supports and handle the setup where possible.
+Copy one of these prompts into your agent's chat.
 
-انسخ أحد النصين أدناه والصقه في محادثتك مع الوكيل. سيتحقق الوكيل من طريقة التثبيت التي يدعمها تطبيقك، ويتولى الإعداد إن كانت أدواته تسمح بذلك.
+انسخ أحد النصين والصقه في محادثتك مع وكيلك.
 
 #### English
 
 ```text
-Please install Arabic Poetry for me:
-https://github.com/WellDunDun/arabic-poetry
-
-I'm not technical. Handle the installation and setup yourself using the tools available in this app, rather than giving me terminal commands.
-
-Identify which agent app I'm using, read the repository's current installation instructions, and use its supported installation method. Install it as a plugin where supported; otherwise install its bundled skills. Include the complete published package, with its references, scanner, and editor assets.
-
-Use the published default branch. Preserve my existing skills, settings, and files. If it is already installed, check its version before making changes.
-
-Verify that the installed skills are discoverable. Check that the local poetry scanner works if this environment supports running it. Clearly distinguish successful installation from features that are unavailable or still need activation.
-
-Use my existing agent and conversation. Don't create another agent session, require a separate AI subscription, or configure paid services.
-
-Ask me only for permissions or actions that genuinely require my involvement. If installation is unsupported here, explain that plainly and give me the simplest supported alternative.
-
-When finished, tell me in plain language:
-- What is ready to use.
-- Whether I need to reload the app or start a new chat.
-- How to begin by pasting a poem or asking you to write one.
+Install Arabic Poetry for this agent by following the instructions at https://raw.githubusercontent.com/WellDunDun/arabic-poetry/refs/heads/main/INSTALL.md
 ```
 
 #### العربية
 
 ```text
-ثبّت لي إضافة Arabic Poetry للشعر العربي من هذا المستودع:
-https://github.com/WellDunDun/arabic-poetry
-
-لست متخصصًا تقنيًا. تولَّ التثبيت والإعداد بنفسك باستخدام الأدوات المتاحة في هذا التطبيق، بدلًا من إعطائي أوامر لأشغّلها في الطرفية.
-
-تعرّف على تطبيق الوكيل الذي أستخدمه، واقرأ تعليمات التثبيت الحالية في المستودع، واتبع الطريقة التي يدعمها التطبيق. ثبّت الحزمة كإضافة إذا كان ذلك مدعومًا، وإلا فثبّت المهارات المضمّنة فيها. ضمّن الحزمة المنشورة كاملة، بما فيها المراجع وأداة فحص الوزن وملفات المحرر.
-
-استخدم الفرع الافتراضي المنشور في المستودع. حافظ على مهاراتي وإعداداتي وملفاتي الحالية. إذا كانت الإضافة مثبتة بالفعل، فتحقق من نسختها قبل إجراء أي تغيير.
-
-تحقق من أن الوكيل يستطيع العثور على المهارات المثبتة. جرّب أداة فحص الوزن المحلية إذا كانت هذه البيئة تسمح بتشغيلها. وضّح الفرق بين نجاح التثبيت وبين الميزات غير المتاحة أو التي ما زالت تحتاج إلى تفعيل.
-
-استخدم وكيلي ومحادثتي الحاليين. لا تنشئ جلسة وكيل أخرى، ولا تطلب اشتراكًا منفصلًا في خدمة ذكاء اصطناعي، ولا تُعِدّ خدمات مدفوعة.
-
-لا تطلب تدخّلي إلا لمنح صلاحية أو تنفيذ خطوة لا يمكنك إتمامها بدوني. إذا كانت هذه البيئة لا تدعم التثبيت، فاشرح ذلك بوضوح وقدّم أبسط بديل مدعوم.
-
-عند الانتهاء، أخبرني بلغة بسيطة:
-- ما الذي أصبح جاهزًا للاستخدام.
-- هل أحتاج إلى إعادة تحميل التطبيق أو بدء محادثة جديدة.
-- كيف أبدأ بلصق قصيدة أو بطلب كتابة قصيدة منك.
+ثبّت لي مهارات الشعر العربي لهذا الوكيل باتباع التعليمات في https://raw.githubusercontent.com/WellDunDun/arabic-poetry/refs/heads/main/INSTALL.md
 ```
 
-These prompts install the published version. Unmerged changes are not included.
+Your agent handles setup using the [installation guide](INSTALL.md). This requires an agent that can install skills; a chat that can only generate text cannot perform the installation.
 
-يثبّت هذان النصان النسخة المنشورة. ولا يشمل التثبيت التغييرات التي لم تُدمج بعد.
+يتولى وكيلك الإعداد باتباع [دليل التثبيت](INSTALL.md). يلزم وكيل يستطيع تثبيت المهارات؛ فالمحادثة التي تقتصر على توليد النص لا تستطيع تنفيذ التثبيت.
 
 ### Install with a command
 

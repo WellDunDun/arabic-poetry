@@ -20,3 +20,7 @@ CodeRabbit’s only published status says it skipped the draft PR. There is no c
 ## Validation
 
 The condition-specific evidence was checked against each saved response and artifact record. The integrated reference links resolve, and skill validation passes. Scanner gold cases, Python/JavaScript parity, scanner/CLI and workbench tests remain passing. New trial records, exact package inventories, semantic judgments and final evidence-validator results are recorded under `evals/results/2026-10-18-review/`. No live hosted API, PDF conversion, browser interaction or visual Word-layout review is claimed for this follow-up.
+
+## Subsequent manual draft review
+
+A later user-authorized manual request completed CodeRabbit review of PR #3. See [the findings, fixes and evidence](pr-3-manual-review-2026-10-18.md). The skipped-review status above describes the earlier check, not the current outcome.

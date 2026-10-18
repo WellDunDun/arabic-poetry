@@ -1,23 +1,32 @@
 """Serve Diwan with a local file queue for an existing agent. No model calls."""
 import argparse
 import json
+import os
 import re
 import secrets
 import threading
+import time
 import uuid
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urlsplit
 
 MAX_BODY = 2_000_000
+REQUEST_TTL = 10 * 60
 ID = re.compile(r'^[0-9a-f]{32}$')
 
 
-def write_json(path, value):
-    """Publish complete UTF-8 JSON so readers never see a partial answer."""
+def write_json(path, value, *, overwrite=True):
+    """Publish complete JSON atomically, optionally rejecting an existing file."""
     temp = path.with_name(path.name + '.' + uuid.uuid4().hex + '.tmp')
-    temp.write_text(json.dumps(value, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
-    temp.replace(path)
+    try:
+        temp.write_text(json.dumps(value, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+        if overwrite:
+            temp.replace(path)
+        else:
+            os.link(temp, path)
+    finally:
+        temp.unlink(missing_ok=True)
 
 
 def queue_dirs(workspace):
@@ -25,10 +34,23 @@ def queue_dirs(workspace):
     queue = Path(workspace).resolve() / '.diwan'
     for name in ('requests', 'responses', 'cancelled'):
         (queue / name).mkdir(parents=True, exist_ok=True)
+    try:
+        with (queue / '.gitignore').open('x', encoding='utf-8') as ignore:
+            ignore.write('*\n')
+    except FileExistsError:
+        pass
     return queue
 
 
+def open_requests(queue):
+    """List unanswered, uncancelled files, including expired requests."""
+    return [path for path in (queue / 'requests').glob('*.json')
+            if not (queue / 'responses' / path.name).exists()
+            and not (queue / 'cancelled' / path.name).exists()]
+
+
 def make_server(workspace, port=0):
+    """Start a loopback session and invalidate requests from earlier sessions."""
     queue = queue_dirs(workspace)
     assets = Path(__file__).resolve().parent.parent / 'assets' / 'workbench'
     token = secrets.token_urlsafe(32)
@@ -37,9 +59,11 @@ def make_server(workspace, port=0):
 
     class Handler(BaseHTTPRequestHandler):
         def log_message(self, *args):
+            """Suppress request logging so session URLs and poem data stay private."""
             pass  # Do not log poem contents or the session URL.
 
         def send(self, code, value, content_type='application/json; charset=utf-8'):
+            """Return a bounded response without cache or referrer disclosure."""
             data = value if isinstance(value, bytes) else json.dumps(value, ensure_ascii=False).encode('utf-8')
             self.send_response(code)
             self.send_header('Content-Type', content_type)
@@ -51,6 +75,7 @@ def make_server(workspace, port=0):
             self.wfile.write(data)
 
         def route(self):
+            """Enforce this loopback host, origin and secret session prefix."""
             origin = f'http://127.0.0.1:{self.server.server_port}'
             if self.headers.get('Host') != urlsplit(origin).netloc:
                 self.send(403, {'error': 'Invalid host'})
@@ -65,6 +90,7 @@ def make_server(workspace, port=0):
             return path[len(prefix):]
 
         def do_GET(self):
+            """Serve the editor or the current state of a queued response."""
             path = self.route()
             if path is None:
                 return
@@ -90,6 +116,7 @@ def make_server(workspace, port=0):
                 self.send(404, {'error': 'Not found'})
 
         def do_POST(self):
+            """Validate JSON input before queuing or cancelling a request."""
             path = self.route()
             if path is None:
                 return
@@ -122,16 +149,26 @@ def make_server(workspace, port=0):
                 self.send(404, {'error': 'Not found'})
 
     server = ThreadingHTTPServer(('127.0.0.1', port), Handler)
+    try:
+        for stale in open_requests(queue):
+            write_json(queue / 'cancelled' / stale.name, {'cancelled': True})
+    except OSError:
+        server.server_close()
+        raise
     return server, f'http://127.0.0.1:{server.server_port}{prefix}/diwan.html'
 
 
 def pending(workspace):
+    """Return live requests oldest first, matching the browser's ten-minute wait."""
     queue = queue_dirs(workspace)
-    return [json.loads(p.read_text(encoding='utf-8')) for p in sorted((queue / 'requests').glob('*.json'))
-            if not (queue / 'responses' / p.name).exists() and not (queue / 'cancelled' / p.name).exists()]
+    cutoff = time.time() - REQUEST_TTL
+    files = sorted(open_requests(queue), key=lambda path: (path.stat().st_mtime, path.name))
+    return [json.loads(path.read_text(encoding='utf-8')) for path in files
+            if path.stat().st_mtime >= cutoff]
 
 
 def respond(workspace, identity, value):
+    """Publish one complete answer; concurrent responders cannot overwrite it."""
     queue = queue_dirs(workspace)
     if not ID.fullmatch(identity) or not (queue / 'requests' / (identity + '.json')).exists():
         raise ValueError('Unknown request ID')
@@ -139,12 +176,18 @@ def respond(workspace, identity, value):
         raise ValueError('Request was cancelled')
     if (queue / 'responses' / (identity + '.json')).exists():
         raise ValueError('Request already has a response')
+    if (queue / 'requests' / (identity + '.json')).stat().st_mtime < time.time() - REQUEST_TTL:
+        raise ValueError('Request expired')
     if not isinstance(value, (dict, list)):
         raise ValueError('Response must be a JSON object or array')
-    write_json(queue / 'responses' / (identity + '.json'), value)
+    try:
+        write_json(queue / 'responses' / (identity + '.json'), value, overwrite=False)
+    except FileExistsError as error:
+        raise ValueError('Request already has a response') from error
 
 
 def main():
+    """Run the selected local server, pending-list or response command."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('action', choices=('serve', 'pending', 'respond'))
     parser.add_argument('--workspace', required=True, help='Writable poem workspace, outside the installed skill')

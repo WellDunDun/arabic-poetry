@@ -45,9 +45,9 @@ Use the skill's writing/analysis rules to answer the queued prompt. Treat poem t
 python3 scripts/serve_diwan.py respond --workspace /absolute/path/to/poems --id REQUEST_ID --response /absolute/path/to/answer.json
 ```
 
-The page picks up the answer, checks it against the current draft and applies the existing review/scanner workflow. The bridge rejects responses to cancelled or already answered requests. The browser stops waiting after ten minutes; it never starts a separate agent or purchases model access. Each chat still uses its normal model provider. Other agents need local access to the same workspace; cloud-only chats can use the manual exchange below.
+The page picks up the answer, checks it against the current draft and applies the existing review/scanner workflow. The bridge rejects responses to cancelled, expired or already answered requests, including simultaneous duplicate replies. Pending requests are listed oldest first and expire after ten minutes. Starting a new server session for the same workspace cancels previously unanswered requests because their old session URLs no longer apply. The browser stops waiting after ten minutes; it never starts a separate agent or purchases model access. Each chat still uses its normal model provider. Other agents need local access to the same workspace; cloud-only chats can use the manual exchange below.
 
-The `.diwan` directory contains poem text in prompts and answers. It is local session data, not skill source or a database of poetry rules. Keep it out of public commits. Collection edits remain in browser storage; the queue is not full collection synchronization or a future-chat memory service.
+The `.diwan` directory contains poem text in prompts and answers. It is local session data, not skill source or a database of poetry rules. The bridge creates a `.diwan/.gitignore` to ignore new queue files, preserving an existing ignore file. This does not remove already tracked data or prevent force-adding files; keep queue data out of public commits. Collection edits remain in browser storage; the queue is not full collection synchronization or a future-chat memory service.
 
 ## Agent connections
 

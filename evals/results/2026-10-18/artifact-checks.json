@@ -1,0 +1,47 @@
+[
+  {
+    "condition": "prosody-only",
+    "case": "workbench-export",
+    "artifact": "/private/tmp/poetry-evals-20261018/outputs/prosody-only/workbench-export/diwan-masafa.html",
+    "check": "node --check on executable inline scripts",
+    "scripts": 4,
+    "status": "pass"
+  },
+  {
+    "condition": "prosody-only",
+    "case": "workbench-export",
+    "artifact": "/private/tmp/poetry-evals-20261018/outputs/prosody-only/workbench-export/masafa.docx",
+    "check": "DOCX ZIP, all XML, literal title and supplied poem",
+    "status": "pass"
+  },
+  {
+    "condition": "current-both",
+    "case": "workbench-export",
+    "artifact": "/private/tmp/poetry-evals-20261018/outputs/current-both/workbench-export/diwan.html",
+    "check": "node --check on executable inline scripts",
+    "scripts": 4,
+    "status": "pass"
+  },
+  {
+    "condition": "current-both",
+    "case": "workbench-export",
+    "artifact": "/private/tmp/poetry-evals-20261018/outputs/current-both/workbench-export/masafa.docx",
+    "check": "DOCX ZIP, all XML, literal title and supplied poem",
+    "status": "pass"
+  },
+  {
+    "condition": "combined",
+    "case": "workbench-export",
+    "artifact": "/private/tmp/poetry-evals-20261018/outputs/combined-pr2/workbench-export/diwan.html",
+    "check": "node --check on executable inline scripts",
+    "scripts": 4,
+    "status": "pass"
+  },
+  {
+    "condition": "combined",
+    "case": "workbench-export",
+    "artifact": "/private/tmp/poetry-evals-20261018/outputs/combined-pr2/workbench-export/masafa.docx",
+    "check": "DOCX ZIP, all XML, literal title and supplied poem",
+    "status": "pass"
+  }
+]

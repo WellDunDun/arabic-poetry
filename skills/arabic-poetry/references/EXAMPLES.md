@@ -1,6 +1,6 @@
 # Worked examples
 
-These examples illustrate evidence and editing scope. They are not fixed templates for every creative response. Scans use the shared notation: ب short syllable, − long, = overlong in pause, ⁞ between feet, ✗ for a broken foot. The patterns match the output of the arabic-prosody scanner for the same vocalized text.
+These examples illustrate evidence and editing scope. They are not fixed templates for every creative response. Scans use the shared notation: ب short syllable, − long, = overlong in pause, ⁞ between feet, ✗ for a broken foot. The patterns match the output of the bundled scanner for the same vocalized text.
 
 ## Identify a complete classical بيت
 

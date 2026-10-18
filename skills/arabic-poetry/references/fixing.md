@@ -34,7 +34,7 @@ word weighing − or swap for a ب − − synonym).
 - إشباع الحركة لتوليد حرف مد (خاصة في القافية).
 - تخفيف المشدد: «رُبَّ → رُبَ».
 These are topics to verify against a source for the exact meter, position and
-reading, not blanket licenses. Prefer natural grammatical wording; never
+reading, not blanket licenses. Prefer natural grammatical lexical repairs before poetic licences; never
 change negation, roles or supplied pronunciation simply to fit a pattern.
 
 ## 5. Present

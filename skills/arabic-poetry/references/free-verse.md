@@ -6,7 +6,7 @@
   taf'ila**, but the number of feet per line is free and lines need not rhyme
   regularly.
 - **قصيدة النثر**: not bound to a Khalilian meter. Identify the intended form
-  from the request and text; a failed scanner match alone cannot classify it.
+  from the request and text; a failed scanner match alone cannot classify it. It is a poetic form, not a failed attempt at meter.
 - Some poets mix taf'ilas from one "circle" (e.g. مستفعلن with فاعلن as in
   البسيط) — the scanner handles one family at a time; mention mixed usage when
   two families each fit different stretches.

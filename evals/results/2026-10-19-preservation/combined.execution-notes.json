@@ -1,0 +1,25 @@
+{
+  "condition": "combined",
+  "context": "Single shared-context batch. Context includes prior batch; no deliberate consultation of earlier responses, prior output files, other conditions, rubric or grading. Current work reads only final assigned package and requests plus its own new output files.",
+  "model": "Inherited model, no override. Exact runtime model identifier not exposed.",
+  "capabilities": "Local filesystem, Python standard library and Node only; no browser, network, host APIs, installations, PDF, publishing, global fonts, grading or delegation.",
+  "capture_caveats": [
+    "Initial final prompts/SKILL read happened before the per-case recorder was created. All per-case executed checks retain actual argv, exit code, stdout and stderr.",
+    "Output-local tmp directory was precreated. Recorder sets TMPDIR to it and PYTHONDONTWRITEBYTECODE=1 for every subprocess.",
+    "References from earlier cases in this final batch remain available in shared context for later cases. No scan was run for review-only.",
+    "Export initially used automatic mode. Inspection showed the generated complete-meter label; local collection mode was set to free with mutaqarib (supported by this batch case 6), then the same files were exported and checked again. Text and title were preserved. Both actual export/verification runs are retained.",
+    "No failures were discarded. All captured processes returned zero, including scanner results that explicitly report a metrical mismatch; process exit status is distinct from a metrical verdict.",
+    "HTML source embeds the poem as a fallback collection under distinct local-storage keys. Browser opening, browser persistence, visual rendering and synchronization were not attempted or claimed.",
+    "DOCX verification inspects archive integrity and exact title/text in XML; JavaScript verification uses node --check only. These are not visual checks.",
+    "Helper-script creation and response authoring are captured in the tool transcript, while per-case commands records contain actual subprocess checks with their original argv and outputs."
+  ],
+  "output_root": "/private/tmp/poetry-preservation-evals-final-20261019/outputs/combined-pr3",
+  "python_version": "3.14.2 (main, Dec  5 2025, 16:49:16) [Clang 17.0.0 (clang-1700.4.4.1)]",
+  "node_version": "v25.8.1 (actual receipt in workbench-export verification stdout)",
+  "result_counts": {
+    "cases": 8,
+    "commands": 21,
+    "nonzero_exit_codes": 0
+  },
+  "write_scope": "All deliberate writes and exporter temporary files use assigned output root; output-local TMPDIR existence and actual tempfile resolution checked before export."
+}

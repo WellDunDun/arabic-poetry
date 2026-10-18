@@ -1,0 +1,71 @@
+{
+  "condition": "combined",
+  "suite_id": "poetry-consolidation-v1",
+  "model": "Inherited parent Codex model; no model override. Exact serving model identifier is not exposed to this subagent.",
+  "runtime_receipts": [
+    {
+      "command": [
+        "python3",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": "Python 3.14.2\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": "v25.8.1\n",
+      "stderr": ""
+    }
+  ],
+  "execution_mode": "Single shared-context batch: eight exact requests in prompts.json order. No delegation or grading.",
+  "capabilities": {
+    "used": [
+      "local file reads and writes",
+      "Python standard library",
+      "Node local CLI exporter"
+    ],
+    "unavailable_or_not_used": [
+      "network",
+      "browser",
+      "external host APIs",
+      "installs",
+      "publishing",
+      "global font mutation",
+      "visual Word inspection",
+      "cross-chat storage"
+    ]
+  },
+  "context_caveats": [
+    "Only assigned skill package and prompts.json were read as task source context; outputs were read back for continuation and verification.",
+    "Skill entrypoint and relevant references were loaded together before case execution; all eight prompts share this context.",
+    "No rubric, other conditions, other results, repository, research, review findings or expected answers were read.",
+    "No memory lookup was performed because this is an explicitly isolated frozen-suite trial."
+  ],
+  "capture_caveats": [
+    "Per-case command receipts contain actual subprocess argv, exit code, stdout and stderr. File preparation and response authoring are saved as local scripts; setup/reference reads are visible in tool transcript, not repeated as case scanner receipts.",
+    "A mismatch verdict uses exit code 0 in this scanner; the stdout receipt records the failed metrical fit.",
+    "No browser opening or visual Word review is claimed. Structural XML/ZIP verification does not establish rendered document appearance.",
+    "The exported HTML was prepared with an embedded fallback collection; no browser localStorage or host database was written.",
+    "Scanner output is inspected as heuristic evidence rather than an accuracy guarantee.",
+    "The first local editor preparation failed on an overly literal footer assertion because the shipped footer contains inline HTML markup. The assertion was corrected to match that existing markup, preparation reran successfully, and both actual receipts are retained. The shipped footer itself was preserved."
+  ],
+  "artifacts_dir": "/private/tmp/poetry-coderabbit-evals-20261018/outputs/combined-pr2",
+  "source_reads": [
+    "SKILL.md",
+    "references/CRAFT.md",
+    "references/READING.md",
+    "references/PROSODY.md",
+    "references/SCANNER.md",
+    "references/DIWAN.md",
+    "references/meters.md (targeted excerpts)",
+    "references/free-verse.md",
+    "scripts/export_book.py",
+    "scripts/export_book.js",
+    "assets/workbench/diwan.html (targeted storage/footer inspection, then full local copy)"
+  ]
+}

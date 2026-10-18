@@ -6,7 +6,7 @@ Use it for عمودي، تفعيلة، قصيدة نثر, evidence-led meter and
 
 ## Quickstart
 
-### Let your agent install it
+### Use it in your current chat
 
 Copy one of these prompts into your agent's chat.
 
@@ -15,20 +15,20 @@ Copy one of these prompts into your agent's chat.
 #### English
 
 ```text
-Install Arabic Poetry for this agent by following the instructions at https://raw.githubusercontent.com/WellDunDun/arabic-poetry/refs/heads/main/INSTALL.md
+Run `npx skills use "https://github.com/WellDunDun/arabic-poetry" --skill "arabic-poetry"` and follow the generated skill instructions now. Read its complete output, redirecting it to a temporary file first if necessary. Resolve relative paths from the supporting-files directory it provides.
 ```
 
 #### العربية
 
 ```text
-ثبّت لي مهارات الشعر العربي لهذا الوكيل باتباع التعليمات في https://raw.githubusercontent.com/WellDunDun/arabic-poetry/refs/heads/main/INSTALL.md
+شغّل `npx skills use "https://github.com/WellDunDun/arabic-poetry" --skill "arabic-poetry"` واتّبع تعليمات المهارة الناتجة الآن. اقرأ المخرجات كاملة، واحفظها أولًا في ملف مؤقت إذا لزم الأمر. اعتبر مجلد الملفات المساندة الذي يحدده الأمر أساسًا لأي مسارات نسبية.
 ```
 
-Your agent handles setup using the [installation guide](INSTALL.md). This requires an agent that can install skills; a chat that can only generate text cannot perform the installation.
+This loads the skill for the current conversation without permanently installing it. Your agent needs command execution. For persistent installation, use the command below or the [installation guide](INSTALL.md).
 
-يتولى وكيلك الإعداد باتباع [دليل التثبيت](INSTALL.md). يلزم وكيل يستطيع تثبيت المهارات؛ فالمحادثة التي تقتصر على توليد النص لا تستطيع تنفيذ التثبيت.
+يحمّل هذا المهارة للمحادثة الحالية دون تثبيتها بشكل دائم. يلزم وكيل يستطيع تنفيذ الأوامر. للتثبيت الدائم، استخدم الأمر أدناه أو [دليل التثبيت](INSTALL.md).
 
-### Install with a command
+### Install permanently
 
 ```sh
 npx skills@latest add WellDunDun/arabic-poetry

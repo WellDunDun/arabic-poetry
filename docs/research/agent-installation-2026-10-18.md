@@ -1,4 +1,4 @@
-# Agent-assisted installation prompts
+# Agent-assisted use and installation prompts
 
 Researched 2026-10-18. Primary-source documentation and package inspection; no user-level installations were performed.
 
@@ -6,19 +6,19 @@ Researched 2026-10-18. Primary-source documentation and package inspection; no u
 
 | Source | What it publishes | What we adopt |
 | --- | --- | --- |
-| [Superpowers installation](https://github.com/obra/superpowers#installation) | An OpenCode prompt beginning "Fetch and follow instructions from" and linking to its raw installation document. Other hosts get their own installation routes. | A one-sentence user prompt pointing at maintained instructions. |
+| [Superpowers installation](https://github.com/obra/superpowers#installation) | An OpenCode prompt beginning "Fetch and follow instructions from" and linking to its raw installation document. Other hosts get their own installation routes. | Keep the persistent installation route in a maintained guide. |
 | [Dailybot installation](https://www.dailybot.com/skills/agent-skill/) | A short natural-language instruction to install a linked skill and perform a first task, alongside manual CLI setup. | Keep installation approachable and end with a useful first action. |
 | [OpenAI skill installation](https://learn.chatgpt.com/docs/build-skills#install-curated-skills-for-local-use) | Codex's built-in `$skill-installer` can download skills from other repositories. It also documents discovery/restart behavior. | Use Codex's installer when available; verify discovery separately from downloading. |
-| [Vercel Skills CLI](https://github.com/vercel-labs/skills#install-a-skill) | Compact commands with explicit agent, scope and skill options. `--global` selects user scope, `--agent` chooses agents, `--skill '*'` selects all skills and `--yes` skips interactive prompts. `--all` targets every agent as well as every skill. | Document a concrete fallback that installs only for the current agent. |
+| [Vercel Skills CLI](https://github.com/vercel-labs/skills#install-a-skill) | Compact commands with explicit agent, scope and skill options. `--global` selects user scope, `--agent` chooses agents, `--skill '*'` selects all skills and `--yes` skips interactive prompts. `--all` targets every agent as well as every skill. | Keep permanent installation scoped to the current agent; use the separate `use` command for the current conversation. |
 | [Anthropic Skills](https://github.com/anthropics/skills#try-in-claude-code-claudeai-and-the-api) | Separate Claude Code marketplace installation, Claude.ai guidance and API guidance. | Do not describe one host's plugin metadata as universal plugin support. |
 | [AGY agent plugins](https://github.com/iicmaster/antigravity-plugins#ai-assisted-installation) | Different assisted-installation prompts for Claude and Codex, with host-specific flows and verification. | Put platform differences in the installation document. |
 | [Remy installation](https://github.com/dirkpaessler/Remy#1-install-remy) | Tells users where to paste a short setup request in Claude Code and gives human restart steps separately. | Say which capabilities an installing agent needs; do not promise installation in text-only chat. |
 
 ## Decision for Arabic Poetry
 
-The previous prompts repeated installation policy, environment detection, preservation, verification and reporting instructions in both languages. That made the copyable text long while still leaving the agent to infer installation mechanics.
+The README now follows the user's supplied `grill-me` example. Both language versions ask the existing agent to run `npx skills use "https://github.com/WellDunDun/arabic-poetry" --skill "arabic-poetry"`, read its complete output, follow the generated instructions and resolve relative paths from the supplied supporting-files directory.
 
-The README now uses one equivalent sentence in each language. Both link to `INSTALL.md`, which owns the actionable setup routes. This is an inference from the examples above, not evidence that one wording has a measured success rate.
+The [Skills CLI's use documentation](https://github.com/vercel-labs/skills#use-a-skill-without-installing) describes this as use without installation: it downloads the selected package into a temporary directory and prints a generated prompt. We omit `--agent`, which would start a separate supported agent. The README labels this as current-conversation use and keeps permanent installation as a separate option through `skills add` and `INSTALL.md`. This implements the user's requested wording; it is not a measured prompt-success claim.
 
 The guide specifies:
 
@@ -32,6 +32,8 @@ The repository's `.claude-plugin/plugin.json` lists served skill directories. It
 
 ## Verification and release boundary
 
-Documentation checks cover equivalent short prompts, the target repository/file path, local Markdown links, the manifest's declared skill folders, supported CLI options against first-party documentation, and whitespace. No automatic installation was run against a user's global skill directory, and no cross-agent activation test is claimed.
+The actual remote command was tested with Skills CLI 1.7.2, using a temporary npm cache and redirecting stdout to a temporary file before reading it in full. It exited successfully, selected `arabic-poetry`, emitted the complete `SKILL.md` and supplied a temporary supporting-files directory. The directory contained `SKILL.md` and `references/CRAFT.md`, confirming the relative-reference instruction against an actual result. No `--agent` launch or persistent skill installation was performed.
 
-The public prompt targets `main/INSTALL.md`. That file is introduced by this unmerged PR, so the prompt is the intended published onboarding and will only work at that URL after merge. A reviewer can inspect [the installation guide on the review branch](https://github.com/WellDunDun/arabic-poetry/blob/codex/portable-diwan/INSTALL.md). Installing from the current default branch still installs only that branch's published skills; it does not include unmerged editor changes.
+Documentation checks verify equivalent command tokens in both language prompts, local Markdown links and whitespace. The existing frozen evaluation-integrity check still matches the skill package because only root documentation changed; no poetry trial was relabelled or rerun for this documentation edit.
+
+The public command resolves the repository's default branch. It works with the published `arabic-poetry` skill without depending on the unmerged `INSTALL.md` URL. It does not load unmerged consolidation or portable-editor work; those remain in PRs #2 and #3 until reviewed and merged.

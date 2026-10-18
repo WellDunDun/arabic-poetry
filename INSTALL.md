@@ -1,6 +1,6 @@
 # Install Arabic Poetry
 
-For the agent receiving the README's installation request. Install the skills for the app the user is using, then help them try a poem.
+For an agent handling a persistent installation request. Install the skills for the app the user is using, then help them try a poem. To use the skill in the current conversation without installing it, follow the [README quickstart](README.md#quickstart).
 
 Source: https://github.com/WellDunDun/arabic-poetry
 

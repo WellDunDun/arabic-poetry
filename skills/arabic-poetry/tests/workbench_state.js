@@ -1,7 +1,7 @@
 // node skills/arabic-poetry/tests/workbench_state.js — deterministic production-page state regressions
 const assert = require('node:assert/strict');
 const fs = require('node:fs'), path = require('node:path'), vm = require('node:vm');
-const page = fs.readFileSync(path.join(__dirname, '../assets/workbench/page.html'), 'utf8');
+const page = fs.readFileSync(process.env.WORKBENCH_PAGE || path.join(__dirname, '../assets/workbench/page.html'), 'utf8');
 const application = page.slice(page.lastIndexOf('<script>') + '<script>'.length);
 const boot = application.indexOf('  // ---------------------------------------------------------------- boot');
 assert(boot > 0, 'application boot marker must exist');
@@ -13,16 +13,19 @@ const deferred = () => { let resolve, reject; const promise = new Promise((yes, 
 const poem = (id, text = 'سلام') => ({ id, title: id, text, mode: 'auto', meter: '', choices: [], suggestions: {} });
 
 function harness(initial) {
-  const elements = new Map(), timers = new Map(), storage = new Map();
+  const elements = new Map(), timers = new Map(), storage = new Map(), listeners = new Map();
   let timerId = 0;
   const element = id => {
     if (!elements.has(id)) elements.set(id, { id, hidden: true, value: '', options: [], dataset: {}, listeners: {},
-      addEventListener(type, fn) { this.listeners[type] = fn; }, setAttribute() {}, focus() {}, select() {} });
+      addEventListener(type, fn) { this.listeners[type] = fn; }, setAttribute() {}, focus() {}, select() {}, scrollIntoView() {} });
     return elements.get(id);
   };
   const context = { console, AbortController,
-    window: { Arud: { data: { info: {} }, load() {}, clean: s => s, rhymeCheck: () => ({ rows: [] }) } },
-    document: { getElementById: element, addEventListener() {}, querySelectorAll: () => [], activeElement: null },
+    window: { addEventListener() {}, innerWidth: 1200, innerHeight: 800, Arud: { data: { info: {} }, load() {}, clean: s => s, words: s => s.split(/\s+/).filter(Boolean), syll: s => s, rhymeCheck: () => ({ rows: [] }) } },
+    document: { getElementById: element, addEventListener(type, fn) { if (!listeners.has(type)) listeners.set(type, []); listeners.get(type).push(fn); }, querySelectorAll: () => [], querySelector: () => null, activeElement: null,
+      createElement: tag => ({ tag, hidden: true, dataset: {}, style: {}, classList: { add() {}, remove() {}, toggle() {} }, listeners: {},
+        addEventListener(type, fn) { this.listeners[type] = fn; }, setAttribute() {}, appendChild() {} }),
+      body: { appendChild(el) { if (el.id) element(el.id); } } },
     localStorage: { getItem: k => storage.has(k) ? storage.get(k) : null, setItem: (k, v) => storage.set(k, v) },
     setTimeout(fn) { const id = ++timerId; timers.set(id, fn); return id; }, clearTimeout(id) { timers.delete(id); } };
   vm.createContext(context);
@@ -32,6 +35,9 @@ function harness(initial) {
     checkLine = text => ({text, ok: true}); meterLabel = () => 'test meter';
     lineViews = () => [{diag: []}];
     globalThis.api = { save, flush, askLine, askAlternatives, askDiacritics, preservesDiacritics,
+      addLineAt, dropPending, saveLine, doUndo, fetchWordAlts,
+      context(li, wi = 0) { cmCtx = { li, wi, word: linesOf(cur())[li].split(' ')[wi], bits: '' }; },
+      get wordAlternatives() { return wordAlts.get(altKey()); }, get editing() { return editing; },
       snapshot(snap) { ${snapshot} },
       setup(initial) { poems = initial; curId = initial[0].id; analysis = {mode:'free',free:[{family:{foot:'test',meter:'test'}}]}; renderSelect(); },
       sample(value, tools = false) { sample = value; sampleTools = tools; }, db(value) { db = value; },
@@ -45,7 +51,11 @@ function harness(initial) {
     element('pmList').listeners.click({ target: { closest: () => ({ dataset: { pm: 'open', id } }) } });
   }
   function receive(rows) { api.snapshot({ docs: rows.map(p => ({ id: p.id, data: () => p })) }); }
-  return { api, select, receive, elements, timers };
+  function click(act, li) {
+    const fn = listeners.get('click').find(f => f.toString().includes("act === 'edit'"));
+    fn({ target: { closest: query => query === '[data-act]' ? { dataset: { act, li: String(li) } } : null } });
+  }
+  return { api, select, receive, elements, timers, click };
 }
 
 async function staleSave() {
@@ -135,7 +145,51 @@ async function diacritics() {
   }
 }
 
+async function lineEditing() {
+  for (const action of ['delline', 'edit', 'addbelow']) {
+    const h = harness([poem('a', 'أول\nثان\nثالث\nرابع')]);
+    h.api.addLineAt(1);
+    h.click(action, 2); // rendered index 2 is ثان, after the temporary blank
+    if (action === 'delline') assert.equal(h.api.poems[0].text, 'أول\nثالث\nرابع', 'delete the selected row, not its successor');
+    if (action === 'edit') assert.equal(h.api.editing, 1, 'edit the row after discarding the earlier draft');
+    if (action === 'addbelow') assert.equal(h.api.poems[0].text, 'أول\nثان\n\nثالث\nرابع');
+  }
+  const switched = harness([poem('a', 'أول\nثان'), poem('b', 'آخر\nنهاية')]);
+  switched.api.addLineAt(1); switched.select('b');
+  assert.equal(switched.api.poems[0].text, 'أول\nثان', 'leaving a poem discards its transient empty row');
+  assert.equal(switched.api.poems[1].text, 'آخر\nنهاية', 'another poem is not touched by pending-row cleanup');
+  const p = poem('a', 'أول\nثان');
+  p.choices = [{ line: 2, word: 'ثان' }]; p.suggestions = { '2': [{ text: 'بديل الثاني' }] };
+  const h = harness([p]);
+  h.api.addLineAt(1);
+  assert.equal(p.choices[0].line, 3);
+  assert(p.suggestions['3']);
+  h.api.dropPending();
+  assert.equal(p.choices[0].line, 2); assert(p.suggestions['2']);
+  h.click('delline', 0);
+  assert.equal(p.text, 'ثان'); assert.equal(p.choices[0].line, 1); assert(p.suggestions['1']);
+  h.api.doUndo();
+  assert.equal(p.text, 'أول\nثان'); assert.equal(p.choices[0].line, 2); assert(p.suggestions['2']);
+  h.click('delline', 1);
+  assert.equal(p.choices.length, 0); assert.equal(Object.keys(p.suggestions).length, 0);
+}
+
+async function wordContext() {
+  const h = harness([poem('a', 'سلام حاضر\nسياق أول'), poem('b', 'سلام حاضر\nسياق ثان')]), requests = [];
+  h.api.sample({ json(input) { const done = deferred(); requests.push({ input, done }); return done.promise; } });
+  h.api.context(0); const first = h.api.fetchWordAlts();
+  h.select('b'); h.api.context(0); const second = h.api.fetchWordAlts();
+  assert.equal(requests.length, 2, 'a shared line in another poem needs its own context');
+  requests[0].done.resolve({ synonyms: [{ text: 'قديم' }] }); await first;
+  assert(!h.api.wordAlternatives.syn, 'the previous poem response cannot populate the current cache');
+  requests[1].done.resolve({ synonyms: [{ text: 'جديد' }] }); await second;
+  assert.equal(h.api.wordAlternatives.syn[0].text, 'جديد');
+  h.api.poems[1].meter = 'other'; h.api.context(0);
+  const third = h.api.fetchWordAlts(); assert.equal(requests.length, 3, 'meter changes invalidate word suggestions');
+  requests[2].done.resolve({ synonyms: [{ text: 'وزن' }] }); await third;
+}
+
 (async () => {
-  await staleSave(); await conversations(); await staleAlternatives(); await diacritics();
-  console.log('PASS workbench state: revision-safe saves, isolated conversations, stale responses, preserved wording/marks');
+  await staleSave(); await conversations(); await staleAlternatives(); await diacritics(); await lineEditing(); await wordContext();
+  console.log('PASS workbench state: revision-safe saves, isolated conversations, stale responses, preserved wording/marks, line identities/metadata and word context');
 })().catch(error => { console.error(error); process.exitCode = 1; });

@@ -52,9 +52,10 @@ CLI Word export uses Python plus Node.js, not the browser's host-download capabi
 ```sh
 python3 scripts/export_book.py poems.json out.docx --appendix --text out.txt
 python3 scripts/export_book.py poems.json out.docx --tashkeel light --title "ديواني"
+python3 scripts/export_book.py poems.json out.docx --layout table
 python3 scripts/export_book.py poems.json out.docx --pdf
 ```
 
-Options include `--tashkeel full|light|none`, a title page, and a scansion appendix. The classical layout places صدر right and عجز left. Plain text separates halves with five spaces. Report the actual generated file paths and deliver them through a real available file capability.
+Options include `--tashkeel full|light|none`, a title page, a scansion appendix, and `--layout paras|table` for copy-friendly paragraphs or fixed columns. The classical layout places صدر right and عجز left. Plain text separates halves with five spaces. Report the actual generated file paths and deliver them through a real available file capability.
 
 PDF additionally needs LibreOffice (`soffice`), font support and `fc-cache`. The current `--pdf` path can copy bundled Amiri fonts into `~/.fonts` and refresh the cache. Check the environment and authorization before that global filesystem change; otherwise deliver Word/text and state the missing PDF requirement. A successful DOCX export does not prove PDF conversion or host download integration.

@@ -22,7 +22,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from arud.lattice import build_hemistich, clean, describe   # noqa: E402
-from arud.classical import (scan_line, rank_poem, best_per_meter, split_line, scan_hemistich,  # noqa: E402
+from arud.classical import (scan_line, rank_poem, best_per_meter, split_line, scan_hemistich, scan_mudawwar, TADWIR_PENALTY,  # noqa: E402
                             to_marks, template, scan_pair)
 from arud.meters import FORMS, FORMS_BY_KEY, METER_INFO, FAMILIES   # noqa: E402
 from arud import freeverse, qafiya, report   # noqa: E402
@@ -159,7 +159,26 @@ def cmd_weigh(a):
         print(f'  {w}: {to_marks(b)}{alt_txt}')
 
 
+def rhyme_key(w):
+    import re as _re
+    x = _re.sub('[\u064B-\u0652\u0670\u0640]', '', clean(w))
+    x = _re.sub('[أإآٱ]', 'ا', x).replace('ة', 'ه').replace('ى', 'ي')
+    x = _re.sub('[^\u0621-\u064A]', '', x)
+    return _re.sub('^(وال|فال|بال|كال|لل|ال)(?=..)', '', x)
+
+
 def cmd_verify(a):
+    used = []
+    if a.poem:
+        with open(a.poem, encoding='utf-8') as fh:
+            plines = fh.read().splitlines()
+        used = [(i + 1, clean(l).split(' ')[-1]) for i, l in enumerate(plines) if clean(l) and i + 1 != a.line]
+    def repeat_of(text):
+        ws = clean(text).split(' ')
+        if not used or not ws:
+            return None
+        k = rhyme_key(ws[-1])
+        return next((u for u in used if rhyme_key(u[1]) == k), None)
     if a.free:
         fams = [f for f in FAMILIES if f.meter == a.meter]
         if not fams:
@@ -173,7 +192,11 @@ def cmd_verify(a):
             total, steps, T = r
             fl, rd = freeverse.summarize(L, steps, T, [text])
             err = sum(f[3] for f in fl[0].feet)
-            print(f'  {"✓ موزون" if err == 0 else "✗ مكسور"} على تفعيلة {fams[0].foot}: '
+            rp = repeat_of(text)
+            if rp:
+                print(f'  ⚠ تكرار قافية (إيطاء محتمل): «{rp[1]}» قافية السطر {rp[0]} — اختر كلمة قافية أخرى')
+            verdict = '✓ موزون' if err == 0 and not rp else '✗ مرفوض للتكرار' if err == 0 else '✗ مكسور'
+            print(f'  {verdict} على تفعيلة {fams[0].foot}: '
                   + ' | '.join(f'{f[0]} {to_marks(f[2])}' + (' ✗' if f[3] else '') for f in fl[0].feet))
         return
     forms = [f for f in FORMS if f.meter == a.meter and (not a.form or a.form in f.name)]
@@ -186,9 +209,12 @@ def cmd_verify(a):
             if a.part == 'verse' or (a.part is None and sp):
                 if form.single or not sp:
                     continue
-                pair = scan_pair(sp[0], sp[1], form, first=True, cap=8)
+                pair = scan_pair(sp[0], sp[1], form, first=a.line in (None, 1), cap=8)
                 if pair and (best is None or pair[0] < best[0]):
                     best = (pair[0], form, [('الصدر', pair[1]), ('العجز', pair[2])])
+                m = scan_mudawwar(sp[0], sp[1], form, cap=8)
+                if m and (best is None or m[0] + TADWIR_PENALTY < best[0]):
+                    best = (m[0] + TADWIR_PENALTY, form, [('الصدر', m[1]), ('العجز', m[2])])
             else:
                 part = a.part or 'ajuz'
                 if form.single and part == 'sadr':
@@ -200,12 +226,19 @@ def cmd_verify(a):
             print(f'✗ «{text}» — بعيد جدًّا عن الوزن' if a.brief else f'— «{text}»\n  ✗ بعيد جدًّا عن الوزن')
             continue
         ok = all(h.errors == 0 for _, h in best[2])
+        rp = repeat_of(text)
+        if rp:
+            ok = False
+            print(f'  ⚠ تكرار قافية (إيطاء محتمل): «{rp[1]}» قافية السطر {rp[0]} — اختر كلمة قافية أخرى' if not a.brief else '', end='' if a.brief else '\n')
         if a.brief:
             feet = ' — '.join(' | '.join(f.name + ('✗' if f.errors else '') for f in h.feet) for _, h in best[2])
-            print(f'{"✓" if ok else "✗"} «{text}»  [{feet}]')
+            tw = getattr(best[2][0][1], 'tadwir', None)
+            print(f'{"✓" if ok else "✗"} «{text}»  [{feet}]' + (f'  (مدوّر: «{tw}» بين الشطرين)' if tw else '')
+                  + (f'  ⚠ تكرار قافية (إيطاء محتمل): «{rp[1]}» قافية السطر {rp[0]}' if rp else ''))
             continue
         print(f'— «{text}»')
-        print(f'  {"✓ موزون" if ok else "✗ مكسور"} على {report.meter_title(best[1])}')
+        verdict = '✓ موزون' if ok else '✗ مرفوض للتكرار' if rp and all(h.errors == 0 for _, h in best[2]) else '✗ مكسور'
+        print(f'  {verdict} على {report.meter_title(best[1])}')
         for name, h in best[2]:
             for l in report.render_hemi(h, name, best[1]):
                 print('  ' + l)
@@ -278,6 +311,8 @@ def main():
     v.add_argument('--part', choices=['sadr', 'ajuz', 'verse'])
     v.add_argument('--free', action='store_true', help='check as a taf\'ila (free verse) line')
     v.add_argument('--brief', action='store_true', help='one line per candidate')
+    v.add_argument('--poem', help='poem file: flag candidates whose rhyme word already ends another verse (إيطاء)')
+    v.add_argument('--line', type=int, help='with --poem: 1-based number of the line being replaced')
     v.add_argument('texts', nargs='+')
     v.set_defaults(fn=cmd_verify)
     m = sub.add_parser('meters'); m.set_defaults(fn=cmd_meters)

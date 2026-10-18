@@ -27,9 +27,12 @@ python3 scripts/scan.py analyze poem.txt --mode free --meter kamil
 python3 scripts/scan.py verify --brief --meter tawil "صدر * عجز" "بديل * آخر"
 python3 scripts/scan.py verify --meter tawil --part ajuz "عجز بديل"
 python3 scripts/scan.py verify --meter kamil --free "سطر تفعيلة"
+python3 scripts/scan.py verify --meter tawil --poem poem.txt --line 2 "صدر * عجز"
 python3 scripts/scan.py weigh "كلمة أو عبارة"
 python3 scripts/scan.py meters
 ```
+
+`--line` counts physical source-file rows, including blanks. With `--poem`, candidate verification excludes the replaced row, uses its known verse position and applies the strict repeated-rhyme spelling filter in either mode. That editing filter does not establish the semantic conditions of الإيطاء.
 
 Meter keys: `tawil madid basit wafir kamil hazaj rajaz ramal sari munsarih khafif mudari muqtadab mujtath mutaqarib mutadarak`. Mode auto-detection and ranking are aids, not a form definition. Force the intended mode/meter when testing a specific claim, while keeping rival plausible readings visible.
 
@@ -46,6 +49,6 @@ For repairs, draft a few minimal phrase alternatives using [repair techniques](f
 
 ## Explain proportionally
 
-Lead with the requested conclusion and the important reading assumptions. Show a compact scan for a quick question; use per-line tables for a full audit. Explain `ب` short, `−` long and `=` overlong syllable notation if used; moving/still `1/0` notation is different and must not be mixed without conversion. Keep Arabic text and symbol display order unambiguous. Do not paste the raw report unless useful or requested.
+Lead with the requested conclusion and the important reading assumptions. Show a compact scan for a quick question; use per-line tables for a full audit. Explain `ب` short, `−` long and `=` overlong syllable notation if used; external letter-level notation must be converted before comparison. Keep Arabic text and symbol display order unambiguous. Do not paste the raw report unless useful or requested.
 
 If tools are unavailable, say what was and was not checked. A manual analysis can remain useful, but do not claim the scanner ran or certify an unresolved reading.

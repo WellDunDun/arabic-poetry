@@ -43,7 +43,7 @@ def main():
             continue
         work = output / case['id']
         work.mkdir()
-        context = suite.get('context')
+        context = case.get('context', suite.get('context'))
         if context:
             (work / 'current.txt').write_text(context['poem'], encoding='utf-8')
         poem_before = hashlib.sha256((work / 'current.txt').read_bytes()).hexdigest() if context else None
@@ -99,6 +99,7 @@ User request:
             match = re.search(r'<script>window.DiwanInitialPoem=(.*?);</script>', raw.decode('utf-8'))
             if match:
                 initial = json.loads(match.group(1))
+                row['initial_poem'] = {key: initial[key] for key in ('title', 'text', 'status')}
                 row['initial_text_matches'] = bool(context) and initial['text'] == context['poem']
                 row['review_status'] = initial['status']
             html_files.append(row)

@@ -1,6 +1,6 @@
 ---
 name: arabic-poetry
-description: Write, revise, continue, explain and analyze classical and modern Arabic poetry, with a local meter scanner and optional Diwan editor. Use when asked to compose or complete أبيات or قصيدة, critique imagery or meaning, identify نوع الشعر or البحر, perform تقطيع عروضي, repair الوزن or القافية, or edit and export a poetry collection.
+description: Write, revise, continue, explain and analyze classical and modern Arabic poetry, with a local meter scanner and Diwan drafting editor. Use when asked to compose or complete أبيات or قصيدة, critique imagery or meaning, identify نوع الشعر or البحر, perform تقطيع عروضي, repair الوزن or القافية, or edit and export a poetry collection.
 ---
 
 # Arabic poetry
@@ -11,7 +11,8 @@ Support classical and modern Arabic poetry equally. Judge each poem by its inten
 
 - For composition, continuation, revision or critique, read [craft and revision](references/CRAFT.md). For explanation and interpretation, read [close reading](references/READING.md).
 - For meter or rhyme claims, read [prosody](references/PROSODY.md) and the [scanner workflow](references/SCANNER.md). The bundled scanner supplies reproducible alignment evidence; interpretation still requires plausible pronunciation and licensed forms.
-- For an editor request, open [Diwan](references/DIWAN.md#open-with-the-current-poem) with the current poem in that turn. Prepare its preloaded local copy and use an available local HTML viewer/browser; do not publish it or ask the poet to paste text you already have. Read [Diwan](references/DIWAN.md) for collections and exports. Ordinary writing and quick analysis can stay in chat; missing viewer capabilities must be stated honestly.
+- For composition, continuation or actual revision, open [Diwan](references/DIWAN.md#open-with-the-current-poem) automatically in that turn with the complete new or revised draft. Do the same for an explicit editor request. Use a preloaded private local copy and an available HTML viewer/browser, without another offer, permission question, publication or paste step. Reuse the existing Diwan tab. State missing viewer capabilities honestly.
+- Keep quick analysis, interpretation, critique-only and requested review-first pauses in chat. Explicit chat-only, no-editor or poem-only delivery constraints override automatic opening. Read [Diwan](references/DIWAN.md) for launch, collections and exports; opening a proposal does not accept it or replace the preserved original.
 - Use [worked examples](references/EXAMPLES.md) when teaching or checking a detailed scan. [Tools](references/TOOLS.md) distinguishes the scanner and external analyzers. [Sources](references/SOURCES.md), [scanner coverage](references/SCANNER-SOURCES.md) and [similar skills](references/SIMILAR_SKILLS.md) explain evidence and limits. Load only relevant resources.
 
 ## Establish intent and preserve the text

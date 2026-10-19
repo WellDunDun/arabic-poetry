@@ -1,5 +1,11 @@
 # Poetry skill evaluations
 
+## Automatic drafting triggers
+
+The frozen [diwan-auto-open.json](diwan-auto-open.json) suite tests English/Arabic composition and revision without an explicit editor request, quick interpretation and meter analysis, composition/revision chat-only overrides, and revision with no local viewer. Its baseline is PR #9 at `8fbdef835a02773d7153ba4c523b2e1de7e6663a`. Requests and criteria are independent of the older suites and were fixed before the comparison runs.
+
+Run the same isolated runner below with `--suite evals/diwan-auto-open.json`, first against the baseline package and then against the candidate. Cases can inherit the suite's synthetic current poem, override it with their own `context`, or set `context: null` for a new poem with no existing text. The HTML evidence records the actual embedded title, text and status so generated and revised drafts can be checked separately from the original input. `initial_text_matches` compares only against that original input; it should be false for an intentional revision. Grade the complete revised/generated text against the request instead. The offline `test_diwan_launch.py` regression verifies this isolation and the resulting display receipts without calling a model.
+
 ## First-request Diwan launch
 
 The independent suite [diwan-launch.json](diwan-launch.json) freezes English and Arabic editor requests, an unavailable-viewer case, an explicit chat-only case and software invariants. It uses a synthetic poem, not a private user transcript. Its baseline is main at `50938ba72240d810079d9d360397df256f83e4c9`. Keep this suite separate from the historical consolidation corpus below.

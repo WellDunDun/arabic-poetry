@@ -58,7 +58,7 @@ This loads the skill for the current conversation without permanently installing
 npx skills@latest add WellDunDun/arabic-poetry
 ```
 
-The repository serves one skill, `arabic-poetry`, with writing and interpretation guidance, a local meter scanner, and the optional **Diwan** editing workbench.
+The repository serves one skill, `arabic-poetry`, with writing and interpretation guidance, a local meter scanner, and the **Diwan** drafting and editing workbench.
 
 Select `arabic-poetry` in your agent. Try requests such as:
 
@@ -73,7 +73,7 @@ Arabic poetry needs more than fluent phrasing or a guessed meter. This skill con
 
 ## Skill
 
-[arabic-poetry](skills/arabic-poetry/SKILL.md) supports composition, continuation, revision, close reading, and form, meter, and rhyme identification. The agent uses the relevant writing, analysis or editing workflow for the request. Quick questions stay in chat; the editor is optional.
+[arabic-poetry](skills/arabic-poetry/SKILL.md) supports composition, continuation, revision, close reading, and form, meter, and rhyme identification. Creating, continuing or revising a poem opens Diwan automatically with the complete draft when a local viewer is available. Quick questions and explicit chat-only requests stay in chat.
 
 Its local Python scanner compares vocalized text against implemented forms of the 16 meters and their configured variations. It reports feet, candidate meters, mismatches and rhyme candidates. Ranking is heuristic, rhyme analysis starts from spelling, and a zero-error alignment still needs a plausible pronunciation and an independent rule check. Scans use ب for short, − for long and = for overlong syllables in pause.
 
@@ -87,9 +87,9 @@ Its **Diwan** page lets you review tashkeel word by word, see scansion update li
 
 The [source references](skills/arabic-poetry/references/SOURCES.md), [scanner coverage notes](skills/arabic-poetry/references/SCANNER-SOURCES.md) and [similar-skill comparisons](skills/arabic-poetry/references/SIMILAR_SKILLS.md) document evidence, similar skills, and limitations.
 
-Ask "Open Diwan with this poem" to open a private copy with the current poem already loaded. The agent uses a local HTML viewer or browser when available. Reopening preserves saved browser edits. If the host cannot display local HTML, it provides the preloaded file and explains that remaining step. This does not publish the poem or automatically connect the editor's AI buttons to the chat.
+Creating, continuing or revising a poem opens a private Diwan copy with the complete new or revised draft already loaded, without an extra request or paste step. You can also ask "Open Diwan with this poem". Say "keep this in chat" to opt out; quick analysis and explanation stay in chat. The agent uses a local HTML viewer or browser when available and reuses the existing Diwan tab. Reopening preserves saved browser edits. If the host cannot display local HTML, it provides the preloaded file and explains that remaining step. This does not publish the poem or automatically connect the editor's AI buttons to the chat.
 
-قل «افتح ديوان بهذه القصيدة» لفتح نسخة خاصة تتضمن القصيدة الحالية دون نسخها ولصقها. يستخدم الوكيل عارض HTML محليًا أو متصفحًا متاحًا، ويحافظ على تعديلات المتصفح المحفوظة عند إعادة الفتح. إذا تعذّر العرض المحلي، يقدّم الملف المحمّل بالقصيدة ويوضّح الخطوة المتبقية. لا ينشر هذا القصيدة ولا يربط أزرار الذكاء بالمحادثة تلقائيًا.
+عند كتابة قصيدة أو إكمالها أو تعديلها، يفتح الوكيل ديوان تلقائيًا بنسخة خاصة تتضمن المسودة الجديدة أو المعدّلة كاملة، دون طلب إضافي أو نسخ ولصق. ويمكنك أيضًا أن تقول «افتح ديوان بهذه القصيدة». قل «أريد الرد هنا في المحادثة فقط» إذا لم ترد فتح المحرر؛ وتبقى أسئلة التحليل والشرح السريعة في المحادثة. يستخدم الوكيل عارض HTML محليًا أو متصفحًا متاحًا، ويعيد استخدام تبويب ديوان المفتوح ويحافظ على تعديلات المتصفح المحفوظة. إذا تعذّر العرض المحلي، يقدّم الملف المحمّل بالقصيدة ويوضّح الخطوة المتبقية. لا ينشر هذا القصيدة ولا يربط أزرار الذكاء بالمحادثة تلقائيًا.
 
 If you previously installed `arabic-prosody`, replace that installation with `arabic-poetry` from this repository. Its scanner, workbench and exporters are now included in the single package.
 

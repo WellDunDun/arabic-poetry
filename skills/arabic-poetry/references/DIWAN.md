@@ -1,10 +1,10 @@
 # Diwan editor and export
 
-Diwan is the optional editing workbench contributed by Firas F. Khabour. Use it when the user requests an editor, saved collection, or export, or when it helps the requested extended editing. Ordinary composition, close reading and quick scans can stay in chat. Read the [scanner workflow](SCANNER.md) for metrical claims and follow the main skill's vocalization policy.
+Diwan is the drafting and editing workbench contributed by Firas F. Khabour. Open it automatically when composing, continuing or revising a poem, once the complete draft is ready, using the local workflow below. Explicit chat-only, no-editor and poem-only delivery constraints take precedence. Quick analysis, close reading, critique without a rewrite and requested review-first pauses stay in chat. Use it for explicit editor, collection and export requests too. Read the [scanner workflow](SCANNER.md) for metrical claims and follow the main skill's vocalization policy.
 
 ## Open with the current poem
 
-An editor request such as "open Diwan", "open this poem in the editor" or «افتح الديوان بهذه القصيدة» authorizes the local launch. Complete it in the same turn without another offer or a request to paste text already available. Use the latest accepted text, including its marks and line breaks. If an existing editor has unreadable newer edits, obtain that text through a real available capability before replacing anything.
+A composition, continuation or revision request authorizes the private local launch unless the poet opts out. An explicit editor request such as "open Diwan" or «افتح الديوان بهذه القصيدة» also triggers it. Complete the launch in the same turn without another offer or a request to paste text already available. For a new poem, preload the actual generated draft. For revision, preserve the original separately and preload the complete revised draft, including unchanged text, marks and line breaks. Keep proposals in review status; opening them is not acceptance. If an existing editor has unreadable newer edits, obtain that text through a real available capability before replacing anything.
 
 1. Save the current poem as UTF-8 text in a writable poem workspace outside the installed skill. Choose a stable poem ID and reuse it when reopening that poem. Give unrelated poems different IDs.
 2. Run the installed helper with real absolute paths. This example assumes the command runs from the installed skill directory:

@@ -111,16 +111,23 @@ def request(url, route, body=None):
 
 
 def session(store):
+    store.check_binding()
     path = store.state / 'session.json'
     if not path.exists():
         return None
     receipt = parse(bounded_read(path))
     try:
         health = request(receipt['url'], '/status')
-        if os.path.samefile(health['path'], store.path) and health['id'] == store.get()['poem']['id']:
-            return receipt
     except (OSError, DiwanError, KeyError, http.client.HTTPException):
+        return None
+    if health.get('id') != receipt.get('id') or health.get('id') != store.get()['poem']['id']:
+        return None
+    try:
+        if os.path.samefile(health['path'], store.path):
+            return receipt
+    except FileNotFoundError:
         pass
+    request(receipt['url'], '/shutdown', {})
     return None
 
 

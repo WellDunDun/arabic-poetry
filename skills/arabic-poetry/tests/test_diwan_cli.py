@@ -124,6 +124,15 @@ class DiwanCLITests(unittest.TestCase):
         self.assertEqual(error.exception.code,'DUPLICATE_ID')
         self.assertEqual(self.cli('get',self.file)['version'],first['version'])
 
+    def test_create_replay_rejects_a_copied_document_without_writes(self):
+        self.create()
+        copied = self.root/'copy.diwan.json';shutil.copyfile(self.file,copied)
+        before = {p.relative_to(self.root):p.read_bytes() for p in self.root.rglob('*') if p.is_file()}
+        for extra in [(), ('--dry-run',)]:
+            error = self.cli('create',copied,'--title','نافذة','--text-file',self.source,*extra,status=5)
+            self.assertEqual(error['error']['code'],'DUPLICATE_ID')
+        self.assertEqual(before,{p.relative_to(self.root):p.read_bytes() for p in self.root.rglob('*') if p.is_file()})
+
     def test_export_cannot_replace_lock_or_another_poems_history(self):
         self.create()
         other = storage.Store(self.root/'other.diwan.json')
@@ -343,8 +352,34 @@ class DiwanCLITests(unittest.TestCase):
         again = self.cli('open', self.file, '--no-browser')
         self.assertTrue(again['reused'])
         self.assertEqual(receipt['url'], again['url'])
+        copied = self.root/'copy.diwan.json';shutil.copyfile(self.file,copied)
+        for args in [('open',copied,'--no-browser'),('stop',copied)]:
+            self.assertEqual(self.cli(*args,status=5)['error']['code'],'DUPLICATE_ID')
+        self.assertEqual(diwan.request(receipt['url'],'/status')['id'],again['id'])
         self.assertTrue(self.cli('stop', self.file)['stopped'])
         self.assertEqual(self.cli('get', self.file)['version'], before)
+
+    def test_open_after_rename_shuts_down_the_previous_owned_server(self):
+        before = self.create()['version']
+        receipt = self.cli('open',self.file,'--no-browser')
+        renamed = self.root/'renamed.diwan.json'
+        def cleanup():
+            try:diwan.request(receipt['url'],'/shutdown',{})
+            except (OSError,storage.DiwanError):pass
+        self.addCleanup(cleanup)
+        self.file.rename(renamed)
+        replacement = self.cli('open',renamed,'--no-browser')
+        self.addCleanup(lambda:self.cli('stop',renamed))
+        self.assertNotEqual(receipt['url'],replacement['url'])
+        deadline = time.monotonic()+3
+        while True:
+            try:diwan.request(receipt['url'],'/diwan.html')
+            except OSError:break
+            except (storage.DiwanError,ValueError):pass
+            if time.monotonic()>=deadline:self.fail('Old server still owns its loopback port after rename/open')
+            time.sleep(0.02)
+        self.assertEqual(self.cli('get',renamed)['version'],before)
+        self.assertTrue(self.cli('stop',renamed)['stopped'])
 
 
 if __name__ == '__main__':

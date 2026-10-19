@@ -208,6 +208,7 @@ class Store:
                     current = self.get()
                     self.snapshot(current)
             if all(current['poem'][key] == patch[key] for key in FIELDS):
+                self.check_binding()
                 return dict(current, replayed=True, dry_run=dry_run)
             raise DiwanError('ALREADY_EXISTS', 'This poem path already exists with different content; use get then update --if-version', 5)
         if dry_run:

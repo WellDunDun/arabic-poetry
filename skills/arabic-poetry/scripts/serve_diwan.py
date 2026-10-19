@@ -74,6 +74,7 @@ def make_server(workspace, port=None, page=None, document=None):
     token = secrets.token_urlsafe(32)
     prefix = '/' + token
     lock = threading.Lock()
+    identity = None if document is None else {'path': str(document.path), 'id': document.get()['poem']['id']}
 
     class Handler(BaseHTTPRequestHandler):
         def log_message(self, *args):
@@ -179,6 +180,9 @@ def make_server(workspace, port=None, page=None, document=None):
 
         def document_call(self, path, data=None):
             from diwan_store import DiwanError
+            if path == '/status':
+                self.send(200, identity)
+                return
             try:
                 if data is not None:
                     result = document.update(data.get('patch'), data.get('if_version'), data.get('request_id'))
@@ -186,8 +190,6 @@ def make_server(workspace, port=None, page=None, document=None):
                     result = document.history()
                 else:
                     result = document.get()
-                    if path == '/status':
-                        result = {'path': result['path'], 'id': result['poem']['id'], 'version': result['version']}
                 self.send(200, result)
             except DiwanError as error:
                 self.send(409 if error.exit_code == 5 else 400, {'error': {'code': error.code, 'message': str(error), **error.details}})

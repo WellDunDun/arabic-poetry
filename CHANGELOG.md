@@ -2,6 +2,8 @@
 
 ## 0.2.0, shared-file Diwan CLI, unreleased
 
+- Shut down an owned server before replacing its session after a poem rename. Reject copied document identities before reporting a successful create replay, including previews.
+
 - Refresh a clean editor after closing or cancelling an edit that deferred an agent save. Preserve literal bulk-edit whitespace and avoid a revision for unchanged text. Report missing, conflicting and invalid queue responses with their documented CLI error codes.
 
 - Explicitly disclose consequential pronoun readings introduced by tashkeel, while preserving readings fixed by supplied marks or context.

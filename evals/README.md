@@ -31,4 +31,4 @@ Case summaries must agree with their criterion judgments: any applicable failure
 
 The [manual draft-review trial](results/2026-10-18-draft-review/report.md) and [CodeRabbit follow-up trial](results/2026-10-18-review/report.md) record earlier packages. The [earlier 2026-10-18 trial](results/2026-10-18/report.md) remains available. Earlier results remain historical; the three baseline packages and the requests/criteria stay pinned to the original Git snapshots.
 
-The latest preservation audit uses [the 2026-10-19 record](results/2026-10-19-preservation/report.md). It retains original baseline executions, adds final-package follow-up batches, and discloses the workers' earlier same-condition context. See [the contribution audit](../docs/research/firas-preservation-audit-2026-10-19.md) for Claude review, dispositions and file mapping.
+The [latest workflow regression trial](results/2026-10-19-preservation/report.md) retains original baseline executions, adds final-package follow-up batches, and discloses the workers' earlier same-condition context.

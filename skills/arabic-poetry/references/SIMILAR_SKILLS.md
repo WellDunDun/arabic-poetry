@@ -16,7 +16,9 @@ The Hurmoz design also appears in [Mkhlab's Hermes copy](https://github.com/Mosh
 
 In arud-skill's [variation reference](https://github.com/cnemri/arud-skill/blob/ed0fbe77429a60729aeb2595178a78d001feb4ba/references/zihafs_ilal_reference.md), الخبن deletes the second still letter, so فاعلن − ب − becomes فعِلن ب ب − and فاعلاتن − ب − − becomes فعِلاتن ب ب − −. The inspected الخبن examples instead give the patterns of فعولن ب − − and مفاعيلن ب − − −. These are internally inconsistent transformations; they are not runtime findings about every output of PyArud. Its [meter reference](https://github.com/cnemri/arud-skill/blob/ed0fbe77429a60729aeb2595178a78d001feb4ba/references/buhur_reference.md) claims guaranteed meter separation through costs without an independently verified benchmark here.
 
-Our response is to preserve the sound-to-pattern evidence, check exact coverage, and validate the interpretation against Arabic prosody sources. In this repository the [arabic-prosody](../../arabic-prosody/SKILL.md) scanner does the counting in ب − notation.
+The inspected [arud-skill CLI wrapper](https://github.com/cnemri/arud-skill/blob/ed0fbe77429a60729aeb2595178a78d001feb4ba/scripts/arud_cli.py) declares Python 3.12+, an unbounded `pyarud>=1.0.0` dependency and developer-local import paths. Those paths are not a portable installation procedure, and a lower version bound does not pin the analyzer used. Record the actual installed version and exact input for an optional integration; the wrapper was read, not executed.
+
+Our response is to preserve the sound-to-pattern evidence, check exact coverage, and validate the interpretation against Arabic prosody sources. In this repository the [integrated scanner](../SKILL.md) does the counting in ب − notation.
 
 ## How these comparisons changed this skill
 

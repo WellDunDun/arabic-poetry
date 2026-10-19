@@ -1,0 +1,16 @@
+{
+  "identity": {
+    "agent": "Codex, as identified by the task environment",
+    "exact_serving_model": "Not independently observable",
+    "python": "3.14.2 (main, Dec  5 2025, 16:49:16) [Clang 17.0.0 (clang-1700.4.4.1)]"
+  },
+  "limits": [
+    "Local filesystem and Python used only.",
+    "No network, browser, host database, sampling, downloads, publishing, installs, or global font writes.",
+    "The allowed package contains no Diwan editor, Word exporter, or shared conversation persistence. The last case saves a verified local TXT file; no DOCX was created.",
+    "Arithmetic checker validates supplied transcription coverage and bit patterns only; it does not establish pronunciation or metrical legality."
+  ],
+  "shared_context": "All eight cases were completed in order by the same agent conversation. The allowed package and already-read references remained in context. No other condition, rubric, grading, expected answer, research report, or surrounding project material was read. No agents were spawned.",
+  "package": "Read-only use of /private/tmp/poetry-evals-20261018/packages/original-only/skills/arabic-poetry; all Python invocations used PYTHONDONTWRITEBYTECODE=1.",
+  "command_records": "Child process records contain actual argv, subprocess exit status, stdout and stderr. Earlier Python orchestration invocations are also included with their actual argv and tool-observed successful exit; their stdout follows the actual print statements applied to captured child output. Shared orchestration sometimes saves the preceding response before starting the next case. Final assembly and verification are recorded separately."
+}

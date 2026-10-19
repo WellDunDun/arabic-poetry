@@ -1,0 +1,34 @@
+{
+  "condition": "prosody-only",
+  "package": "/private/tmp/poetry-evals-20261018/packages/prosody-only/skills/arabic-prosody",
+  "requests": "/private/tmp/poetry-evals-20261018/prompts.json",
+  "model": {
+    "exact_model_id": "not exposed to this agent",
+    "identity_provided": "Codex, based on GPT-6"
+  },
+  "runtime": {
+    "python": "3.14.2",
+    "python_executable": "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "node": "v25.8.1",
+    "shell": "zsh"
+  },
+  "limits": [
+    "Local filesystem, Python and Node only.",
+    "No network, browser, host database, sampling/download APIs, publishing, package installation, or global font installation.",
+    "Package treated as immutable. PYTHONDONTWRITEBYTECODE=1 applied to all package scanner/exporter executions.",
+    "No other packages, outputs, rubrics, grades, research, or review reports inspected. No grading or agent delegation."
+  ],
+  "shared_context": "All eight requests were processed sequentially in one worker conversation, in prompt order. The worker inherited repository and tool instructions from the parent but used only the assigned package and prompts as task material. Earlier cases and command results remained in the worker context. No cross-condition material was inspected.",
+  "commands": "Each case commands.json and responses.json captures actual argv, subprocess exit_code, stdout and stderr for analysis, generation, export and inspection runs. Supporting local preparation used Python write commands. Nested Node syntax/version command captures are contained in the captured Python stdout. Failed runs are retained.",
+  "failures": [
+    "An attempted optional store.js inspection failed; persistence code was then inspected inline in diwan.html.",
+    "The first local HTML generator had a Python quoting error. Its dependent export and document inspection failed because artifacts did not yet exist. Corrected the local generator and reran successfully; package unchanged."
+  ],
+  "artifact_checks": [
+    "All four extracted local HTML inline scripts pass node --check.",
+    "DOCX ZIP integrity check returned None; document.xml parses; title and exact poem text present.",
+    "No visual rendering or interactive browser test performed.",
+    "No PDF requested or produced. No LibreOffice or global-font operation performed."
+  ],
+  "persistence": "poems.json and embedded HTML seed are local files. Browser localStorage is conditional on browser/file-URL behavior and was not exercised. No hosted or cross-conversation persistence established."
+}

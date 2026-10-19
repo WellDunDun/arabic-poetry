@@ -1,6 +1,6 @@
 # Prosody and rhyme
 
-Use this page to judge metrical and rhyme claims while composing, revising or explaining. The detailed rules live in the companion skill [arabic-prosody](../../arabic-prosody/SKILL.md): pronunciation in [arudi-writing](../../arabic-prosody/references/arudi-writing.md), meters and forms in [meters](../../arabic-prosody/references/meters.md), variations in [zihafat](../../arabic-prosody/references/zihafat.md), rhyme in [qafiya](../../arabic-prosody/references/qafiya.md), free verse in [free-verse](../../arabic-prosody/references/free-verse.md), and the source behind each rule in [sources](../../arabic-prosody/references/sources.md). When that skill is installed, let its scanner do the counting and use this page for the judgement around it.
+Use this page to judge metrical and rhyme claims while composing, revising or explaining. The integrated [arabic-poetry skill](../SKILL.md) includes the scanner. Consult [arudi-writing](arudi-writing.md), [meters](meters.md), [zihafat](zihafat.md), [qafiya](qafiya.md), [free-verse](free-verse.md), and [scanner sources](SCANNER-SOURCES.md) for detailed rules. When execution is available, use the bundled scanner for counting and this page to judge its results.
 
 ## Keep four layers separate
 
@@ -11,9 +11,11 @@ Use this page to judge metrical and rhyme claims while composing, revising or ex
 
 If a layer changes, recompute the layers that follow. Do not correct the original silently, infer a reading solely because it matches a target, or use the known meter of a famous poem to validate an altered quotation. When a scanner proposes a reading (its «قراءات مفترضة»), check that reading before accepting the scan.
 
+Retain an analyzer's normalized input and version. Inspect supplied and inferred marks before accepting a scan. Use the integrated [scanner workflow](SCANNER.md) when execution is available; [tools](TOOLS.md) distinguishes bundled and optional external analyzers.
+
 ## Notation
 
-Use the notation that arabic-prosody and the Diwan workbench display:
+Use the notation that the integrated scanner and Diwan workbench display:
 
 | Symbol | Meaning |
 | --- | --- |

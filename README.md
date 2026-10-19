@@ -6,14 +6,35 @@ Use it for عمودي، تفعيلة، قصيدة نثر, evidence-led meter and
 
 ## Quickstart
 
+### Use it in your current chat
+
+Copy one of these prompts into your agent's chat.
+
+انسخ أحد النصين والصقه في محادثتك مع وكيلك.
+
+#### English
+
+```text
+Run `npx skills use "https://github.com/WellDunDun/arabic-poetry" --skill "arabic-poetry"` and follow the generated skill instructions now. Read its complete output, redirecting it to a temporary file first if necessary. Resolve relative paths from the supporting-files directory it provides.
+```
+
+#### العربية
+
+```text
+شغّل `npx skills use "https://github.com/WellDunDun/arabic-poetry" --skill "arabic-poetry"` واتّبع تعليمات المهارة الناتجة الآن. اقرأ المخرجات كاملة، واحفظها أولًا في ملف مؤقت إذا لزم الأمر. اعتبر مجلد الملفات المساندة الذي يحدده الأمر أساسًا لأي مسارات نسبية.
+```
+
+This loads the skill for the current conversation without permanently installing it. Your agent needs command execution. For persistent installation, use the command below or the [installation guide](INSTALL.md).
+
+يحمّل هذا المهارة للمحادثة الحالية دون تثبيتها بشكل دائم. يلزم وكيل يستطيع تنفيذ الأوامر. للتثبيت الدائم، استخدم الأمر أدناه أو [دليل التثبيت](INSTALL.md).
+
+### Install permanently
+
 ```sh
 npx skills@latest add WellDunDun/arabic-poetry
 ```
 
-The repository serves two skills; install either or both:
-
-- `arabic-poetry`: writing, revising, continuing and reading Arabic poetry.
-- `arabic-prosody`: a rule-based meter and rhyme assistant with the **Diwan** workbench for checking, fixing and exporting your poems.
+The repository serves one skill, `arabic-poetry`, with writing and interpretation guidance, a local meter scanner, and the optional **Diwan** editing workbench.
 
 Select `arabic-poetry` in your agent. Try requests such as:
 
@@ -28,17 +49,21 @@ Arabic poetry needs more than fluent phrasing or a guessed meter. This skill con
 
 ## Skill
 
-[arabic-poetry](skills/arabic-poetry/SKILL.md) supports composition, continuation, revision, close reading, and form, meter, and rhyme identification. It includes worked examples and relies on `arabic-prosody` for scansion, using the same ب − notation.
+[arabic-poetry](skills/arabic-poetry/SKILL.md) supports composition, continuation, revision, close reading, and form, meter, and rhyme identification. The agent uses the relevant writing, analysis or editing workflow for the request. Quick questions stay in chat; the editor is optional.
 
-[arabic-prosody](skills/arabic-prosody/SKILL.md) scans poems with a rule-based engine. It reads the text as it is pronounced, tries the plausible readings (sung or stopped endings, optional lengthenings), matches every half-verse against implemented forms of the 16 meters and their configured variations, and decides the meter across the whole poem. It reports broken feet in the classical ب − notation, checks the rhyme letter at the end of each verse, and checks the alignment of suggested repairs before showing them. Its ranking is heuristic, its rhyme audit is spelling-based, and a zero-error match still needs a plausible pronunciation and an independent rule check.
+Its local Python scanner compares vocalized text against implemented forms of the 16 meters and their configured variations. It reports feet, candidate meters, mismatches and rhyme candidates. Ranking is heuristic, rhyme analysis starts from spelling, and a zero-error alignment still needs a plausible pronunciation and an independent rule check. Scans use ب for short, − for long and = for overlong syllables in pause.
 
-Its **Diwan** page keeps poems in host storage or the current browser: confirm the proposed tashkeel word by word, see the scansion update live, ask Claude about any line, and export a poem or the whole collection to Word. AI and shared-storage features require a compatible Claude host; manual editing uses browser storage. Browser Word download also needs the host downloads capability; outside that host, use the CLI exporter. The page loads fonts and its browser Word-export library from CDNs. CLI Word export needs Node.js; optional PDF export also needs LibreOffice and font support. Try:
+The skill preserves your wording and tashkeel. Preliminary analysis can state reading assumptions; if you ask to approve a proposed vocalization before analysis, it pauses for your review. Repairs must preserve the intended meaning and explain any tradeoff.
+
+Its **Diwan** page lets you review tashkeel word by word, see scansion update live, work with your agent on a line, and export a poem or collection to Word. A local bridge lets Codex or another agent in your existing chat read requests and return answers to the editor. Click an AI button, then ask your chat to handle the pending Diwan request. The editor does not wake the chat automatically. A copy/paste fallback also works in an ordinary browser; the original Claude integration remains optional. Poems use browser storage unless a host database is connected. Word downloads work in a normal browser. The page loads fonts and its browser Word-export library from CDNs. CLI Word export needs Node.js; optional PDF export also needs LibreOffice and font support. See the [editor workflow](skills/arabic-poetry/references/DIWAN.md). Try:
 
 - "check my poem", with a poem pasted with or without tashkeel.
 - "ما بحر هذه الأبيات؟" for a poem you admire.
 - "صدّر الديوان PDF مع ملحق التقطيع."
 
-The [source references](skills/arabic-poetry/references/SOURCES.md) and [research notes](docs/research/arabic-poetry.md) document the evidence, similar skills, and limitations.
+The [source references](skills/arabic-poetry/references/SOURCES.md), [scanner coverage notes](skills/arabic-poetry/references/SCANNER-SOURCES.md) and [similar-skill comparisons](skills/arabic-poetry/references/SIMILAR_SKILLS.md) document evidence, similar skills, and limitations.
+
+If you previously installed `arabic-prosody`, replace that installation with `arabic-poetry` from this repository. Its scanner, workbench and exporters are now included in the single package.
 
 ## Collaboration
 
@@ -48,9 +73,9 @@ Contributions to poetic examples, Arabic terminology, research, and technical ch
 
 ## Credits
 
-- `arabic-poetry` and this repository: Daniel Petro ([@WellDunDun](https://github.com/WellDunDun)).
-- `arabic-prosody` and the Diwan workbench: Firas F. Khabour ([@firaskhabour](https://github.com/firaskhabour)).
-- The Amiri typeface bundled for PDF export is by Khaled Hosny, under the SIL Open Font License ([OFL.txt](skills/arabic-prosody/assets/fonts/OFL.txt)).
+- Original poetry skill, research and repository: Daniel Petro ([@WellDunDun](https://github.com/WellDunDun)).
+- Meter/rhyme scanner, Diwan workbench and exporters, originally contributed as `arabic-prosody`: Firas F. Khabour ([@firaskhabour](https://github.com/firaskhabour)). His contribution is retained in the combined skill and Git history.
+- The Amiri typeface bundled for PDF export is by Khaled Hosny, under the SIL Open Font License ([OFL.txt](skills/arabic-poetry/assets/fonts/OFL.txt)).
 
 ## License
 

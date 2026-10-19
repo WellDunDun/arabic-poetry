@@ -1,0 +1,54 @@
+{
+  "suite_id": "poetry-consolidation-v1",
+  "date": "2026-10-18",
+  "timezone": "Asia/Amman",
+  "base_commit": "3286f489881b9fbc5bb2fc2bca7dd064835b1a4c",
+  "corpus_commit": "e1f91bf645fd0e06fc4fd94f89f67ca2cb00ee3a",
+  "prompts_sha256": "2c4c204c2cc0e233a8360ff2622a0540dbef52e46c33e18195e8ebe0755c0dac",
+  "rubric_sha256": "d2db0367abfd0b788a99fb6a50eff178fff488963f132e06b29940bd17ed981a",
+  "model": "Inherited configured model in fresh delegated workers; no overrides. Exact backend model/reasoning identifier unavailable.",
+  "sampling": "One new independent eight-request combined batch per PR package, with shared context inside that batch. Earlier 2026-10-18 baseline batches reused, not rerun. No rubric/expected answers/sibling outputs supplied to workers; retain worker-reported context limits.",
+  "capabilities": "Local files, Python and Node only; no network, browser, live host APIs, installs, publishing or global fonts.",
+  "grading": "Lead semantic review against unchanged frozen criteria, condition known. Baseline judgments and executions reused explicitly from the earlier 2026-10-18 trial; combined judgments use the newly executed candidate.",
+  "environment": {
+    "python": "3.14.2",
+    "node": "v25.8.1"
+  },
+  "conditions": {
+    "original-only": {
+      "record": "original-only.responses.json",
+      "record_sha256": "7e1e120007f64439dab4840b0ce2476b9a35180d27c10c751f00ee62ea6b9f14",
+      "package_manifest": "original-only.package-hashes.json",
+      "package_manifest_sha256": "4dc4782e1864d84fda43f0875fb903254f26c5280905aac84cf87b2ea6b542da",
+      "source": "3286f489881b9fbc5bb2fc2bca7dd064835b1a4c",
+      "notes": "Reused unchanged from the earlier 2026-10-18 execution, not rerun in this follow-up. See its execution-notes file."
+    },
+    "prosody-only": {
+      "record": "prosody-only.responses.json",
+      "record_sha256": "201c02f1a57e6656947ca5903f3e22a68f1b7c68e3651c637c0fbc138b8fff47",
+      "package_manifest": "prosody-only.package-hashes.json",
+      "package_manifest_sha256": "7eba96b679b71007cd2318d03b2b4577584abadd93269905af0002c2894590e3",
+      "source": "3286f489881b9fbc5bb2fc2bca7dd064835b1a4c",
+      "notes": "Reused unchanged from the earlier 2026-10-18 execution, not rerun in this follow-up. See its execution-notes file."
+    },
+    "current-both": {
+      "record": "current-both.responses.json",
+      "record_sha256": "0f2f886b19d7982683e7c99add27e65e1e2bd5bce34169db5aa4d08037ae48e3",
+      "package_manifest": "current-both.package-hashes.json",
+      "package_manifest_sha256": "a79fe31e22464060590c12d220f099938f6d5e69d16ea2267746e22f5ddf1e8f",
+      "source": "3286f489881b9fbc5bb2fc2bca7dd064835b1a4c",
+      "notes": "Reused unchanged from the earlier 2026-10-18 execution, not rerun in this follow-up. See its execution-notes file."
+    },
+    "combined": {
+      "record": "combined.responses.json",
+      "record_sha256": "47f24cdcb2564cb5741385ec760cdeaa6a47b79a6f9b748b58be68eff84bbb69",
+      "package_manifest": "combined.package-hashes.json",
+      "package_manifest_sha256": "0bab1cf66f21b2979920359ed2288a20b052ecfea9697e1dd202aeda3c9c1722",
+      "source": "a7f418e53ea6a77fea76c4fa2a2ee0f33b2ff4b9",
+      "notes": "Fresh independent follow-up after integrated scanner guidance fix; exact current package verified. See combined.execution-notes.json."
+    }
+  },
+  "artifacts_sha256": "e1d14ce169fb522dca15cf9e6f9ab59978e28001eb07635b3cd7a43edbe8304a",
+  "supersedes_for_current_package": "New combined trial on the single changed PROSODY.md instruction file. Previous raw records and frozen corpus remain intact.",
+  "previous_trial": "2026-10-18"
+}

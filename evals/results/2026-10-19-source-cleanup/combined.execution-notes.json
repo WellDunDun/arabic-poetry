@@ -1,0 +1,62 @@
+{
+  "condition": "combined",
+  "trial": "combined-pr3",
+  "assigned_package": "/private/tmp/poetry-research-cleanup-20261019/trials/packages/combined-pr3/skills/arabic-poetry",
+  "requests_source": "/private/tmp/poetry-research-cleanup-20261019/trials/prompts.json",
+  "context": {
+    "shared_context_across_cases": true,
+    "execution_order": [
+      "prose-compose",
+      "close-reading",
+      "classical-scan",
+      "provisional-reading",
+      "review-only",
+      "bounded-repair",
+      "tafila-boundary",
+      "workbench-export"
+    ],
+    "method": "All eight cases processed sequentially in one agent context. No sibling results, criteria, expected answers, repository, research or prior trials read. Only assigned package, request file and own output files were read. Case 5 stopped at proposed vocalization; later cases are separate requests, not approval of case 5."
+  },
+  "capabilities": {
+    "local_python": true,
+    "local_node": true,
+    "local_files": true,
+    "network_used": false,
+    "browser_used": false,
+    "host_apis_used": false,
+    "installation": false,
+    "publication": false,
+    "pdf": false,
+    "global_fonts_changed": false,
+    "delegation": false
+  },
+  "versions": {
+    "python": "3.14.2",
+    "node": "v25.8.1",
+    "scanner": "Bundled assigned-package rule-based scanner; no standalone version identifier claimed. Firas F. Khabour credited by package."
+  },
+  "environment": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "TMPDIR": "/private/tmp/poetry-research-cleanup-20261019/trials/outputs/combined-pr3/tmp",
+    "note": "Output-local tmp was precreated; Python/Node invocations set these variables, and exporter child Node processes inherited them. Initial mkdir only created that permitted output directory."
+  },
+  "capture_limits": [
+    "Actual scanner/exporter/verification subprocess stdout, stderr and exit codes are retained per case in responses.json. Text-only composition and reading cases have no subprocess commands.",
+    "No UI screenshot, browser rendering, real browser storage save, host storage or cross-chat persistence was tested.",
+    "DOCX was checked structurally and for exact content using ZIP and XML parsing; no visual rendering or font availability claim.",
+    "Local HTML reuses shipped workbench, retaining credits, with an isolated browser-storage key and embedded supplied-poem seed. Its browser/CDN behavior was not executed.",
+    "Scanner outputs are alignment evidence subject to manual pronunciation and meaning checks; no heuristic confidence was treated as a probability."
+  ],
+  "failures_and_corrections": [
+    {
+      "case": "workbench-export",
+      "description": "First own check_export.py assertion assumed the footer credit was contiguous in HTML source. It failed because a nested span divides the credit. The check was corrected to parse and concatenate HTML text nodes; rerun passed. Both actual receipts retained. No source footer content was changed."
+    }
+  ],
+  "local_artifact_notes": [
+    "poems.json is the exact saved collection; review status preserves distinction from user confirmation.",
+    "DOCX exporter added its automatic meter subtitle المتقارب — تام; supplied title and poem text were preserved.",
+    "No bundled fonts were copied or installed."
+  ],
+  "completion": "Eight responses and actual local artifacts recorded; unavailable opening and persistence capabilities disclosed in final case response."
+}

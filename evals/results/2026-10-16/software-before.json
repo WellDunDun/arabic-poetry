@@ -1,0 +1,59 @@
+[
+  {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "skills/arabic-poetry/scripts",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": "........\n----------------------------------------------------------------------\nRan 8 tests in 0.243s\n\nOK\n"
+  },
+  {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "skills/arabic-prosody/tests",
+      "-p",
+      "test_*.py"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": "..........\n----------------------------------------------------------------------\nRan 10 tests in 0.272s\n\nOK\n"
+  },
+  {
+    "command": [
+      "python3",
+      "skills/arabic-prosody/tests/run_gold.py"
+    ],
+    "exit_code": 0,
+    "stdout": "PASS tawil -> tawil/تام 0.1 | 2nd: kamil/تام 3.1 | فعولن مفاعيلن فعولن مفاعلن + فعولن مفاعيلن فعولُ مفاعلن\nPASS tawil -> tawil/تام 0.0 | 2nd: rajaz/تام 4.0 | فعولن مفاعيلن فعولن مفاعلن + فعولن مفاعيلن فعولن مفاعلن\nPASS tawil -> tawil/تام 0.3 | 2nd: rajaz/تام 4.2 | فعولُ مفاعيلن فعولُ مفاعلن + فعولُ مفاعيلن فعولن مفاعلن\nPASS madid -> madid/تام (مجزوء وجوبًا) 0.0 | 2nd: ramal/تام 2.1 | فاعلاتن فاعلن فاعلاتن + فاعلاتن فاعلن فاعلاتن\nPASS basit -> basit/تام 0.0 | 2nd: tawil/تام 6.0 | مستفعلن فاعلن مستفعلن فعِلن + مستفعلن فاعلن مستفعلن فعِلن\nPASS basit -> basit/تام 0.3 | 2nd: munsarih/تام 5.6 | متفعلن فعِلن مستفعلن فعِلن + متفعلن فاعلن مستفعلن فعِلن\nPASS basit -> basit/تام 0.6 | 2nd: munsarih/تام 5.9 | متفعلن فاعلن مستفعلن فعْلن + متفعلن فعِلن مستفعلن فعْلن\nPASS wafir -> wafir/تام 0.15 | 2nd: mutadarak/تام 4.1 | مفاعلْتن مفاعَلَتن فعولن + مفاعلْتن مفاعلْتن فعولن\nPASS wafir -> wafir/تام 0.05 | 2nd: mutaqarib/تام 3.3 | مفاعَلَتن مفاعلْتن فعولن + مفاعَلَتن مفاعَلَتن فعولن\nPASS wafir -> wafir/تام 0.6 | 2nd: mutaqarib/تام 4.1 | مفاعلْتن مفاعلْتن فعولن + مفاعلْتن مفاعلْتن فعولن\nPASS kamil -> kamil/تام 0.0 | 2nd: tawil/تام 4.2 | متَفاعلن متَفاعلن متفاعلن + متَفاعلن متَفاعلن متفاعلن\nPASS kamil -> kamil/تام 0.15 | 2nd: rajaz/تام 3.0 | متْفاعلن متَفاعلن متفاعلن + متْفاعلن متْفاعلن متفاعلن\nPASS kamil -> kamil/تام 0.1 | 2nd: tawil/تام 3.2 | متْفاعلن متَفاعلن متفاعلن + متَفاعلن متْفاعلن متفاعلن\nPASS hazaj -> hazaj/مجزوء وجوبًا 0.0 | 2nd: wafir/مجزوء 0.15 | مفاعيلن مفاعيلن + مفاعيلن مفاعيلن\nPASS rajaz -> rajaz/تام 0.6 | 2nd: sari/تام 2.4 | مستعلن متفعلن متفعلن + مستعلن مستفعلن متفعلن\nPASS ramal -> ramal/تام 0.05 | 2nd: mutadarak/تام 2.2 | فاعلاتن فاعلاتن فاعلن + فاعلاتن فاعلاتن فعِلن\nPASS khafif -> khafif/تام 0.15 | 2nd: madid/تام (مجزوء وجوبًا) 3.1 | فاعلاتن مستفع لن فاعلاتن + فاعلاتن متفع لن فعِلاتن\nPASS munsarih -> munsarih/تام 0.7 | 2nd: sari/تام 4.05 | مستفعلن مفعولاتُ مستفعلن + مستفعلن مفعولاتُ مفتعلن\nPASS mujtath -> mujtath/مجزوء وجوبًا 0.0 | 2nd: mutaqarib/مجزوء 2.1 | مستفع لن فاعلاتن + مستفع لن فاعلاتن\nPASS muqtadab -> muqtadab/مجزوء وجوبًا 0.3 | 2nd: mutadarak/مجزوء 2.1 | مفعلاتُ مفتعلن + مفعلاتُ مفتعلن\nPASS mudari -> mudari/مجزوء وجوبًا 0.3 | 2nd: mutaqarib/مجزوء 2.3 | مفاعيلُ فاع لاتن + مفاعيلُ فاع لاتن\nPASS mutaqarib -> mutaqarib/تام 0.15 | 2nd: mutadarak/تام 2.0 | فعولن فعولن فعولن فعو + فعولن فعولُ فعولن فعو\nPASS mutaqarib -> mutaqarib/تام 0.0 | 2nd: tawil/تام 3.2 | فعولن فعولن فعولن فعولن + فعولن فعولن فعولن فعولن\nPASS mutadarak -> mutadarak/تام 0.3 | 2nd: madid/تام (مجزوء وجوبًا) 2.4 | فعْلن فعْلن فعِلن فعِلن + فعِلن فعْلن فعِلن فعِلن\n24/24 passed\nPASS free verse kamil -> kamil errors 0\nPASS ending ambiguity -> tawil مفاعلن\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "node",
+      "skills/arabic-prosody/tests/parity.js"
+    ],
+    "exit_code": 0,
+    "stdout": "PASS: 24 classical verses, taf‘ila, ending ambiguity, and Python/JS patterns and feet agree\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "node",
+      "skills/arabic-prosody/tests/workbench_state.js"
+    ],
+    "exit_code": 0,
+    "stdout": "PASS workbench state: revision-safe saves, isolated conversations, stale responses, preserved wording/marks\n",
+    "stderr": ""
+  }
+]

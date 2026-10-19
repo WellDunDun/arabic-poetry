@@ -1,0 +1,53 @@
+{
+  "suite_id": "poetry-consolidation-v1",
+  "date": "2026-10-18",
+  "timezone": "Asia/Amman",
+  "base_commit": "3286f489881b9fbc5bb2fc2bca7dd064835b1a4c",
+  "corpus_commit": "e1f91bf645fd0e06fc4fd94f89f67ca2cb00ee3a",
+  "prompts_sha256": "2c4c204c2cc0e233a8360ff2622a0540dbef52e46c33e18195e8ebe0755c0dac",
+  "rubric_sha256": "d2db0367abfd0b788a99fb6a50eff178fff488963f132e06b29940bd17ed981a",
+  "model": "Inherited configured model in fresh delegated workers; no overrides. Exact backend model/reasoning identifier unavailable.",
+  "sampling": "One eight-request batch per condition, shared context within a batch. Workers received assigned package and requests, not rubric, expected answers or sibling results. Conservatively retain worker-reported context/capture caveats.",
+  "capabilities": "Local files, Python and Node only; no network, browser, live host APIs, installs, publishing or global fonts.",
+  "grading": "Lead semantic review with condition names known, not blind or statistical. All criteria unchanged; case evidence reviewed with actual command/artifact receipts.",
+  "environment": {
+    "python": "3.14.2",
+    "node": "v25.8.1"
+  },
+  "conditions": {
+    "original-only": {
+      "record": "original-only.responses.json",
+      "record_sha256": "7e1e120007f64439dab4840b0ce2476b9a35180d27c10c751f00ee62ea6b9f14",
+      "package_manifest": "original-only.package-hashes.json",
+      "package_manifest_sha256": "4dc4782e1864d84fda43f0875fb903254f26c5280905aac84cf87b2ea6b542da",
+      "source": "3286f489881b9fbc5bb2fc2bca7dd064835b1a4c",
+      "notes": "Fresh 2026-10-18 trial. Exact source bytes verified; see original-only.execution-notes.json for execution failures, capture and capability limits."
+    },
+    "prosody-only": {
+      "record": "prosody-only.responses.json",
+      "record_sha256": "201c02f1a57e6656947ca5903f3e22a68f1b7c68e3651c637c0fbc138b8fff47",
+      "package_manifest": "prosody-only.package-hashes.json",
+      "package_manifest_sha256": "7eba96b679b71007cd2318d03b2b4577584abadd93269905af0002c2894590e3",
+      "source": "3286f489881b9fbc5bb2fc2bca7dd064835b1a4c",
+      "notes": "Fresh 2026-10-18 trial. Exact source bytes verified; see prosody-only.execution-notes.json for execution failures, capture and capability limits."
+    },
+    "current-both": {
+      "record": "current-both.responses.json",
+      "record_sha256": "0f2f886b19d7982683e7c99add27e65e1e2bd5bce34169db5aa4d08037ae48e3",
+      "package_manifest": "current-both.package-hashes.json",
+      "package_manifest_sha256": "a79fe31e22464060590c12d220f099938f6d5e69d16ea2267746e22f5ddf1e8f",
+      "source": "3286f489881b9fbc5bb2fc2bca7dd064835b1a4c",
+      "notes": "Fresh 2026-10-18 trial. Exact source bytes verified; see current-both.execution-notes.json for execution failures, capture and capability limits."
+    },
+    "combined": {
+      "record": "combined.responses.json",
+      "record_sha256": "30204bd3976519d73e03a7a29c3050a96a57621fb019e3223d0fd549cf9a5274",
+      "package_manifest": "combined.package-hashes.json",
+      "package_manifest_sha256": "28b228c5a525245d9279e8b737aaca5af09e21bbd42067efcc79f6b215613563",
+      "source": "f87011d9d70d5f09810ce2e7e8c1df770b7e3960",
+      "notes": "Fresh 2026-10-18 trial. Exact source bytes verified; see combined.execution-notes.json for execution failures, capture and capability limits."
+    }
+  },
+  "artifacts_sha256": "76ed26bc1a196a3feb6b0cf609517792e09eef02bdaf5ae9b895d3cfcc486e44",
+  "supersedes_for_current_package": "2026-10-16 records remain unchanged as historical evidence."
+}

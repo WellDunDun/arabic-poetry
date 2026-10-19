@@ -1,0 +1,40 @@
+{
+  "condition": "current-both",
+  "runtime": {
+    "python": "3.14.2 (main, Dec  5 2025, 16:49:16) [Clang 17.0.0 (clang-1700.4.4.1)]",
+    "executable": "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "platform": "macOS-26.6-arm64-arm-64bit-Mach-O",
+    "node_path": "/opt/homebrew/bin/node",
+    "model": "Exact runtime model identifier is not exposed to this worker; inherited parent model, no override selected."
+  },
+  "installed_skill_paths": [
+    "/private/tmp/poetry-evals-20261018/packages/current-both/skills/arabic-poetry",
+    "/private/tmp/poetry-evals-20261018/packages/current-both/skills/arabic-prosody"
+  ],
+  "capabilities_used": [
+    "local filesystem",
+    "Python standard library",
+    "Node local exporter"
+  ],
+  "limits": [
+    "No network, browser, host APIs, publishing, installations, or global font writes used.",
+    "No other condition, package, outputs, rubric, grades, review, or research inspected.",
+    "Exact model identifier unavailable; no model override requested or selected.",
+    "Primary-source links were not fetched under local-only capability limits; installed references and independently checked sound arithmetic were used.",
+    "The eight responses were produced in one worker context. They are independent requests with per-case files, but prior cases were visible in shared context rather than fresh isolated model sessions.",
+    "No poet response was available during this unattended batch. The provisional-reading case labels its inferred vocalization; review-only ends awaiting approval without meter analysis.",
+    "The workbench HTML was prepared locally but not opened or UI-tested. Word passed ZIP/XML/content checks, not visual rendering.",
+    "All substantive Python case execution used PYTHONDONTWRITEBYTECODE=1. The initial scan.py --help call inadvertently omitted it and created eight Python 3.14 import-cache files; those generated files were removed. Skill source/package content was not edited."
+  ],
+  "command_capture": "Each per-case commands.json and embedded commands entry contains actual subprocess argv, return code, stdout and stderr. Reproduction driver scripts are retained in the condition output directory. File writes were performed directly by those Python scripts.",
+  "initial_help_bytecode_cleanup": [
+    "/private/tmp/poetry-evals-20261018/packages/current-both/skills/arabic-prosody/scripts/arud/__pycache__/__init__.cpython-314.pyc",
+    "/private/tmp/poetry-evals-20261018/packages/current-both/skills/arabic-prosody/scripts/arud/__pycache__/aligner.cpython-314.pyc",
+    "/private/tmp/poetry-evals-20261018/packages/current-both/skills/arabic-prosody/scripts/arud/__pycache__/classical.cpython-314.pyc",
+    "/private/tmp/poetry-evals-20261018/packages/current-both/skills/arabic-prosody/scripts/arud/__pycache__/freeverse.cpython-314.pyc",
+    "/private/tmp/poetry-evals-20261018/packages/current-both/skills/arabic-prosody/scripts/arud/__pycache__/lattice.cpython-314.pyc",
+    "/private/tmp/poetry-evals-20261018/packages/current-both/skills/arabic-prosody/scripts/arud/__pycache__/meters.cpython-314.pyc",
+    "/private/tmp/poetry-evals-20261018/packages/current-both/skills/arabic-prosody/scripts/arud/__pycache__/qafiya.cpython-314.pyc",
+    "/private/tmp/poetry-evals-20261018/packages/current-both/skills/arabic-prosody/scripts/arud/__pycache__/report.cpython-314.pyc"
+  ]
+}

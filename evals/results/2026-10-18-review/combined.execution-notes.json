@@ -1,0 +1,42 @@
+{
+  "condition": "combined",
+  "model": "Inherited parent model; no override; precise backend model identifier unavailable to the worker",
+  "runtime": {
+    "python": "3.14.2 (main, Dec  5 2025, 16:49:16) [Clang 17.0.0 (clang-1700.4.4.1)]",
+    "platform": "macOS-26.6-arm64-arm-64bit-Mach-O",
+    "node": "v25.8.1"
+  },
+  "context": "Single shared-context batch of eight requests in suite order; same assigned read-only package",
+  "capabilities": [
+    "local files",
+    "Python standard library",
+    "Node.js"
+  ],
+  "caveats": [
+    "No network, browser, external host APIs, installs, publishing or global-font changes used.",
+    "No browser opening, visual Word review or cross-chat storage can be claimed.",
+    "Only assigned skill package and prompts.json were read as task source material.",
+    "Receipts contain actual subprocess invocations and outputs; no grading was performed."
+  ],
+  "capture": {
+    "method": "Per-case subprocess.run argv, returncode, stdout and stderr serialized immediately to responses.json; content-only cases have empty command lists. File writes for inputs, responses and trial harness use Python directly.",
+    "read_sources": [
+      "assigned SKILL.md",
+      "assigned references/CRAFT.md",
+      "assigned references/READING.md",
+      "assigned references/PROSODY.md",
+      "assigned references/SCANNER.md",
+      "assigned references/DIWAN.md",
+      "assigned references/fixing.md",
+      "assigned references/free-verse.md",
+      "assigned references/qafiya.md",
+      "assigned scripts/export_book.py",
+      "prompts.json"
+    ],
+    "review_limits": [
+      "The literal footer search printed False; an HTML-decoded substring assertion then failed (exit 1). Inspection found nested span markup and an ampersand entity. The copy was verified byte-identical, and a final markup-stripped/entity-decoded credit-and-date assertion passed. All receipts are retained.",
+      "No external or visual acceptance is established by DOCX XML checks.",
+      "Python calls inherited PYTHONDONTWRITEBYTECODE=1; no bytecode writes to read-only package requested."
+    ]
+  }
+}

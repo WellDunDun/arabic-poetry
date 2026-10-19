@@ -6,7 +6,13 @@ Use it for عمودي، تفعيلة، قصيدة نثر, evidence-led meter and
 
 ## Quickstart
 
-### Install the plugin, recommended
+### ChatGPT personal accounts
+
+The public ChatGPT directory package is being prepared for review. It is not listed yet. Personal browser accounts cannot import this Git marketplace through the workspace-admin route. Once a directory version is approved and published, users can install it from the directory. Updates to its skills require a new package version from the maintainers; GitHub commits do not update the public listing automatically.
+
+يجري إعداد حزمة الإضافة لدليل ChatGPT العام للمراجعة، ولم تُنشر فيه بعد. لا تستطيع حسابات المتصفح الشخصية استيراد دليل Git عبر مسار مسؤولي مساحات العمل. بعد اعتماد نسخة ونشرها، يستطيع المستخدم تثبيتها من الدليل. يتطلب تحديث المهارة أن ينشر القائمون عليها نسخة جديدة؛ ولا تُحدّث تغييرات GitHub القائمة العامة تلقائيًا.
+
+### Repository plugins: Claude, Codex and ChatGPT workspaces
 
 Install from the repository-backed **Arabic Poetry** marketplace to keep receiving reviewed updates. Claude and ChatGPT/Codex use the same poetry skill inside their plugin packages. The plugin is not listed in either public plugin directory.
 
@@ -104,3 +110,5 @@ Contributions to poetic examples, Arabic terminology, research, and technical ch
 ## License
 
 MIT. See [LICENSE](LICENSE). Linked works remain subject to their own terms; references do not relicense third-party texts.
+
+[Support](SUPPORT.md) · [Privacy](PRIVACY.md)

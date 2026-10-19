@@ -30,6 +30,14 @@ The portable root `plugin.json` discovers skills under `skills/`. `.agents/plugi
 
 ## Validation
 
+### Public ChatGPT directory package
+
+The package is skills-only, with no MCP server, app reference, lifecycle hook or credential requirement. Keep the shared skill bytes and contributor credit intact when preparing listing-only changes. Public directory updates require a new package upload and publication; never describe them as automatic GitHub sync. Personal browser accounts and Git-backed admin workspaces have different distribution routes.
+
+Run `python3 scripts/package_directory.py` for local listing preflight. Commit the package inputs before running `python3 scripts/package_directory.py --output /absolute/temp/path/arabic-poetry.zip` to build an archive from committed bytes and a SHA-256 inventory beside it. Repeating a build with the same committed inputs and Python/zlib produces identical archive bytes. The allowlist includes both compatible manifests, all tracked shared skill files, listing icons, license and linked user/maintainer documentation. It excludes marketplace catalogs, root tests/evals, Git state and untracked skill files. Keep archives and internal submission/review packets outside Git. Root tests include negative cases for listing limits, icon paths, version mismatch, dirty inputs and package contents.
+
+Follow the [submission requirements](https://developers.openai.com/plugins/deploy/submission), [skills-only route](https://developers.openai.com/plugins/guides/submit-claude-plugin) and [plugin guidelines](https://developers.openai.com/plugins/plugin-guidelines). Confirm the selected verified publisher identity, icon/listing copy, public privacy/support links, portal scans and clean-environment skill use before requesting approval to submit or publish. Local preflight and CLI tests do not establish portal acceptance or browser activation. Do not accept policy attestations, submit for review, or publish on the user's behalf without the relevant authorization. Draft preparation does not authorize those final actions.
+
 Run from the repository root. Bridge tests bind temporary loopback sockets, so the test environment must permit localhost networking:
 
 ```sh
@@ -39,6 +47,7 @@ python3 -m json.tool plugin.json >/dev/null
 python3 -m json.tool .agents/plugins/marketplace.json >/dev/null
 python3 -m json.tool .claude-plugin/marketplace.json >/dev/null
 python3 scripts/plugin_version.py
+python3 scripts/package_directory.py
 claude plugin validate .
 PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -p 'test_*.py'
 PYTHONDONTWRITEBYTECODE=1 python3 skills/arabic-poetry/tests/run_gold.py

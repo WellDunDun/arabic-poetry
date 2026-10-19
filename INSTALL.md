@@ -4,6 +4,14 @@ Prefer a repository-backed plugin. It keeps the installed package connected to f
 
 The default commands below follow the reviewed `main` branch. The plugin is available from this repository and has not been listed in either public plugin directory.
 
+## Public ChatGPT directory for personal accounts
+
+The directory candidate is being prepared for review. It is not approved or published, and no live directory installation or update has been verified. A public GitHub repository alone does not make it installable from a personal ChatGPT browser account.
+
+After approval and publication, personal users will find the plugin in **Plugins**, install it, and choose its bundled skill in a new chat. They will use published directory package versions. The maintainers must upload the updated skills and metadata to the existing plugin, complete the applicable checks/review, and publish the approved version. This is separate from Git-backed workspace sync and does not require users to copy a ZIP or reinstall from GitHub for each release. See [OpenAI's directory update process](https://developers.openai.com/plugins/deploy/submission#update-your-published-plugin).
+
+The [privacy notice](PRIVACY.md) describes conversation processing, optional local tools, browser storage and third-party requests. Use [support](SUPPORT.md) for installation or analysis problems.
+
 ## Claude web and Desktop
 
 1. Open **Customize > Plugins > Add > Add marketplace** and choose the repository option.
@@ -95,4 +103,4 @@ Replace `codex` with the current supported agent's identifier when appropriate. 
 - When execution is available, run the installed scanner's `--help` and then analyze a supplied line. Otherwise follow the skill's explicit manual-analysis limits. Do not invent a scanner run.
 - Keep ordinary writing and interpretation in chat. Editor, Word/PDF and hosted services are optional. Tell the user which capabilities are ready and ask them to paste a poem or describe one they want to write.
 
-راجع [بداية الاستخدام بالعربية](README.md#install-the-plugin-recommended) لنسخ طلب التثبيت. الإضافات المرتبطة بالمستودع هي المسار المفضّل؛ ويعتمد وصول التحديث على إعدادات البيئة. يغطّي اختبار العميل المحلي التثبيت والتحديث بأوامر Claude Code وCodex، ولا يثبت وحده نجاح مزامنة حساب Claude أو مساحة عمل ChatGPT في المتصفح.
+راجع [بداية الاستخدام](README.md#quickstart) للتمييز بين الدليل العام لحسابات ChatGPT الشخصية والإضافات المرتبطة بالمستودع في البيئات المدعومة. لم تُنشر الإضافة في الدليل العام بعد. يغطّي اختبار العميل المحلي التثبيت والتحديث بأوامر Claude Code وCodex، ولا يثبت وحده نجاح مزامنة حساب Claude أو مساحة عمل ChatGPT في المتصفح.

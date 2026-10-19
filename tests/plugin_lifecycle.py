@@ -88,7 +88,8 @@ def test_lifecycle(report):
         scratch = Path(temp).resolve()
         source = scratch / 'source'
         source.mkdir()
-        for name in ('plugin.json', '.claude-plugin', '.agents/plugins', 'skills', 'README.md', 'LICENSE'):
+        for name in ('plugin.json', '.claude-plugin', '.agents/plugins', 'skills', 'README.md', 'LICENSE',
+                     'assets/plugin', 'PRIVACY.md', 'SUPPORT.md'):
             target = source / name
             target.parent.mkdir(parents=True, exist_ok=True)
             if (ROOT / name).is_dir():
@@ -96,6 +97,8 @@ def test_lifecycle(report):
             else:
                 shutil.copy2(ROOT / name, target)
         original_hashes = hashes(source / 'skills/arabic-poetry')
+        listing_assets = {source / p for k, p in json.loads((source / 'plugin.json').read_text())[
+            'extensions']['com.openai']['interface'].items() if k in ('logo', 'composerIcon')}
         report['source_skill_sha256'] = hashlib.sha256(
             json.dumps(original_hashes, sort_keys=True).encode()).hexdigest()
         report['manifest_sha256'] = {name: hashlib.sha256((source / name).read_bytes()).hexdigest()
@@ -164,9 +167,12 @@ def test_lifecycle(report):
                 skill = installed / 'skills/arabic-poetry'
                 assert (skill / PROBE).read_text() == version
                 assert hashes(skill) == original_hashes, f'{host}: installed skill files differ'
+                for asset in listing_assets:
+                    assert (installed / asset.relative_to(source)).read_bytes() == asset.read_bytes()
                 run(['python3', str(skill / 'scripts/scan.py'), '--help'], cwd=scratch)
                 report.setdefault('verified', []).append({
                     'host': host, 'version': version, 'skill_files_matching_source': len(original_hashes),
+                    'listing_assets_matching_source': len(listing_assets),
                     'updated_payload': (skill / PROBE).read_text(), 'skill_available': True})
 
         verify(initial)

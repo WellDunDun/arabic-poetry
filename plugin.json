@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "arabic-poetry",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Write, revise and understand classical and modern Arabic poetry, with a meter scanner and optional Diwan editor.",
   "author": {
     "name": "Daniel Petro and Firas F. Khabour",
@@ -20,15 +20,20 @@
     "com.openai": {
       "interface": {
         "displayName": "Arabic Poetry · الشعر العربي",
-        "shortDescription": "Write, revise and scan Arabic poetry.",
-        "longDescription": "Work on classical and modern Arabic poetry using one shared skill. Includes Firas F. Khabour’s meter scanner, Diwan editor and exporters. Local helpers need an execution environment; cloud chats can use manual Diwan exchange.",
+        "shortDescription": "Write and scan Arabic poetry",
+        "longDescription": "Write, revise, continue, and understand classical and modern Arabic poetry in Arabic or English. Work on عمودي, تفعيلة, and قصيدة نثر, with revisions that preserve your wording, meaning, and voice.\n\nThe skill connects poetic craft and close reading with pronunciation, meter, and rhyme. It includes Firas F. Khabour’s local meter scanner, optional Diwan workbench, and exporters. Scanner matches are provisional evidence, not guarantees of metrical legality, originality, or literary quality.\n\nWriting and interpretation work in chat. Scanner execution needs Python in the chat or agent environment. The optional local editor bridge needs access to the same local workspace; browser-only chats can use manual copy/paste exchange. Word/PDF export depends on available execution, download, and conversion tools. Installing the plugin does not add a cloud Diwan connection, model service, database, or local-file access.\n\nOriginal skill and repository: Daniel Petro. Meter scanner, Diwan and exporters: Firas F. Khabour. The package keeps one shared poetry skill across supported hosts.",
         "developerName": "Daniel Petro & Firas F. Khabour",
         "category": "Productivity",
         "websiteURL": "https://github.com/WellDunDun/arabic-poetry",
         "defaultPrompt": [
-          "استخدم مهارة الشعر العربي لتحليل هذه الأبيات مع الحفاظ على كلماتي.",
-          "Help me write or revise an Arabic poem."
-        ]
+          "اكتب قصيدة نثر قصيرة عن العودة إلى البيت، وراجع صورها وإيقاعها.",
+          "راجع هذه الأبيات مع الحفاظ على المعنى، ووضّح افتراضات القراءة والوزن.",
+          "Explain the imagery and form of this Arabic poem without inventing details about its author."
+        ],
+        "supportURL": "https://github.com/WellDunDun/arabic-poetry/blob/main/SUPPORT.md",
+        "privacyPolicyURL": "https://github.com/WellDunDun/arabic-poetry/blob/main/PRIVACY.md",
+        "logo": "./assets/plugin/icon.svg",
+        "composerIcon": "./assets/plugin/icon.svg"
       }
     }
   }

@@ -509,6 +509,9 @@ window.__METERS__ = /*METERS*/null;
 /*HOST*/
 </script>
 <script>
+/*FILE*/
+</script>
+<script>
 (function () {
   'use strict';
   const A = window.Arud; A.load(window.__METERS__);
@@ -549,7 +552,9 @@ window.__METERS__ = /*METERS*/null;
     const body = JSON.parse(JSON.stringify({ title: p.title || '', text: p.text || '', choices: p.choices || [], suggestions: p.suggestions || {},
       status: p.status || 'review', meter: p.meter || '', mode: p.mode || 'auto', order: p.order || 0 }));
     try {
-      await db.collection('poems').doc(id).set(body);
+      if (p._file_version) body._file_version = p._file_version;
+      const receipt = await db.collection('poems').doc(id).set(body);
+      if (receipt && receipt.version) p._file_version = receipt.version;
       if (revisions.get(id) === revision) dirty.delete(id);
     }
     catch (e) { toast(e && e.code === 'invalid_argument' ? 'لا تملك صلاحية الحفظ هنا' : 'تعذّر الحفظ، حاول مجددًا'); }
@@ -764,6 +769,7 @@ window.__METERS__ = /*METERS*/null;
     }
   }
   async function deletePoem(id) {
+    if (window.DiwanFile) { toast('هذا ملف قصيدة مشتركة؛ لن يُحذف من المحرر'); return; }
     const i = poems.findIndex(x => x.id === id); if (i < 0) return;
     const [gone] = poems.splice(i, 1);
     clearTimeout(pending.get(id)); dirty.delete(id);
@@ -1629,6 +1635,28 @@ ${linesOf(p).join('\n')}
   $('bulkBtn').onclick = () => { const p = cur(); if (!p) return; $('bulk').value = p.text; $('bulkWrap').hidden = false; $('lines').hidden = true; $('bulk').focus(); };
   $('bulkCancel').onclick = () => { $('bulkWrap').hidden = true; $('lines').hidden = false; };
   $('bulkSave').onclick = () => { const p = cur(); p.text = $('bulk').value.replace(/\r/g, '').replace(/\n{3,}/g, '\n\n').trim(); $('bulkWrap').hidden = true; $('lines').hidden = false; save(p); render(); };
+  if (window.DiwanFile) {
+    $('newBtn').hidden = true;
+    window.DiwanFileDraft = () => {
+      const p = cur(); if (!p) return null;
+      const draft = JSON.parse(JSON.stringify(p));
+      if (!$('bulkWrap').hidden) draft.text = $('bulk').value;
+      else if (editing !== null && $('edit-' + editing)) {
+        const ls = linesOf(p); ls[editing] = $('edit-' + editing).value; draft.text = ls.join('\n');
+      }
+      return draft;
+    };
+    window.DiwanFileRetry = () => { if (cur()) flush(curId); };
+    window.DiwanFileAccept = value => {
+      for (const timer of pending.values()) clearTimeout(timer);
+      pending.clear(); dirty.clear(); editing = null; pendingNew = null;
+      $('bulkWrap').hidden = true; $('lines').hidden = false; closePop();
+      poems = [{ ...value.poem, _file_version: value.version }]; curId = value.poem.id; render();
+    };
+    window.addEventListener('beforeunload', event => {
+      if (dirty.size || editing !== null || !$('bulkWrap').hidden) { event.preventDefault(); event.returnValue = ''; }
+    });
+  }
   $('diacBtn').onclick = askDiacritics;
   function showComposer(on) {
     $('composer').hidden = !on; $('sheet').hidden = on;
@@ -1743,7 +1771,8 @@ ${linesOf(p).join('\n')}
       const incoming = snap.docs.map(d => Object.assign({ id: d.id }, d.data()));
       // keep local edits that are still waiting to be written
       const local = new Map(poems.map(p => [p.id, p]));
-      poems = incoming.map(x => (dirty.has(x.id) && local.has(x.id)) ? local.get(x.id) : JSON.parse(JSON.stringify(x)));
+      const editingShared = window.DiwanFile && (editing !== null || !$('bulkWrap').hidden || !$('pop').hidden);
+      poems = incoming.map(x => ((dirty.has(x.id) || editingShared && x.id === curId) && local.has(x.id)) ? local.get(x.id) : JSON.parse(JSON.stringify(x)));
       for (const id of dirty) if (!poems.find(p => p.id === id) && local.has(id)) poems.push(local.get(id));
       for (const p of poems) { p.choices = p.choices || []; p.suggestions = p.suggestions || {}; }
       poems.sort((a, b) => (a.order || 0) - (b.order || 0));

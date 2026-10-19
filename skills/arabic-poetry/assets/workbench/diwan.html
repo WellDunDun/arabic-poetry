@@ -1660,6 +1660,9 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
   }
 
   async function connect(injected = root.DiwanHost) {
+    if (root.DiwanFile) return root.DiwanFileConnection({
+      sample: root.DiwanLocal ? localQueue(root.DiwanLocal) : chatExchange(), downloads: browserDownloads()
+    });
     if (root.DiwanInitialPoem) return root.DiwanLocal
       ? { label: 'محادثتك عبر اتصال محلي', sample: localQueue(root.DiwanLocal), db: null, downloads: browserDownloads() }
       : { label: 'ديوان محلي؛ الذكاء عبر محادثتك', sample: chatExchange(), db: null, downloads: browserDownloads() };
@@ -1682,6 +1685,99 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
   }
 
   root.DiwanConnection = { connect };
+})(typeof window === 'undefined' ? globalThis : window);
+
+</script>
+<script>
+/* Shared-file transport. The server, not browser storage, owns the poem. */
+(function (root) {
+  'use strict';
+  root.DiwanFileConnection = function (services) {
+    const base = root.DiwanFile.base;
+    let callback, failed, latest, seen, busy = false, retryKey = '', requestId = '';
+    let status, actions;
+    function panel(message, recovery) {
+      if (!status) {
+        const box = document.createElement('div');
+        box.className = 'note'; box.dir = 'rtl'; box.id = 'sharedFileStatus';
+        status = document.createElement('span'); actions = document.createElement('span');
+        box.appendChild(status); box.appendChild(actions);
+        (document.querySelector('.app') || document.body).prepend(box);
+      }
+      status.textContent = message; actions.replaceChildren();
+      if (!recovery) return;
+      const button = (label, action) => {
+        const b = document.createElement('button'); b.type = 'button'; b.className = 'btn mini';
+        b.textContent = label; b.onclick = action; actions.appendChild(b);
+      };
+      button('تنزيل مسودتي', () => {
+        const draft = root.DiwanFileDraft && root.DiwanFileDraft();
+        if (draft) services.downloads.save({ filename: 'diwan-unsaved-draft.json', data: JSON.stringify(draft, null, 2) });
+      });
+      if (recovery === 'retry') button('إعادة محاولة الحفظ نفسه', () => root.DiwanFileRetry && root.DiwanFileRetry());
+      button('تجاهل مسودتي وتحميل المحفوظ', async () => {
+        try {
+          const value = await api('/document'); latest = value; seen = value.version; retryKey = ''; requestId = '';
+          if (root.DiwanFileAccept) root.DiwanFileAccept(value);
+          panel('حُمّلت النسخة المحفوظة، المراجعة ' + value.poem.revision);
+        } catch (e) { panel(e.message, 'retry'); }
+      });
+    }
+    async function api(path, body) {
+      const response = await fetch(base + path, { cache: 'no-store', ...(body ? {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body)
+      } : {}) });
+      const value = await response.json();
+      if (!response.ok) {
+        const error = new Error(value.error && value.error.message || 'تعذّر الاتصال بالملف');
+        error.code = value.error && value.error.code; throw error;
+      }
+      return value;
+    }
+    function snapshot(value) {
+      const data = { ...value.poem, _file_version: value.version };
+      return { docs: [{ id: data.id, data: () => ({ ...data }) }] };
+    }
+    async function poll() {
+      if (busy || !callback) return;
+      busy = true;
+      try {
+        const value = await api('/document'); latest = value;
+        if (seen !== value.version) { seen = value.version; callback(snapshot(value)); }
+      } catch (error) {
+        if (!latest && failed) failed(error);
+        panel('تعذّر قراءة الملف. بقيت مسودتك في المحرر؛ يمكنك تنزيلها.', 'retry');
+      } finally { busy = false; }
+    }
+    const db = { collection() { return {
+      onSnapshot(fn, error) { callback = fn; failed = error; poll(); const timer = setInterval(poll, 1000); return () => clearInterval(timer); },
+      doc(id) { return {
+        async set(body) {
+          if (!latest || latest.poem.id !== id) throw new Error('افتح ملفًا مستقلًا للقصيدة الجديدة');
+          const patch = Object.fromEntries(['title', 'text', 'choices', 'suggestions', 'status', 'mode', 'meter'].map(k => [k, body[k]]));
+          const key = JSON.stringify([body._file_version, patch]);
+          if (key !== retryKey) { retryKey = key; requestId = crypto.randomUUID().replace(/-/g, ''); }
+          panel('جارٍ الحفظ في الملف…');
+          try {
+            const result = await api('/document', { patch, if_version: body._file_version, request_id: requestId }); latest = result;
+            if (result.applied_version && result.applied_version !== result.version) {
+              const error = new Error('حُفظ طلبك سابقًا ثم تغيّر الملف؛ حمّل أحدث نسخة قبل متابعة التعديل.');
+              error.code = 'CONFLICT'; throw error;
+            }
+            panel('حُفظ في الملف، المراجعة ' + result.poem.revision);
+            return { version: result.applied_version || result.version };
+          } catch (error) {
+            panel(error.code === 'CONFLICT'
+              ? 'حُفظت نسخة أحدث. لم نستبدلها؛ مسودتك باقية هنا. نزّلها قبل تحميل المحفوظ.'
+              : 'لم يتأكد الحفظ. مسودتك باقية هنا؛ أعد المحاولة نفسها أو نزّلها.', error.code === 'CONFLICT' ? 'conflict' : 'retry');
+            throw error;
+          }
+        },
+        async delete() { throw new Error('لا يحذف المحرر ملف القصيدة المشتركة'); }
+      }; }
+    }; } };
+    return { ...services, label: 'قصيدة مشتركة مع وكيلك؛ الحفظ في الملف', db };
+  };
 })(typeof window === 'undefined' ? globalThis : window);
 
 </script>
@@ -1726,7 +1822,9 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
     const body = JSON.parse(JSON.stringify({ title: p.title || '', text: p.text || '', choices: p.choices || [], suggestions: p.suggestions || {},
       status: p.status || 'review', meter: p.meter || '', mode: p.mode || 'auto', order: p.order || 0 }));
     try {
-      await db.collection('poems').doc(id).set(body);
+      if (p._file_version) body._file_version = p._file_version;
+      const receipt = await db.collection('poems').doc(id).set(body);
+      if (receipt && receipt.version) p._file_version = receipt.version;
       if (revisions.get(id) === revision) dirty.delete(id);
     }
     catch (e) { toast(e && e.code === 'invalid_argument' ? 'لا تملك صلاحية الحفظ هنا' : 'تعذّر الحفظ، حاول مجددًا'); }
@@ -1941,6 +2039,7 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
     }
   }
   async function deletePoem(id) {
+    if (window.DiwanFile) { toast('هذا ملف قصيدة مشتركة؛ لن يُحذف من المحرر'); return; }
     const i = poems.findIndex(x => x.id === id); if (i < 0) return;
     const [gone] = poems.splice(i, 1);
     clearTimeout(pending.get(id)); dirty.delete(id);
@@ -2806,6 +2905,28 @@ ${linesOf(p).join('\n')}
   $('bulkBtn').onclick = () => { const p = cur(); if (!p) return; $('bulk').value = p.text; $('bulkWrap').hidden = false; $('lines').hidden = true; $('bulk').focus(); };
   $('bulkCancel').onclick = () => { $('bulkWrap').hidden = true; $('lines').hidden = false; };
   $('bulkSave').onclick = () => { const p = cur(); p.text = $('bulk').value.replace(/\r/g, '').replace(/\n{3,}/g, '\n\n').trim(); $('bulkWrap').hidden = true; $('lines').hidden = false; save(p); render(); };
+  if (window.DiwanFile) {
+    $('newBtn').hidden = true;
+    window.DiwanFileDraft = () => {
+      const p = cur(); if (!p) return null;
+      const draft = JSON.parse(JSON.stringify(p));
+      if (!$('bulkWrap').hidden) draft.text = $('bulk').value;
+      else if (editing !== null && $('edit-' + editing)) {
+        const ls = linesOf(p); ls[editing] = $('edit-' + editing).value; draft.text = ls.join('\n');
+      }
+      return draft;
+    };
+    window.DiwanFileRetry = () => { if (cur()) flush(curId); };
+    window.DiwanFileAccept = value => {
+      for (const timer of pending.values()) clearTimeout(timer);
+      pending.clear(); dirty.clear(); editing = null; pendingNew = null;
+      $('bulkWrap').hidden = true; $('lines').hidden = false; closePop();
+      poems = [{ ...value.poem, _file_version: value.version }]; curId = value.poem.id; render();
+    };
+    window.addEventListener('beforeunload', event => {
+      if (dirty.size || editing !== null || !$('bulkWrap').hidden) { event.preventDefault(); event.returnValue = ''; }
+    });
+  }
   $('diacBtn').onclick = askDiacritics;
   function showComposer(on) {
     $('composer').hidden = !on; $('sheet').hidden = on;
@@ -2920,7 +3041,8 @@ ${linesOf(p).join('\n')}
       const incoming = snap.docs.map(d => Object.assign({ id: d.id }, d.data()));
       // keep local edits that are still waiting to be written
       const local = new Map(poems.map(p => [p.id, p]));
-      poems = incoming.map(x => (dirty.has(x.id) && local.has(x.id)) ? local.get(x.id) : JSON.parse(JSON.stringify(x)));
+      const editingShared = window.DiwanFile && (editing !== null || !$('bulkWrap').hidden || !$('pop').hidden);
+      poems = incoming.map(x => ((dirty.has(x.id) || editingShared && x.id === curId) && local.has(x.id)) ? local.get(x.id) : JSON.parse(JSON.stringify(x)));
       for (const id of dirty) if (!poems.find(p => p.id === id) && local.has(id)) poems.push(local.get(id));
       for (const p of poems) { p.choices = p.choices || []; p.suggestions = p.suggestions || {}; }
       poems.sort((a, b) => (a.order || 0) - (b.order || 0));

@@ -49,7 +49,7 @@ def open_requests(queue):
             and not (queue / 'cancelled' / path.name).exists()]
 
 
-def make_server(workspace, port=None, page=None):
+def make_server(workspace, port=None, page=None, document=None):
     """Start a loopback session and invalidate requests from earlier sessions."""
     if page is not None:
         page = Path(page).resolve()
@@ -112,7 +112,11 @@ def make_server(workspace, port=None, page=None):
                 encoded = json.dumps(config, ensure_ascii=False).replace('<', '\\u003c')
                 html = (page or assets / 'diwan.html').read_text(encoding='utf-8')
                 html = '<script>window.DiwanLocal=' + encoded + ';</script>\n' + html
+                if document is not None:
+                    html = '<script>window.DiwanFile=' + json.dumps({'base': prefix}).replace('<', '\\u003c') + ';</script>\n' + html
                 self.send(200, html.encode('utf-8'), 'text/html; charset=utf-8')
+            elif document is not None and path in ('/document', '/status', '/history'):
+                self.document_call(path)
             elif path.startswith('/responses/') and ID.fullmatch(path.split('/')[-1]):
                 identity = path.split('/')[-1]
                 response = queue / 'responses' / (identity + '.json')
@@ -142,6 +146,13 @@ def make_server(workspace, port=None, page=None):
             except (ValueError, UnicodeError):
                 self.send(400, {'error': 'Invalid JSON request'})
                 return
+            if document is not None and path == '/document':
+                self.document_call(path, data)
+                return
+            if document is not None and path == '/shutdown':
+                self.send(200, {'stopped': True})
+                threading.Thread(target=self.server.shutdown, daemon=True).start()
+                return
             if path == '/requests':
                 value = data.get('input')
                 if not isinstance(value, str) and not (isinstance(value, list) and value and all(
@@ -159,6 +170,23 @@ def make_server(workspace, port=None, page=None):
                 self.send(200, {'cancelled': True})
             else:
                 self.send(404, {'error': 'Not found'})
+
+        def document_call(self, path, data=None):
+            from diwan_store import DiwanError
+            try:
+                if data is not None:
+                    result = document.update(data.get('patch'), data.get('if_version'), data.get('request_id'))
+                elif path == '/history':
+                    result = document.history()
+                else:
+                    result = document.get()
+                    if path == '/status':
+                        result = {'path': result['path'], 'id': result['poem']['id'], 'version': result['version']}
+                self.send(200, result)
+            except DiwanError as error:
+                self.send(409 if error.exit_code == 5 else 400, {'error': {'code': error.code, 'message': str(error), **error.details}})
+            except OSError:
+                self.send(500, {'error': {'code': 'IO_ERROR', 'message': 'Save may be incomplete. Keep the draft and retry the same request id, or inspect the document with get.'}})
 
     try:
         server = ThreadingHTTPServer(('127.0.0.1', port), Handler)

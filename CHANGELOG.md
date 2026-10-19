@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.0, shared-file Diwan CLI, unreleased
+
+- Add a bundled CLI for discovery, import/create, reading, conditional updates, history, restore, local opening, scanning, export and existing-agent requests.
+- Share one `.diwan.json` poem document between editor and agent. Preserve exact imported text and keep title/review state with it. Browser edits save to that file; clean editors refresh when another writer saves.
+- Reject stale saves, retain conflicting browser drafts, and provide recovery controls. Add atomic file replacement, immutable revision snapshots and save identities that recover interrupted acknowledgements without duplicating a save.
+- Keep the preloaded HTML workflow as a clearly labeled snapshot fallback. It does not synchronize source files. Safe shared writes currently require macOS/Linux and a browser that reaches the same local server.
+
 ## 0.1.2, preloaded local Diwan, unreleased
 
 - Open Diwan automatically with the complete draft when creating, continuing or revising a poem, as well as on explicit editor requests. Keep quick analysis, review-first pauses and explicit chat-only requests in chat. Use a supported local viewer with no hosted publication or paste step.

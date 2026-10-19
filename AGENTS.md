@@ -46,6 +46,7 @@ node skills/arabic-poetry/tests/parity.js
 PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s skills/arabic-poetry/tests -p 'test_*.py'
 node skills/arabic-poetry/tests/workbench_state.js
 node skills/arabic-poetry/tests/workbench_host.js
+node skills/arabic-poetry/tests/workbench_file.js
 PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s evals -p 'test_*.py'
 python3 evals/check_results.py
 git diff --check
@@ -58,3 +59,9 @@ Check local Markdown reference links, entrypoint length, and whitespace in new u
 For instruction changes, use the frozen requests and semantic criteria in `evals/` for comparable before/after trials. Preserve raw responses and executed evidence, record package hashes and capability limits, and distinguish software regressions, agent behavior and human literary review. Do not tune criteria after seeing outputs or describe a small single-run trial as a general accuracy benchmark. Historical evaluation records may retain earlier skill paths; keep active documentation links working.
 
 Final responses for edits should report changed files, checks performed, and any unverified behavior. Do not commit unrelated work or present generated lines as a historical poet's words.
+
+## Shared-file CLI
+
+`skills/arabic-poetry/scripts/diwan.py` is the bundled CLI; `diwan_store.py` owns document validation, lock/CAS saves, history and operation receipts. `assets/workbench/file.js` adapts the existing editor to the local file API. Keep it embedded through `build_workbench.py`, and retain the scanner/exporter core and attribution. Shared JSON documents, history, server logs and session receipts belong in a writable poem workspace outside the installed package.
+
+Run `test_diwan_cli.py` through the skill unittest discovery above and `workbench_file.js` for transport regressions. Exercise real browser-to-file saving, agent-to-browser refresh, stale browser conflict preservation, explicit reload and history restore in a disposable workspace. Stop owned test servers through `diwan.py stop FILE`; never kill an unverified PID. CLI help and `agent-context` must work offline before file setup. Record applicable CLI-design principles and conditional capabilities in the evaluation report. Safe writes rely on cooperating macOS/Linux writers using this API; direct file edits bypass advisory locks.

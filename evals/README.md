@@ -31,4 +31,6 @@ Case summaries must agree with their criterion judgments: any applicable failure
 
 The [CodeRabbit follow-up trial](results/2026-10-18-review/report.md) records an earlier package. The [earlier 2026-10-18 trial](results/2026-10-18/report.md) remains available. Earlier results remain historical; the three baseline packages and the requests/criteria stay pinned to the original Git snapshots.
 
-The [latest workflow regression trial](results/2026-10-19-preservation/report.md) retains original baseline executions, adds final-package follow-up batches, and discloses the workers' earlier same-condition context.
+The [earlier workflow regression trial](results/2026-10-19-preservation/report.md) retains original baseline executions, adds final-package follow-up batches, and discloses the workers' earlier same-condition context.
+
+The current source-reference package is checked by [the source-cleanup trial](results/2026-10-19-source-cleanup/report.md). It references the existing frozen baseline execution files directly rather than copying them again. The test fixture materializes those references only in its temporary mutation workspace.

@@ -1,0 +1,5 @@
+{
+  "status": "not rerun for software-only fixes",
+  "previous_receipt": "../2026-10-20-editor-fixes/browser-checks.json",
+  "reason": "Browser sources and generated HTML are byte-identical to the preceding browser-tested package; new owned-server lifecycle cases execute real HTTP servers in test_diwan_cli.py."
+}

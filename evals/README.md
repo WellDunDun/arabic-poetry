@@ -8,7 +8,9 @@ The [shared-file trial](results/2026-10-19-shared-cli/report.md) records the pre
 
 ## Editor review fixes
 
-The [editor/queue review-fix trial](results/2026-10-20-editor-fixes/report.md) is the current candidate. It records failing-before/passing-after regressions for deferred agent updates after cancel/close, literal and unchanged bulk saves, and actionable queue-response errors. All 31 frozen agent requests are rerun against that package. The production page/transport integration runs with `node skills/arabic-poetry/tests/workbench_shared.js`; the queue cases run through normal skill unittest discovery. The default checker validates this trial's current poetry package/evidence while additional suites retain separate frozen criteria and grades.
+The [editor/queue review-fix trial](results/2026-10-20-editor-fixes/report.md) records the preceding candidate. It records failing-before/passing-after regressions for deferred agent updates after cancel/close, literal and unchanged bulk saves, and actionable queue-response errors. All 31 frozen agent requests were rerun against that package. The production page/transport integration runs with `node skills/arabic-poetry/tests/workbench_shared.js`; the queue cases run through normal skill unittest discovery.
+
+The [merge-readiness trial](results/2026-10-20-merge-readiness/report.md) records the current package after the final review fixes for renamed server sessions and copied-document create replay. It preserves failing-before/passing-after regressions and reruns all 31 frozen agent cases, software checks and isolated installation/update checks. The default checker validates this trial's current poetry package/evidence; additional suites retain separate frozen criteria and grades. Browser source is unchanged from the preceding real-browser trial, which remains identified separately.
 
 ## Pronoun-reading follow-up
 

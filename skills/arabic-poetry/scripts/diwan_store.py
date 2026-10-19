@@ -128,10 +128,17 @@ class Store:
 
     def get(self):
         if self.path.exists() and self.path.stat().st_nlink != 1:
+            staging = self.staging_links()
+            if len(staging) == self.path.stat().st_nlink - 1:
+                raise DiwanError('INITIALIZATION_INTERRUPTED', 'Creation was interrupted. Retry create with the same input to recover its staging files.', 6, staging_files=[str(p) for p in staging])
             raise DiwanError('INVALID_PATH', 'Hard-linked documents are unsupported; import a separate poem instead')
         raw = bounded_read(self.path)
         doc = validate_document(parse(raw))
         return {'schema_version': 1, 'path': str(self.path), 'version': digest(raw), 'poem': doc}
+
+    def staging_links(self):
+        return [p for p in self.path.parent.glob('.diwan-*')
+                if not p.is_symlink() and p.is_file() and os.path.samefile(p, self.path)]
 
     @contextlib.contextmanager
     def locked(self):
@@ -152,6 +159,11 @@ class Store:
         try:
             fcntl.flock(fd, fcntl.LOCK_EX)
             if self.path.exists():
+                if self.path.stat().st_nlink > 1:
+                    staging = self.staging_links()
+                    if len(staging) == self.path.stat().st_nlink - 1:
+                        for path in staging:
+                            path.unlink()
                 self.bind()
             yield
         finally:
@@ -187,7 +199,14 @@ class Store:
         if not self.path.parent.is_dir():
             raise DiwanError('NOT_FOUND', 'Create the poem directory first: ' + str(self.path.parent), 4)
         if self.path.exists():
-            current = self.get()
+            try:
+                current = self.get()
+            except DiwanError as error:
+                if error.code != 'INITIALIZATION_INTERRUPTED' or dry_run:
+                    raise
+                with self.locked():
+                    current = self.get()
+                    self.snapshot(current)
             if all(current['poem'][key] == patch[key] for key in FIELDS):
                 return dict(current, replayed=True, dry_run=dry_run)
             raise DiwanError('ALREADY_EXISTS', 'This poem path already exists with different content; use get then update --if-version', 5)
@@ -262,15 +281,19 @@ class Store:
             raise DiwanError('CONFLICT', 'Another writer saved this poem. Get the latest version and reassess; do not blindly retry.', 5,
                              expected_version=expected, current_version=current['version'], path=current['path'])
 
-    def history(self, limit=20, before=None):
-        if not 1 <= limit <= 100:
-            raise DiwanError('INVALID_LIMIT', '--limit must be between 1 and 100')
-        current = self.get()
+    def check_binding(self):
+        self.get()
         binding = self.state / 'binding.json'
         if binding.exists():
             old = Path(parse(bounded_read(binding))['path'])
             if old.exists() and not os.path.samefile(old, self.path):
                 raise DiwanError('DUPLICATE_ID', 'This copied JSON shares another document id; import a new poem instead.', 5)
+
+    def history(self, limit=20, before=None):
+        if not 1 <= limit <= 100:
+            raise DiwanError('INVALID_LIMIT', '--limit must be between 1 and 100')
+        current = self.get()
+        self.check_binding()
         rows = {current['version']: {'version': current['version'], 'revision': current['poem']['revision'], 'current': True}}
         for path in (self.state / 'history').glob('*.json'):
             match = re.fullmatch(r'(\d+)-([0-9a-f]{64})\.json', path.name)
@@ -282,6 +305,7 @@ class Store:
                 'next_cursor': items[limit - 1]['revision'] if len(items) > limit else None}
 
     def restore(self, version, expected, request_id, dry_run=False):
+        self.check_binding()
         if not isinstance(version, str) or not re.fullmatch(r'[0-9a-f]{64}', version):
             raise DiwanError('INVALID_VERSION', '--revision must be a full version from history --json')
         paths = list((self.state / 'history').glob('*-' + version + '.json'))

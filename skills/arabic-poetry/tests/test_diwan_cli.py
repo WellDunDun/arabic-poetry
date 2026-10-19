@@ -123,6 +123,39 @@ class DiwanCLITests(unittest.TestCase):
         self.assertEqual(error.exception.code,'DUPLICATE_ID')
         self.assertEqual(self.cli('get',self.file)['version'],first['version'])
 
+    def test_export_cannot_replace_lock_or_another_poems_history(self):
+        self.create()
+        other = storage.Store(self.root/'other.diwan.json')
+        other.create({'text': 'another poem'})
+        for destination in [self.root/'.diwan/write.lock', next((other.state/'history').glob('*.json'))]:
+            before = destination.read_bytes()
+            error = self.cli('export',self.file,'--format','txt','--output',destination,'--overwrite',status=2)
+            self.assertEqual(error['error']['code'],'INVALID_OUTPUT')
+            self.assertEqual(destination.read_bytes(),before)
+
+    def test_interrupted_exclusive_create_recovers_on_exact_retry(self):
+        first = self.create()
+        staging = self.root/'.diwan-crash-fixture'
+        os.link(self.file, staging)
+        error = self.cli('get',self.file,status=6)
+        self.assertEqual(error['error']['code'],'INITIALIZATION_INTERRUPTED')
+        self.assertEqual(error['error']['staging_files'],[str(staging)])
+        self.cli('create',self.file,'--title','نافذة','--text-file',self.source,'--dry-run',status=6)
+        self.assertTrue(staging.exists())
+        again = self.create()
+        self.assertEqual(again['version'],first['version'])
+        self.assertFalse(staging.exists())
+        os.link(self.file,self.root/'ordinary-link.json')
+        self.assertEqual(self.cli('get',self.file,status=2)['error']['code'],'INVALID_PATH')
+
+    def test_copied_document_cannot_access_agent_queue_or_restore_preview(self):
+        first = self.create()
+        copied = self.root/'copy.diwan.json';shutil.copyfile(self.file,copied)
+        for args in [('pending',copied),('respond',copied,'--id','test','--input','-'),
+                     ('restore',copied,'--revision',first['version'],'--if-version',first['version'],'--request-id','preview','--dry-run')]:
+            result = self.cli(*args,input='{}' if args[0]=='respond' else None,status=5)
+            self.assertEqual(result['error']['code'],'DUPLICATE_ID')
+
     def test_restore_is_new_revision_and_history_paginates(self):
         first = self.create()
         second = self.update(first['version'])

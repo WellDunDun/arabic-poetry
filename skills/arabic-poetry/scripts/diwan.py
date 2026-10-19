@@ -175,9 +175,10 @@ def export(store, args):
     current = store.get()
     destination = Store(args.output).path
     same_poem = destination.exists() and os.path.samefile(destination, store.path)
-    in_history = any(parent.exists() and store.state.exists() and os.path.samefile(parent, store.state) for parent in destination.parents)
+    private = store.path.parent / '.diwan'
+    in_history = any(parent.exists() and private.exists() and os.path.samefile(parent, private) for parent in destination.parents)
     if same_poem or in_history:
-        raise DiwanError('INVALID_OUTPUT', 'Export to a separate file outside the document/history path')
+        raise DiwanError('INVALID_OUTPUT', 'Export to a separate file outside the document and its private .diwan directory')
     if not destination.parent.is_dir():
         raise DiwanError('NOT_FOUND', 'Create the output directory first', 4)
     if args.dry_run:
@@ -268,14 +269,14 @@ def run(args, commands):
     if args.command == 'export':
         return export(store, args)
     if args.command == 'pending':
-        store.get()
+        store.check_binding()
         if not 1 <= args.limit <= 100:
             raise DiwanError('INVALID_LIMIT', '--limit must be 1–100')
         workspace = store.state / 'agent'
         rows = serve_diwan.pending(workspace) if (workspace/'.diwan/requests').is_dir() else []
         return {'requests': rows[:args.limit], 'truncated': len(rows) > args.limit, 'hint': 'respond to oldest pending requests before requesting more'}
     if args.command == 'respond':
-        store.get()
+        store.check_binding()
         if not (store.state/'agent/.diwan/requests').is_dir():
             raise DiwanError('NOT_FOUND', 'No pending request workspace; open Diwan and ask the existing chat to handle a request', 4)
         serve_diwan.respond(store.state / 'agent', args.id, parse(input_bytes(args.input)))

@@ -3,10 +3,10 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs'), path = require('node:path'), vm = require('node:vm');
 const source = fs.readFileSync(path.join(__dirname, '../assets/workbench/host.js'), 'utf8');
 
-function harness(claude) {
+function harness(claude, initial = null, local = null) {
   const nodes = [], clicked = [], revoked = [];
   let copied;
-  const context = { window: { claude }, Blob, AbortController, DOMException, setTimeout: fn => fn(),
+  const context = { window: { claude, DiwanInitialPoem: initial, DiwanLocal: local }, Blob, AbortController, DOMException, setTimeout: fn => fn(),
     URL: { createObjectURL: () => 'blob:local', revokeObjectURL: x => revoked.push(x) },
     navigator: { clipboard: { async writeText(text) { copied = text; } } },
     document: { body: { appendChild(node) { nodes.push(node); } }, createElement(tag) {
@@ -75,5 +75,12 @@ function harness(claude) {
   assert.equal((await h.connect({ downloads: null })).downloads, null, 'an embedder can explicitly disable downloads');
   const inherited = Object.create({ downloads: services.downloads });
   assert.equal((await h.connect(inherited)).downloads, services.downloads, 'inherited adapter capabilities must be honored');
+  const privateCalls = [];
+  const prepared = await harness({ async use(name) { privateCalls.push(name); return services[name]; } }, {id:'current'}).connect({db:services.db});
+  assert.deepEqual(privateCalls, [], 'a prepared local page must not request hosted services');
+  assert.equal(prepared.db, null, 'a prepared local page must not switch to a shared database');
+  assert.equal(prepared.sample.requiresUserHandoff, true);
+  const queued = await harness(null, {id:'current'}, {base:'/session'}).connect();
+  assert(queued.label.includes('محلي'), 'a prepared page can still attach to the existing local bridge');
   console.log('PASS workbench host: portable exchange, invalid input, cancellation, native download, optional host adapters');
 })().catch(error => { console.error(error); process.exitCode = 1; });

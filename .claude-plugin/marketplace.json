@@ -8,7 +8,7 @@
     {
       "name": "arabic-poetry",
       "source": "./",
-      "version": "0.1.0",
+      "version": "0.1.2",
       "description": "Write, revise and understand classical and modern Arabic poetry, with a meter scanner and optional Diwan editor."
     }
   ],

@@ -87,6 +87,10 @@ Its **Diwan** page lets you review tashkeel word by word, see scansion update li
 
 The [source references](skills/arabic-poetry/references/SOURCES.md), [scanner coverage notes](skills/arabic-poetry/references/SCANNER-SOURCES.md) and [similar-skill comparisons](skills/arabic-poetry/references/SIMILAR_SKILLS.md) document evidence, similar skills, and limitations.
 
+Ask "Open Diwan with this poem" to open a private copy with the current poem already loaded. The agent uses a local HTML viewer or browser when available. Reopening preserves saved browser edits. If the host cannot display local HTML, it provides the preloaded file and explains that remaining step. This does not publish the poem or automatically connect the editor's AI buttons to the chat.
+
+قل «افتح ديوان بهذه القصيدة» لفتح نسخة خاصة تتضمن القصيدة الحالية دون نسخها ولصقها. يستخدم الوكيل عارض HTML محليًا أو متصفحًا متاحًا، ويحافظ على تعديلات المتصفح المحفوظة عند إعادة الفتح. إذا تعذّر العرض المحلي، يقدّم الملف المحمّل بالقصيدة ويوضّح الخطوة المتبقية. لا ينشر هذا القصيدة ولا يربط أزرار الذكاء بالمحادثة تلقائيًا.
+
 If you previously installed `arabic-prosody`, replace that installation with `arabic-poetry` from this repository. Its scanner, workbench and exporters are now included in the single package.
 
 ## Collaboration

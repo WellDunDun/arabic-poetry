@@ -11,7 +11,7 @@ Support classical and modern Arabic poetry equally. Judge each poem by its inten
 
 - For composition, continuation, revision or critique, read [craft and revision](references/CRAFT.md). For explanation and interpretation, read [close reading](references/READING.md).
 - For meter or rhyme claims, read [prosody](references/PROSODY.md) and the [scanner workflow](references/SCANNER.md). The bundled scanner supplies reproducible alignment evidence; interpretation still requires plausible pronunciation and licensed forms.
-- For a requested editor, a collection or export, read [Diwan](references/DIWAN.md). Keep ordinary writing, critique and quick analysis in chat unless an editor helps the requested work. Diwan is optional; unavailable host capabilities must not block chat or local-file work.
+- For an editor request, open [Diwan](references/DIWAN.md#open-with-the-current-poem) with the current poem in that turn. Prepare its preloaded local copy and use an available local HTML viewer/browser; do not publish it or ask the poet to paste text you already have. Read [Diwan](references/DIWAN.md) for collections and exports. Ordinary writing and quick analysis can stay in chat; missing viewer capabilities must be stated honestly.
 - Use [worked examples](references/EXAMPLES.md) when teaching or checking a detailed scan. [Tools](references/TOOLS.md) distinguishes the scanner and external analyzers. [Sources](references/SOURCES.md), [scanner coverage](references/SCANNER-SOURCES.md) and [similar skills](references/SIMILAR_SKILLS.md) explain evidence and limits. Load only relevant resources.
 
 ## Establish intent and preserve the text

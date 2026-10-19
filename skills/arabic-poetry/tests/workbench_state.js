@@ -12,7 +12,7 @@ const snapshot = application.slice(application.indexOf('\n', snapshotStart) + 1,
 const deferred = () => { let resolve, reject; const promise = new Promise((yes, no) => { resolve = yes; reject = no; }); return { promise, resolve, reject }; };
 const poem = (id, text = 'سلام') => ({ id, title: id, text, mode: 'auto', meter: '', choices: [], suggestions: {} });
 
-function harness(initial) {
+function harness(initial, options = {}) {
   const elements = new Map(), timers = new Map(), storage = new Map(), listeners = new Map();
   let timerId = 0;
   const element = id => {
@@ -28,7 +28,8 @@ function harness(initial) {
       createElement: tag => ({ tag, hidden: true, dataset: {}, style: {}, classList: { add() {}, remove() {}, toggle() {} }, listeners: {},
         addEventListener(type, fn) { this.listeners[type] = fn; }, setAttribute() {}, appendChild() {} }),
       body: { appendChild(el) { if (el.id) element(el.id); } } },
-    localStorage: { getItem: k => storage.has(k) ? storage.get(k) : null, setItem: (k, v) => storage.set(k, v) },
+    localStorage: { getItem: k => { if (options.blockStorage) throw new Error('storage denied'); return storage.has(k) ? storage.get(k) : null; },
+      setItem: (k, v) => { if (options.blockStorage) throw new Error('storage denied'); storage.set(k, v); } },
     setTimeout(fn) { const id = ++timerId; timers.set(id, fn); return id; }, clearTimeout(id) { timers.delete(id); } };
   vm.createContext(context);
   // Keep all production functions intact; replace rendering/scansion only, outside the behavior under test.
@@ -41,7 +42,9 @@ function harness(initial) {
       context(li, wi = 0) { cmCtx = { li, wi, word: linesOf(cur())[li].split(' ')[wi], bits: '' }; },
       get wordAlternatives() { return wordAlts.get(altKey()); }, get editing() { return editing; },
       snapshot(snap) { ${snapshot} },
-      setup(initial) { poems = initial; curId = initial[0].id; analysis = {mode:'free',free:[{family:{foot:'test',meter:'test'}}]}; renderSelect(); },
+      setup(initial) { poems = initial; curId = initial.length ? initial[0].id : null; analysis = {mode:'free',free:[{family:{foot:'test',meter:'test'}}]}; renderSelect(); },
+      launch(initial) { window.DiwanInitialPoem = initial; openInitialPoem(); },
+      get currentId() { return curId; },
       sample(value, tools = false) { sample = value; sampleTools = tools; }, db(value) { db = value; },
       get poems() { return poems; }, get chats() { return askState; }, get alternatives() { return altResults; },
       dirty, revisions
@@ -57,7 +60,7 @@ function harness(initial) {
     const fn = listeners.get('click').find(f => f.toString().includes("act === 'edit'"));
     fn({ target: { closest: query => query === '[data-act]' ? { dataset: { act, li: String(li) } } : null } });
   }
-  return { api, select, receive, elements, timers, click, dialogMouseDown() {
+  return { api, select, receive, elements, timers, storage, click, dialogMouseDown() {
     const fn = listeners.get('mousedown').find(f => f.toString().includes("$('cmenu')"));
     fn({target:{closest: selector => selector.includes('.agent-exchange') ? {} : null}});
   } };
@@ -220,7 +223,35 @@ async function approvalReadback() {
   assert(hosted.elements.get('toast').textContent.includes('انتهيت'), 'connected host retains the original readback workflow');
 }
 
+async function preloadedLaunch() {
+  const original = { ...poem('current', 'لَمْ أبع الوعد\nسلام'), status: 'review', source_id: 'workspace-poem' };
+  const h = harness([poem('other', 'another poem')]);
+  h.api.launch(original);
+  assert.equal(h.api.currentId, 'current', 'launch selects the requested poem rather than the last open poem');
+  assert.equal(h.api.poems[1].text, original.text, 'marks and line breaks arrive without a paste');
+  assert.equal(h.api.poems[1].status, 'review', 'opening does not approve a reading');
+  h.api.poems[1].text = 'newer browser edit';
+  h.api.launch(original);
+  assert.equal(h.api.poems.length, 2, 'reopening does not duplicate a poem');
+  assert.equal(h.api.poems[1].text, 'newer browser edit', 'reopening cannot replace saved edits with the seed');
+  assert(h.elements.get('launchStatus').textContent.includes('مسودتك'));
+  const revised = {...original, id:'chat-revision', text:'revised and accepted in chat'};
+  h.api.launch(revised);
+  assert.equal(h.api.currentId, revised.id, 'new supplied text must open rather than silently selecting the old browser draft');
+  assert.equal(h.api.poems[1].text, 'newer browser edit', 'a new supplied revision preserves the earlier browser draft');
+  assert.equal(h.api.poems[2].text, revised.text);
+  assert(h.elements.get('launchStatus').textContent.includes('مستقلة'));
+  h.api.launch(revised);
+  assert.equal(h.api.poems.length, 3, 'reopening a supplied revision does not create duplicate drafts');
+  const blocked = harness([], {blockStorage: true});
+  blocked.api.launch(original);
+  assert.equal(blocked.api.poems[0].text, original.text, 'storage denial must not produce an empty editor');
+  assert.equal(blocked.api.currentId, original.id);
+  assert.equal(blocked.elements.get('launchStatus').hidden, false);
+  assert(blocked.elements.get('launchStatus').textContent.includes('الحفظ'));
+}
+
 (async () => {
-  await staleSave(); await conversations(); await staleAlternatives(); await diacritics(); await lineEditing(); await wordContext(); await manualWordMenu(); await approvalReadback();
+  await staleSave(); await conversations(); await staleAlternatives(); await diacritics(); await lineEditing(); await wordContext(); await manualWordMenu(); await approvalReadback(); await preloadedLaunch();
   console.log('PASS workbench state: revision-safe saves, isolated conversations, stale responses, preserved wording/marks, line identities/metadata and word context');
 })().catch(error => { console.error(error); process.exitCode = 1; });

@@ -1,5 +1,15 @@
 # Poetry skill evaluations
 
+## First-request Diwan launch
+
+The independent suite [diwan-launch.json](diwan-launch.json) freezes English and Arabic editor requests, an unavailable-viewer case, an explicit chat-only case and software invariants. It uses a synthetic poem, not a private user transcript. Its baseline is main at `50938ba72240d810079d9d360397df256f83e4c9`. Keep this suite separate from the historical consolidation corpus below.
+
+Run `python3 evals/run_diwan_launch.py --skill /absolute/path/to/skill --output /absolute/new/temp/directory --condition before` against the unmodified baseline, then repeat with the candidate and `--condition after`. Use the same client/model settings and frozen requests. Each case gets a fresh Codex session and a read-only copy of the package. This runs the installed Codex model and requires its normal authentication. It creates only isolated local fixtures, never a marketplace installation or hosted publication. Inspect every raw `events.jsonl`, final response and HTML artifact before grading the frozen criteria. `runs.json` retains package/corpus hashes, exit status and opener receipts. The fixture opener records a local display request; it does not render HTML. Keep these model runs distinct from real browser checks and report failures honestly.
+
+The production software regressions run with `test_prepare_diwan.py`, `test_serve_diwan.py`, `workbench_state.js` and `workbench_host.js` as part of the maintainer checks. In a real browser, prepare two poems into one writable workspace, open each, edit one and reopen it. Check the title, exact text and marks, selection, saved-edit warning and original review status. Repeat with storage unavailable and confirm the supplied poem remains visible with a persistence warning. Browser evidence must identify the tested host. A passing local browser run does not prove Claude's sandboxed HTML preview, a ChatGPT extension, or connected AI buttons work.
+
+## Historical consolidation corpus
+
 This frozen request set compares instruction behavior while consolidating the two skills. It supplements the scanner/checker/workbench software tests; it is not a corpus accuracy benchmark or a human literary-quality study.
 
 ## Conditions

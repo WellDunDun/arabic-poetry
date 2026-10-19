@@ -1,4 +1,5 @@
 <meta charset="utf-8">
+<!--DIWAN_INITIAL_POEM-->
 <title>ديوان العروض</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -382,6 +383,7 @@ input, textarea, select { box-sizing: border-box }
     <button class="btn" id="newBtn" type="button">+ قصيدة</button>
     <span class="spacer"></span>
     <span class="note" id="agentStatus" role="status"></span>
+    <span class="note" id="launchStatus" role="status" hidden></span>
     <button class="btn" id="copyBtn" type="button">نسخ القصيدة</button>
     <button class="btn" id="exportBtn" type="button">تصدير</button>
     <div class="setrow">
@@ -1658,6 +1660,9 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
   }
 
   async function connect(injected = root.DiwanHost) {
+    if (root.DiwanInitialPoem) return root.DiwanLocal
+      ? { label: 'محادثتك عبر اتصال محلي', sample: localQueue(root.DiwanLocal), db: null, downloads: browserDownloads() }
+      : { label: 'ديوان محلي؛ الذكاء عبر محادثتك', sample: chatExchange(), db: null, downloads: browserDownloads() };
     // Embedders can provide their own adapter without changing the poetry engine.
     if (injected) return {
       label: injected.label || 'وكيل متصل',
@@ -1687,8 +1692,9 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
   const $ = id => document.getElementById(id);
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const AR_DIG = n => String(n).replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
-  const store = { get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
-    set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} } };
+  let storageUnavailable = false;
+  const store = { get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { storageUnavailable = true; return d; } },
+    set(k, v) { if (storageUnavailable) return; try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { storageUnavailable = true; } } };
 
   // ---------------------------------------------------------------- state
   let db = null, sample = null;
@@ -2876,6 +2882,26 @@ ${linesOf(p).join('\n')}
   };
   let tt; function toast(m) { const t = $('toast'); t.textContent = m; t.hidden = false; clearTimeout(tt); tt = setTimeout(() => { t.hidden = true; }, 2600); }
 
+  // ---------------------------------------------------------------- local poem handoff
+  function openInitialPoem() {
+    const initial = window.DiwanInitialPoem;
+    if (!initial) return;
+    const existing = poems.find(p => p.id === initial.id);
+    const otherDraft = initial.source_id && poems.some(p => p.source_id === initial.source_id && p.id !== initial.id);
+    if (!existing) {
+      const poem = JSON.parse(JSON.stringify(initial));
+      poem.order = Math.max(0, ...poems.map(p => p.order || 0)) + 1;
+      poems.push(poem); store.set('diwan.local', poems);
+    }
+    curId = initial.id; store.set('diwan.cur', curId);
+    const message = storageUnavailable
+      ? 'الحفظ في المتصفح غير متاح. القصيدة مفتوحة مؤقتًا؛ صدّر تعديلاتك قبل إغلاق الصفحة.'
+      : existing && existing.text !== initial.text
+        ? 'فُتحت مسودتك المحفوظة لهذا النص المرفق دون استبدال تعديلاتك.'
+        : !existing && otherDraft ? 'فُتح النص المرفق كمسودة مستقلة. بقيت النسخة السابقة وتعديلاتها في قائمة القصائد.' : '';
+    $('launchStatus').textContent = message;
+    $('launchStatus').hidden = !message;
+  }
   // ---------------------------------------------------------------- boot
   render();
   (async () => {
@@ -2883,7 +2909,13 @@ ${linesOf(p).join('\n')}
     sample = host.sample; db = host.db; downloads = host.downloads;
     $('agentStatus').textContent = host.label;
     if (sample) { try { const lim = await sample.limits(); sampleTools = !!(lim && lim.tools); } catch (e) { sampleTools = false; } }
-    if (!db) { poems = store.get('diwan.local', []); if (!cur() && poems.length) curId = poems[0].id; render(); return; }
+    if (!db) {
+      poems = store.get('diwan.local', []);
+      if (!Array.isArray(poems)) { poems = []; storageUnavailable = true; }
+      openInitialPoem();
+      if (!cur() && poems.length) curId = poems[0].id;
+      render(); return;
+    }
     db.collection('poems').onSnapshot(snap => {
       const incoming = snap.docs.map(d => Object.assign({ id: d.id }, d.data()));
       // keep local edits that are still waiting to be written

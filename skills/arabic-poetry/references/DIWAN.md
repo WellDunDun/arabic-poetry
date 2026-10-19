@@ -2,6 +2,22 @@
 
 Diwan is the optional editing workbench contributed by Firas F. Khabour. Use it when the user requests an editor, saved collection, or export, or when it helps the requested extended editing. Ordinary composition, close reading and quick scans can stay in chat. Read the [scanner workflow](SCANNER.md) for metrical claims and follow the main skill's vocalization policy.
 
+## Open with the current poem
+
+An editor request such as "open Diwan", "open this poem in the editor" or «افتح الديوان بهذه القصيدة» authorizes the local launch. Complete it in the same turn without another offer or a request to paste text already available. Use the latest accepted text, including its marks and line breaks. If an existing editor has unreadable newer edits, obtain that text through a real available capability before replacing anything.
+
+1. Save the current poem as UTF-8 text in a writable poem workspace outside the installed skill. Choose a stable poem ID and reuse it when reopening that poem. Give unrelated poems different IDs.
+2. Run the installed helper with real absolute paths. This example assumes the command runs from the installed skill directory:
+
+   ```sh
+   python3 scripts/prepare_diwan.py --poem /absolute/path/to/poems/current.txt --workspace /absolute/path/to/poems --id current-poem --title "عنوان القصيدة"
+   ```
+
+3. Open the returned `path` or `url` with the host's actual local HTML viewer or browser capability. Reuse and reload the existing Diwan tab for this workspace when one is open. Do not leave a second copy editing the same browser collection: local storage is not a multi-tab synchronization service, and an old tab can overwrite another tab's changes. Inspect the rendered title and poem to confirm delivery. The helper returns `opened: false`; creating the file alone is not opening it. If preview fails, use another available local viewer/browser or give the prepared file as an explicit remaining handoff. Never report an unrendered file as an open working editor.
+4. Keep this launch local/private. Do not invoke hosted artifact publishing, deployment, shared databases or model services to open it. If the host only offers publishing, state that local display is unavailable and deliver the preloaded file through an available file tool. Do not ask the poet to copy the poem into an empty page.
+
+The helper reuses the shipped HTML without rebuilding or modifying the installed package. It embeds the poem safely as data in a private file. The new entry starts in `review` status. The helper namespaces identity by workspace, poem ID and supplied text revision. Reopening the same supplied revision preserves its browser edits. If chat supplies a different revision, it opens as a separate review draft while the previous browser draft remains available. Visible notes distinguish the saved draft from a new supplied revision without guessing which is newer. If browser storage is unavailable, the poem still opens in memory with a warning to export before closing. Prepared HTML contains the poem and lives under `.diwan/`, with an ignore file for ordinary Git operations. Do not force-add poem data or assume this untracks files already committed. Prepared local copies do not request a hosted database or automatic AI connection. Their AI controls use the local bridge below when attached, otherwise the existing manual exchange. Opening a poem does not prove the AI connection works.
+
 ## Choose an actually available environment
 
 - `assets/workbench/diwan.html` is the built page. Its local scanner needs no AI call. It supports word/line edits, tashkeel choices, live feet and candidate meters, and collection export controls.
@@ -37,13 +53,15 @@ Keep a UTF-8 poem file or JSON collection in the user's working/output directory
 
 ## Use the existing local agent chat
 
-For Codex, Claude Code or another agent with local file/command access, start the bridge from a writable poem workspace, outside the installed skill:
+For Codex, Claude Code or another agent with local file/command access, choose the bridge before the first launch when the browser can reach that same environment. Start it from a writable poem workspace, outside the installed skill:
 
 ```sh
-python3 scripts/serve_diwan.py serve --workspace /absolute/path/to/poems
+python3 scripts/serve_diwan.py serve --workspace /absolute/path/to/poems --page /absolute/path/to/poems/.diwan/diwan-current-poem.html
 ```
 
-Open the exact localhost URL printed by the command through an available browser capability. Keep the server process running for the editing session. The bridge saves its chosen port in the workspace and reuses it on later starts, keeping the same browser-storage origin. If that port is busy, it stops with an actionable message rather than switching silently to an empty collection. For an existing collection from an older bridge, start once with its original `--port` value. An explicit different port, including `--port 0`, selects a separate browser-storage origin and saves it as the default for later starts. Return to the earlier collection by explicitly selecting its old port. The bridge binds only to `127.0.0.1`, uses a random session URL, rejects foreign Host/Origin headers and executes no agent/model commands.
+Open the exact localhost URL printed by the command through an available browser capability. Use the preloaded file from `prepare_diwan.py` as `--page`; omit that flag only for an intentionally empty editor. Confirm the browser can reach the same execution environment: a cloud/container localhost is not automatically reachable from the user's computer. Keep the server process running for the editing session. The bridge saves its chosen port in the workspace and reuses it on later starts, keeping the same browser-storage origin. If that port is busy, it stops with an actionable message rather than switching silently to an empty collection. For an existing collection from an older bridge, start once with its original `--port` value. An explicit different port, including `--port 0`, selects a separate browser-storage origin and saves it as the default for later starts. Return to the earlier collection by explicitly selecting its old port. The bridge binds only to `127.0.0.1`, uses a random session URL, rejects foreign Host/Origin headers and executes no agent/model commands.
+
+A file URL and a localhost URL have separate browser storage. Before changing between them, read or export the current edited text through an available browser/file capability, prepare that exact text again, and verify it after opening the new origin. Do not use an old seed as a substitute for unreadable editor edits.
 
 When the user clicks an AI button, the page queues a prompt in `<workspace>/.diwan/requests/` and waits. The user tells the existing chat to handle the Diwan request. If the chat does not know the workspace yet, the dialog's copy button supplies a message containing the real workspace, bridge path and request ID. Do not claim the editor can wake the chat automatically.
 

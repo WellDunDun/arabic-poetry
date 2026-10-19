@@ -41,7 +41,7 @@ Support classical and modern Arabic poetry equally. Judge each poem by its inten
 
 ## Revise or critique
 
-1. Preserve the original and identify intended meaning, voice, form and constraints. For critique-only requests, diagnose without rewriting.
+1. Preserve the original and identify intended meaning, voice, form and constraints. Keep the supplied source file unchanged while proposing revisions; write a separate draft unless the poet explicitly requests an in-place file edit. For critique-only requests, diagnose without rewriting.
 2. Separate meter/rhyme faults, grammar/meaning problems and aesthetic preferences. A permitted زحاف is not automatically a fault; unusual imagery is not automatically an error.
 3. Establish the intended meter from context before repairing a line. Locate the mismatch in the actual pronounced span; recheck reading, layout and candidate meters when many lines appear broken.
 4. Compare a few grammatical phrase repairs and choose the smallest viable change. Preserve required words, imagery and dialect. Explain lost or gained meaning, including removed emphasis. Offer a broader rewrite separately if it changes voice or form.

@@ -6,7 +6,7 @@ Diwan is the drafting and editing workbench contributed by Firas F. Khabour. Ope
 
 A composition, continuation or revision request authorizes the private local launch unless the poet opts out. An explicit editor request such as "open Diwan" or «افتح الديوان بهذه القصيدة» also triggers it. Complete the launch in the same turn without another offer or a request to paste text already available. For a new poem, preload the actual generated draft. For revision, preserve the original separately and preload the complete revised draft, including unchanged text, marks and line breaks. Keep proposals in review status; opening them is not acceptance. If an existing editor has unreadable newer edits, obtain that text through a real available capability before replacing anything.
 
-1. Save the current poem as UTF-8 text in a writable poem workspace outside the installed skill. Choose a stable poem ID and reuse it when reopening that poem. Give unrelated poems different IDs.
+1. Save the complete draft as UTF-8 text in a writable poem workspace outside the installed skill. For a proposed revision, keep the supplied source file unchanged and write the revised text to a separate draft file. Update the accepted working copy only on acceptance or an explicit request to edit that file in place. Choose a stable poem ID and reuse it when reopening that poem. Give unrelated poems different IDs.
 2. Run the installed helper with real absolute paths. This example assumes the command runs from the installed skill directory:
 
    ```sh

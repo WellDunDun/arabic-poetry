@@ -4,6 +4,25 @@ For an agent handling a persistent installation request. Install the skills for 
 
 Source: https://github.com/WellDunDun/arabic-poetry
 
+## ChatGPT and Codex plugin preview
+
+The root `plugin.json` packages the existing skill for compatible ChatGPT and Codex plugin hosts. `.agents/plugins/marketplace.json` provides a local marketplace pointing at this checkout. The Claude manifest remains available for compatible hosts. There is one skill directory, with the same scanner, references and Firas's Diwan assets in every route.
+
+This is a local plugin preview, not a listing in the public Plugins Directory. Do not claim installation or ChatGPT support from downloaded files alone. Verify the installed skill in the actual host and start a new chat if required.
+
+In a supported ChatGPT desktop environment, open or select this repository and install **Arabic Poetry** from its local marketplace in **Plugins**. If the repository source does not appear, ask the local agent to register this checkout through the host's supported marketplace installer. Web and mobile users should not be instructed to run local shell commands; public directory distribution is separate.
+
+With a Codex CLI that supports `codex plugin`, register a checkout containing the root manifest and marketplace, then install:
+
+```sh
+codex plugin marketplace add /absolute/path/to/arabic-poetry
+codex plugin add arabic-poetry@arabic-poetry-local
+```
+
+Reuse an existing working installation and preserve unrelated marketplace entries. After installation, start a new chat, select the skill with `@` in ChatGPT or `$arabic-poetry` in Codex, and try a supplied poem. Check Python execution before claiming a scanner run. If no execution capability is available, use the skill's documented manual-analysis limits. Diwan uses the local bridge where the agent shares the poem workspace, or the manual JSON exchange elsewhere. This package includes no remote MCP server or embedded ChatGPT Diwan adapter.
+
+Packaging and distribution follow [OpenAI's plugin guide](https://developers.openai.com/plugins/build/plugins); see [supported plugin surfaces](https://learn.chatgpt.com/docs/plugins) and [skill invocation](https://learn.chatgpt.com/docs/skills-and-plugins). Native ChatGPT installation and UI behavior still require validation in the user's target environment.
+
 ## Install for the current agent
 
 1. Read the source repository's default branch. The skill directories served by that version are listed in [the package manifest](.claude-plugin/plugin.json). Install each listed directory in full, including references, scripts and assets. An older published version may list two skills; the combined version lists one.
@@ -17,7 +36,7 @@ Source: https://github.com/WellDunDun/arabic-poetry
 
    For another supported agent, replace `codex` with its documented CLI identifier, such as `claude-code`. Keep `--skill '*'` quoted. Do not use `--all`, which also targets other agents. If the user explicitly requested project-only installation, omit `--global` and run from that project.
 
-These routes install Agent Skills. The Claude-style manifest does not establish a native plugin installation route for every app, and this repository is not claimed to be listed in a plugin marketplace. If the current app cannot install local skills, explain the blocker and its supported alternative instead of claiming success.
+These routes install Agent Skills separately from the native plugin preview above. Supported local hosts can use this repository's marketplace; the package is not listed in the universal public directory. If the current app cannot install local skills or plugins, explain the blocker and its supported alternative instead of claiming success.
 
 ## Confirm and start
 

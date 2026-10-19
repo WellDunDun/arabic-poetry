@@ -1,0 +1,35 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "arabic-poetry",
+  "version": "0.1.0",
+  "description": "Write, revise and understand classical and modern Arabic poetry, with a meter scanner and optional Diwan editor.",
+  "author": {
+    "name": "Daniel Petro and Firas F. Khabour",
+    "url": "https://github.com/WellDunDun/arabic-poetry#credits"
+  },
+  "homepage": "https://github.com/WellDunDun/arabic-poetry",
+  "repository": "https://github.com/WellDunDun/arabic-poetry",
+  "license": "MIT",
+  "keywords": [
+    "arabic",
+    "poetry",
+    "prosody",
+    "diwan"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Arabic Poetry · الشعر العربي",
+        "shortDescription": "Write, revise and scan Arabic poetry.",
+        "longDescription": "Work on classical and modern Arabic poetry using one shared skill. Includes Firas F. Khabour’s meter scanner, Diwan editor and exporters. Local helpers need an execution environment; cloud chats can use manual Diwan exchange.",
+        "developerName": "Daniel Petro & Firas F. Khabour",
+        "category": "Productivity",
+        "websiteURL": "https://github.com/WellDunDun/arabic-poetry",
+        "defaultPrompt": [
+          "استخدم مهارة الشعر العربي لتحليل هذه الأبيات مع الحفاظ على كلماتي.",
+          "Help me write or revise an Arabic poem."
+        ]
+      }
+    }
+  }
+}

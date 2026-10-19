@@ -1,0 +1,20 @@
+{
+  "name": "arabic-poetry-local",
+  "interface": {
+    "displayName": "Arabic Poetry"
+  },
+  "plugins": [
+    {
+      "name": "arabic-poetry",
+      "source": {
+        "source": "local",
+        "path": "./"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

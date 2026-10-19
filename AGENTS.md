@@ -18,7 +18,7 @@ Support classical and modern forms equally. Ground technical assertions in pronu
 
 The scanner compares supported vocalized readings with implemented metrical forms. Its spelling-based rhyme-repeat filter is an editing heuristic; neither a matching scan nor a repeated spelling certifies full metrical legality, a semantic rhyme fault, originality or literary quality. Keep these limits explicit in documentation and outputs.
 
-Update `.claude-plugin/plugin.json` and README.md when changing the served layout. The published installation slug is `WellDunDun/arabic-poetry`.
+The portable root `plugin.json` discovers skills under `skills/`; `.agents/plugins/marketplace.json` exposes this checkout to local ChatGPT/Codex hosts. Keep the Claude-compatible `.claude-plugin/plugin.json` and README.md consistent when changing the served layout. There is one skill package, not a separate copy per host. The published installation slug is `WellDunDun/arabic-poetry`. Public directory publication and live ChatGPT integration require separate verification.
 
 ## Validation
 
@@ -27,6 +27,8 @@ Run from the repository root. Bridge tests bind temporary loopback sockets, so t
 ```sh
 skills-ref validate skills/arabic-poetry
 python3 -m json.tool .claude-plugin/plugin.json >/dev/null
+python3 -m json.tool plugin.json >/dev/null
+python3 -m json.tool .agents/plugins/marketplace.json >/dev/null
 PYTHONDONTWRITEBYTECODE=1 python3 skills/arabic-poetry/tests/run_gold.py
 node skills/arabic-poetry/tests/parity.js
 PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s skills/arabic-poetry/tests -p 'test_*.py'

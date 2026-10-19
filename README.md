@@ -6,6 +6,24 @@ Use it for عمودي، تفعيلة، قصيدة نثر, evidence-led meter and
 
 ## Quickstart
 
+### ChatGPT and Codex plugin preview
+
+This repository includes a plugin package for ChatGPT and Codex, using the same `arabic-poetry` skill. It is not yet listed in the public Plugins Directory. For a local desktop installation, copy this request into an agent that can access local files and run the supported installer:
+
+```text
+Install the Arabic Poetry plugin from https://github.com/WellDunDun/arabic-poetry for this ChatGPT desktop or Codex environment. Use the repository's plugin manifest and marketplace, preserve my existing setup, and verify that its arabic-poetry skill is available in a new chat. Then help me try a poem. If this environment cannot install local plugins, explain the supported alternative.
+```
+
+تتضمن هذه النسخة إضافة لـChatGPT وCodex تستخدم مهارة `arabic-poetry` نفسها. لم تُنشر بعد في دليل الإضافات العام. للتثبيت المحلي على سطح المكتب، انسخ الطلب التالي إلى وكيل يستطيع الوصول إلى الملفات وتنفيذ أداة التثبيت المدعومة:
+
+```text
+ثبّت إضافة الشعر العربي من https://github.com/WellDunDun/arabic-poetry لبيئة ChatGPT لسطح المكتب أو Codex التي أستخدمها الآن. استخدم ملف تعريف الإضافة ودليل الإضافات في المستودع، وحافظ على إعداداتي الحالية، وتحقق من ظهور مهارة arabic-poetry في محادثة جديدة. ثم ساعدني على تجربة قصيدة. إن كانت هذه البيئة لا تدعم تثبيت إضافات محلية، فوضّح البديل المدعوم.
+```
+
+After installation, choose the skill with `@` in ChatGPT or `$arabic-poetry` in Codex. Scanner scripts need command execution; the plugin does not add a hosted Diwan connection. See the [installation guide](INSTALL.md#chatgpt-and-codex-plugin-preview).
+
+بعد التثبيت، اختر المهارة باستخدام `@` في ChatGPT أو `$arabic-poetry` في Codex. تحتاج برامج التقطيع إلى تنفيذ الأوامر؛ ولا تضيف هذه الحزمة اتصالًا سحابيًا بمحرر ديوان. راجع [دليل التثبيت](INSTALL.md#chatgpt-and-codex-plugin-preview).
+
 ### Use it in your current chat
 
 Copy one of these prompts into your agent's chat.

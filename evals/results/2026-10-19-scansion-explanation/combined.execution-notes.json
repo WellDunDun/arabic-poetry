@@ -1,0 +1,243 @@
+{
+  "source_commit": "9ae1c39fe065064382429fd336932fb72676e970",
+  "client": "codex-cli 0.155.1",
+  "suite_sha256": "2c4c204c2cc0e233a8360ff2622a0540dbef52e46c33e18195e8ebe0755c0dac",
+  "capabilities": "Local files, Python and Node only; no network, browser, live host APIs, installs, publishing or global fonts.",
+  "model": "Codex CLI default, no model override; exact backend identifier not emitted in JSONL.",
+  "sessions": "Fresh per case; no rubric or prior answers supplied to execution sessions.",
+  "cases": [
+    {
+      "id": "prose-compose",
+      "exit_code": 0,
+      "timed_out": false,
+      "package_unchanged": true,
+      "poem_unchanged": true,
+      "opener_unchanged": true,
+      "receipt_matches_file": true,
+      "command": [
+        "codex",
+        "--ask-for-approval",
+        "never",
+        "exec",
+        "--ignore-user-config",
+        "--ignore-rules",
+        "--ephemeral",
+        "--sandbox",
+        "workspace-write",
+        "--skip-git-repo-check",
+        "--json",
+        "--output-last-message",
+        "/private/tmp/poetry-scansion-evals-20261019/consolidation/prose-compose/response.txt",
+        "-"
+      ],
+      "raw_events": {
+        "path": "/private/tmp/poetry-scansion-evals-20261019/consolidation/prose-compose/events.jsonl",
+        "sha256": "888b696dae89d657543eefdf7d88f4ecbec2168e2852231379f2c80b33f47bd5"
+      }
+    },
+    {
+      "id": "close-reading",
+      "exit_code": 0,
+      "timed_out": false,
+      "package_unchanged": true,
+      "poem_unchanged": true,
+      "opener_unchanged": true,
+      "receipt_matches_file": true,
+      "command": [
+        "codex",
+        "--ask-for-approval",
+        "never",
+        "exec",
+        "--ignore-user-config",
+        "--ignore-rules",
+        "--ephemeral",
+        "--sandbox",
+        "workspace-write",
+        "--skip-git-repo-check",
+        "--json",
+        "--output-last-message",
+        "/private/tmp/poetry-scansion-evals-20261019/consolidation/close-reading/response.txt",
+        "-"
+      ],
+      "raw_events": {
+        "path": "/private/tmp/poetry-scansion-evals-20261019/consolidation/close-reading/events.jsonl",
+        "sha256": "92b343bcdee9125672797db9b3656604fa748ad45de049f28e5f51f69b224998"
+      }
+    },
+    {
+      "id": "classical-scan",
+      "exit_code": 0,
+      "timed_out": false,
+      "package_unchanged": true,
+      "poem_unchanged": true,
+      "opener_unchanged": true,
+      "receipt_matches_file": true,
+      "command": [
+        "codex",
+        "--ask-for-approval",
+        "never",
+        "exec",
+        "--ignore-user-config",
+        "--ignore-rules",
+        "--ephemeral",
+        "--sandbox",
+        "workspace-write",
+        "--skip-git-repo-check",
+        "--json",
+        "--output-last-message",
+        "/private/tmp/poetry-scansion-evals-20261019/consolidation/classical-scan/response.txt",
+        "-"
+      ],
+      "raw_events": {
+        "path": "/private/tmp/poetry-scansion-evals-20261019/consolidation/classical-scan/events.jsonl",
+        "sha256": "465ae934541bbdc190583d4dd63986657701f8130acf59e4bbdd3f10b71a10a8"
+      }
+    },
+    {
+      "id": "provisional-reading",
+      "exit_code": 0,
+      "timed_out": false,
+      "package_unchanged": true,
+      "poem_unchanged": true,
+      "opener_unchanged": true,
+      "receipt_matches_file": true,
+      "command": [
+        "codex",
+        "--ask-for-approval",
+        "never",
+        "exec",
+        "--ignore-user-config",
+        "--ignore-rules",
+        "--ephemeral",
+        "--sandbox",
+        "workspace-write",
+        "--skip-git-repo-check",
+        "--json",
+        "--output-last-message",
+        "/private/tmp/poetry-scansion-evals-20261019/consolidation/provisional-reading/response.txt",
+        "-"
+      ],
+      "raw_events": {
+        "path": "/private/tmp/poetry-scansion-evals-20261019/consolidation/provisional-reading/events.jsonl",
+        "sha256": "05b8f9afe02ef75263a8a7f2a339d25dc887dde6e2cb356a7c4c6bd24fcc218e"
+      }
+    },
+    {
+      "id": "review-only",
+      "exit_code": 0,
+      "timed_out": false,
+      "package_unchanged": true,
+      "poem_unchanged": true,
+      "opener_unchanged": true,
+      "receipt_matches_file": true,
+      "command": [
+        "codex",
+        "--ask-for-approval",
+        "never",
+        "exec",
+        "--ignore-user-config",
+        "--ignore-rules",
+        "--ephemeral",
+        "--sandbox",
+        "workspace-write",
+        "--skip-git-repo-check",
+        "--json",
+        "--output-last-message",
+        "/private/tmp/poetry-scansion-evals-20261019/consolidation/review-only/response.txt",
+        "-"
+      ],
+      "raw_events": {
+        "path": "/private/tmp/poetry-scansion-evals-20261019/consolidation/review-only/events.jsonl",
+        "sha256": "9dfe9d5b45d65238d5488a384586bbef5bfa0a9038904be99a2df39bf560e269"
+      }
+    },
+    {
+      "id": "bounded-repair",
+      "exit_code": 0,
+      "timed_out": false,
+      "package_unchanged": true,
+      "poem_unchanged": true,
+      "opener_unchanged": true,
+      "receipt_matches_file": true,
+      "command": [
+        "codex",
+        "--ask-for-approval",
+        "never",
+        "exec",
+        "--ignore-user-config",
+        "--ignore-rules",
+        "--ephemeral",
+        "--sandbox",
+        "workspace-write",
+        "--skip-git-repo-check",
+        "--json",
+        "--output-last-message",
+        "/private/tmp/poetry-scansion-evals-20261019/consolidation/bounded-repair/response.txt",
+        "-"
+      ],
+      "raw_events": {
+        "path": "/private/tmp/poetry-scansion-evals-20261019/consolidation/bounded-repair/events.jsonl",
+        "sha256": "8f41ea3397bef3fe99401dc724371d0f1ea18d7202d9af551b1d6d6ad9c7a359"
+      }
+    },
+    {
+      "id": "tafila-boundary",
+      "exit_code": 0,
+      "timed_out": false,
+      "package_unchanged": true,
+      "poem_unchanged": true,
+      "opener_unchanged": true,
+      "receipt_matches_file": true,
+      "command": [
+        "codex",
+        "--ask-for-approval",
+        "never",
+        "exec",
+        "--ignore-user-config",
+        "--ignore-rules",
+        "--ephemeral",
+        "--sandbox",
+        "workspace-write",
+        "--skip-git-repo-check",
+        "--json",
+        "--output-last-message",
+        "/private/tmp/poetry-scansion-evals-20261019/consolidation/tafila-boundary/response.txt",
+        "-"
+      ],
+      "raw_events": {
+        "path": "/private/tmp/poetry-scansion-evals-20261019/consolidation/tafila-boundary/events.jsonl",
+        "sha256": "8556608885a97168433d5d3bab1204fa09697795d73596d2fff34a9ee1f68aa5"
+      }
+    },
+    {
+      "id": "workbench-export",
+      "exit_code": 0,
+      "timed_out": false,
+      "package_unchanged": true,
+      "poem_unchanged": true,
+      "opener_unchanged": true,
+      "receipt_matches_file": true,
+      "command": [
+        "codex",
+        "--ask-for-approval",
+        "never",
+        "exec",
+        "--ignore-user-config",
+        "--ignore-rules",
+        "--ephemeral",
+        "--sandbox",
+        "workspace-write",
+        "--skip-git-repo-check",
+        "--json",
+        "--output-last-message",
+        "/private/tmp/poetry-scansion-evals-20261019/consolidation/workbench-export/response.txt",
+        "-"
+      ],
+      "raw_events": {
+        "path": "/private/tmp/poetry-scansion-evals-20261019/consolidation/workbench-export/events.jsonl",
+        "sha256": "ad9e57762321f5db5c61939d0bde583eeffbd3ffc52b7f011b281fb5dc58b610"
+      }
+    }
+  ],
+  "limits": "Command output streams are aggregated. Artifact inventories prove recorded bytes, not rendered behavior. No private source conversation is included."
+}

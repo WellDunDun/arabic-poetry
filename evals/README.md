@@ -51,4 +51,6 @@ The [GitHub install receipts](results/2026-10-19-plugin-lifecycle/github-install
 
 The [optimization-guard lifecycle run](results/2026-10-19-plugin-lifecycle/receipts-optimization-fixed.json) records the rerun after adding a fail-fast guard against optimized Python, which disables assertions. The regression test also checks that optimized execution writes a failed receipt before launching client commands.
 
-The [Diwan launch trial](results/2026-10-19-diwan-launch/report.md) records the current candidate: fresh before/after launch requests, real-browser checks and a rerun of the unchanged eight-case poetry corpus. It retains a failed sound-to-foot response criterion rather than treating passing software checks as passing poetry behavior.
+The [Diwan launch trial](results/2026-10-19-diwan-launch/report.md) records the earlier candidate: fresh before/after launch requests, real-browser checks and a rerun of the unchanged eight-case poetry corpus. It retains a failed sound-to-foot response criterion rather than treating passing software checks as passing poetry behavior.
+
+The [scansion explanation follow-up](results/2026-10-19-scansion-explanation/report.md) records the current package against the same eight poetry requests and four launch requests. It preserves the earlier failed response and references historical baseline/browser evidence separately from the fresh candidate executions.

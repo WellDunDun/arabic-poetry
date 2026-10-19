@@ -1,0 +1,500 @@
+{
+  "passed": true,
+  "harness_sha256": "2c0aac600ca6421c1b57a161ddfefd5f3ed2a86c525b36c6496257f2692255cf",
+  "release_helper_sha256": "221589cc77f6e893b4ced02e5c469acb0974f48ad3fbebe022a0193d89df8815",
+  "commands": [
+    {
+      "command": [
+        "codex",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": "codex-cli 0.155.1\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "claude",
+        "--version"
+      ],
+      "exit_code": 0,
+      "stdout": "2.1.303 (Claude Code)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "init",
+        "-q",
+        "-b",
+        "main"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "add",
+        "."
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "commit",
+        "-qm",
+        "Fixture 0.1.0"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "clone",
+        "-q",
+        "--bare",
+        "/private/var/folders/ry/n2x9qf1j21n1r38t0pdfxt2m0000gn/T/poetry-plugin-lifecycle-ahpqx9jp/source",
+        "/private/var/folders/ry/n2x9qf1j21n1r38t0pdfxt2m0000gn/T/poetry-plugin-lifecycle-ahpqx9jp/mirror.git"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "codex",
+        "plugin",
+        "marketplace",
+        "add",
+        "https://github.com/WellDunDun/arabic-poetry.git",
+        "--ref",
+        "main",
+        "--json"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"marketplaceName\": \"arabic-poetry-plugins\",\n  \"installedRoot\": \"/private/var/folders/ry/n2x9qf1j21n1r38t0pdfxt2m0000gn/T/poetry-plugin-lifecycle-ahpqx9jp/codex-state/.tmp/marketplaces/arabic-poetry-plugins\",\n  \"alreadyAdded\": false\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "codex",
+        "plugin",
+        "add",
+        "arabic-poetry@arabic-poetry-plugins",
+        "--json"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"pluginId\": \"arabic-poetry@arabic-poetry-plugins\",\n  \"name\": \"arabic-poetry\",\n  \"marketplaceName\": \"arabic-poetry-plugins\",\n  \"version\": \"0.1.0\",\n  \"installedPath\": \"/private/var/folders/ry/n2x9qf1j21n1r38t0pdfxt2m0000gn/T/poetry-plugin-lifecycle-ahpqx9jp/codex-state/plugins/cache/arabic-poetry-plugins/arabic-poetry/0.1.0\",\n  \"authPolicy\": \"ON_INSTALL\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "claude",
+        "plugin",
+        "marketplace",
+        "add",
+        "https://github.com/WellDunDun/arabic-poetry.git",
+        "--json"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"command\":\"marketplace-add\",\"outcome\":\"ok\",\"marketplace\":\"arabic-poetry-plugins\",\"message\":\"Refreshing marketplace cache (timeout: 120s)…\\nCloning repository (timeout: 120s): https://github.com/WellDunDun/arabic-poetry.git\\nClone complete, validating marketplace…\\nCleaning up old marketplace cache…\\nSuccessfully added marketplace: arabic-poetry-plugins (declared in user settings)\"}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "claude",
+        "plugin",
+        "install",
+        "arabic-poetry@arabic-poetry-plugins",
+        "--json"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"command\":\"install\",\"outcome\":\"ok\",\"plugin\":\"arabic-poetry@arabic-poetry-plugins\",\"pluginId\":\"arabic-poetry@arabic-poetry-plugins\",\"scope\":\"user\",\"message\":\"Successfully installed plugin: arabic-poetry@arabic-poetry-plugins (scope: user)\"}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "codex",
+        "plugin",
+        "list",
+        "--json"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"installed\": [\n    {\n      \"pluginId\": \"arabic-poetry@arabic-poetry-plugins\",\n      \"name\": \"arabic-poetry\",\n      \"marketplaceName\": \"arabic-poetry-plugins\",\n      \"version\": \"0.1.0\",\n      \"installed\": true,\n      \"enabled\": true,\n      \"source\": {\n        \"source\": \"local\",\n        \"path\": \"/private/var/folders/ry/n2x9qf1j21n1r38t0pdfxt2m0000gn/T/poetry-plugin-lifecycle-ahpqx9jp/codex-state/.tmp/marketplaces/arabic-poetry-plugins\"\n      },\n      \"marketplaceSource\": {\n        \"sourceType\": \"git\",\n        \"source\": \"https://github.com/WellDunDun/arabic-poetry.git\"\n      },\n      \"installPolicy\": \"AVAILABLE\",\n      \"authPolicy\": \"ON_INSTALL\"\n    }\n  ],\n  \"available\": []\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "codex",
+        "app-server",
+        "skills/list"
+      ],
+      "plugin_rows": [
+        {
+          "name": "arabic-poetry:arabic-poetry",
+          "description": "Write, revise, continue, explain and analyze classical and modern Arabic poetry, with a local meter scanner and optional Diwan editor. Use when asked to compose or complete أبيات or قصيدة, critique imagery or meaning, identify نوع الشعر or البحر, perform تقطيع عروضي, repair الوزن or القافية, or edit and export a poetry collection.",
+          "path": "/private/var/folders/ry/n2x9qf1j21n1r38t0pdfxt2m0000gn/T/poetry-plugin-lifecycle-ahpqx9jp/codex-state/plugins/cache/arabic-poetry-plugins/arabic-poetry/0.1.0/skills/arabic-poetry/SKILL.md",
+          "scope": "user",
+          "enabled": true,
+          "pluginId": "arabic-poetry@arabic-poetry-plugins"
+        }
+      ]
+    },
+    {
+      "command": [
+        "claude",
+        "plugin",
+        "list",
+        "--json"
+      ],
+      "exit_code": 0,
+      "stdout": "[\n  {\n    \"id\": \"arabic-poetry@arabic-poetry-plugins\",\n    \"version\": \"0.1.0\",\n    \"scope\": \"user\",\n    \"enabled\": true,\n    \"installPath\": \"/private/var/folders/ry/n2x9qf1j21n1r38t0pdfxt2m0000gn/T/poetry-plugin-lifecycle-ahpqx9jp/claude-state/plugins/cache/arabic-poetry-plugins/arabic-poetry/0.1.0\",\n    \"installedAt\": \"2026-10-19T09:50:26.458Z\",\n    \"lastUpdated\": \"2026-10-19T09:50:26.458Z\",\n    \"projectEnabled\": false\n  }\n]\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "claude",
+        "plugin",
+        "details",
+        "arabic-poetry"
+      ],
+      "exit_code": 0,
+      "stdout": "arabic-poetry 0.1.0\n  Description: Write, revise and understand classical and modern Arabic poetry, with a meter scanner and optional Diwan editor.\n  Source: arabic-poetry@arabic-poetry-plugins\n\nComponent inventory\n  Skills (1)  arabic-poetry\n  Agents (0)\n  Hooks (0)\n  MCP servers (0)\n  LSP servers (0)\n\nProjected token cost\n  Always-on:   ~90 tok   added to every session\n\nPer-component (rounded)\n  component      always-on  on-invoke\n  arabic-poetry        ~90      ~2.3k\n\n  On-invoke cost is paid each time a skill or agent fires.\n  Token counts are estimates and may differ from actual usage.\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "/private/var/folders/ry/n2x9qf1j21n1r38t0pdfxt2m0000gn/T/poetry-plugin-lifecycle-ahpqx9jp/codex-state/plugins/cache/arabic-poetry-plugins/arabic-poetry/0.1.0/skills/arabic-poetry/scripts/scan.py",
+        "--help"
+      ],
+      "exit_code": 0,
+      "stdout": "usage: scan.py [-h] {analyze,weigh,verify,meters,coverage} ...\n\nArabic prosody (العروض) command-line tool.\n\n  python3 scan.py analyze poem.txt [--mode auto|classical|free] [--meter KEY] [--json]\n  python3 scan.py weigh \"كلمات أو شطر\"\n  python3 scan.py verify --meter tawil [--form تام] [--part sadr|ajuz|verse] \"بديل 1\" \"بديل 2\" ...\n  python3 scan.py meters\n\nInput: one verse per line. Separate the two hemistichs with  *  or a tab or 3+ spaces\n(or | ). Lines with no separator are auto-split, or treated as free verse.\nFull diacritics (تشكيل) give the most reliable result.\n\npositional arguments:\n  {analyze,weigh,verify,meters,coverage}\n\noptions:\n  -h, --help            show this help message and exit\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "/private/var/folders/ry/n2x9qf1j21n1r38t0pdfxt2m0000gn/T/poetry-plugin-lifecycle-ahpqx9jp/claude-state/plugins/cache/arabic-poetry-plugins/arabic-poetry/0.1.0/skills/arabic-poetry/scripts/scan.py",
+        "--help"
+      ],
+      "exit_code": 0,
+      "stdout": "usage: scan.py [-h] {analyze,weigh,verify,meters,coverage} ...\n\nArabic prosody (العروض) command-line tool.\n\n  python3 scan.py analyze poem.txt [--mode auto|classical|free] [--meter KEY] [--json]\n  python3 scan.py weigh \"كلمات أو شطر\"\n  python3 scan.py verify --meter tawil [--form تام] [--part sadr|ajuz|verse] \"بديل 1\" \"بديل 2\" ...\n  python3 scan.py meters\n\nInput: one verse per line. Separate the two hemistichs with  *  or a tab or 3+ spaces\n(or | ). Lines with no separator are auto-split, or treated as free verse.\nFull diacritics (تشكيل) give the most reliable result.\n\npositional arguments:\n  {analyze,weigh,verify,meters,coverage}\n\noptions:\n  -h, --help            show this help message and exit\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "add",
+        "."
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "commit",
+        "-qm",
+        "Fixture 0.1.1"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "push",
+        "-q",
+        "/private/var/folders/ry/n2x9qf1j21n1r38t0pdfxt2m0000gn/T/poetry-plugin-lifecycle-ahpqx9jp/mirror.git",
+        "main"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "codex",
+        "plugin",
+        "marketplace",
+        "upgrade",
+        "arabic-poetry-plugins",
+        "--json"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"selectedMarketplaces\": [\n    \"arabic-poetry-plugins\"\n  ],\n  \"upgradedRoots\": [\n    \"/private/var/folders/ry/n2x9qf1j21n1r38t0pdfxt2m0000gn/T/poetry-plugin-lifecycle-ahpqx9jp/codex-state/.tmp/marketplaces/arabic-poetry-plugins\"\n  ],\n  \"errors\": []\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "codex",
+        "plugin",
+        "add",
+        "arabic-poetry@arabic-poetry-plugins",
+        "--json"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"pluginId\": \"arabic-poetry@arabic-poetry-plugins\",\n  \"name\": \"arabic-poetry\",\n  \"marketplaceName\": \"arabic-poetry-plugins\",\n  \"version\": \"0.1.1\",\n  \"installedPath\": \"/private/var/folders/ry/n2x9qf1j21n1r38t0pdfxt2m0000gn/T/poetry-plugin-lifecycle-ahpqx9jp/codex-state/plugins/cache/arabic-poetry-plugins/arabic-poetry/0.1.1\",\n  \"authPolicy\": \"ON_INSTALL\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "claude",
+        "plugin",
+        "marketplace",
+        "update",
+        "arabic-poetry-plugins",
+        "--json"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"command\":\"marketplace-update\",\"outcome\":\"ok\",\"marketplace\":\"arabic-poetry-plugins\",\"message\":\"Refreshing marketplace cache (timeout: 120s)…\\nCloning repository (timeout: 120s): https://github.com/WellDunDun/arabic-poetry.git\\nReplacing the existing marketplace clone…\\nClone complete, validating marketplace…\\nSuccessfully updated marketplace: arabic-poetry-plugins\"}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "claude",
+        "plugin",
+        "update",
+        "arabic-poetry@arabic-poetry-plugins",
+        "--json"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"command\":\"update\",\"outcome\":\"ok\",\"plugin\":\"arabic-poetry@arabic-poetry-plugins\",\"pluginId\":\"arabic-poetry@arabic-poetry-plugins\",\"scope\":\"user\",\"message\":\"Plugin \\\"arabic-poetry\\\" updated from 0.1.0 to 0.1.1 for scope user. Restart to apply changes.\",\"updateOutcome\":\"updated\",\"oldVersion\":\"0.1.0\",\"newVersion\":\"0.1.1\"}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "codex",
+        "plugin",
+        "list",
+        "--json"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"installed\": [\n    {\n      \"pluginId\": \"arabic-poetry@arabic-poetry-plugins\",\n      \"name\": \"arabic-poetry\",\n      \"marketplaceName\": \"arabic-poetry-plugins\",\n      \"version\": \"0.1.1\",\n      \"installed\": true,\n      \"enabled\": true,\n      \"source\": {\n        \"source\": \"local\",\n        \"path\": \"/private/var/folders/ry/n2x9qf1j21n1r38t0pdfxt2m0000gn/T/poetry-plugin-lifecycle-ahpqx9jp/codex-state/.tmp/marketplaces/arabic-poetry-plugins\"\n      },\n      \"marketplaceSource\": {\n        \"sourceType\": \"git\",\n        \"source\": \"https://github.com/WellDunDun/arabic-poetry.git\"\n      },\n      \"installPolicy\": \"AVAILABLE\",\n      \"authPolicy\": \"ON_INSTALL\"\n    }\n  ],\n  \"available\": []\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "codex",
+        "app-server",
+        "skills/list"
+      ],
+      "plugin_rows": [
+        {
+          "name": "arabic-poetry:arabic-poetry",
+          "description": "Write, revise, continue, explain and analyze classical and modern Arabic poetry, with a local meter scanner and optional Diwan editor. Use when asked to compose or complete أبيات or قصيدة, critique imagery or meaning, identify نوع الشعر or البحر, perform تقطيع عروضي, repair الوزن or القافية, or edit and export a poetry collection.",
+          "path": "/private/var/folders/ry/n2x9qf1j21n1r38t0pdfxt2m0000gn/T/poetry-plugin-lifecycle-ahpqx9jp/codex-state/plugins/cache/arabic-poetry-plugins/arabic-poetry/0.1.1/skills/arabic-poetry/SKILL.md",
+          "scope": "user",
+          "enabled": true,
+          "pluginId": "arabic-poetry@arabic-poetry-plugins"
+        }
+      ]
+    },
+    {
+      "command": [
+        "claude",
+        "plugin",
+        "list",
+        "--json"
+      ],
+      "exit_code": 0,
+      "stdout": "[\n  {\n    \"id\": \"arabic-poetry@arabic-poetry-plugins\",\n    \"version\": \"0.1.1\",\n    \"scope\": \"user\",\n    \"enabled\": true,\n    \"installPath\": \"/private/var/folders/ry/n2x9qf1j21n1r38t0pdfxt2m0000gn/T/poetry-plugin-lifecycle-ahpqx9jp/claude-state/plugins/cache/arabic-poetry-plugins/arabic-poetry/0.1.1\",\n    \"installedAt\": \"2026-10-19T09:50:26.458Z\",\n    \"lastUpdated\": \"2026-10-19T09:50:28.462Z\",\n    \"projectEnabled\": false\n  }\n]\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "claude",
+        "plugin",
+        "details",
+        "arabic-poetry"
+      ],
+      "exit_code": 0,
+      "stdout": "arabic-poetry 0.1.1\n  Description: Write, revise and understand classical and modern Arabic poetry, with a meter scanner and optional Diwan editor.\n  Source: arabic-poetry@arabic-poetry-plugins\n\nComponent inventory\n  Skills (1)  arabic-poetry\n  Agents (0)\n  Hooks (0)\n  MCP servers (0)\n  LSP servers (0)\n\nProjected token cost\n  Always-on:   ~90 tok   added to every session\n\nPer-component (rounded)\n  component      always-on  on-invoke\n  arabic-poetry        ~90      ~2.3k\n\n  On-invoke cost is paid each time a skill or agent fires.\n  Token counts are estimates and may differ from actual usage.\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "/private/var/folders/ry/n2x9qf1j21n1r38t0pdfxt2m0000gn/T/poetry-plugin-lifecycle-ahpqx9jp/codex-state/plugins/cache/arabic-poetry-plugins/arabic-poetry/0.1.1/skills/arabic-poetry/scripts/scan.py",
+        "--help"
+      ],
+      "exit_code": 0,
+      "stdout": "usage: scan.py [-h] {analyze,weigh,verify,meters,coverage} ...\n\nArabic prosody (العروض) command-line tool.\n\n  python3 scan.py analyze poem.txt [--mode auto|classical|free] [--meter KEY] [--json]\n  python3 scan.py weigh \"كلمات أو شطر\"\n  python3 scan.py verify --meter tawil [--form تام] [--part sadr|ajuz|verse] \"بديل 1\" \"بديل 2\" ...\n  python3 scan.py meters\n\nInput: one verse per line. Separate the two hemistichs with  *  or a tab or 3+ spaces\n(or | ). Lines with no separator are auto-split, or treated as free verse.\nFull diacritics (تشكيل) give the most reliable result.\n\npositional arguments:\n  {analyze,weigh,verify,meters,coverage}\n\noptions:\n  -h, --help            show this help message and exit\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "/private/var/folders/ry/n2x9qf1j21n1r38t0pdfxt2m0000gn/T/poetry-plugin-lifecycle-ahpqx9jp/claude-state/plugins/cache/arabic-poetry-plugins/arabic-poetry/0.1.1/skills/arabic-poetry/scripts/scan.py",
+        "--help"
+      ],
+      "exit_code": 0,
+      "stdout": "usage: scan.py [-h] {analyze,weigh,verify,meters,coverage} ...\n\nArabic prosody (العروض) command-line tool.\n\n  python3 scan.py analyze poem.txt [--mode auto|classical|free] [--meter KEY] [--json]\n  python3 scan.py weigh \"كلمات أو شطر\"\n  python3 scan.py verify --meter tawil [--form تام] [--part sadr|ajuz|verse] \"بديل 1\" \"بديل 2\" ...\n  python3 scan.py meters\n\nInput: one verse per line. Separate the two hemistichs with  *  or a tab or 3+ spaces\n(or | ). Lines with no separator are auto-split, or treated as free verse.\nFull diacritics (تشكيل) give the most reliable result.\n\npositional arguments:\n  {analyze,weigh,verify,meters,coverage}\n\noptions:\n  -h, --help            show this help message and exit\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "codex",
+        "plugin",
+        "add",
+        "arabic-poetry@arabic-poetry-plugins",
+        "--json"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"pluginId\": \"arabic-poetry@arabic-poetry-plugins\",\n  \"name\": \"arabic-poetry\",\n  \"marketplaceName\": \"arabic-poetry-plugins\",\n  \"version\": \"0.1.1\",\n  \"installedPath\": \"/private/var/folders/ry/n2x9qf1j21n1r38t0pdfxt2m0000gn/T/poetry-plugin-lifecycle-ahpqx9jp/codex-state/plugins/cache/arabic-poetry-plugins/arabic-poetry/0.1.1\",\n  \"authPolicy\": \"ON_INSTALL\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "claude",
+        "plugin",
+        "update",
+        "arabic-poetry@arabic-poetry-plugins",
+        "--json"
+      ],
+      "exit_code": 0,
+      "stdout": "{\"command\":\"update\",\"outcome\":\"ok\",\"plugin\":\"arabic-poetry@arabic-poetry-plugins\",\"pluginId\":\"arabic-poetry@arabic-poetry-plugins\",\"scope\":\"user\",\"message\":\"arabic-poetry is already at the latest version (0.1.1).\",\"updateOutcome\":\"up_to_date\",\"oldVersion\":\"0.1.1\",\"newVersion\":\"0.1.1\"}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "codex",
+        "plugin",
+        "list",
+        "--json"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"installed\": [\n    {\n      \"pluginId\": \"arabic-poetry@arabic-poetry-plugins\",\n      \"name\": \"arabic-poetry\",\n      \"marketplaceName\": \"arabic-poetry-plugins\",\n      \"version\": \"0.1.1\",\n      \"installed\": true,\n      \"enabled\": true,\n      \"source\": {\n        \"source\": \"local\",\n        \"path\": \"/private/var/folders/ry/n2x9qf1j21n1r38t0pdfxt2m0000gn/T/poetry-plugin-lifecycle-ahpqx9jp/codex-state/.tmp/marketplaces/arabic-poetry-plugins\"\n      },\n      \"marketplaceSource\": {\n        \"sourceType\": \"git\",\n        \"source\": \"https://github.com/WellDunDun/arabic-poetry.git\"\n      },\n      \"installPolicy\": \"AVAILABLE\",\n      \"authPolicy\": \"ON_INSTALL\"\n    }\n  ],\n  \"available\": []\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "codex",
+        "app-server",
+        "skills/list"
+      ],
+      "plugin_rows": [
+        {
+          "name": "arabic-poetry:arabic-poetry",
+          "description": "Write, revise, continue, explain and analyze classical and modern Arabic poetry, with a local meter scanner and optional Diwan editor. Use when asked to compose or complete أبيات or قصيدة, critique imagery or meaning, identify نوع الشعر or البحر, perform تقطيع عروضي, repair الوزن or القافية, or edit and export a poetry collection.",
+          "path": "/private/var/folders/ry/n2x9qf1j21n1r38t0pdfxt2m0000gn/T/poetry-plugin-lifecycle-ahpqx9jp/codex-state/plugins/cache/arabic-poetry-plugins/arabic-poetry/0.1.1/skills/arabic-poetry/SKILL.md",
+          "scope": "user",
+          "enabled": true,
+          "pluginId": "arabic-poetry@arabic-poetry-plugins"
+        }
+      ]
+    },
+    {
+      "command": [
+        "claude",
+        "plugin",
+        "list",
+        "--json"
+      ],
+      "exit_code": 0,
+      "stdout": "[\n  {\n    \"id\": \"arabic-poetry@arabic-poetry-plugins\",\n    \"version\": \"0.1.1\",\n    \"scope\": \"user\",\n    \"enabled\": true,\n    \"installPath\": \"/private/var/folders/ry/n2x9qf1j21n1r38t0pdfxt2m0000gn/T/poetry-plugin-lifecycle-ahpqx9jp/claude-state/plugins/cache/arabic-poetry-plugins/arabic-poetry/0.1.1\",\n    \"installedAt\": \"2026-10-19T09:50:26.458Z\",\n    \"lastUpdated\": \"2026-10-19T09:50:28.462Z\",\n    \"projectEnabled\": false\n  }\n]\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "claude",
+        "plugin",
+        "details",
+        "arabic-poetry"
+      ],
+      "exit_code": 0,
+      "stdout": "arabic-poetry 0.1.1\n  Description: Write, revise and understand classical and modern Arabic poetry, with a meter scanner and optional Diwan editor.\n  Source: arabic-poetry@arabic-poetry-plugins\n\nComponent inventory\n  Skills (1)  arabic-poetry\n  Agents (0)\n  Hooks (0)\n  MCP servers (0)\n  LSP servers (0)\n\nProjected token cost\n  Always-on:   ~90 tok   added to every session\n\nPer-component (rounded)\n  component      always-on  on-invoke\n  arabic-poetry        ~90      ~2.3k\n\n  On-invoke cost is paid each time a skill or agent fires.\n  Token counts are estimates and may differ from actual usage.\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "/private/var/folders/ry/n2x9qf1j21n1r38t0pdfxt2m0000gn/T/poetry-plugin-lifecycle-ahpqx9jp/codex-state/plugins/cache/arabic-poetry-plugins/arabic-poetry/0.1.1/skills/arabic-poetry/scripts/scan.py",
+        "--help"
+      ],
+      "exit_code": 0,
+      "stdout": "usage: scan.py [-h] {analyze,weigh,verify,meters,coverage} ...\n\nArabic prosody (العروض) command-line tool.\n\n  python3 scan.py analyze poem.txt [--mode auto|classical|free] [--meter KEY] [--json]\n  python3 scan.py weigh \"كلمات أو شطر\"\n  python3 scan.py verify --meter tawil [--form تام] [--part sadr|ajuz|verse] \"بديل 1\" \"بديل 2\" ...\n  python3 scan.py meters\n\nInput: one verse per line. Separate the two hemistichs with  *  or a tab or 3+ spaces\n(or | ). Lines with no separator are auto-split, or treated as free verse.\nFull diacritics (تشكيل) give the most reliable result.\n\npositional arguments:\n  {analyze,weigh,verify,meters,coverage}\n\noptions:\n  -h, --help            show this help message and exit\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "/private/var/folders/ry/n2x9qf1j21n1r38t0pdfxt2m0000gn/T/poetry-plugin-lifecycle-ahpqx9jp/claude-state/plugins/cache/arabic-poetry-plugins/arabic-poetry/0.1.1/skills/arabic-poetry/scripts/scan.py",
+        "--help"
+      ],
+      "exit_code": 0,
+      "stdout": "usage: scan.py [-h] {analyze,weigh,verify,meters,coverage} ...\n\nArabic prosody (العروض) command-line tool.\n\n  python3 scan.py analyze poem.txt [--mode auto|classical|free] [--meter KEY] [--json]\n  python3 scan.py weigh \"كلمات أو شطر\"\n  python3 scan.py verify --meter tawil [--form تام] [--part sadr|ajuz|verse] \"بديل 1\" \"بديل 2\" ...\n  python3 scan.py meters\n\nInput: one verse per line. Separate the two hemistichs with  *  or a tab or 3+ spaces\n(or | ). Lines with no separator are auto-split, or treated as free verse.\nFull diacritics (تشكيل) give the most reliable result.\n\npositional arguments:\n  {analyze,weigh,verify,meters,coverage}\n\noptions:\n  -h, --help            show this help message and exit\n",
+      "stderr": ""
+    }
+  ],
+  "source_skill_sha256": "099c30dbc16be9bbb74245dbfb268ddaee0a6516de08854b3382599b7df19c50",
+  "manifest_sha256": {
+    "plugin.json": "29841013808ed832f366215f12914a67c401b7d2089e7ee867c9c7225ff9112c",
+    ".claude-plugin/plugin.json": "547fce606ef5dc6172ac440a82fa91b7ef04c7239acb97353747694fffcabd6b",
+    ".claude-plugin/marketplace.json": "51ff4332e757bee3094de7d7a6c97a48f5d3592231f1629c3916b4e54dd8dd8b",
+    ".agents/plugins/marketplace.json": "7a9fe0ca74a20342ffb8f2135a28b9d0641be31f66e0d51f72d382e745ef2cee"
+  },
+  "client_versions": {
+    "codex": "codex-cli 0.155.1",
+    "claude": "2.1.303 (Claude Code)"
+  },
+  "verified": [
+    {
+      "host": "codex",
+      "version": "0.1.0",
+      "skill_files_matching_source": 50,
+      "updated_payload": "0.1.0",
+      "skill_available": true
+    },
+    {
+      "host": "claude",
+      "version": "0.1.0",
+      "skill_files_matching_source": 50,
+      "updated_payload": "0.1.0",
+      "skill_available": true
+    },
+    {
+      "host": "codex",
+      "version": "0.1.1",
+      "skill_files_matching_source": 50,
+      "updated_payload": "0.1.1",
+      "skill_available": true
+    },
+    {
+      "host": "claude",
+      "version": "0.1.1",
+      "skill_files_matching_source": 50,
+      "updated_payload": "0.1.1",
+      "skill_available": true
+    },
+    {
+      "host": "codex",
+      "version": "0.1.1",
+      "skill_files_matching_source": 50,
+      "updated_payload": "0.1.1",
+      "skill_available": true
+    },
+    {
+      "host": "claude",
+      "version": "0.1.1",
+      "skill_files_matching_source": 50,
+      "updated_payload": "0.1.1",
+      "skill_available": true
+    }
+  ],
+  "fixture_versions": [
+    "0.1.0",
+    "0.1.1"
+  ],
+  "limits": "Git mirror and isolated client settings/cache; no model calls, browser admin sync, public publication or automatic timer test."
+}

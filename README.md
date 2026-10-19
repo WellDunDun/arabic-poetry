@@ -6,7 +6,31 @@ Use it for عمودي، تفعيلة، قصيدة نثر, evidence-led meter and
 
 ## Quickstart
 
-### Use it in your current chat
+### Install the plugin, recommended
+
+Install from the repository-backed **Arabic Poetry** marketplace to keep receiving reviewed updates. Claude and ChatGPT/Codex use the same poetry skill inside their plugin packages. The plugin is not listed in either public plugin directory.
+
+Copy this into your agent:
+
+```text
+Install Arabic Poetry from the Git-backed plugin marketplace at https://github.com/WellDunDun/arabic-poetry for the agent I am using. Keep the installation connected to the repository for future updates, explain any update opt-in, and preserve my existing setup. Verify that the installed plugin exposes its arabic-poetry skill, then help me try a poem. If this browser account requires a workspace admin to import the marketplace, explain that limitation and the supported alternative. Do not replace this with a one-time skill copy unless plugin installation is unavailable.
+```
+
+للتثبيت مع تلقّي التحديثات، استخدم إضافة **الشعر العربي** من دليل الإضافات المرتبط بالمستودع. تستخدم Claude وChatGPT/Codex المهارة نفسها داخل الإضافة. لم تُنشر الإضافة في دليلي الإضافات العامين.
+
+```text
+ثبّت إضافة الشعر العربي من دليل الإضافات المرتبط بمستودع Git على https://github.com/WellDunDun/arabic-poetry للوكيل الذي أستخدمه الآن. أبقِ التثبيت مرتبطًا بالمستودع لتلقّي التحديثات، ووضّح أي خيار يلزم تفعيله للتحديث، وحافظ على إعداداتي الحالية. تحقّق من ظهور مهارة arabic-poetry ضمن الإضافة المثبّتة، ثم ساعدني على تجربة قصيدة. إذا كان استيراد الدليل في حساب المتصفح يحتاج إلى مسؤول مساحة عمل، فوضّح ذلك والبديل المدعوم. لا تستبدل الإضافة بنسخة مستقلة من المهارة إلا إذا تعذّر تثبيت الإضافات.
+```
+
+[Installation and update instructions](INSTALL.md) cover Claude web/Desktop/Code, ChatGPT workspace import, and Codex. Automatic updates depend on the host and its settings. Claude Code third-party marketplaces need auto-update enabled; ZIP uploads and standalone skill copies do not follow this repository automatically.
+
+يتضمن [دليل التثبيت والتحديث](INSTALL.md) طرق Claude في المتصفح وسطح المكتب وCode، واستيراد الدليل في مساحات عمل ChatGPT، وCodex. يعتمد التحديث التلقائي على البيئة وإعداداتها؛ ويلزم تفعيله للأدلة الخارجية في Claude Code. ملفات ZIP والنسخ المستقلة من المهارة لا تتبع تحديثات هذا المستودع تلقائيًا.
+
+Scanner scripts need execution capability. Diwan runs in a browser; its local agent bridge needs shared local file access. Browser-only chats can use its copy/paste exchange. This package does not add a cloud Diwan connection.
+
+تحتاج برامج التقطيع إلى إمكانية تنفيذ الأوامر. يعمل ديوان في المتصفح، ويحتاج اتصاله المحلي بالوكيل إلى الوصول إلى ملفات مساحة العمل نفسها. ويمكن لمحادثات المتصفح استخدام تبادل الطلب والإجابة بالنسخ واللصق. لا تضيف الحزمة اتصالًا سحابيًا بديوان.
+
+### Fallback: use the skill in your current chat
 
 Copy one of these prompts into your agent's chat.
 
@@ -28,7 +52,7 @@ This loads the skill for the current conversation without permanently installing
 
 يحمّل هذا المهارة للمحادثة الحالية دون تثبيتها بشكل دائم. يلزم وكيل يستطيع تنفيذ الأوامر. للتثبيت الدائم، استخدم الأمر أدناه أو [دليل التثبيت](INSTALL.md).
 
-### Install permanently
+### Fallback: install a standalone skill
 
 ```sh
 npx skills@latest add WellDunDun/arabic-poetry

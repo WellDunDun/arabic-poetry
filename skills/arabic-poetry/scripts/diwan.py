@@ -118,13 +118,15 @@ def session(store):
     if not path.exists():
         return None
     receipt = parse(bounded_read(path))
+    if not isinstance(receipt, dict) or not isinstance(receipt.get('url'), str):
+        return None
     try:
         health = request(receipt['url'], '/status')
-    except ConnectionRefusedError:
+    except (ConnectionRefusedError, DiwanError, ValueError):
         return None
-    except (OSError, DiwanError, KeyError, http.client.HTTPException) as error:
+    except (OSError, http.client.HTTPException) as error:
         raise DiwanError('STOP_UNKNOWN', 'Could not verify the saved server session. Retry stop or open; keep its receipt.', 6) from error
-    if health.get('id') != receipt.get('id') or health.get('id') != store.get()['poem']['id']:
+    if not isinstance(health, dict) or health.get('id') != receipt.get('id') or health.get('id') != store.get()['poem']['id']:
         return None
     try:
         if os.path.samefile(health['path'], store.path):
@@ -143,9 +145,9 @@ def shutdown_session(receipt):
     while time.monotonic() < deadline:
         try:
             request(receipt['url'], '/status', timeout=0.25)
-        except ConnectionRefusedError:
+        except (ConnectionRefusedError, DiwanError):
             return
-        except (OSError, DiwanError, http.client.HTTPException):
+        except (OSError, http.client.HTTPException):
             pass
         time.sleep(0.05)
     raise DiwanError('STOP_UNKNOWN', 'Could not confirm server shutdown. Retry stop or open; keep the existing session receipt.', 6)

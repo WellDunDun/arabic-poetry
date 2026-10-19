@@ -451,6 +451,26 @@ class DiwanCLITests(unittest.TestCase):
             with self.assertRaises(storage.DiwanError) as error:diwan.session(store)
         self.assertEqual(error.exception.code,'STOP_UNKNOWN')
         self.assertEqual(path.read_bytes(),raw)
+        for invalid in [{}, {'url':'http://127.0.0.1:bad/token/diwan.html'}, []]:
+            data = storage.encode(invalid);path.write_bytes(data)
+            self.assertIsNone(diwan.session(store))
+            self.assertEqual(path.read_bytes(),data)
+        path.write_bytes(raw)
+        with patch.object(diwan,'request',return_value=[]):self.assertIsNone(diwan.session(store))
+
+    def test_another_owned_server_can_reuse_a_dead_sessions_port(self):
+        self.create();old = self.cli('open',self.file,'--no-browser')
+        self.addCleanup(lambda:self.cli('stop',self.file))
+        self.cli('stop',self.file)
+        other = self.root/'other.diwan.json'
+        self.cli('create',other,'--text-file',self.source)
+        port = __import__('urllib.parse',fromlist=['urlsplit']).urlsplit(old['url']).port
+        live = self.cli('open',other,'--no-browser','--port',port)
+        self.addCleanup(lambda:self.cli('stop',other))
+        self.assertTrue(self.cli('stop',self.file)['already_stopped'])
+        reopened = self.cli('open',self.file,'--no-browser')
+        self.assertNotEqual(reopened['url'],old['url'])
+        self.assertEqual(diwan.request(live['url'],'/document')['poem']['id'],live['id'])
 
     def test_renamed_open_preserves_shutdown_error_before_starting_a_child(self):
         self.create();receipt = self.cli('open',self.file,'--no-browser')

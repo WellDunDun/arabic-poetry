@@ -1,0 +1,14 @@
+[
+  {
+    "condition": "before",
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "F\n======================================================================\nFAIL: test_another_owned_server_can_reuse_a_dead_sessions_port (test_diwan_cli.DiwanCLITests.test_another_owned_server_can_reuse_a_dead_sessions_port)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/private/var/folders/ry/n2x9qf1j21n1r38t0pdfxt2m0000gn/T/diwan-token-before-vas9ugx2/skill/tests/test_diwan_cli.py\", line 470, in test_another_owned_server_can_reuse_a_dead_sessions_port\n    self.assertTrue(self.cli('stop',self.file)['already_stopped'])\n                    ~~~~~~~~^^^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/ry/n2x9qf1j21n1r38t0pdfxt2m0000gn/T/diwan-token-before-vas9ugx2/skill/tests/test_diwan_cli.py\", line 43, in cli\n    self.assertEqual(result.returncode, status, result.stdout + result.stderr)\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 6 != 0 : {\"error\": {\"code\": \"STOP_UNKNOWN\", \"message\": \"Could not verify the saved server session. Retry stop or open; keep its receipt.\"}}\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.905s\n\nFAILED (failures=1)\n"
+  },
+  {
+    "condition": "after",
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ".\n----------------------------------------------------------------------\nRan 1 test in 1.142s\n\nOK\n"
+  }
+]

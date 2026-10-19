@@ -40,3 +40,5 @@ The [plugin lifecycle receipts](results/2026-10-19-plugin-lifecycle/receipts.jso
 The [GitHub install receipts](results/2026-10-19-plugin-lifecycle/github-install.json) additionally record installation from the actual review branch, including its Git commit, Codex runtime discovery, Claude plugin inventory and installed files. The recorded `source_commit` identifies the exact snapshot tested; later documentation or evidence commits may change files outside the skill directory.
 
 The [optimization-guard lifecycle run](results/2026-10-19-plugin-lifecycle/receipts-optimization-fixed.json) records the rerun after adding a fail-fast guard against optimized Python, which disables assertions. The regression test also checks that optimized execution writes a failed receipt before launching client commands.
+
+The [directory-candidate lifecycle run](results/2026-10-19-directory-candidate/lifecycle.json) verifies real native-client installs and fixture-only updates of the 0.1.1 listing candidate, including bundled icon bytes. It does not establish public-directory acceptance, browser activation or account sync.

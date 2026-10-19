@@ -198,6 +198,8 @@ def main():
               'harness_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
               'release_helper_sha256': hashlib.sha256((ROOT / 'scripts/plugin_version.py').read_bytes()).hexdigest()}
     try:
+        if not __debug__:
+            raise RuntimeError('Lifecycle checks require assertions; disable Python optimization')
         test_lifecycle(report)
         report['passed'] = True
         print('PASS Claude and Codex Git install, update, repeat update, skill discovery and payload checks')

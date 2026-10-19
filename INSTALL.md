@@ -75,7 +75,7 @@ Start a new chat and verify the plugin's skill path/version. Do not infer update
 
 The plugin uses `MAJOR.MINOR.PATCH` versions. Read [CHANGELOG.md](CHANGELOG.md) for changes; the installed version is shown by each host's plugin manager or the list commands above. A versioned release identifies the instructions, references, scanner, editor and exporters that travel together.
 
-The default Git source follows reviewed `main` commits. Released versions receive a `vMAJOR.MINOR.PATCH` tag for reproducibility. Selecting a fixed release tag or commit is an opt-out from newer releases, not the default update route. Maintainer release checks and the synchronized version command are in [AGENTS.md](AGENTS.md#plugin-releases).
+The default Git source follows reviewed `main` commits. Separately authorized releases receive a `vMAJOR.MINOR.PATCH` tag for reproducibility; the changelog states whether a version has a tag. Selecting a fixed release tag or commit is an opt-out from newer releases, not the default update route. Maintainer release checks and the synchronized version command are in [AGENTS.md](AGENTS.md#plugin-releases).
 
 Prefer an update over uninstall/reinstall. Preserve user-authored local modifications and poem workspaces. An accepted update does not synchronize browser-stored poems with an agent or another browser. Diwan still uses its local bridge or manual JSON exchange as described in [DIWAN.md](skills/arabic-poetry/references/DIWAN.md).
 

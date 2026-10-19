@@ -589,7 +589,7 @@
         },
         {
           "status": "pass",
-          "evidence": "combined.responses.json case workbench-export: prepare_workbench.py created a poem-seeded local HTML file, JSON and text; export_book.py produced masafa.docx; verification checked intact ZIP/XML and literal title/text. The response supplies actual paths and retains Firas/Daniel footer credit."
+          "evidence": "combined.responses.json case workbench-export: An inline Python preparation command wrote poems.json and a poem-seeded diwan-masafa.html; export_book.py produced masafa.docx and masafa.txt; inline verification checked intact ZIP/XML, literal title/text and the retained Firas/Daniel footer credit. The response supplies the actual paths."
         },
         {
           "status": "pass",

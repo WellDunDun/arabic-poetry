@@ -3053,6 +3053,7 @@ ${linesOf(p).join('\n')}
       const local = new Map(poems.map(p => [p.id, p]));
       const editingShared = window.DiwanFile && (editing !== null || !$('bulkWrap').hidden || !$('pop').hidden);
       const deferredShared = window.DiwanFile && incoming.some(x => local.has(x.id) && (dirty.has(x.id) || editingShared && x.id === curId));
+      if (deferredShared) return false;
       poems = incoming.map(x => ((dirty.has(x.id) || editingShared && x.id === curId) && local.has(x.id)) ? local.get(x.id) : JSON.parse(JSON.stringify(x)));
       for (const id of dirty) if (!poems.find(p => p.id === id) && local.has(id)) poems.push(local.get(id));
       for (const p of poems) { p.choices = p.choices || []; p.suggestions = p.suggestions || {}; }
@@ -3060,7 +3061,7 @@ ${linesOf(p).join('\n')}
       if (!cur() && poems.length) curId = poems[poems.length - 1].id;
       const typing = document.activeElement && document.activeElement.id && document.activeElement.id.startsWith('askin-');
       if (editing === null && $('bulkWrap').hidden && $('pop').hidden && !typing) render(); else renderSelect();
-      return !deferredShared;
+      return true;
     }, () => { toast('انقطع الاتصال بالديوان'); });
   })();
 })();

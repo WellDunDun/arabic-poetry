@@ -17,7 +17,10 @@ async function deferredRefresh(kind) {
   if(kind==='bulk') page.element('bulkBtn').onclick();
   if(kind==='line') page.click('edit',0);
   if(kind==='word') page.api.openPop({dataset:{li:'0',wi:'0'},textContent:'original',getBoundingClientRect:()=>({left:20,top:20,bottom:40,width:30})});
-  transport.external('newer agent poem');await transport.tick();
+  const menu=page.element('pmList');let redraws=0,html=menu.innerHTML;
+  Object.defineProperty(menu,'innerHTML',{get:()=>html,set:value=>{html=value;redraws++;}});
+  transport.external('newer agent poem');await transport.tick();await transport.tick();
+  assert.equal(redraws,0,'a held snapshot must not repeatedly rebuild the menu');
   assert.equal(page.api.poems[0].text,'original','active editing retains its draft');
   if(kind==='bulk') page.element('bulkCancel').onclick();
   if(kind==='line') page.click('cancel',0);
@@ -26,6 +29,8 @@ async function deferredRefresh(kind) {
   assert.equal(page.api.poems[0].text,'newer agent poem','clean editor adopts the deferred remote snapshot');
   assert.equal(page.api.poems[0]._file_version,transport.state.version);
   assert.equal(transport.writes,0,'cancel/close must never write the poem');
+  assert.equal(transport.posted.length,0,'cancel/close must not send even a rejected save');
+  assert.equal(page.api.dirty.size,0,'cancel/close must not queue a save');
 }
 
 async function unchangedBulk(text) {
@@ -38,6 +43,7 @@ async function unchangedBulk(text) {
   assert.equal(page.api.poems[0].text,text,'unchanged bulk Save preserves canonical text, including original line endings');
   assert.equal(page.api.dirty.size,0,'unchanged bulk Save does not queue a revision');
   assert.equal(transport.writes,0);
+  assert.equal(transport.posted.length,0,'unchanged Save must not send even a rejected save');
 }
 
 async function literalBulkEdit() {

@@ -118,6 +118,9 @@
   }
 
   async function connect(injected = root.DiwanHost) {
+    if (root.DiwanFile) return root.DiwanFileConnection({
+      sample: root.DiwanLocal ? localQueue(root.DiwanLocal) : chatExchange(), downloads: browserDownloads()
+    });
     if (root.DiwanInitialPoem) return root.DiwanLocal
       ? { label: 'محادثتك عبر اتصال محلي', sample: localQueue(root.DiwanLocal), db: null, downloads: browserDownloads() }
       : { label: 'ديوان محلي؛ الذكاء عبر محادثتك', sample: chatExchange(), db: null, downloads: browserDownloads() };

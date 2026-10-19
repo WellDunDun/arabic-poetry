@@ -1,5 +1,25 @@
 # Poetry skill evaluations
 
+## Shared-file CLI
+
+The frozen [diwan-cli.json](diwan-cli.json) suite covers discovery, exact import, accepted conditional editing, stale saves, idempotent retry and restoring history as a new revision. Run `python3 evals/run_diwan_cli.py --skill /absolute/path/to/skill --output /absolute/new/temp/directory`. It uses fresh Codex sessions and disposable local files, with no browser, installs or publication. Inspect recorded commands and actual initial/final documents and history, then grade each frozen criterion. Software concurrency/crash tests and real browser checks are separate from these agent cases.
+
+The [shared-file trial](results/2026-10-19-shared-cli/report.md) records an earlier candidate: six CLI cases, nine automatic-routing cases, four explicit-launch cases and eight unchanged poetry cases. It retains one failed pronoun-choice disclosure criterion in the poetry run. Original historical baselines are reused by reference, not rerun. Additional CLI/routing grades are recorded separately and remain reviewer judgments.
+
+## Editor review fixes
+
+The [editor/queue review-fix trial](results/2026-10-20-editor-fixes/report.md) records the preceding candidate. It records failing-before/passing-after regressions for deferred agent updates after cancel/close, literal and unchanged bulk saves, and actionable queue-response errors. All 31 frozen agent requests were rerun against that package. The production page/transport integration runs with `node skills/arabic-poetry/tests/workbench_shared.js`; the queue cases run through normal skill unittest discovery.
+
+The [merge-readiness trial](results/2026-10-20-merge-readiness/report.md) records the earlier fixes for renamed server sessions and copied-document create replay. It preserves failing-before/passing-after regressions and reruns all 31 frozen agent cases, software checks and isolated installation/update checks.
+
+The [session lifecycle trial](results/2026-10-20-session-lifecycle/report.md) records the current package: identity/history survive reuse of a renamed poem's old filename, server replacement and stop are serialized, fixed-port reopening waits for socket closure, and stale tokens recover without discarding uncertain live sessions. All 31 frozen agent cases, software checks and isolated install/update checks are rerun. The default checker validates this trial's poetry package and evidence; other suites retain separate frozen criteria and grades. Earlier real-browser evidence is identified separately because the browser source is unchanged.
+
+## Pronoun-reading follow-up
+
+The frozen [pronoun-reading.json](pronoun-reading.json) suite tests ambiguous address in Arabic and English, a supplied feminine vowel and a feminine referent fixed by context. Use the same isolated runner with `--suite evals/pronoun-reading.json`. Grade the actual reading and explanation: ambiguous readings need explicit disclosure, while supplied or context-fixed readings must remain intact without an invented question. Preserve all original words, spaces and marks, and respect line-only/review-first scope.
+
+The [pronoun-reading trial](results/2026-10-19-pronoun-reading/report.md) records an earlier candidate. It reruns the unchanged eight poetry cases, all CLI/routing/explicit-launch cases and the four new cases. The original review-only case passes; the earlier failed execution remains in the shared-file trial. Other suites retain their separate frozen criteria and recorded semantic grades.
+
 ## Automatic drafting triggers
 
 The frozen [diwan-auto-open.json](diwan-auto-open.json) suite tests English/Arabic composition and revision without an explicit editor request, quick interpretation and meter analysis, composition/revision chat-only overrides, and revision with no local viewer. Its baseline is PR #9 at `8fbdef835a02773d7153ba4c523b2e1de7e6663a`. Requests and criteria are independent of the older suites and were fixed before the comparison runs.
@@ -61,4 +81,4 @@ The [Diwan launch trial](results/2026-10-19-diwan-launch/report.md) records the 
 
 The [scansion explanation follow-up](results/2026-10-19-scansion-explanation/report.md) records the earlier package against the same eight poetry requests and four launch requests. It preserves the earlier failed response and references historical baseline/browser evidence separately from the fresh candidate executions.
 
-The [automatic-opening trial](results/2026-10-19-auto-open/report.md) records the current package: a fresh nine-case before/after routing comparison, all eight frozen poetry cases, and all four original launch cases. It retains source-preservation diagnostic failures separately from the final execution and keeps the earlier suites unchanged.
+The [automatic-opening trial](results/2026-10-19-auto-open/report.md) records the preceding package: a fresh nine-case before/after routing comparison, all eight frozen poetry cases, and all four original launch cases. It retains source-preservation diagnostic failures separately from the final execution and keeps the earlier suites unchanged.

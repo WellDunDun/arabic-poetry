@@ -1,0 +1,5 @@
+{
+  "status": "not rerun for software-only fixes",
+  "previous_receipt": "../2026-10-20-editor-fixes/browser-checks.json",
+  "reason": "Browser sources and generated HTML are byte-identical to the prior browser-tested package; real server regressions cover filename reuse, concurrent reopen, stopping a renamed poem and rejection of a replacement document."
+}

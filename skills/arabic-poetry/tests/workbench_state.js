@@ -23,7 +23,7 @@ function harness(initial, options = {}) {
     return elements.get(id);
   };
   const context = { console, AbortController,
-    window: { addEventListener() {}, innerWidth: 1200, innerHeight: 800, Arud: { data: { info: {} }, load() {}, clean: s => s, words: s => s.split(/\s+/).filter(Boolean), syll: s => s, verifyLine: () => ({ok:true,feet:[]}), rhymeCheck: () => ({ rows: [] }) } },
+    window: { ...(options.shared ? {DiwanFile: {}} : {}), addEventListener() {}, innerWidth: 1200, innerHeight: 800, Arud: { data: { info: {} }, load() {}, clean: s => s, words: s => s.split(/\s+/).filter(Boolean), syll: s => s, verifyLine: () => ({ok:true,feet:[]}), rhymeCheck: () => ({ rows: [] }) } },
     document: { getElementById: element, addEventListener(type, fn) { if (!listeners.has(type)) listeners.set(type, []); listeners.get(type).push(fn); }, querySelectorAll: () => [], querySelector: () => null, activeElement: null,
       createElement: tag => ({ tag, hidden: true, dataset: {}, style: {}, classList: { add() {}, remove() {}, toggle() {} }, listeners: {},
         addEventListener(type, fn) { this.listeners[type] = fn; }, setAttribute() {}, appendChild() {} }),
@@ -38,7 +38,7 @@ function harness(initial, options = {}) {
     checkLine = text => ({text, ok: true}); meterLabel = () => 'test meter';
     lineViews = () => [{diag: []}];
     globalThis.api = { save, flush, askLine, askAlternatives, askDiacritics, preservesDiacritics,
-      addLineAt, dropPending, saveLine, doUndo, fetchWordAlts, openCm,
+      addLineAt, dropPending, saveLine, doUndo, fetchWordAlts, openCm, openPop, closePop,
       context(li, wi = 0) { cmCtx = { li, wi, word: linesOf(cur())[li].split(' ')[wi], bits: '' }; },
       get wordAlternatives() { return wordAlts.get(altKey()); }, get editing() { return editing; },
       snapshot(snap) { ${snapshot} },
@@ -60,7 +60,7 @@ function harness(initial, options = {}) {
     const fn = listeners.get('click').find(f => f.toString().includes("act === 'edit'"));
     fn({ target: { closest: query => query === '[data-act]' ? { dataset: { act, li: String(li) } } : null } });
   }
-  return { api, select, receive, elements, timers, storage, click, dialogMouseDown() {
+  return { api, select, receive, element, elements, timers, storage, click, dialogMouseDown() {
     const fn = listeners.get('mousedown').find(f => f.toString().includes("$('cmenu')"));
     fn({target:{closest: selector => selector.includes('.agent-exchange') ? {} : null}});
   } };
@@ -251,7 +251,9 @@ async function preloadedLaunch() {
   assert(blocked.elements.get('launchStatus').textContent.includes('الحفظ'));
 }
 
-(async () => {
+module.exports = { harness };
+
+if (require.main === module) (async () => {
   await staleSave(); await conversations(); await staleAlternatives(); await diacritics(); await lineEditing(); await wordContext(); await manualWordMenu(); await approvalReadback(); await preloadedLaunch();
   console.log('PASS workbench state: revision-safe saves, isolated conversations, stale responses, preserved wording/marks, line identities/metadata and word context');
 })().catch(error => { console.error(error); process.exitCode = 1; });

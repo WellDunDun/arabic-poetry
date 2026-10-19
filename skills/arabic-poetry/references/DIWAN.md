@@ -4,6 +4,8 @@ Diwan is the drafting and editing workbench contributed by Firas F. Khabour. Ope
 
 ## Open with the current poem
 
+Prefer the [shared-file CLI](CLI.md) when the agent and browser can use the same local server. Its canonical `.diwan.json` document is the current poem for both participants, with guarded saves and history. The following preloaded-HTML procedure is a compatibility fallback for hosts with only a local HTML viewer. It copies the poem; browser changes in that fallback do not update a source file.
+
 A composition, continuation or revision request authorizes the private local launch unless the poet opts out. An explicit editor request such as "open Diwan" or «افتح الديوان بهذه القصيدة» also triggers it. Complete the launch in the same turn without another offer or a request to paste text already available. For a new poem, preload the actual generated draft. For revision, preserve the original separately and preload the complete revised draft, including unchanged text, marks and line breaks. Keep proposals in review status; opening them is not acceptance. If an existing editor has unreadable newer edits, obtain that text through a real available capability before replacing anything.
 
 1. Save the complete draft as UTF-8 text in a writable poem workspace outside the installed skill. For revision, keep the supplied source file unchanged and write the revised text to a separate draft file such as `draft.txt`. A request to revise the poem "in current.txt" identifies its input; it does not by itself request overwriting the file. Save back only when the poet accepts the revision or explicitly says to overwrite/save it to that source path. Choose a stable poem ID and reuse it when reopening that poem. Give unrelated poems different IDs.

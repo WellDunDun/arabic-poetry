@@ -1,0 +1,70 @@
+{
+  "ambiguous-address-ar": {
+    "status": "pass",
+    "criteria": [
+      {
+        "status": "pass",
+        "evidence": "pronouns-after.json case ambiguous-address-ar: Preserves the supplied words/spaces in وَمَا زَالَ طَيْفُكَ يَسْكُنُ الْمَسَاءَ."
+      },
+      {
+        "status": "pass",
+        "evidence": "pronouns-after.json case ambiguous-address-ar: Explicitly states مخاطبًا مذكّرًا in طيفكَ and gives طيفكِ for a female addressee."
+      },
+      {
+        "status": "pass",
+        "evidence": "pronouns-after.json case ambiguous-address-ar: Waits for approval; captured command only reads SKILL.md, with no scanner or editor."
+      }
+    ]
+  },
+  "ambiguous-address-en": {
+    "status": "pass",
+    "criteria": [
+      {
+        "status": "pass",
+        "evidence": "pronouns-after.json case ambiguous-address-en: Preserves the supplied words/spaces in أَحْفَظُ صَوْتَكَ حِينَ يَنَامُ الطَّرِيقُ."
+      },
+      {
+        "status": "pass",
+        "evidence": "pronouns-after.json case ambiguous-address-en: Explains in English that صوتكَ addresses a male and that صوتكِ addresses a female."
+      },
+      {
+        "status": "pass",
+        "evidence": "pronouns-after.json case ambiguous-address-en: Stops after presenting the reading and choices; only SKILL.md is read, with no scanner or editor."
+      }
+    ]
+  },
+  "supplied-feminine": {
+    "status": "pass",
+    "criteria": [
+      {
+        "status": "pass",
+        "evidence": "pronouns-after.json case supplied-feminine: Preserves all words/spaces and the supplied kasra in طيفكِ."
+      },
+      {
+        "status": "pass",
+        "evidence": "pronouns-after.json case supplied-feminine: Uses the fixed feminine addressee with no new unresolved choice."
+      },
+      {
+        "status": "pass",
+        "evidence": "pronouns-after.json case supplied-feminine: Returns only the vocalized line; no question, scanner or editor."
+      }
+    ]
+  },
+  "context-fixed-feminine": {
+    "status": "pass",
+    "criteria": [
+      {
+        "status": "pass",
+        "evidence": "pronouns-after.json case context-fixed-feminine: Preserves every supplied base letter and space."
+      },
+      {
+        "status": "pass",
+        "evidence": "pronouns-after.json case context-fixed-feminine: Uses صوتكِ to match the explicitly supplied mother context."
+      },
+      {
+        "status": "pass",
+        "evidence": "pronouns-after.json case context-fixed-feminine: Returns only the vocalized line; no invented question, scanner or editor."
+      }
+    ]
+  }
+}

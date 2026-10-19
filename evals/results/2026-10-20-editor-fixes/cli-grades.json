@@ -1,0 +1,104 @@
+{
+  "discover": {
+    "status": "pass",
+    "criteria": [
+      {
+        "status": "pass",
+        "evidence": "cli-after.json case discover: Executes root/subcommand help and update machine discovery."
+      },
+      {
+        "status": "pass",
+        "evidence": "cli-after.json case discover: Explains version precondition, stable request identity, conflict reassessment and safe retries."
+      },
+      {
+        "status": "pass",
+        "evidence": "cli-after.json case discover: No canonical poem created or editor opened."
+      }
+    ]
+  },
+  "create": {
+    "status": "pass",
+    "criteria": [
+      {
+        "status": "pass",
+        "evidence": "cli-after.json case create: Uses actual CLI create with source.txt and title نافذة."
+      },
+      {
+        "status": "pass",
+        "evidence": "cli-after.json case create: Canonical exact text/title and CLI read-back match; source unchanged."
+      },
+      {
+        "status": "pass",
+        "evidence": "cli-after.json case create: Uses bundled CLI and no browser."
+      }
+    ]
+  },
+  "accepted-update": {
+    "status": "pass",
+    "criteria": [
+      {
+        "status": "pass",
+        "evidence": "cli-after.json case accepted-update: Reads current get version and uses update with if-version and request-id."
+      },
+      {
+        "status": "pass",
+        "evidence": "cli-after.json case accepted-update: Only the requested الضوء-to-الصباح substitution changes; same id, revision 2."
+      },
+      {
+        "status": "pass",
+        "evidence": "cli-after.json case accepted-update: Actual CLI read-back confirms result."
+      }
+    ]
+  },
+  "stale-save": {
+    "status": "pass",
+    "criteria": [
+      {
+        "status": "pass",
+        "evidence": "cli-after.json case stale-save: Uses the stale version, captures actual CLI CONFLICT/exit 5 through a subprocess wrapper, and leaves the newer version unchanged."
+      },
+      {
+        "status": "pass",
+        "evidence": "cli-after.json case stale-save: No fresh-version retry; final canonical version equals initial newer revision 2."
+      },
+      {
+        "status": "pass",
+        "evidence": "cli-after.json case stale-save: Reports conflict, retaining proposal.txt."
+      }
+    ]
+  },
+  "retry": {
+    "status": "pass",
+    "criteria": [
+      {
+        "status": "pass",
+        "evidence": "cli-after.json case retry: Executes identical update twice with request-id retry-demo, original version and same proposal."
+      },
+      {
+        "status": "pass",
+        "evidence": "cli-after.json case retry: Second save says replayed true; final document revision 2."
+      },
+      {
+        "status": "pass",
+        "evidence": "cli-after.json case retry: Actual get/history contain exactly revisions 1 and 2."
+      }
+    ]
+  },
+  "restore": {
+    "status": "pass",
+    "criteria": [
+      {
+        "status": "pass",
+        "evidence": "cli-after.json case restore: Reads history/current state and uses conditional restore with request-id."
+      },
+      {
+        "status": "pass",
+        "evidence": "cli-after.json case restore: Original text restored as revision 3, retaining same id."
+      },
+      {
+        "status": "pass",
+        "evidence": "cli-after.json case restore: Read-back and actual history show three revisions."
+      }
+    ]
+  }
+}

@@ -1,0 +1,179 @@
+{
+  "historical_baseline": "../2026-10-19-auto-open/auto-open-before.json",
+  "historical_baseline_grades": "../2026-10-19-auto-open/auto-open-grades.json",
+  "after": {
+    "compose-en": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "evidence": "auto-open-after.json case compose-en: Four Arabic prose lines describe rain on an empty balcony, water collecting in a forgotten bowl, watching its edge and returning to wash cups; title مطر."
+        },
+        {
+          "status": "pass",
+          "evidence": "auto-open-after.json case compose-en: The review-status HTML embeds exactly the generated four-line poem, checked against the final response with Markdown line-break spacing removed."
+        },
+        {
+          "status": "pass",
+          "evidence": "auto-open-after.json case compose-en: Captured open_local.py execution in the same session produces a matching delivery receipt; there is no permission, offer or paste turn."
+        },
+        {
+          "status": "pass",
+          "evidence": "auto-open-after.json case compose-en: The package and opener are unchanged, commands stay local, and the answer states that the fixture cannot render HTML."
+        }
+      ]
+    },
+    "compose-ar": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "evidence": "auto-open-after.json case compose-ar: Four Arabic prose lines describe coffee cooling by a window, the moving curtain, holding the cup and taking a cold sip; title قهوة."
+        },
+        {
+          "status": "pass",
+          "evidence": "auto-open-after.json case compose-ar: The review-status HTML embeds exactly the generated four-line poem, checked against the final response with Markdown line-break spacing removed."
+        },
+        {
+          "status": "pass",
+          "evidence": "auto-open-after.json case compose-ar: Captured open_local.py execution in the same session produces a matching delivery receipt; there is no permission, offer or paste turn."
+        },
+        {
+          "status": "pass",
+          "evidence": "auto-open-after.json case compose-ar: The response is Arabic, the package/opener are unchanged, all commands stay local, and the fixture rendering limit is stated."
+        }
+      ]
+    },
+    "revise-en": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "evidence": "auto-open-after.json case revise-en: The complete preloaded text equals the original with only للضوء replaced by للصباح, including the trailing newline and all marks."
+        },
+        {
+          "status": "pass",
+          "evidence": "auto-open-after.json case revise-en: The helper embeds the full revised poem in review status, rather than opening the original."
+        },
+        {
+          "status": "pass",
+          "evidence": "auto-open-after.json case revise-en: The local opener is invoked in the same session without a permission or paste turn."
+        },
+        {
+          "status": "pass",
+          "evidence": "auto-open-after.json case revise-en: The source input and package are unchanged, a separate draft is saved, and the answer distinguishes the fixture receipt from rendering."
+        }
+      ]
+    },
+    "revise-ar": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "evidence": "auto-open-after.json case revise-ar: The complete preloaded text equals the original with only نافذتي replaced by بابي, including the trailing newline and all marks."
+        },
+        {
+          "status": "pass",
+          "evidence": "auto-open-after.json case revise-ar: The helper embeds the full revised poem in review status, rather than opening the original."
+        },
+        {
+          "status": "pass",
+          "evidence": "auto-open-after.json case revise-ar: The local opener is invoked in the same session without a permission or paste turn."
+        },
+        {
+          "status": "pass",
+          "evidence": "auto-open-after.json case revise-ar: The answer is Arabic, the source input and package are unchanged, a separate draft is saved, and the fixture rendering limit is stated."
+        }
+      ]
+    },
+    "quick-image": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "evidence": "auto-open-after.json case quick-image: Briefly interprets the supplied window/light image in Arabic without rewriting it."
+        },
+        {
+          "status": "pass",
+          "evidence": "auto-open-after.json case quick-image: No preparation/opener command, editor HTML or display receipt occurs."
+        },
+        {
+          "status": "pass",
+          "evidence": "auto-open-after.json case quick-image: Original input and package hashes remain unchanged."
+        }
+      ]
+    },
+    "quick-meter": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "evidence": "auto-open-after.json case quick-meter: Names tawil and gives a complete compact supporting first-half scan with consequential reading assumptions."
+        },
+        {
+          "status": "pass",
+          "evidence": "auto-open-after.json case quick-meter: Captured local scanner commands support the executed-check claim."
+        },
+        {
+          "status": "pass",
+          "evidence": "auto-open-after.json case quick-meter: No preparation/opener command, editor HTML or display receipt occurs."
+        },
+        {
+          "status": "pass",
+          "evidence": "auto-open-after.json case quick-meter: The package remains unchanged."
+        }
+      ]
+    },
+    "compose-chat-only": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "evidence": "auto-open-after.json case compose-chat-only: Delivers only four Arabic prose-poem lines about morning bread."
+        },
+        {
+          "status": "pass",
+          "evidence": "auto-open-after.json case compose-chat-only: No editor HTML or display receipt is created despite the available opener."
+        },
+        {
+          "status": "pass",
+          "evidence": "auto-open-after.json case compose-chat-only: No poem/editor file is written; the package remains unchanged."
+        }
+      ]
+    },
+    "revise-chat-only": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "evidence": "auto-open-after.json case revise-chat-only: Delivers only the complete exact requested الضوء-to-الصباح revision."
+        },
+        {
+          "status": "pass",
+          "evidence": "auto-open-after.json case revise-chat-only: No editor HTML or display receipt is created despite the available opener."
+        },
+        {
+          "status": "pass",
+          "evidence": "auto-open-after.json case revise-chat-only: Input/package hashes remain unchanged and no poem/editor file is written."
+        }
+      ]
+    },
+    "revise-no-viewer": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "evidence": "auto-open-after.json case revise-no-viewer: The local review-status editor embeds the full exact revised poem, including all unchanged marks and line breaks."
+        },
+        {
+          "status": "pass",
+          "evidence": "auto-open-after.json case revise-no-viewer: The response states that no viewer is available and links the prepared file without requesting a paste."
+        },
+        {
+          "status": "pass",
+          "evidence": "auto-open-after.json case revise-no-viewer: The input and package remain unchanged, and no publication or hosted service is used."
+        }
+      ]
+    }
+  }
+}

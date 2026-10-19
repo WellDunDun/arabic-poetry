@@ -3,7 +3,7 @@
   "skills": [
     "./skills/arabic-poetry"
   ],
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Write, revise and understand classical and modern Arabic poetry, with a meter scanner and optional Diwan editor.",
   "author": {
     "name": "Daniel Petro and Firas F. Khabour",

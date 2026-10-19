@@ -1,0 +1,14 @@
+[
+  {
+    "condition": "before",
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "FFF\n======================================================================\nFAIL: test_create_replay_rejects_a_copied_document_without_writes (test_diwan_cli.DiwanCLITests.test_create_replay_rejects_a_copied_document_without_writes)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/private/var/folders/ry/n2x9qf1j21n1r38t0pdfxt2m0000gn/T/diwan-identity-before-kxfcr7ye/skill/tests/test_diwan_cli.py\", line 136, in test_create_replay_rejects_a_copied_document_without_writes\n    self.assertEqual(self.cli(*args,status=5)['error']['code'],'DUPLICATE_ID')\n                     ~~~~~~~~^^^^^^^^^^^^^^^^\n  File \"/private/var/folders/ry/n2x9qf1j21n1r38t0pdfxt2m0000gn/T/diwan-identity-before-kxfcr7ye/skill/tests/test_diwan_cli.py\", line 43, in cli\n    self.assertEqual(result.returncode, status, result.stdout + result.stderr)\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 0 != 5 : {\n  \"path\": \"/private/var/folders/ry/n2x9qf1j21n1r38t0pdfxt2m0000gn/T/tmpdhim5s2m/copy.diwan.json\",\n  \"dry_run\": true,\n  \"would_open\": true\n}\n\n\n======================================================================\nFAIL: test_renamed_poem_keeps_identity_when_old_name_is_reused (test_diwan_cli.DiwanCLITests.test_renamed_poem_keeps_identity_when_old_name_is_reused)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/private/var/folders/ry/n2x9qf1j21n1r38t0pdfxt2m0000gn/T/diwan-identity-before-kxfcr7ye/skill/tests/test_diwan_cli.py\", line 397, in test_renamed_poem_keeps_identity_when_old_name_is_reused\n    with self.assertRaises(storage.DiwanError):diwan.request(receipt['url'],'/document')\n         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^\nAssertionError: DiwanError not raised\n\n======================================================================\nFAIL: test_stop_after_rename_reports_the_owned_server_was_stopped (test_diwan_cli.DiwanCLITests.test_stop_after_rename_reports_the_owned_server_was_stopped)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/private/var/folders/ry/n2x9qf1j21n1r38t0pdfxt2m0000gn/T/diwan-identity-before-kxfcr7ye/skill/tests/test_diwan_cli.py\", line 418, in test_stop_after_rename_reports_the_owned_server_was_stopped\n    self.assertTrue(result['stopped'])\n    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^\nAssertionError: False is not true\n\n----------------------------------------------------------------------\nRan 3 tests in 0.974s\n\nFAILED (failures=3)\n"
+  },
+  {
+    "condition": "after",
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": "...\n----------------------------------------------------------------------\nRan 3 tests in 1.700s\n\nOK\n"
+  }
+]

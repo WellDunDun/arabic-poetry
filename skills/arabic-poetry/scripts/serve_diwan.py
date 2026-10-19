@@ -16,6 +16,12 @@ REQUEST_TTL = 10 * 60
 ID = re.compile(r'^[0-9a-f]{32}$')
 
 
+class RequestError(ValueError):
+    def __init__(self, code, message, exit_code):
+        super().__init__(message)
+        self.code, self.exit_code = code, exit_code
+
+
 def write_json(path, value, *, overwrite=True):
     """Publish complete JSON atomically, optionally rejecting an existing file."""
     temp = path.with_name(path.name + '.' + uuid.uuid4().hex + '.tmp')
@@ -49,7 +55,7 @@ def open_requests(queue):
             and not (queue / 'cancelled' / path.name).exists()]
 
 
-def make_server(workspace, port=None, page=None):
+def make_server(workspace, port=None, page=None, document=None):
     """Start a loopback session and invalidate requests from earlier sessions."""
     if page is not None:
         page = Path(page).resolve()
@@ -68,6 +74,7 @@ def make_server(workspace, port=None, page=None):
     token = secrets.token_urlsafe(32)
     prefix = '/' + token
     lock = threading.Lock()
+    served = None if document is None else {'path': str(document.path), 'id': document.get()['poem']['id']}
 
     class Handler(BaseHTTPRequestHandler):
         def log_message(self, *args):
@@ -112,7 +119,11 @@ def make_server(workspace, port=None, page=None):
                 encoded = json.dumps(config, ensure_ascii=False).replace('<', '\\u003c')
                 html = (page or assets / 'diwan.html').read_text(encoding='utf-8')
                 html = '<script>window.DiwanLocal=' + encoded + ';</script>\n' + html
+                if document is not None:
+                    html = '<script>window.DiwanFile=' + json.dumps({'base': prefix}).replace('<', '\\u003c') + ';</script>\n' + html
                 self.send(200, html.encode('utf-8'), 'text/html; charset=utf-8')
+            elif document is not None and path in ('/document', '/status', '/history'):
+                self.document_call(path)
             elif path.startswith('/responses/') and ID.fullmatch(path.split('/')[-1]):
                 identity = path.split('/')[-1]
                 response = queue / 'responses' / (identity + '.json')
@@ -142,6 +153,13 @@ def make_server(workspace, port=None, page=None):
             except (ValueError, UnicodeError):
                 self.send(400, {'error': 'Invalid JSON request'})
                 return
+            if document is not None and path == '/document':
+                self.document_call(path, data)
+                return
+            if document is not None and path == '/shutdown':
+                self.send(200, {'stopped': True})
+                threading.Thread(target=self.server.shutdown, daemon=True).start()
+                return
             if path == '/requests':
                 value = data.get('input')
                 if not isinstance(value, str) and not (isinstance(value, list) and value and all(
@@ -159,6 +177,27 @@ def make_server(workspace, port=None, page=None):
                 self.send(200, {'cancelled': True})
             else:
                 self.send(404, {'error': 'Not found'})
+
+        def document_call(self, path, data=None):
+            from diwan_store import DiwanError
+            if path == '/status':
+                self.send(200, served)
+                return
+            try:
+                current = document.get()
+                if current['poem']['id'] != served['id']:
+                    raise DiwanError('DOCUMENT_REPLACED', 'This path contains another poem. Reopen the intended shared document.', 5)
+                if data is not None:
+                    result = document.update(data.get('patch'), data.get('if_version'), data.get('request_id'))
+                elif path == '/history':
+                    result = document.history()
+                else:
+                    result = current
+                self.send(200, result)
+            except DiwanError as error:
+                self.send(409 if error.exit_code == 5 else 400, {'error': {'code': error.code, 'message': str(error), **error.details}})
+            except OSError:
+                self.send(500, {'error': {'code': 'IO_ERROR', 'message': 'Save may be incomplete. Keep the draft and retry the same request id, or inspect the document with get.'}})
 
     try:
         server = ThreadingHTTPServer(('127.0.0.1', port), Handler)
@@ -186,20 +225,22 @@ def pending(workspace):
 def respond(workspace, identity, value):
     """Publish one complete answer; concurrent responders cannot overwrite it."""
     queue = queue_dirs(workspace)
-    if not ID.fullmatch(identity) or not (queue / 'requests' / (identity + '.json')).exists():
-        raise ValueError('Unknown request ID')
+    if not ID.fullmatch(identity):
+        raise RequestError('INVALID_REQUEST_ID', 'Unknown request ID format; expected 32 lowercase hexadecimal characters', 2)
+    if not (queue / 'requests' / (identity + '.json')).exists():
+        raise RequestError('NOT_FOUND', 'Unknown request ID; use pending to select a live request', 4)
     if (queue / 'cancelled' / (identity + '.json')).exists():
-        raise ValueError('Request was cancelled')
+        raise RequestError('CONFLICT', 'Request was cancelled; use pending to select a live request', 5)
     if (queue / 'responses' / (identity + '.json')).exists():
-        raise ValueError('Request already has a response')
+        raise RequestError('CONFLICT', 'Request already has a response; do not resubmit it', 5)
     if (queue / 'requests' / (identity + '.json')).stat().st_mtime < time.time() - REQUEST_TTL:
-        raise ValueError('Request expired')
+        raise RequestError('NOT_FOUND', 'Request expired; use pending to select a live request', 4)
     if not isinstance(value, (dict, list)):
-        raise ValueError('Response must be a JSON object or array')
+        raise RequestError('INVALID_RESPONSE', 'Response must be a JSON object or array', 2)
     try:
         write_json(queue / 'responses' / (identity + '.json'), value, overwrite=False)
     except FileExistsError as error:
-        raise ValueError('Request already has a response') from error
+        raise RequestError('CONFLICT', 'Request already has a response; do not resubmit it', 5) from error
 
 
 def main():

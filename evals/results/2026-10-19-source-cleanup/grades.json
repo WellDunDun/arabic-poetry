@@ -488,7 +488,7 @@
       "criteria": [
         {
           "status": "pass",
-          "evidence": "combined.responses.json case classical-scan: Names الطويل, shows the complete first half segmented as قِفَا نَبْ ⁞ كِ مِنْ ذِكْرَى ⁞ حَبِيبِنْ ⁞ وَمَنْزِلِي with four feet and syllables, and lists the second half feet."
+          "evidence": "combined.responses.json case classical-scan: Names الطويل and shows full sound-to-foot evidence for at least the complete first hemistich."
         },
         {
           "status": "pass",
@@ -517,7 +517,7 @@
         },
         {
           "status": "pass",
-          "evidence": "combined.responses.json case provisional-reading: Provides feet and syllables including terminal =, discloses the final pause assumption, and does not require approval for the preliminary answer."
+          "evidence": "combined.responses.json case provisional-reading: Gives useful مستفعلن ⁞ مستفعلن ⁞ فاعلانْ evidence without requiring an unnecessary approval turn."
         }
       ],
       "status": "pass"
@@ -589,7 +589,7 @@
         },
         {
           "status": "pass",
-          "evidence": "combined.responses.json case workbench-export: The recorded inline Python preparation/verification command wrote masafa-poems.json and a seeded masafa-diwan.html, invoked the real exporter for masafa.docx/masafa.txt, and checked ZIP/XML, exact title/text, seed and retained footer credit. The response gives those real paths."
+          "evidence": "combined.responses.json case workbench-export: Recorded export_book.py produced masafa.docx/masafa.txt from poems.json; the supplied seeded diwan-masafa.html and Word file exist. check_export.py verified ZIP/XML and exact title/text. Its initial contiguous-credit assertion failed; HTML-text parsing corrected it and the successful rerun is retained. The response gives real paths."
         },
         {
           "status": "pass",

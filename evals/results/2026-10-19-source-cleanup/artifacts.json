@@ -643,58 +643,76 @@
   ],
   "combined": [
     {
+      "case_id": "classical-scan",
+      "path": "/private/tmp/poetry-research-cleanup-20261019/trials/outputs/combined-pr3/classical-scan.raw.txt",
+      "sha256": "b71faf2a8500375d35eed2e223f0cc005c732f3b11add0c21b589732764bf249",
+      "bytes": 175
+    },
+    {
       "case_id": "provisional-reading",
-      "path": "/private/tmp/poetry-research-cleanup-20261019/trials/outputs/combined-pr2/provisional-reading.txt",
+      "path": "/private/tmp/poetry-research-cleanup-20261019/trials/outputs/combined-pr3/provisional-reading.raw.txt",
+      "sha256": "c1b42d28da54c7a5245c112e16077614fe0e24d9f2e5ca29cf3e25a9da94a5cf",
+      "bytes": 48
+    },
+    {
+      "case_id": "provisional-reading",
+      "path": "/private/tmp/poetry-research-cleanup-20261019/trials/outputs/combined-pr3/provisional-reading.assumed.txt",
+      "sha256": "814207277b20643893f67fa4aaa0221ef3764248fc5f603964923c3339851269",
+      "bytes": 80
+    },
+    {
+      "case_id": "provisional-reading",
+      "path": "/private/tmp/poetry-research-cleanup-20261019/trials/outputs/combined-pr3/provisional-reading.pause.txt",
       "sha256": "56384b0f6752857098595b915d38829b2a1e4b8ad72373965157f291b056928e",
       "bytes": 80
     },
     {
       "case_id": "bounded-repair",
-      "path": "/private/tmp/poetry-research-cleanup-20261019/trials/outputs/combined-pr2/repair-original.txt",
+      "path": "/private/tmp/poetry-research-cleanup-20261019/trials/outputs/combined-pr3/bounded-repair.raw.txt",
       "sha256": "5ad4d8b835d7b0356f47e5cc34aca1939800af12d29eb7244498f3c7c8c38e74",
       "bytes": 77
     },
     {
       "case_id": "bounded-repair",
-      "path": "/private/tmp/poetry-research-cleanup-20261019/trials/outputs/combined-pr2/repair-proposed.txt",
+      "path": "/private/tmp/poetry-research-cleanup-20261019/trials/outputs/combined-pr3/bounded-repair.proposed.txt",
       "sha256": "6b74fa3d50af0f080dce2b100399a3c515a38894e4d3302fb37dd37db873c323",
       "bytes": 64
     },
     {
       "case_id": "tafila-boundary",
-      "path": "/private/tmp/poetry-research-cleanup-20261019/trials/outputs/combined-pr2/tafila-boundary.txt",
+      "path": "/private/tmp/poetry-research-cleanup-20261019/trials/outputs/combined-pr3/tafila-boundary.raw.txt",
       "sha256": "cc5d06caf9935b9a59d62a4915473c3b066634cd496d91f3012d0cb7df4806ce",
       "bytes": 24
     },
     {
       "case_id": "workbench-export",
-      "path": "/private/tmp/poetry-research-cleanup-20261019/trials/outputs/combined-pr2/masafa.docx",
-      "sha256": "1b9c89f981371ca82ecac5f22666401acc715406ef074b41a4d134093553f791",
-      "bytes": 2405
+      "path": "/private/tmp/poetry-research-cleanup-20261019/trials/outputs/combined-pr3/poems.json",
+      "sha256": "8a3db36124cb2f4279ba6f4cc4e4e8032b620a8ce1b338b4f186490ef6ce9f3f",
+      "bytes": 255
     },
     {
       "case_id": "workbench-export",
-      "path": "/private/tmp/poetry-research-cleanup-20261019/trials/outputs/combined-pr2/masafa-diwan.html",
-      "sha256": "880a561c738c1a7c9bdab2df6f74df986ac4741eb5c629272d29129fc9d9b867",
-      "bytes": 236300
+      "path": "/private/tmp/poetry-research-cleanup-20261019/trials/outputs/combined-pr3/diwan-masafa.html",
+      "sha256": "dbf9454126fe5847ed8021ce37a207183ca2e9f9008897e87f069737ddcb0821",
+      "bytes": 246447
     },
     {
       "case_id": "workbench-export",
-      "path": "/private/tmp/poetry-research-cleanup-20261019/trials/outputs/combined-pr2/masafa-poems.json",
-      "sha256": "175d8a96dd5b592bdfb26f7a5637f555b9ddb3648b071674e43700e690695221",
-      "bytes": 264
+      "path": "/private/tmp/poetry-research-cleanup-20261019/trials/outputs/combined-pr3/masafa.docx",
+      "sha256": "ab493667e74101baa0c3af86e1d416f2d03e7222b7b6897ebcad96fa2834a1be",
+      "bytes": 2425
     },
     {
       "case_id": "workbench-export",
-      "path": "/private/tmp/poetry-research-cleanup-20261019/trials/outputs/combined-pr2/masafa.txt",
+      "path": "/private/tmp/poetry-research-cleanup-20261019/trials/outputs/combined-pr3/masafa.txt",
       "sha256": "ce91c6a21af52ff75975acada23a805025f4ecf17846911e91163a5de87f817f",
       "bytes": 76
     },
     {
       "case_id": "workbench-export",
-      "path": "/private/tmp/poetry-research-cleanup-20261019/trials/outputs/combined-pr2/export-receipt.json",
-      "sha256": "ac9190a09e279f8620ad443e787ccd6dc23d2ba1f51e1ba1f43ba53d14b8e360",
-      "bytes": 732
+      "path": "/private/tmp/poetry-research-cleanup-20261019/trials/outputs/combined-pr3/check_export.py",
+      "sha256": "7b4a45f38f78e307773a79ce8ab44b7c4d51a810584184fd5d87e467d6e68b0f",
+      "bytes": 1288
     }
   ]
 }

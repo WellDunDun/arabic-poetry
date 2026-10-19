@@ -32,16 +32,16 @@
   {
     "condition": "combined",
     "case": "workbench-export",
-    "artifact": "/private/tmp/poetry-research-cleanup-20261019/trials/outputs/combined-pr2/masafa.docx",
-    "check": "DOCX ZIP, all XML, literal title and supplied poem",
+    "artifact": "/private/tmp/poetry-research-cleanup-20261019/trials/outputs/combined-pr3/diwan-masafa.html",
+    "check": "node --check on executable inline scripts",
+    "scripts": 5,
     "status": "pass"
   },
   {
     "condition": "combined",
     "case": "workbench-export",
-    "artifact": "/private/tmp/poetry-research-cleanup-20261019/trials/outputs/combined-pr2/masafa-diwan.html",
-    "check": "node --check on executable inline scripts",
-    "scripts": 4,
+    "artifact": "/private/tmp/poetry-research-cleanup-20261019/trials/outputs/combined-pr3/masafa.docx",
+    "check": "DOCX ZIP, all XML, literal title and supplied poem",
     "status": "pass"
   }
 ]

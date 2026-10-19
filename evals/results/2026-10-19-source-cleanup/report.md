@@ -1,6 +1,6 @@
 # Source-reference cleanup trial
 
-Package `1412b962d896dbbb2023fd995021975a1e897c44` (combined-pr2) keeps maintained citations, source limitations and comparison findings in the installed references. Research work logs are outside the repository. Scanner/editor implementation and the frozen requests/criteria are unchanged. This batch executes all eight requests against the exact updated package bytes.
+Package `ded4ea91a99736ad045dd709a71395cc86ca3dcc` (combined-pr3) keeps maintained citations, source limitations and comparison findings in the installed references. Research work logs are outside the repository. Scanner/editor implementation and the frozen requests/criteria are unchanged. This batch executes all eight requests against the exact updated package bytes.
 
 | Condition | Cases meeting all frozen criteria | Execution |
 | --- | --- | --- |

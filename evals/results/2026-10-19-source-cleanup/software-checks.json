@@ -51,7 +51,7 @@
     ],
     "exit_code": 0,
     "stdout": "",
-    "stderr": "..............\n----------------------------------------------------------------------\nRan 14 tests in 0.448s\n\nOK\n"
+    "stderr": ".........................\n----------------------------------------------------------------------\nRan 25 tests in 6.073s\n\nOK\n"
   },
   {
     "command": [
@@ -60,6 +60,15 @@
     ],
     "exit_code": 0,
     "stdout": "PASS workbench state: revision-safe saves, isolated conversations, stale responses, preserved wording/marks, line identities/metadata and word context\n",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "node",
+      "skills/arabic-poetry/tests/workbench_host.js"
+    ],
+    "exit_code": 0,
+    "stdout": "PASS workbench host: portable exchange, invalid input, cancellation, native download, optional host adapters\n",
     "stderr": ""
   },
   {
@@ -75,7 +84,7 @@
     ],
     "exit_code": 0,
     "stdout": "",
-    "stderr": "...............\n----------------------------------------------------------------------\nRan 15 tests in 0.397s\n\nOK\n"
+    "stderr": "...............\n----------------------------------------------------------------------\nRan 15 tests in 0.395s\n\nOK\n"
   },
   {
     "command": [
@@ -102,7 +111,7 @@
       "skills/arabic-poetry/scripts/build_workbench.py"
     ],
     "exit_code": 0,
-    "stdout": "built /private/tmp/poetry-unify-after-pr4-20261018/skills/arabic-poetry/scripts/../assets/workbench/diwan.html 212 KB\nRebuilt bundle SHA256 unchanged: 4d41148c71e8a8fdebc9ef9ad42f195acea1f8fcb2959925eedba1f39b2b4210\n",
+    "stdout": "built /private/tmp/poetry-portable-after-pr4-20261018/skills/arabic-poetry/scripts/../assets/workbench/diwan.html 221 KB\nRebuilt bundle SHA256 unchanged: 6873603055f48f7264d5774e5463294df7deca9e06382fc35d16a1b308e8758f\n",
     "stderr": ""
   },
   {

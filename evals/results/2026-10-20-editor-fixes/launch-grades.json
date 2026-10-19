@@ -1,0 +1,82 @@
+{
+  "historical_baseline": "../2026-10-19-diwan-launch/launch-before.json",
+  "historical_baseline_grades": "../2026-10-19-diwan-launch/launch-grades.json",
+  "after": {
+    "open-current-en": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "evidence": "launch-after.json case open-current-en: The helper creates a local HTML file whose embedded poem matches the exact supplied text and has review status."
+        },
+        {
+          "status": "pass",
+          "evidence": "launch-after.json case open-current-en: Captured open_local.py execution in the same session yields a matching display-request receipt; rendering is explicitly not claimed."
+        },
+        {
+          "status": "pass",
+          "evidence": "launch-after.json case open-current-en: No permission or copy/paste turn is requested."
+        },
+        {
+          "status": "pass",
+          "evidence": "launch-after.json case open-current-en: Commands only read local files, prepare HTML and invoke the fixture; no hosted service or publication request occurs."
+        },
+        {
+          "status": "pass",
+          "evidence": "launch-after.json case open-current-en: The copied package hash inventory remains unchanged and the builder is not invoked."
+        }
+      ]
+    },
+    "open-current-ar": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "evidence": "launch-after.json case open-current-ar: The helper produces exact preloaded review text, the local opener is invoked in the same turn, no permission/paste/publication step occurs, and the package remains unchanged."
+        },
+        {
+          "status": "pass",
+          "evidence": "launch-after.json case open-current-ar: The answer is Arabic and the embedded text hash check preserves all supplied marks and line breaks."
+        }
+      ]
+    },
+    "no-local-viewer": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "evidence": "launch-after.json case no-local-viewer: The helper prepares preloaded local HTML with the exact poem and review status."
+        },
+        {
+          "status": "pass",
+          "evidence": "launch-after.json case no-local-viewer: The response explicitly states that no viewer is available and does not claim the editor opened."
+        },
+        {
+          "status": "pass",
+          "evidence": "launch-after.json case no-local-viewer: Links the prepared HTML as the remaining handoff, without asking the user to paste."
+        },
+        {
+          "status": "pass",
+          "evidence": "launch-after.json case no-local-viewer: No publication or hosted-service command is executed."
+        }
+      ]
+    },
+    "chat-only": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "evidence": "launch-after.json case chat-only: Explains the window and light image as openness and hope in Arabic, using the supplied second line."
+        },
+        {
+          "status": "pass",
+          "evidence": "launch-after.json case chat-only: No preparation/opener command, HTML file or display receipt is present."
+        },
+        {
+          "status": "pass",
+          "evidence": "launch-after.json case chat-only: The current poem file hash is unchanged."
+        }
+      ]
+    }
+  }
+}

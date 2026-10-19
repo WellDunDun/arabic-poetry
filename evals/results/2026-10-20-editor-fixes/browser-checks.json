@@ -1,0 +1,48 @@
+{
+  "source_commit": "5a36240",
+  "method": "Real Codex in-app browser; synthetic input and independent CLI read-back.",
+  "checks": [
+    {
+      "check": "Shared canonical poem renders with exact current title/text",
+      "passed": true
+    },
+    {
+      "check": "Unchanged bulk Save retains revision 1 and original CRLF/leading spaces/blank lines",
+      "passed": true
+    },
+    {
+      "check": "Agent update while bulk edit is open preserves the current textarea",
+      "passed": true
+    },
+    {
+      "check": "Cancel bulk edit adopts the deferred agent revision 2 without a save",
+      "passed": true
+    },
+    {
+      "check": "Changed bulk Save preserves literal leading spaces/three newlines/trailing newline in revision 3",
+      "passed": true
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "/private/tmp/poetry-fixes-20261020/final/browser/agent-update.json",
+      "sha256": "4f6effafec4cc8a3e9b54bc1dc88d1910e2d491302f3f21259899fa70f1b90f3"
+    },
+    {
+      "path": "/private/tmp/poetry-fixes-20261020/final/browser/initial.json",
+      "sha256": "d0c8614dd9b1089d524017d413d024fe4e6386e0b37f4710dba4c8f46973aaf0"
+    },
+    {
+      "path": "/private/tmp/poetry-fixes-20261020/final/browser/literal-save.json",
+      "sha256": "d3572418f2bd92ea74ffb45151a56d795b7187b20410798c2f35e444a02fb002"
+    },
+    {
+      "path": "/private/tmp/poetry-fixes-20261020/final/browser/noop.json",
+      "sha256": "d1ca5bab20265a43379b1973886920d1d72958ada3f5c14dc2bb89eb0b8fba51"
+    },
+    {
+      "path": "/private/tmp/poetry-fixes-20261020/final/browser/refresh-after-cancel.png",
+      "sha256": "6ea46ea49bd8b26c3f24f56c70f10045626daa2c3f3baec13d04ae5dcc9637ed"
+    }
+  ]
+}

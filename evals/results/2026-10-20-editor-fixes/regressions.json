@@ -1,0 +1,64 @@
+{
+  "date": "2026-10-20",
+  "before_source": "30f377ade18453b4129b76a6e6dfaf4b9406b5af",
+  "after_source": "5a36240",
+  "method": "Identical new regression tests. Before fixture replaces only the four changed production files with the pinned pre-fix Git bytes. DOM/scansion/fetch fixtures are shared; page snapshot, editor actions and file transport are production code. Python cases execute the actual subprocess CLI.",
+  "records": [
+    {
+      "condition": "before",
+      "command": [
+        "node",
+        "/private/tmp/poetry-fixes-20261020/before-final-skill/tests/workbench_shared.js"
+      ],
+      "exit_code": 1,
+      "stdout": "PASS dirty conflict remains protected\n",
+      "stderr": "FAIL bulk cancel/close refresh: clean editor adopts the deferred remote snapshot\n+ actual - expected\n\n+ 'original'\n- 'newer agent poem'\n\nFAIL line cancel/close refresh: clean editor adopts the deferred remote snapshot\n+ actual - expected\n\n+ 'original'\n- 'newer agent poem'\n\nFAIL word cancel/close refresh: clean editor adopts the deferred remote snapshot\n+ actual - expected\n\n+ 'original'\n- 'newer agent poem'\n\nFAIL unchanged LF: unchanged bulk Save preserves canonical text, including original line endings\n+ actual - expected\n\n+ 'أول\\n\\nثان'\n- '  أول\\n\\n\\nثان\\n'\n\nFAIL unchanged CRLF: unchanged bulk Save preserves canonical text, including original line endings\n+ actual - expected\n\n+ 'أول\\n\\nثان'\n- '  أول\\r\\n\\r\\nثان\\r\\n'\n\nFAIL literal bulk edit: shared bulk Save preserves the actual edited whitespace\n+ actual - expected\n\n+ 'أول\\n\\nثان'\n- '  أول\\n\\n\\nثان\\n'\n\nAssertionError [ERR_ASSERTION]: shared page/transport regressions\n\n6 !== 0\n\n    at /private/tmp/poetry-fixes-20261020/before-final-skill/tests/workbench_shared.js:76:10 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: 6,\n  expected: 0,\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n"
+    },
+    {
+      "condition": "before",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "/private/tmp/poetry-fixes-20261020/before-final-skill/tests",
+        "-p",
+        "test_diwan_cli.py",
+        "-k",
+        "response_failures"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "FFFFFF\n======================================================================\nFAIL: test_response_failures_use_actionable_exit_codes_without_writing (test_diwan_cli.DiwanCLITests.test_response_failures_use_actionable_exit_codes_without_writing) (kind='unknown')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/private/tmp/poetry-fixes-20261020/before-final-skill/tests/test_diwan_cli.py\", line 329, in test_response_failures_use_actionable_exit_codes_without_writing\n    error = self.cli('respond',self.file,'--id',identity,'--input','-',\n                     input='42' if kind=='invalid-value' else '{}',status=status)\n  File \"/private/tmp/poetry-fixes-20261020/before-final-skill/tests/test_diwan_cli.py\", line 43, in cli\n    self.assertEqual(result.returncode, status, result.stdout + result.stderr)\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 6 != 4 : {\"error\": {\"code\": \"IO_ERROR\", \"message\": \"Unknown request ID; inspect get before retrying a mutation with the same request-id\"}}\n\n\n======================================================================\nFAIL: test_response_failures_use_actionable_exit_codes_without_writing (test_diwan_cli.DiwanCLITests.test_response_failures_use_actionable_exit_codes_without_writing) (kind='expired')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/private/tmp/poetry-fixes-20261020/before-final-skill/tests/test_diwan_cli.py\", line 329, in test_response_failures_use_actionable_exit_codes_without_writing\n    error = self.cli('respond',self.file,'--id',identity,'--input','-',\n                     input='42' if kind=='invalid-value' else '{}',status=status)\n  File \"/private/tmp/poetry-fixes-20261020/before-final-skill/tests/test_diwan_cli.py\", line 43, in cli\n    self.assertEqual(result.returncode, status, result.stdout + result.stderr)\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 6 != 4 : {\"error\": {\"code\": \"IO_ERROR\", \"message\": \"Request expired; inspect get before retrying a mutation with the same request-id\"}}\n\n\n======================================================================\nFAIL: test_response_failures_use_actionable_exit_codes_without_writing (test_diwan_cli.DiwanCLITests.test_response_failures_use_actionable_exit_codes_without_writing) (kind='answered')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/private/tmp/poetry-fixes-20261020/before-final-skill/tests/test_diwan_cli.py\", line 329, in test_response_failures_use_actionable_exit_codes_without_writing\n    error = self.cli('respond',self.file,'--id',identity,'--input','-',\n                     input='42' if kind=='invalid-value' else '{}',status=status)\n  File \"/private/tmp/poetry-fixes-20261020/before-final-skill/tests/test_diwan_cli.py\", line 43, in cli\n    self.assertEqual(result.returncode, status, result.stdout + result.stderr)\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 6 != 5 : {\"error\": {\"code\": \"IO_ERROR\", \"message\": \"Request already has a response; inspect get before retrying a mutation with the same request-id\"}}\n\n\n======================================================================\nFAIL: test_response_failures_use_actionable_exit_codes_without_writing (test_diwan_cli.DiwanCLITests.test_response_failures_use_actionable_exit_codes_without_writing) (kind='cancelled')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/private/tmp/poetry-fixes-20261020/before-final-skill/tests/test_diwan_cli.py\", line 329, in test_response_failures_use_actionable_exit_codes_without_writing\n    error = self.cli('respond',self.file,'--id',identity,'--input','-',\n                     input='42' if kind=='invalid-value' else '{}',status=status)\n  File \"/private/tmp/poetry-fixes-20261020/before-final-skill/tests/test_diwan_cli.py\", line 43, in cli\n    self.assertEqual(result.returncode, status, result.stdout + result.stderr)\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 6 != 5 : {\"error\": {\"code\": \"IO_ERROR\", \"message\": \"Request was cancelled; inspect get before retrying a mutation with the same request-id\"}}\n\n\n======================================================================\nFAIL: test_response_failures_use_actionable_exit_codes_without_writing (test_diwan_cli.DiwanCLITests.test_response_failures_use_actionable_exit_codes_without_writing) (kind='invalid-value')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/private/tmp/poetry-fixes-20261020/before-final-skill/tests/test_diwan_cli.py\", line 329, in test_response_failures_use_actionable_exit_codes_without_writing\n    error = self.cli('respond',self.file,'--id',identity,'--input','-',\n                     input='42' if kind=='invalid-value' else '{}',status=status)\n  File \"/private/tmp/poetry-fixes-20261020/before-final-skill/tests/test_diwan_cli.py\", line 43, in cli\n    self.assertEqual(result.returncode, status, result.stdout + result.stderr)\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 6 != 2 : {\"error\": {\"code\": \"IO_ERROR\", \"message\": \"Response must be a JSON object or array; inspect get before retrying a mutation with the same request-id\"}}\n\n\n======================================================================\nFAIL: test_response_failures_use_actionable_exit_codes_without_writing (test_diwan_cli.DiwanCLITests.test_response_failures_use_actionable_exit_codes_without_writing) (kind='invalid-id')\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/private/tmp/poetry-fixes-20261020/before-final-skill/tests/test_diwan_cli.py\", line 329, in test_response_failures_use_actionable_exit_codes_without_writing\n    error = self.cli('respond',self.file,'--id',identity,'--input','-',\n                     input='42' if kind=='invalid-value' else '{}',status=status)\n  File \"/private/tmp/poetry-fixes-20261020/before-final-skill/tests/test_diwan_cli.py\", line 43, in cli\n    self.assertEqual(result.returncode, status, result.stdout + result.stderr)\n    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 6 != 2 : {\"error\": {\"code\": \"IO_ERROR\", \"message\": \"Unknown request ID; inspect get before retrying a mutation with the same request-id\"}}\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.787s\n\nFAILED (failures=6)\n"
+    },
+    {
+      "condition": "after",
+      "command": [
+        "node",
+        "/private/tmp/poetry-cli-20261019/skills/arabic-poetry/tests/workbench_shared.js"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS bulk cancel/close refresh\nPASS line cancel/close refresh\nPASS word cancel/close refresh\nPASS unchanged LF\nPASS unchanged CRLF\nPASS literal bulk edit\nPASS dirty conflict remains protected\n",
+      "stderr": ""
+    },
+    {
+      "condition": "after",
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "/private/tmp/poetry-cli-20261019/skills/arabic-poetry/tests",
+        "-p",
+        "test_diwan_cli.py",
+        "-k",
+        "response_failures"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ".\n----------------------------------------------------------------------\nRan 1 test in 0.635s\n\nOK\n"
+    }
+  ]
+}

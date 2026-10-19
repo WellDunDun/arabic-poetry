@@ -59,4 +59,6 @@ The [optimization-guard lifecycle run](results/2026-10-19-plugin-lifecycle/recei
 
 The [Diwan launch trial](results/2026-10-19-diwan-launch/report.md) records the earlier candidate: fresh before/after launch requests, real-browser checks and a rerun of the unchanged eight-case poetry corpus. It retains a failed sound-to-foot response criterion rather than treating passing software checks as passing poetry behavior.
 
-The [scansion explanation follow-up](results/2026-10-19-scansion-explanation/report.md) records the current package against the same eight poetry requests and four launch requests. It preserves the earlier failed response and references historical baseline/browser evidence separately from the fresh candidate executions.
+The [scansion explanation follow-up](results/2026-10-19-scansion-explanation/report.md) records the earlier package against the same eight poetry requests and four launch requests. It preserves the earlier failed response and references historical baseline/browser evidence separately from the fresh candidate executions.
+
+The [automatic-opening trial](results/2026-10-19-auto-open/report.md) records the current package: a fresh nine-case before/after routing comparison, all eight frozen poetry cases, and all four original launch cases. It retains source-preservation diagnostic failures separately from the final execution and keeps the earlier suites unchanged.

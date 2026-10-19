@@ -14,7 +14,7 @@ import tarfile
 
 BASE_COMMIT = '3286f489881b9fbc5bb2fc2bca7dd064835b1a4c'
 CORPUS_COMMIT = 'e1f91bf645fd0e06fc4fd94f89f67ca2cb00ee3a'
-DEFAULT_RESULTS = Path(__file__).parent / 'results/2026-10-19-scansion-explanation'
+DEFAULT_RESULTS = Path(__file__).parent / 'results/2026-10-19-auto-open'
 
 
 def read_json(path):

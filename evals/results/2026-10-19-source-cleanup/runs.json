@@ -1,0 +1,54 @@
+{
+  "suite_id": "poetry-consolidation-v1",
+  "date": "2026-10-19",
+  "timezone": "Asia/Amman",
+  "base_commit": "3286f489881b9fbc5bb2fc2bca7dd064835b1a4c",
+  "corpus_commit": "e1f91bf645fd0e06fc4fd94f89f67ca2cb00ee3a",
+  "prompts_sha256": "2c4c204c2cc0e233a8360ff2622a0540dbef52e46c33e18195e8ebe0755c0dac",
+  "rubric_sha256": "d2db0367abfd0b788a99fb6a50eff178fff488963f132e06b29940bd17ed981a",
+  "model": "Inherited configured model in new isolated workers; no overrides. Exact backend identifier unavailable.",
+  "sampling": "One new isolated worker per final package, eight requests in order with shared context within the batch. No prior conversations, rubric, expected answers, review findings or sibling results supplied. Earlier baseline executions reused by path, not rerun.",
+  "capabilities": "Local files, Python and Node only; no network, browser, live host APIs, installs, publishing or global fonts.",
+  "grading": "Lead semantic review against unchanged frozen criteria, condition known. Baseline judgments/executions reused from earlier records; combined judgments refer only to this new execution.",
+  "environment": {
+    "python": "3.14.2",
+    "node": "v25.8.1"
+  },
+  "conditions": {
+    "original-only": {
+      "record": "../2026-10-19-preservation/original-only.responses.json",
+      "record_sha256": "7e1e120007f64439dab4840b0ce2476b9a35180d27c10c751f00ee62ea6b9f14",
+      "package_manifest": "../2026-10-19-preservation/original-only.package-hashes.json",
+      "package_manifest_sha256": "4dc4782e1864d84fda43f0875fb903254f26c5280905aac84cf87b2ea6b542da",
+      "source": "3286f489881b9fbc5bb2fc2bca7dd064835b1a4c",
+      "notes": "Earlier 2026-10-18 baseline execution reused, not rerun or copied. Execution notes remain in ../2026-10-19-preservation/original-only.execution-notes.json."
+    },
+    "prosody-only": {
+      "record": "../2026-10-19-preservation/prosody-only.responses.json",
+      "record_sha256": "201c02f1a57e6656947ca5903f3e22a68f1b7c68e3651c637c0fbc138b8fff47",
+      "package_manifest": "../2026-10-19-preservation/prosody-only.package-hashes.json",
+      "package_manifest_sha256": "7eba96b679b71007cd2318d03b2b4577584abadd93269905af0002c2894590e3",
+      "source": "3286f489881b9fbc5bb2fc2bca7dd064835b1a4c",
+      "notes": "Earlier 2026-10-18 baseline execution reused, not rerun or copied. Execution notes remain in ../2026-10-19-preservation/prosody-only.execution-notes.json."
+    },
+    "current-both": {
+      "record": "../2026-10-19-preservation/current-both.responses.json",
+      "record_sha256": "0f2f886b19d7982683e7c99add27e65e1e2bd5bce34169db5aa4d08037ae48e3",
+      "package_manifest": "../2026-10-19-preservation/current-both.package-hashes.json",
+      "package_manifest_sha256": "a79fe31e22464060590c12d220f099938f6d5e69d16ea2267746e22f5ddf1e8f",
+      "source": "3286f489881b9fbc5bb2fc2bca7dd064835b1a4c",
+      "notes": "Earlier 2026-10-18 baseline execution reused, not rerun or copied. Execution notes remain in ../2026-10-19-preservation/current-both.execution-notes.json."
+    },
+    "combined": {
+      "record": "combined.responses.json",
+      "record_sha256": "dc4b4d5f2b36960ff9818a935e1115db4ac7a7ea08eac72561d753ef207af0e5",
+      "package_manifest": "combined.package-hashes.json",
+      "package_manifest_sha256": "c5388d5b5cbd500a6b4698f5500046b4a4c051473fd11383f0374c2b6c1d2a44",
+      "source": "1412b962d896dbbb2023fd995021975a1e897c44",
+      "notes": "New independent execution after source-reference consolidation; see combined.execution-notes.json."
+    }
+  },
+  "artifacts_sha256": "961c7c5023cd1b4b4724a4b34bd332341f1d9cf412c78c41eff0e25d05ac9083",
+  "supersedes_for_current_package": "Current source-reference cleanup package. Previous raw execution records remain unchanged.",
+  "previous_trial": "2026-10-19-preservation"
+}

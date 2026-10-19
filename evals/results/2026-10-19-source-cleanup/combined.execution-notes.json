@@ -1,0 +1,95 @@
+{
+  "condition": "combined",
+  "trial": "combined-pr2",
+  "context": {
+    "package": "/private/tmp/poetry-research-cleanup-20261019/trials/packages/combined-pr2/skills/arabic-poetry",
+    "requests": "/private/tmp/poetry-research-cleanup-20261019/trials/prompts.json",
+    "output": "/private/tmp/poetry-research-cleanup-20261019/trials/outputs/combined-pr2",
+    "case_order": [
+      "prose-compose",
+      "close-reading",
+      "classical-scan",
+      "provisional-reading",
+      "review-only",
+      "bounded-repair",
+      "tafila-boundary",
+      "workbench-export"
+    ],
+    "shared_context": true,
+    "context_disclosure": "All eight cases were completed sequentially in one agent context. Earlier cases and the package references remained available to later cases. No sibling results, rubric, expected answers, prior trials, repository or external research were read.",
+    "references_read": [
+      "SKILL.md",
+      "references/CRAFT.md",
+      "references/READING.md",
+      "references/PROSODY.md",
+      "references/SCANNER.md",
+      "references/qafiya.md",
+      "references/meters.md (Sari and following excerpt)",
+      "references/fixing.md",
+      "references/free-verse.md",
+      "references/DIWAN.md",
+      "scripts/build_workbench.py",
+      "scripts/export_book.py",
+      "assets/workbench/page.html (storage/dependency relevant lines)",
+      "assets/workbench/diwan.html"
+    ],
+    "skill_sha256": "468a8f25a62e009e9e4881f6b2f8c1aec1c049e32d5a2c316c26b976973cf5c4"
+  },
+  "capabilities": {
+    "used": [
+      "Local Python standard library",
+      "Local Node.js",
+      "Bundled scanner",
+      "Bundled Node/Python DOCX exporter",
+      "Local text/JSON/HTML files",
+      "DOCX ZIP and XML inspection"
+    ],
+    "not_used": [
+      "Network",
+      "Browser",
+      "Live host APIs",
+      "Installation",
+      "Publication",
+      "PDF",
+      "Global fonts",
+      "Delegation"
+    ],
+    "browser_open": false,
+    "browser_storage_saved": false,
+    "host_sync_verified": false,
+    "pdf_generated": false,
+    "docx_visual_verification": false,
+    "html_preparation": "Copied bundled diwan.html and changed only empty local-collection fallback to supplied poem. No page runtime, click, browser save or UI rendering claimed. Existing local browser collection takes precedence over seed.",
+    "html_dependency_limit": "Copied page retains external CDN font and JSZip dependencies; these were not fetched or tested.",
+    "docx_validation": "Exporter exited 0; ZIP integrity and all XML/rels parsing passed; exact title and supplied poem present. TXT content checked.",
+    "status": "review; no user approval inferred"
+  },
+  "versions": {
+    "python": "3.14.2 (main, Dec 5 2025, 16:49:16), Clang 17.0.0",
+    "node": "v25.8.1",
+    "scanner": "Bundled Firas F. Khabour rule-based engine; no explicit version obtained"
+  },
+  "capture_limits": [
+    "exec_command exposes a merged terminal output field. Per-case outer receipts retain that field as stdout with empty stderr; stderr is not separately observable for those calls. No nonzero outer exit codes occurred.",
+    "The nested DOCX exporter receipt has separately captured actual stdout/stderr and is preserved in export-receipt.json.",
+    "Initial setup read of SKILL.md/prompts occurred before structured capture; its output was observed directly. Initial pwd lacked requested PYTHONDONTWRITEBYTECODE/TMPDIR environment. It performed only a directory print and made no file writes. The local tmp directory was precreated in the next command, and every subsequent subprocess received/inherited both environment settings.",
+    "No model-generation process transcript or literary quality score is claimed. Final responses are the actual trial responses prepared by this agent.",
+    "Setup and artifact-writing tool calls are not fabricated case test commands; initial setup commands are listed separately here."
+  ],
+  "setup_commands": [
+    {
+      "command": "pwd",
+      "exit_code": 0,
+      "stdout": "/private/tmp/poetry-research-cleanup-20261019/trials/outputs/combined-pr2\n",
+      "stderr": ""
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 TMPDIR=/private/tmp/poetry-research-cleanup-20261019/trials/outputs/combined-pr2/tmp mkdir -p /private/tmp/poetry-research-cleanup-20261019/trials/outputs/combined-pr2/tmp",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "failures_and_corrections": [],
+  "case_artifact_scope": "All writes were within the designated output directory; installed package was read only."
+}

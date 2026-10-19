@@ -27,7 +27,17 @@ class EvidenceIntegrityTests(unittest.TestCase):
         shutil.copytree(source.parent / 'skills', self.repo / 'skills',
                         ignore=shutil.ignore_patterns('__pycache__', '*.pyc'))
         self.results = self.root / 'results'
-        shutil.copytree(source / 'results/2026-10-19-preservation', self.results)
+        trial = check_results.DEFAULT_RESULTS
+        shutil.copytree(trial, self.results)
+        # Materialize reused baseline files inside this isolated mutation fixture.
+        runs = check_results.read_json(self.results / 'runs.json')
+        for meta in runs['conditions'].values():
+            for field in ['record', 'package_manifest']:
+                relative = Path(meta[field])
+                if relative.parent != Path('.'):
+                    shutil.copy2(trial / relative, self.results / relative.name)
+                    meta[field] = relative.name
+        (self.results / 'runs.json').write_text(json.dumps(runs, indent=2) + '\n')
 
     @staticmethod
     def sha(path):

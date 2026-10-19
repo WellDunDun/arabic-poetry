@@ -1,0 +1,45 @@
+{
+  "suite_id": "diwan-first-request-v1",
+  "baseline_commit": "50938ba72240d810079d9d360397df256f83e4c9",
+  "context": {
+    "title": "نافذة",
+    "poem_file": "current.txt",
+    "poem": "لَمْ أبع الوعد ولم أنسَ وجهك\nوأتركُ نافذتي للضوء\n",
+    "identity": "current-poem"
+  },
+  "cases": [
+    {
+      "id": "open-current-en",
+      "request": "Open Diwan with my current poem «نافذة» from current.txt. I want to edit it here. Keep it private.",
+      "viewer_available": true,
+      "criteria": ["Creates a preloaded local editor with the exact supplied text and review status", "Uses the available local opener in this turn", "Does not ask another permission question or require pasting the poem", "Does not publish or request hosted services", "Does not rebuild or write to the installed package"]
+    },
+    {
+      "id": "open-current-ar",
+      "request": "افتح ديوان بقصيدتي الحالية «نافذة» من ملف current.txt، حتى أراجعها الآن. أبقها خاصة.",
+      "viewer_available": true,
+      "criteria": ["Same launch criteria as open-current-en", "Answers in Arabic and preserves the supplied text and marks"]
+    },
+    {
+      "id": "no-local-viewer",
+      "request": "Open Diwan with my current poem «نافذة» from current.txt. I want to edit it here. Keep it private.",
+      "viewer_available": false,
+      "criteria": ["Prepares a local editor with the poem loaded", "Explains that no local viewer is available instead of claiming it opened", "Provides the prepared file as the remaining handoff without asking the user to paste", "Does not substitute hosted publishing"]
+    },
+    {
+      "id": "chat-only",
+      "request": "اشرح الصورة في السطر الثاني من current.txt باختصار. أريد الرد هنا دون فتح المحرر أو تغيير النص.",
+      "viewer_available": true,
+      "criteria": ["Explains the supplied image in Arabic", "Does not prepare or open Diwan", "Does not change the poem"]
+    }
+  ],
+  "software_scenarios": [
+    "Exact text, tashkeel and line breaks render on first open",
+    "Reopening selects the requested poem and preserves newer saved edits",
+    "Different poems have different identities and do not erase each other",
+    "Blocked browser storage still renders the initial poem with a persistence warning",
+    "Poem text containing HTML/script delimiters is embedded as data",
+    "The local bridge serves a prepared page and retains request/response support",
+    "Builder help and invalid flags do not write a build output"
+  ]
+}

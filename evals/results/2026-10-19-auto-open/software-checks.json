@@ -1,0 +1,177 @@
+{
+  "date": "2026-10-19",
+  "records": [
+    {
+      "command": [
+        "/private/tmp/product-learning-validation-20261018/bin/skills-ref",
+        "validate",
+        "skills/arabic-poetry"
+      ],
+      "exit_code": 0,
+      "stdout": "Valid skill: skills/arabic-poetry\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "scripts/plugin_version.py"
+      ],
+      "exit_code": 0,
+      "stdout": "Plugin versions agree: 0.1.2\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "claude",
+        "plugin",
+        "validate",
+        "."
+      ],
+      "exit_code": 0,
+      "stdout": "Validating marketplace manifest: /private/tmp/poetry-diwan-open-20261019/.claude-plugin/marketplace.json\n\nℹ Advice (does not change the verdict):\n\n  ❯ /private/tmp/poetry-diwan-open-20261019/README.md: This README has no line that installs \"arabic-poetry\" from a marketplace. Add the install line, which works in one step on Claude Code 2.1.275 or later.\n      /plugin install arabic-poetry --marketplace WellDunDun/arabic-poetry\n\n✔ Validation passed\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_*.py"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.233s\n\nOK\n"
+    },
+    {
+      "command": [
+        "python3",
+        "skills/arabic-poetry/tests/run_gold.py"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS tawil -> tawil/تام 0.1 | 2nd: kamil/تام 3.1 | فعولن مفاعيلن فعولن مفاعلن + فعولن مفاعيلن فعولُ مفاعلن\nPASS tawil -> tawil/تام 0.0 | 2nd: rajaz/تام 4.0 | فعولن مفاعيلن فعولن مفاعلن + فعولن مفاعيلن فعولن مفاعلن\nPASS tawil -> tawil/تام 0.3 | 2nd: rajaz/تام 4.2 | فعولُ مفاعيلن فعولُ مفاعلن + فعولُ مفاعيلن فعولن مفاعلن\nPASS madid -> madid/تام (مجزوء وجوبًا) 0.0 | 2nd: ramal/تام 2.1 | فاعلاتن فاعلن فاعلاتن + فاعلاتن فاعلن فاعلاتن\nPASS basit -> basit/تام 0.0 | 2nd: tawil/تام 6.0 | مستفعلن فاعلن مستفعلن فعِلن + مستفعلن فاعلن مستفعلن فعِلن\nPASS basit -> basit/تام 0.3 | 2nd: munsarih/تام 5.6 | متفعلن فعِلن مستفعلن فعِلن + متفعلن فاعلن مستفعلن فعِلن\nPASS basit -> basit/تام 0.6 | 2nd: munsarih/تام 5.7 | متفعلن فاعلن مستفعلن فعْلن + متفعلن فعِلن مستفعلن فعْلن\nPASS wafir -> wafir/تام 0.15 | 2nd: ramal/تام 2.5 | مفاعلْتن مفاعَلَتن فعولن + مفاعلْتن مفاعلْتن فعولن\nPASS wafir -> wafir/تام 0.05 | 2nd: mutaqarib/تام 3.3 | مفاعَلَتن مفاعلْتن فعولن + مفاعَلَتن مفاعَلَتن فعولن\nPASS wafir -> wafir/تام 0.6 | 2nd: ramal/تام 1.6 | مفاعلْتن مفاعلْتن فعولن + مفاعلْتن مفاعلْتن فعولن\nPASS kamil -> kamil/تام 0.0 | 2nd: tawil/تام 4.2 | متَفاعلن متَفاعلن متفاعلن + متَفاعلن متَفاعلن متفاعلن\nPASS kamil -> kamil/تام 0.15 | 2nd: tawil/تام 2.8 | متْفاعلن متَفاعلن متفاعلن + متْفاعلن متْفاعلن متفاعلن\nPASS kamil -> kamil/تام 0.1 | 2nd: tawil/تام 2.8 | متْفاعلن متَفاعلن متفاعلن + متَفاعلن متْفاعلن متفاعلن\nPASS hazaj -> hazaj/مجزوء وجوبًا 0.0 | 2nd: wafir/مجزوء 0.15 | مفاعيلن مفاعيلن + مفاعيلن مفاعيلن\nPASS rajaz -> rajaz/تام 0.6 | 2nd: sari/تام 2.4 | مستعلن متفعلن متفعلن + مستعلن مستفعلن متفعلن\nPASS ramal -> ramal/تام 0.05 | 2nd: mutadarak/تام 2.2 | فاعلاتن فاعلاتن فاعلن + فاعلاتن فاعلاتن فعِلن\nPASS khafif -> khafif/تام 0.15 | 2nd: madid/تام (مجزوء وجوبًا) 3.1 | فاعلاتن مستفع لن فاعلاتن + فاعلاتن متفع لن فعِلاتن\nPASS munsarih -> munsarih/تام 0.7 | 2nd: khafif/تام 2.25 | مستفعلن مفعولاتُ مستفعلن + مستفعلن مفعولاتُ مفتعلن\nPASS mujtath -> mujtath/مجزوء وجوبًا 0.0 | 2nd: mutadarak/مجزوء 1.5 | مستفع لن فاعلاتن + مستفع لن فاعلاتن\nPASS muqtadab -> muqtadab/مجزوء وجوبًا 0.3 | 2nd: mutadarak/مجزوء 2.1 | مفعلاتُ مفتعلن + مفعلاتُ مفتعلن\nPASS mudari -> mudari/مجزوء وجوبًا 0.3 | 2nd: mutaqarib/مجزوء 2.2 | مفاعيلُ فاع لاتن + مفاعيلُ فاع لاتن\nPASS mutaqarib -> mutaqarib/تام 0.15 | 2nd: mutadarak/تام 2.0 | فعولن فعولن فعولن فعو + فعولن فعولُ فعولن فعو\nPASS mutaqarib -> mutaqarib/تام 0.0 | 2nd: mutadarak/تام 1.5 | فعولن فعولن فعولن فعولن + فعولن فعولن فعولن فعولن\nPASS mutadarak -> mutadarak/تام 0.3 | 2nd: madid/تام (مجزوء وجوبًا) 2.4 | فعْلن فعْلن فعِلن فعِلن + فعِلن فعْلن فعِلن فعِلن\n24/24 passed\nPASS free verse kamil -> kamil errors 0\nPASS ending ambiguity -> tawil مفاعلن\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "skills/arabic-poetry/tests/parity.js"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS: 24 classical verses, taf‘ila, ending ambiguity, and Python/JS patterns and feet agree\ntadwir kamil قَلْبٍ\nrun-on kept only where sound\nqat' al-wasl as licence\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "skills/arabic-poetry/tests",
+        "-p",
+        "test_*.py"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ".................................\n----------------------------------------------------------------------\nRan 33 tests in 7.766s\n\nOK\n"
+    },
+    {
+      "command": [
+        "node",
+        "skills/arabic-poetry/tests/workbench_state.js"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS workbench state: revision-safe saves, isolated conversations, stale responses, preserved wording/marks, line identities/metadata and word context\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "skills/arabic-poetry/tests/workbench_host.js"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS workbench host: portable exchange, invalid input, cancellation, native download, optional host adapters\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--exit-code",
+        "50938ba",
+        "--",
+        "skills/arabic-poetry/scripts/arud",
+        "skills/arabic-poetry/scripts/scan.py",
+        "skills/arabic-poetry/scripts/export_book.py",
+        "skills/arabic-poetry/scripts/export_book.js",
+        "skills/arabic-poetry/assets/workbench/engine.js",
+        "skills/arabic-poetry/assets/workbench/export.js",
+        "skills/arabic-poetry/assets/workbench/meters.json",
+        "skills/arabic-poetry/assets/fonts"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "check": "four manifest files parse as JSON",
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "evals",
+        "-p",
+        "test_*.py"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "................\n----------------------------------------------------------------------\nRan 16 tests in 1.237s\n\nOK\n"
+    },
+    {
+      "command": [
+        "python3",
+        "evals/check_results.py"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS: 4 conditions, 32 response records, frozen criteria and evidence integrity\nSemantic grades remain reviewer judgments; this check does not certify their correctness.\n",
+      "stderr": ""
+    },
+    {
+      "check": "Changed local Markdown links resolve and the skill entrypoint has 67 lines",
+      "exit_code": 0
+    },
+    {
+      "check": "Fresh DOCX archive/XML contain the requested title and exact marked poem",
+      "path": "/private/tmp/poetry-auto-open-evals-20261019/consolidation-complete/workbench-export/masafa.docx",
+      "exit_code": 0
+    },
+    {
+      "check": "All final suites use identical package hashes; execution, source/input, opener and receipt integrity verified; the baseline source-mutation failures remain recorded",
+      "exit_code": 0
+    },
+    {
+      "check": "Native Claude/Codex lifecycle receipt passed for the final commit",
+      "exit_code": 0
+    }
+  ],
+  "source_commit": "a570853b0c42293f8388b3b31097b628e6de4046"
+}

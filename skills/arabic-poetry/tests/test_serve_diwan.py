@@ -15,6 +15,7 @@ import sys
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / 'scripts'))
 
 import serve_diwan as bridge
+import prepare_diwan
 
 
 class LocalBridgeTests(unittest.TestCase):
@@ -59,6 +60,27 @@ class LocalBridgeTests(unittest.TestCase):
         self.assertEqual(bridge.pending(self.temp.name), [])
         with self.assertRaisesRegex(ValueError, 'already'):
             bridge.respond(self.temp.name, identity, answer)
+
+    def test_prepared_page_is_served_with_poem_and_local_queue(self):
+        poem = Path(self.temp.name) / 'current.txt'
+        poem.write_text('لَمْ أبع الوعد\nسلام', encoding='utf-8')
+        report = prepare_diwan.prepare(poem, self.temp.name, 'current', 'عنوان')
+        self.server.shutdown(); self.server.server_close()
+        self.server, url = bridge.make_server(self.temp.name, page=report['path'])
+        self.addCleanup(self.server.server_close)
+        self.thread = threading.Thread(target=self.server.serve_forever, daemon=True)
+        self.thread.start()
+        self.addCleanup(self.server.shutdown)
+        self.base = urlsplit(url).path.removesuffix('/diwan.html')
+        code, raw = self.request('GET', '/diwan.html')
+        self.assertEqual(code, 200)
+        self.assertIn(b'window.DiwanInitialPoem=', raw)
+        self.assertIn(b'window.DiwanLocal=', raw)
+        self.assertIn('لَمْ أبع الوعد'.encode(), raw)
+
+    def test_page_outside_workspace_is_rejected_before_serving(self):
+        with self.assertRaisesRegex(ValueError, 'inside'):
+            bridge.make_server(self.temp.name, page=Path(__file__))
 
     def test_concurrent_replies_do_not_overwrite(self):
         """Both responders pass the precheck, but only one can publish an answer."""

@@ -1,5 +1,8 @@
 """Build the single-file Diwan workbench page: page.html + engine.js + host.js + meters.json -> assets/workbench/diwan.html"""
-import json, os, subprocess, sys
+import argparse, os, subprocess, sys
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('output', nargs='?', help='Optional built HTML destination')
+args = parser.parse_args()
 here = os.path.dirname(os.path.abspath(__file__))
 wb = os.path.join(here, '..', 'assets', 'workbench')
 subprocess.run([sys.executable, os.path.join(here, 'export_meters.py')], check=True, stdout=subprocess.DEVNULL)
@@ -9,6 +12,6 @@ exporter = open(os.path.join(wb, 'export.js'), encoding='utf-8').read()
 host = open(os.path.join(wb, 'host.js'), encoding='utf-8').read()
 meters = open(os.path.join(wb, 'meters.json'), encoding='utf-8').read()
 out = page.replace('/*METERS*/null', meters).replace('/*ENGINE*/', engine).replace('/*EXPORT*/', exporter).replace('/*HOST*/', host)
-dest = sys.argv[1] if len(sys.argv) > 1 else os.path.join(wb, 'diwan.html')
+dest = args.output or os.path.join(wb, 'diwan.html')
 open(dest, 'w', encoding='utf-8').write(out)
 print('built', dest, len(out) // 1024, 'KB')

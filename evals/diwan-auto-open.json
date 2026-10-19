@@ -1,0 +1,70 @@
+{
+  "suite_id": "diwan-auto-open-v1",
+  "baseline_commit": "8fbdef835a02773d7153ba4c523b2e1de7e6663a",
+  "context": {
+    "title": "نافذة",
+    "poem_file": "current.txt",
+    "poem": "لَمْ أبع الوعد ولم أنسَ وجهك\nوأتركُ نافذتي للضوء\n",
+    "identity": "current-poem"
+  },
+  "cases": [
+    {
+      "id": "compose-en",
+      "context": null,
+      "request": "Write a new four-line Arabic prose poem titled «مطر» about rain on an empty balcony, using quiet everyday language.",
+      "viewer_available": true,
+      "criteria": ["Creates a new four-line Arabic prose poem about the requested subject with the supplied title", "Preloads that actual generated poem into local Diwan in review status", "Invokes the available local opener in the same turn without an editor offer, permission question or paste step", "Keeps the launch local and the installed skill unchanged; does not claim the fixture rendered HTML"]
+    },
+    {
+      "id": "compose-ar",
+      "context": null,
+      "request": "اكتب قصيدة نثر جديدة من أربعة أسطر بعنوان «قهوة» عن فنجان يبرد قرب نافذة، بلغة يومية هادئة.",
+      "viewer_available": true,
+      "criteria": ["Creates a new four-line Arabic prose poem about the requested subject with the supplied title", "Preloads that actual generated poem into local Diwan in review status", "Invokes the available local opener in the same turn without an editor offer, permission question or paste step", "Answers in Arabic, keeps the launch local and the installed skill unchanged, and does not claim the fixture rendered HTML"]
+    },
+    {
+      "id": "revise-en",
+      "request": "Revise my current poem in current.txt: replace «الضوء» with «الصباح». Keep every other word, mark and line break unchanged.",
+      "viewer_available": true,
+      "criteria": ["Changes only the requested word and preserves all other text, marks and line breaks", "Preloads the complete revised poem, not the original, into local Diwan in review status", "Invokes the available local opener in the same turn without a permission or paste step", "Preserves the original input file and installed skill, keeps the launch local and makes no rendered-viewer claim"]
+    },
+    {
+      "id": "revise-ar",
+      "request": "عدّل قصيدتي الحالية في current.txt: استبدل «نافذتي» بكلمة «بابي» فقط، وأبق بقية الكلمات والحركات وفواصل الأسطر كما هي.",
+      "viewer_available": true,
+      "criteria": ["Changes only the requested word and preserves all other text, marks and line breaks", "Preloads the complete revised poem, not the original, into local Diwan in review status", "Invokes the available local opener in the same turn without a permission or paste step", "Answers in Arabic, preserves the original input file and installed skill, keeps the launch local and makes no rendered-viewer claim"]
+    },
+    {
+      "id": "quick-image",
+      "request": "ما الصورة الشعرية في السطر الثاني من current.txt؟ أجب باختصار.",
+      "viewer_available": true,
+      "criteria": ["Briefly explains the supplied window/light image in Arabic without rewriting it", "Does not prepare or open Diwan even though a viewer is available", "Preserves the original input and installed skill"]
+    },
+    {
+      "id": "quick-meter",
+      "context": null,
+      "request": "ما بحر هذا البيت؟ أعطني جوابًا مختصرًا مع دليل تقطيع واحد: قِفَا نَبْكِ مِنْ ذِكْرَى حَبِيبٍ وَمَنْزِلِ * بِسِقْطِ اللِّوَى بَيْنَ الدَّخُولِ فَحَوْمَلِ",
+      "viewer_available": true,
+      "criteria": ["Identifies tawil with a compact complete supporting scan and disclosed consequential reading assumptions", "Uses actual local scanner evidence for any claimed executed check", "Does not prepare or open Diwan for this analysis-only request", "Keeps the installed skill unchanged"]
+    },
+    {
+      "id": "compose-chat-only",
+      "context": null,
+      "request": "اكتب قصيدة نثر جديدة من أربعة أسطر عن رائحة الخبز صباحًا. أريد القصيدة فقط هنا في المحادثة، دون فتح محرر أو إنشاء ملفات.",
+      "viewer_available": true,
+      "criteria": ["Delivers only four Arabic prose-poem lines about the requested subject", "Does not prepare or open Diwan despite the composition trigger and available viewer", "Creates no poem/editor files and leaves the installed skill unchanged"]
+    },
+    {
+      "id": "revise-chat-only",
+      "request": "استبدل «الضوء» بـ«الصباح» في قصيدتي الحالية في current.txt. اعرض النص المعدّل فقط هنا في المحادثة؛ لا تفتح محررًا ولا تغيّر أي ملف.",
+      "viewer_available": true,
+      "criteria": ["Returns only the complete revised poem with the exact requested substitution", "Does not prepare or open Diwan despite the revision trigger and available viewer", "Preserves the original input file and installed skill and creates no poem/editor files"]
+    },
+    {
+      "id": "revise-no-viewer",
+      "request": "Revise my current poem in current.txt: replace «الضوء» with «الصباح». Keep every other word, mark and line break unchanged.",
+      "viewer_available": false,
+      "criteria": ["Prepares local Diwan with the complete exact revised poem in review status", "States that it cannot open the editor because no viewer is available and provides the prepared file without asking for a paste", "Preserves the original input file and installed skill, and does not substitute publication or hosted services"]
+    }
+  ]
+}

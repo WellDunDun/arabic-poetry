@@ -1,5 +1,21 @@
 # Poetry skill evaluations
 
+## Automatic drafting triggers
+
+The frozen [diwan-auto-open.json](diwan-auto-open.json) suite tests English/Arabic composition and revision without an explicit editor request, quick interpretation and meter analysis, composition/revision chat-only overrides, and revision with no local viewer. Its baseline is PR #9 at `8fbdef835a02773d7153ba4c523b2e1de7e6663a`. Requests and criteria are independent of the older suites and were fixed before the comparison runs.
+
+Run the same isolated runner below with `--suite evals/diwan-auto-open.json`, first against the baseline package and then against the candidate. Cases can inherit the suite's synthetic current poem, override it with their own `context`, or set `context: null` for a new poem with no existing text. The HTML evidence records the actual embedded title, text and status so generated and revised drafts can be checked separately from the original input. `initial_text_matches` compares only against that original input; it should be false for an intentional revision. Grade the complete revised/generated text against the request instead. The offline `test_diwan_launch.py` regression verifies this isolation and the resulting display receipts without calling a model.
+
+## First-request Diwan launch
+
+The independent suite [diwan-launch.json](diwan-launch.json) freezes English and Arabic editor requests, an unavailable-viewer case, an explicit chat-only case and software invariants. It uses a synthetic poem, not a private user transcript. Its baseline is main at `50938ba72240d810079d9d360397df256f83e4c9`. Keep this suite separate from the historical consolidation corpus below.
+
+Run `python3 evals/run_diwan_launch.py --skill /absolute/path/to/skill --output /absolute/new/temp/directory --condition before` against the unmodified baseline, then repeat with the candidate and `--condition after`. Use the same client/model settings and frozen requests. Each case gets a fresh Codex session and a read-only copy of the package. This runs the installed Codex model and requires its normal authentication. It creates only isolated local fixtures, never a marketplace installation or hosted publication. Inspect every raw `events.jsonl`, final response and HTML artifact before grading the frozen criteria. `runs.json` retains package/corpus hashes, exit status and opener receipts. The fixture opener records a local display request; it does not render HTML. Keep these model runs distinct from real browser checks and report failures honestly.
+
+The production software regressions run with `test_prepare_diwan.py`, `test_serve_diwan.py`, `workbench_state.js` and `workbench_host.js` as part of the maintainer checks. In a real browser, prepare two poems into one writable workspace, open each, edit one and reopen it. Check the title, exact text and marks, selection, saved-edit warning and original review status. Repeat with storage unavailable and confirm the supplied poem remains visible with a persistence warning. Browser evidence must identify the tested host. A passing local browser run does not prove Claude's sandboxed HTML preview, a ChatGPT extension, or connected AI buttons work.
+
+## Historical consolidation corpus
+
 This frozen request set compares instruction behavior while consolidating the two skills. It supplements the scanner/checker/workbench software tests; it is not a corpus accuracy benchmark or a human literary-quality study.
 
 ## Conditions
@@ -33,10 +49,16 @@ The [manual draft-review trial](results/2026-10-18-draft-review/report.md) and [
 
 The [earlier workflow regression trial](results/2026-10-19-preservation/report.md) retains original baseline executions, adds final-package follow-up batches, and discloses the workers' earlier same-condition context.
 
-The current source-reference package is checked by [the source-cleanup trial](results/2026-10-19-source-cleanup/report.md). It references the existing frozen baseline execution files directly rather than copying them again. The test fixture materializes those references only in its temporary mutation workspace.
+The earlier source-reference package is checked by [the source-cleanup trial](results/2026-10-19-source-cleanup/report.md). It references the existing frozen baseline execution files directly rather than copying them again. The test fixture materializes those references only in its temporary mutation workspace.
 
 The [plugin lifecycle receipts](results/2026-10-19-plugin-lifecycle/receipts.json) cover real Claude Code and Codex Git marketplace installs, fixture-only patch updates, repeated updates, Codex runtime skill discovery, Claude plugin inventory and installed-file hashes. Reproduce them with `tests/plugin_lifecycle.py` as documented in `AGENTS.md`. These are distribution tests, with no model requests or poetry grading. They do not verify browser account/workspace sync or automatic update timers; temporary paths in the receipts are execution provenance.
 
 The [GitHub install receipts](results/2026-10-19-plugin-lifecycle/github-install.json) additionally record installation from the actual review branch, including its Git commit, Codex runtime discovery, Claude plugin inventory and installed files. The recorded `source_commit` identifies the exact snapshot tested; later documentation or evidence commits may change files outside the skill directory.
 
 The [optimization-guard lifecycle run](results/2026-10-19-plugin-lifecycle/receipts-optimization-fixed.json) records the rerun after adding a fail-fast guard against optimized Python, which disables assertions. The regression test also checks that optimized execution writes a failed receipt before launching client commands.
+
+The [Diwan launch trial](results/2026-10-19-diwan-launch/report.md) records the earlier candidate: fresh before/after launch requests, real-browser checks and a rerun of the unchanged eight-case poetry corpus. It retains a failed sound-to-foot response criterion rather than treating passing software checks as passing poetry behavior.
+
+The [scansion explanation follow-up](results/2026-10-19-scansion-explanation/report.md) records the earlier package against the same eight poetry requests and four launch requests. It preserves the earlier failed response and references historical baseline/browser evidence separately from the fresh candidate executions.
+
+The [automatic-opening trial](results/2026-10-19-auto-open/report.md) records the current package: a fresh nine-case before/after routing comparison, all eight frozen poetry cases, and all four original launch cases. It retains source-preservation diagnostic failures separately from the final execution and keeps the earlier suites unchanged.

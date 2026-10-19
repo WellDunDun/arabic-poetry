@@ -1,0 +1,186 @@
+{
+  "before": {
+    "open-current-en": {
+      "status": "pass",
+      "criteria": [
+        {
+          "criterion": "Creates a preloaded local editor with the exact supplied text and review status",
+          "status": "pass",
+          "evidence": "Prepared HTML includes the exact two-line poem and review state. Its rendered text was read back in the real-browser check."
+        },
+        {
+          "criterion": "Uses the available local opener in this turn",
+          "status": "pass",
+          "evidence": "Captured command execution invokes open_local.py and its receipt matches the generated HTML hash."
+        },
+        {
+          "criterion": "Does not ask another permission question or require pasting the poem",
+          "status": "pass",
+          "evidence": "The response supplies the preloaded file without another permission turn or an initial-text paste requirement."
+        },
+        {
+          "criterion": "Does not publish or request hosted services",
+          "status": "pass",
+          "evidence": "Recorded commands use local files; no publishing or hosted service request appears."
+        },
+        {
+          "criterion": "Does not rebuild or write to the installed package",
+          "status": "pass",
+          "evidence": "Package byte hashes remain unchanged. The candidate uses the launch helper; the baseline customizes a writable HTML copy."
+        }
+      ]
+    },
+    "open-current-ar": {
+      "status": "pass",
+      "criteria": [
+        {
+          "criterion": "Same launch criteria as open-current-en",
+          "status": "pass",
+          "evidence": "The Arabic request creates preloaded local HTML and invokes the fixture opener. The matching receipt, unchanged input/package and captured commands support the same launch conditions."
+        },
+        {
+          "criterion": "Answers in Arabic and preserves the supplied text and marks",
+          "status": "pass",
+          "evidence": "The final response is Arabic. Candidate initial_text_matches is true; baseline preparation code embeds the supplied UTF-8 content."
+        }
+      ]
+    },
+    "no-local-viewer": {
+      "status": "pass",
+      "criteria": [
+        {
+          "criterion": "Prepares a local editor with the poem loaded",
+          "status": "pass",
+          "evidence": "The agent creates preloaded HTML despite the missing viewer. Candidate initial_text_matches is true; the baseline embedding is visible in captured commands."
+        },
+        {
+          "criterion": "Explains that no local viewer is available instead of claiming it opened",
+          "status": "pass",
+          "evidence": "Final response explicitly says no viewer is available and does not claim an open editor."
+        },
+        {
+          "criterion": "Provides the prepared file as the remaining handoff without asking the user to paste",
+          "status": "pass",
+          "evidence": "Provides the prepared HTML path as the remaining handoff rather than an empty page needing pasted text."
+        },
+        {
+          "criterion": "Does not substitute hosted publishing",
+          "status": "pass",
+          "evidence": "No publishing command or hosted service request appears."
+        }
+      ]
+    },
+    "chat-only": {
+      "status": "pass",
+      "criteria": [
+        {
+          "criterion": "Explains the supplied image in Arabic",
+          "status": "pass",
+          "evidence": "Arabic response explains the window/light image in relation to the supplied text."
+        },
+        {
+          "criterion": "Does not prepare or open Diwan",
+          "status": "pass",
+          "evidence": "No HTML artifact or opener receipt is produced."
+        },
+        {
+          "criterion": "Does not change the poem",
+          "status": "pass",
+          "evidence": "The current poem file hash is unchanged."
+        }
+      ]
+    }
+  },
+  "after": {
+    "open-current-en": {
+      "status": "pass",
+      "criteria": [
+        {
+          "criterion": "Creates a preloaded local editor with the exact supplied text and review status",
+          "status": "pass",
+          "evidence": "Prepared HTML includes the exact two-line poem and review state. Its rendered text was read back in the real-browser check."
+        },
+        {
+          "criterion": "Uses the available local opener in this turn",
+          "status": "pass",
+          "evidence": "Captured command execution invokes open_local.py and its receipt matches the generated HTML hash."
+        },
+        {
+          "criterion": "Does not ask another permission question or require pasting the poem",
+          "status": "pass",
+          "evidence": "The response supplies the preloaded file without another permission turn or an initial-text paste requirement."
+        },
+        {
+          "criterion": "Does not publish or request hosted services",
+          "status": "pass",
+          "evidence": "Recorded commands use local files; no publishing or hosted service request appears."
+        },
+        {
+          "criterion": "Does not rebuild or write to the installed package",
+          "status": "pass",
+          "evidence": "Package byte hashes remain unchanged. The candidate uses the launch helper; the baseline customizes a writable HTML copy."
+        }
+      ]
+    },
+    "open-current-ar": {
+      "status": "pass",
+      "criteria": [
+        {
+          "criterion": "Same launch criteria as open-current-en",
+          "status": "pass",
+          "evidence": "The Arabic request creates preloaded local HTML and invokes the fixture opener. The matching receipt, unchanged input/package and captured commands support the same launch conditions."
+        },
+        {
+          "criterion": "Answers in Arabic and preserves the supplied text and marks",
+          "status": "pass",
+          "evidence": "The final response is Arabic. Candidate initial_text_matches is true; baseline preparation code embeds the supplied UTF-8 content."
+        }
+      ]
+    },
+    "no-local-viewer": {
+      "status": "pass",
+      "criteria": [
+        {
+          "criterion": "Prepares a local editor with the poem loaded",
+          "status": "pass",
+          "evidence": "The agent creates preloaded HTML despite the missing viewer. Candidate initial_text_matches is true; the baseline embedding is visible in captured commands."
+        },
+        {
+          "criterion": "Explains that no local viewer is available instead of claiming it opened",
+          "status": "pass",
+          "evidence": "Final response explicitly says no viewer is available and does not claim an open editor."
+        },
+        {
+          "criterion": "Provides the prepared file as the remaining handoff without asking the user to paste",
+          "status": "pass",
+          "evidence": "Provides the prepared HTML path as the remaining handoff rather than an empty page needing pasted text."
+        },
+        {
+          "criterion": "Does not substitute hosted publishing",
+          "status": "pass",
+          "evidence": "No publishing command or hosted service request appears."
+        }
+      ]
+    },
+    "chat-only": {
+      "status": "pass",
+      "criteria": [
+        {
+          "criterion": "Explains the supplied image in Arabic",
+          "status": "pass",
+          "evidence": "Arabic response explains the window/light image in relation to the supplied text."
+        },
+        {
+          "criterion": "Does not prepare or open Diwan",
+          "status": "pass",
+          "evidence": "No HTML artifact or opener receipt is produced."
+        },
+        {
+          "criterion": "Does not change the poem",
+          "status": "pass",
+          "evidence": "The current poem file hash is unchanged."
+        }
+      ]
+    }
+  }
+}

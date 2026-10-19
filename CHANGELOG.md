@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.2, preloaded local Diwan, unreleased
+
+- Open Diwan automatically with the complete draft when creating, continuing or revising a poem, as well as on explicit editor requests. Keep quick analysis, review-first pauses and explicit chat-only requests in chat. Use a supported local viewer with no hosted publication or paste step.
+- Add `prepare_diwan.py` to create private, preloaded copies of Firas F. Khabour's Diwan. Preserve text, tashkeel, review status and saved browser edits. Keep the poem visible with a warning when storage is unavailable.
+- Let the local bridge serve a prepared page. Keep its existing agent request/response workflow.
+- Make builder help safe and add launch, storage, host and first-request evaluation coverage. This release does not implement a ChatGPT extension or automatic AI-button connection.
+- Require compact metrical explanations to connect a complete hemistich's actual pronounced groups to syllables and feet, rather than listing only the meter's foot names.
+
 ## 0.1.0, repository distribution
 
 - Package the shared Arabic poetry skill for Claude and ChatGPT/Codex.

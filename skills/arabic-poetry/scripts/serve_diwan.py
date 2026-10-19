@@ -49,8 +49,12 @@ def open_requests(queue):
             and not (queue / 'cancelled' / path.name).exists()]
 
 
-def make_server(workspace, port=None):
+def make_server(workspace, port=None, page=None):
     """Start a loopback session and invalidate requests from earlier sessions."""
+    if page is not None:
+        page = Path(page).resolve()
+        if Path(workspace).resolve() not in page.parents or page.suffix != '.html' or not page.is_file():
+            raise ValueError('Prepared page must be an HTML file inside the poem workspace')
     queue = queue_dirs(workspace)
     port_file = queue / 'port.json'
     if port is None:
@@ -106,9 +110,9 @@ def make_server(workspace, port=None):
                 config = {'base': prefix, 'workspace': str(Path(workspace).resolve()),
                           'script': str(Path(__file__).resolve())}
                 encoded = json.dumps(config, ensure_ascii=False).replace('<', '\\u003c')
-                page = (assets / 'diwan.html').read_text(encoding='utf-8')
-                page = '<script>window.DiwanLocal=' + encoded + ';</script>\n' + page
-                self.send(200, page.encode('utf-8'), 'text/html; charset=utf-8')
+                html = (page or assets / 'diwan.html').read_text(encoding='utf-8')
+                html = '<script>window.DiwanLocal=' + encoded + ';</script>\n' + html
+                self.send(200, html.encode('utf-8'), 'text/html; charset=utf-8')
             elif path.startswith('/responses/') and ID.fullmatch(path.split('/')[-1]):
                 identity = path.split('/')[-1]
                 response = queue / 'responses' / (identity + '.json')
@@ -204,12 +208,13 @@ def main():
     parser.add_argument('action', choices=('serve', 'pending', 'respond'))
     parser.add_argument('--workspace', required=True, help='Writable poem workspace, outside the installed skill')
     parser.add_argument('--port', type=int, help='Override the saved workspace port; 0 chooses a new free port')
+    parser.add_argument('--page', type=Path, help='Prepared Diwan HTML inside the workspace, for serve')
     parser.add_argument('--id', help='Request ID for respond')
     parser.add_argument('--response', type=Path, help='UTF-8 JSON answer file for respond')
     args = parser.parse_args()
     if args.action == 'serve':
         try:
-            server, url = make_server(args.workspace, args.port)
+            server, url = make_server(args.workspace, args.port, args.page)
         except (OSError, ValueError) as error:
             parser.exit(1, str(error) + '\n')
         print(url, flush=True)

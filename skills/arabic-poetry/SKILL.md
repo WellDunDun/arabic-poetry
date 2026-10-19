@@ -1,6 +1,6 @@
 ---
 name: arabic-poetry
-description: Write, revise, continue, explain and analyze classical and modern Arabic poetry, with a local meter scanner and optional Diwan editor. Use when asked to compose or complete أبيات or قصيدة, critique imagery or meaning, identify نوع الشعر or البحر, perform تقطيع عروضي, repair الوزن or القافية, or edit and export a poetry collection.
+description: Write, revise, continue, explain and analyze classical and modern Arabic poetry, with a local meter scanner and Diwan drafting editor. Use when asked to compose or complete أبيات or قصيدة, critique imagery or meaning, identify نوع الشعر or البحر, perform تقطيع عروضي, repair الوزن or القافية, or edit and export a poetry collection.
 ---
 
 # Arabic poetry
@@ -11,7 +11,8 @@ Support classical and modern Arabic poetry equally. Judge each poem by its inten
 
 - For composition, continuation, revision or critique, read [craft and revision](references/CRAFT.md). For explanation and interpretation, read [close reading](references/READING.md).
 - For meter or rhyme claims, read [prosody](references/PROSODY.md) and the [scanner workflow](references/SCANNER.md). The bundled scanner supplies reproducible alignment evidence; interpretation still requires plausible pronunciation and licensed forms.
-- For a requested editor, a collection or export, read [Diwan](references/DIWAN.md). Keep ordinary writing, critique and quick analysis in chat unless an editor helps the requested work. Diwan is optional; unavailable host capabilities must not block chat or local-file work.
+- For composition, continuation or actual revision, open [Diwan](references/DIWAN.md#open-with-the-current-poem) automatically in that turn with the complete new or revised draft. Do the same for an explicit editor request. Use a preloaded private local copy and an available HTML viewer/browser, without another offer, permission question, publication or paste step. Reuse the existing Diwan tab. State missing viewer capabilities honestly.
+- Keep quick analysis, interpretation, critique-only and requested review-first pauses in chat. Explicit chat-only, no-editor or poem-only delivery constraints override automatic opening. Read [Diwan](references/DIWAN.md) for launch, collections and exports; opening a proposal does not accept it or replace the preserved original.
 - Use [worked examples](references/EXAMPLES.md) when teaching or checking a detailed scan. [Tools](references/TOOLS.md) distinguishes the scanner and external analyzers. [Sources](references/SOURCES.md), [scanner coverage](references/SCANNER-SOURCES.md) and [similar skills](references/SIMILAR_SKILLS.md) explain evidence and limits. Load only relevant resources.
 
 ## Establish intent and preserve the text
@@ -40,7 +41,7 @@ Support classical and modern Arabic poetry equally. Judge each poem by its inten
 
 ## Revise or critique
 
-1. Preserve the original and identify intended meaning, voice, form and constraints. For critique-only requests, diagnose without rewriting.
+1. Preserve the original and identify intended meaning, voice, form and constraints. Write revisions to a separate draft file; a path identifying the poem does not itself request overwriting that source. Save back to the source only on explicit acceptance or an instruction to overwrite/save that file. For critique-only requests, diagnose without rewriting.
 2. Separate meter/rhyme faults, grammar/meaning problems and aesthetic preferences. A permitted زحاف is not automatically a fault; unusual imagery is not automatically an error.
 3. Establish the intended meter from context before repairing a line. Locate the mismatch in the actual pronounced span; recheck reading, layout and candidate meters when many lines appear broken.
 4. Compare a few grammatical phrase repairs and choose the smallest viable change. Preserve required words, imagery and dialect. Explain lost or gained meaning, including removed emphasis. Offer a broader rewrite separately if it changes voice or form.
@@ -54,7 +55,7 @@ Support classical and modern Arabic poetry equally. Judge each poem by its inten
 3. Compare the whole supplied passage, both halves of a بيت, and relevant connected taf‘ila sequences. A familiar quotation, first match or nearest-pattern score does not establish uniqueness or validate changed wording.
 4. Analyze الروي and the pronounced rhyme ending separately. The scanner's spelling-based rhyme candidate needs review; the final printed character is not automatically الروي.
 5. Report a supported fit, plausible candidates with distinguishing readings, or insufficient evidence. Locate mismatches before proposing repair. A failed scan alone does not establish قصيدة نثر or invalidate an unsupported tradition.
-6. For a concise request, give the likely form/meter, compact evidence and consequential assumptions. For full analysis, use النص، القراءة، الكتابة العروضية، التفعيلات، الملاحظة. Explain symbols and keep technical detail proportional.
+6. For a concise metrical explanation, give the likely meter, consequential assumptions and one complete hemistich's pronounced groups mapped to syllables and feet, without ellipses. For a shorter fragment, cover the whole fragment. Meter and foot names alone are not evidence. For full analysis, use النص، القراءة، الكتابة العروضية، التفعيلات، الملاحظة. Explain symbols and keep technical detail proportional.
 7. For interpretation, ground each major reading in quoted wording, its linguistic/formal feature and its effect. Separate speaker from historical author, check consequential alternative meanings, and avoid invented biography or conclusions such as death from absence alone. Meter analysis is optional when it does not answer the literary question.
 
 ## Evidence, tools and delivery

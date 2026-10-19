@@ -10,7 +10,7 @@ Keep the served skill at `skills/arabic-poetry/`, with `SKILL.md`, one-level `re
 
 There is one served skill. Its `scripts/` include the scanner (`scan.py`, pure Python). `assets/workbench/` holds the Diwan page sources (`page.html`, `engine.js`, `export.js`, `host.js`, `meters.json`) and built `diwan.html`; `assets/fonts/` holds Amiri and its license. `scripts/arud/meters.py` is the meter-table source: after changing tables or browser code, run `python3 skills/arabic-poetry/scripts/build_workbench.py` and keep parity passing. Put scanner and workbench procedures in their references rather than expanding the shared entrypoint.
 
-Keep research in `docs/research/`; distinguish source findings, proposed workflow, and validation evidence. Do not add unrelated artifacts, screenshots, or app prototypes to the root. Preserve unrelated changes.
+Keep maintained sources, rule mappings and coverage limits in the served skill's `references/`. Keep internal audits, PR review dispositions, planning notes and dated research work logs outside the Git checkout. Commit reusable tests, evaluation methodology and necessary execution evidence under `evals/`, distinguishing source findings from agent behavior and software checks. Do not add unrelated artifacts, screenshots, or app prototypes to the root. Preserve unrelated changes.
 
 ## Editing the skill
 
@@ -39,6 +39,6 @@ git diff --check
 
 Check local Markdown reference links, entrypoint length, and whitespace in new untracked files. A structural validator is not a behavioral poetry test. Run meaningful examples when workflow changes warrant them, and report exact evidence and remaining limits.
 
-For instruction changes, use the frozen requests and semantic criteria in `evals/` for comparable before/after trials. Preserve raw responses and executed evidence, record package hashes and capability limits, and distinguish software regressions, agent behavior and human literary review. Do not tune criteria after seeing outputs or describe a small single-run trial as a general accuracy benchmark. Research records may retain historical skill paths; keep their live relative links working.
+For instruction changes, use the frozen requests and semantic criteria in `evals/` for comparable before/after trials. Preserve raw responses and executed evidence, record package hashes and capability limits, and distinguish software regressions, agent behavior and human literary review. Do not tune criteria after seeing outputs or describe a small single-run trial as a general accuracy benchmark. Historical evaluation records may retain earlier skill paths; keep active documentation links working.
 
 Final responses for edits should report changed files, checks performed, and any unverified behavior. Do not commit unrelated work or present generated lines as a historical poet's words.

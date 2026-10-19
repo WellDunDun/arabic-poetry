@@ -61,7 +61,7 @@ Its **Diwan** page lets you review tashkeel word by word, see scansion update li
 - "ما بحر هذه الأبيات؟" for a poem you admire.
 - "صدّر الديوان PDF مع ملحق التقطيع."
 
-The [source references](skills/arabic-poetry/references/SOURCES.md), [scanner coverage notes](skills/arabic-poetry/references/SCANNER-SOURCES.md) and [research notes](docs/research/arabic-poetry.md) document evidence, similar skills, and limitations.
+The [source references](skills/arabic-poetry/references/SOURCES.md), [scanner coverage notes](skills/arabic-poetry/references/SCANNER-SOURCES.md) and [similar-skill comparisons](skills/arabic-poetry/references/SIMILAR_SKILLS.md) document evidence, similar skills, and limitations.
 
 If you previously installed `arabic-prosody`, replace that installation with `arabic-poetry` from this repository. Its scanner, workbench and exporters are now included in the single package.
 

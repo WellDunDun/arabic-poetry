@@ -1,6 +1,6 @@
 # Install Arabic Poetry
 
-For an agent handling a persistent installation request. Install the skills for the app the user is using, then help them try a poem. To use the skill in the current conversation without installing it, follow the [README quickstart](README.md#quickstart).
+For an agent handling a persistent installation request. Install the skills for the app the user is using, then help them try a poem. To use the skill in the current conversation without installing it, follow the [README quickstart](README.md#quickstart). The [Skills CLI `use` command](https://github.com/vercel-labs/skills#use-a-skill-without-installing) provides temporary supporting files and instructions for the current agent; permanent installation is separate.
 
 Source: https://github.com/WellDunDun/arabic-poetry
 

@@ -14,9 +14,9 @@ These links are evidence for rule checks, not proof that all rules in each work 
 
 ## Validation limits
 
-The supplied classical set contains 24 examples spanning the 16 named meters, plus a taf‘ila sample and ending ambiguity. They are a regression set, not a measured accuracy rate for unseen poems. Cross-runtime parity checks selected forms, sound patterns, errors, and feet; two implementations agreeing does not establish linguistic correctness.
+The supplied [classical fixture set](../tests/gold_verses.tsv) contains 24 examples across 15 named meters, plus separate taf‘ila and ending-ambiguity checks. It does not exercise every implemented meter or form. These fixtures are a regression set, not a measured accuracy rate for unseen poems. Cross-runtime parity checks selected forms, sound patterns, errors, and feet; two implementations agreeing does not establish linguistic correctness.
 
-The integration audit adds negative cases for phonetic preservation, forced meter handling, context-dependent ending rules, test failure exits, stale asynchronous saves, isolated conversations, and added-tashkeel-only updates. Real host database and model capabilities still require testing in their supported environment.
+The [scanner/CLI regressions](../tests/test_scanner_regressions.py), [context checks](../tests/test_verify_context.py) and [workbench-state tests](../tests/workbench_state.js) cover phonetic preservation, forced meter handling, context-dependent ending rules, test failure exits, stale asynchronous saves, isolated conversations and added-tashkeel-only updates. Real host database and model capabilities still require testing in their supported environment.
 
 Treat المتدارك/الخبب as this implementation's shared-family convention. Do not present it as settling disputed theory, or call an unsupported dialect, mixed-foot poem, or prose poem broken merely because it does not match these tables.
 
@@ -60,7 +60,7 @@ Code locations: meter tables in `scripts/arud/meters.py` (exported to `assets/wo
 
 | Rule | Source | Note |
 | --- | --- | --- |
-| The 16 meters + المتدارك, their feet, and their تام/مجزوء/مشطور/منهوك/مخلّع forms | H2, T | Table `FORMS` in meters.py |
+| Feet and تام/مجزوء/مشطور/منهوك/مخلّع forms for the implemented 16 meters, including المتدارك | H2, T | Table `FORMS` in meters.py |
 | Permitted زحافات per position (قبض، كف، خبن، طي، خبل، إضمار، وقص، خزل، عصب، عقل، نقص، شكل، تشعيث) | H1, H2 | Rarer ones carry a higher cost; none is reported as a fault |
 | علل only in العروض/الضرب (حذف، قطف، قطع، قصر، حذذ، صلم، كشف، وقف، بتر، تذييل، ترفيل، تسبيغ) | H1, H2 | التشعيث in الخبب حشو is accepted practice |
 | Forms marked «عند المحدثين» (مذيّل/مرفّل in تام الخبب، مقطوع in مجزوء الرجز، مقصور in مجزوء الرمل، full forms in مجزوء المتقارب، مقصور in مخلّع البسيط، مذيّل in تام الكامل) | — | **Later practice**, not in the Khalilian tables of H2/T; accepted at a higher cost and labelled |
@@ -103,7 +103,9 @@ Code locations: meter tables in `scripts/arud/meters.py` (exported to `assets/wo
   editions are not given. Shamela page numbers refer to that edition of العيون الغامزة.
 - الكافي (T) and قضايا الشعر المعاصر (N) are cited from the standard printed works; no
   online copy was read for this file.
-- An independent review of the meter tables against H2/T on 2026-10-17 found them
-  consistent after the corrections listed in `docs/research/arabic-prosody-validation-2026-10-15.md`.
-  Rules marked medium in that review (الاعتماد، some «عند المحدثين» forms) are reported as
-  notes, not faults.
+- The strength of الاعتماد varies by source. Forms labelled «عند المحدثين» describe later
+  practice rather than a Khalilian table entry. Keep those notes distinct from alignment
+  breaks and verify an unfamiliar form against its named source.
+- The [cross-runtime suite](../tests/parity.js) includes a مدوّر verse, a free-verse boundary
+  where a complete final foot must not run on, and قطع همزة الوصل used only when it saves
+  the meter. These checks document selected behavior, not complete rule coverage.

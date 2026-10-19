@@ -1,0 +1,42 @@
+{
+  "source_commit": "00fc740cb3de48831c3bd562058ff726a390e035",
+  "client": "codex-cli 0.155.1",
+  "capabilities": "Local files, Python and Node only; no network, browser, live host APIs, installs, publishing or global fonts.",
+  "model": "CLI default, no override; exact backend ID unavailable",
+  "sessions": "Fresh per case",
+  "raw_events": {
+    "prose-compose": {
+      "path": "/private/tmp/poetry-diwan-evals-20261019/consolidation-final/prose-compose/events.jsonl",
+      "sha256": "6a59b450f1b762dd2e956fa351ffdce19fc0512373d0f7f7b15d2808abec3cd7"
+    },
+    "close-reading": {
+      "path": "/private/tmp/poetry-diwan-evals-20261019/consolidation-final/close-reading/events.jsonl",
+      "sha256": "ce1ff2226535f1e04815c045f0344eb5e413679d942475ca80962d1e1e7f5134"
+    },
+    "classical-scan": {
+      "path": "/private/tmp/poetry-diwan-evals-20261019/consolidation-final/classical-scan/events.jsonl",
+      "sha256": "02d6db8649506bba944122b017f6ab3c240f75b66aa5e57eccddb6308fddfd99"
+    },
+    "provisional-reading": {
+      "path": "/private/tmp/poetry-diwan-evals-20261019/consolidation-final/provisional-reading/events.jsonl",
+      "sha256": "62b54a0b583c4421f7247b4944bf6f50d0bebda0d77bc889cb840c8a290fc152"
+    },
+    "review-only": {
+      "path": "/private/tmp/poetry-diwan-evals-20261019/consolidation-final/review-only/events.jsonl",
+      "sha256": "3a6ab1921c6624dc73c055ceaf7c32455c44b9d49657a7b63ba718e0c8a1b372"
+    },
+    "bounded-repair": {
+      "path": "/private/tmp/poetry-diwan-evals-20261019/consolidation-final/bounded-repair/events.jsonl",
+      "sha256": "002698e30ae96e24beb30839b28820f6318c5fbdf801b76a85962e36b3a38e35"
+    },
+    "tafila-boundary": {
+      "path": "/private/tmp/poetry-diwan-evals-20261019/consolidation-final/tafila-boundary/events.jsonl",
+      "sha256": "e35a509b65540d82c10e5d7226c625bad8da0794ea6f9a58695c493a40daae70"
+    },
+    "workbench-export": {
+      "path": "/private/tmp/poetry-diwan-evals-20261019/consolidation-final/workbench-export/events.jsonl",
+      "sha256": "09f6f302879d8eac5031ced3ca68f46614f0c14582ed1f220263c608497fc4a8"
+    }
+  },
+  "limits": "Captured command output is aggregated by Codex. The file inventory proves recorded bytes, not behavior in an unavailable viewer. No private source conversation is included."
+}

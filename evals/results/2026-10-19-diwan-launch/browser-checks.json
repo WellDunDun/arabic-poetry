@@ -1,0 +1,32 @@
+{
+  "date": "2026-10-19",
+  "browser": "Brave via CUA",
+  "environment": "Loopback HTTP fixture on the same Mac; synthetic and public-domain text",
+  "checks": [
+    {
+      "id": "first-open-exact-text",
+      "pass": true
+    },
+    {
+      "id": "new-chat-revision-opens",
+      "pass": true
+    },
+    {
+      "id": "saved-browser-edit-survives",
+      "pass": true
+    },
+    {
+      "id": "blocked-storage-renders-poem-and-warning",
+      "pass": true
+    },
+    {
+      "id": "agent-produced-before-exact-text",
+      "pass": true
+    },
+    {
+      "id": "agent-produced-after-exact-text",
+      "pass": true
+    }
+  ],
+  "limits": "Does not prove Claude embedded HTML preview or ChatGPT extension/AI integration."
+}

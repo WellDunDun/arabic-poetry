@@ -43,10 +43,12 @@ The [manual draft-review trial](results/2026-10-18-draft-review/report.md) and [
 
 The [earlier workflow regression trial](results/2026-10-19-preservation/report.md) retains original baseline executions, adds final-package follow-up batches, and discloses the workers' earlier same-condition context.
 
-The current source-reference package is checked by [the source-cleanup trial](results/2026-10-19-source-cleanup/report.md). It references the existing frozen baseline execution files directly rather than copying them again. The test fixture materializes those references only in its temporary mutation workspace.
+The earlier source-reference package is checked by [the source-cleanup trial](results/2026-10-19-source-cleanup/report.md). It references the existing frozen baseline execution files directly rather than copying them again. The test fixture materializes those references only in its temporary mutation workspace.
 
 The [plugin lifecycle receipts](results/2026-10-19-plugin-lifecycle/receipts.json) cover real Claude Code and Codex Git marketplace installs, fixture-only patch updates, repeated updates, Codex runtime skill discovery, Claude plugin inventory and installed-file hashes. Reproduce them with `tests/plugin_lifecycle.py` as documented in `AGENTS.md`. These are distribution tests, with no model requests or poetry grading. They do not verify browser account/workspace sync or automatic update timers; temporary paths in the receipts are execution provenance.
 
 The [GitHub install receipts](results/2026-10-19-plugin-lifecycle/github-install.json) additionally record installation from the actual review branch, including its Git commit, Codex runtime discovery, Claude plugin inventory and installed files. The recorded `source_commit` identifies the exact snapshot tested; later documentation or evidence commits may change files outside the skill directory.
 
 The [optimization-guard lifecycle run](results/2026-10-19-plugin-lifecycle/receipts-optimization-fixed.json) records the rerun after adding a fail-fast guard against optimized Python, which disables assertions. The regression test also checks that optimized execution writes a failed receipt before launching client commands.
+
+The [Diwan launch trial](results/2026-10-19-diwan-launch/report.md) records the current candidate: fresh before/after launch requests, real-browser checks and a rerun of the unchanged eight-case poetry corpus. It retains a failed sound-to-foot response criterion rather than treating passing software checks as passing poetry behavior.

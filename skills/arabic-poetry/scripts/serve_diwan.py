@@ -74,7 +74,7 @@ def make_server(workspace, port=None, page=None, document=None):
     token = secrets.token_urlsafe(32)
     prefix = '/' + token
     lock = threading.Lock()
-    identity = None if document is None else {'path': str(document.path), 'id': document.get()['poem']['id']}
+    served = None if document is None else {'path': str(document.path), 'id': document.get()['poem']['id']}
 
     class Handler(BaseHTTPRequestHandler):
         def log_message(self, *args):
@@ -181,15 +181,18 @@ def make_server(workspace, port=None, page=None, document=None):
         def document_call(self, path, data=None):
             from diwan_store import DiwanError
             if path == '/status':
-                self.send(200, identity)
+                self.send(200, served)
                 return
             try:
+                current = document.get()
+                if current['poem']['id'] != served['id']:
+                    raise DiwanError('DOCUMENT_REPLACED', 'This path contains another poem. Reopen the intended shared document.', 5)
                 if data is not None:
                     result = document.update(data.get('patch'), data.get('if_version'), data.get('request_id'))
                 elif path == '/history':
                     result = document.history()
                 else:
-                    result = document.get()
+                    result = current
                 self.send(200, result)
             except DiwanError as error:
                 self.send(409 if error.exit_code == 5 else 400, {'error': {'code': error.code, 'message': str(error), **error.details}})

@@ -124,19 +124,33 @@ def session(store):
         return None
     try:
         if os.path.samefile(health['path'], store.path):
-            return receipt
-    except FileNotFoundError:
+            return dict(receipt, moved=False)
+    except OSError:
         pass
-    request(receipt['url'], '/shutdown', {})
-    return None
+    return dict(receipt, moved=True)
+
+
+def shutdown_session(receipt):
+    try:
+        request(receipt['url'], '/shutdown', {})
+    except (OSError, DiwanError, http.client.HTTPException):
+        try:
+            request(receipt['url'], '/status')
+        except (ConnectionRefusedError, ConnectionResetError, http.client.RemoteDisconnected):
+            return
+        except (OSError, DiwanError, http.client.HTTPException):
+            pass
+        raise DiwanError('STOP_UNKNOWN', 'Could not confirm server shutdown. Retry stop or open; keep the existing session receipt.', 6)
 
 
 def serve(store, port):
     with store.locked():
         existing = session(store)
-        if existing:
+        if existing and not existing['moved']:
             print(json.dumps(dict(existing, reused=True)), flush=True)
             return
+        if existing:
+            shutdown_session(existing)
         current = store.get()
         server, url = serve_diwan.make_server(store.state / 'agent', port=port, document=store)
         receipt = {'path': str(store.path), 'id': current['poem']['id'], 'url': url, 'pid': os.getpid(), 'reused': False, 'rendered': False}
@@ -149,11 +163,11 @@ def serve(store, port):
 
 
 def open_poem(store, args):
-    store.get()
+    store.check_binding()
     if args.dry_run:
         return {'path': str(store.path), 'dry_run': True, 'would_open': True}
     receipt = session(store)
-    if receipt:
+    if receipt and not receipt['moved']:
         receipt = dict(receipt, reused=True)
     else:
         with store.locked():
@@ -257,9 +271,10 @@ def run(args, commands):
         serve(store, args.port)
         return None
     if args.command == 'stop':
-        current = session(store)
-        if current:
-            request(current['url'], '/shutdown', {})
+        with store.locked():
+            current = session(store)
+            if current:
+                shutdown_session(current)
         return {'path': str(store.path), 'stopped': bool(current), 'already_stopped': not bool(current)}
     if args.command == 'scan':
         current = store.get()

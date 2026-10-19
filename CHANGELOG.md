@@ -2,7 +2,8 @@
 
 ## 0.2.0, shared-file Diwan CLI, unreleased
 
-- Shut down an owned server before replacing its session after a poem rename. Reject copied document identities before reporting a successful create replay, including previews.
+- Shut down an owned server before replacing its session after a rename within its directory. Preserve the renamed poem's identity/history when a new poem reuses its old filename; an old server cannot read or modify that replacement poem. Serialize server replacement and shutdown, report actual stop results, and retain receipts on uncertain shutdown. Stop sessions before moving to another directory.
+- Reject copied document identities before reporting successful create replay, open or update previews.
 
 - Refresh a clean editor after closing or cancelling an edit that deferred an agent save. Preserve literal bulk-edit whitespace and avoid a revision for unchanged text. Report missing, conflicting and invalid queue responses with their documented CLI error codes.
 

@@ -131,6 +131,9 @@ class DiwanCLITests(unittest.TestCase):
         for extra in [(), ('--dry-run',)]:
             error = self.cli('create',copied,'--title','نافذة','--text-file',self.source,*extra,status=5)
             self.assertEqual(error['error']['code'],'DUPLICATE_ID')
+        for args in [('open',copied,'--dry-run'),('update',copied,'--text-file',self.source,
+                      '--if-version',self.cli('get',copied)['version'],'--request-id','preview-copy','--dry-run')]:
+            self.assertEqual(self.cli(*args,status=5)['error']['code'],'DUPLICATE_ID')
         self.assertEqual(before,{p.relative_to(self.root):p.read_bytes() for p in self.root.rglob('*') if p.is_file()})
 
     def test_export_cannot_replace_lock_or_another_poems_history(self):
@@ -368,7 +371,10 @@ class DiwanCLITests(unittest.TestCase):
             except (OSError,storage.DiwanError):pass
         self.addCleanup(cleanup)
         self.file.rename(renamed)
-        replacement = self.cli('open',renamed,'--no-browser')
+        with concurrent.futures.ThreadPoolExecutor(2) as pool:
+            opened = list(pool.map(lambda _:self.cli('open',renamed,'--no-browser'),range(2)))
+        replacement = opened[0]
+        self.assertEqual(opened[0]['url'],opened[1]['url'])
         self.addCleanup(lambda:self.cli('stop',renamed))
         self.assertNotEqual(receipt['url'],replacement['url'])
         deadline = time.monotonic()+3
@@ -380,6 +386,47 @@ class DiwanCLITests(unittest.TestCase):
             time.sleep(0.02)
         self.assertEqual(self.cli('get',renamed)['version'],before)
         self.assertTrue(self.cli('stop',renamed)['stopped'])
+
+    def test_renamed_poem_keeps_identity_when_old_name_is_reused(self):
+        before = self.create()
+        receipt = self.cli('open',self.file,'--no-browser')
+        self.addCleanup(lambda:self.shutdown_if_running(receipt['url']))
+        renamed = self.root/'renamed.diwan.json';self.file.rename(renamed)
+        replacement = self.create()
+        self.assertNotEqual(before['poem']['id'],replacement['poem']['id'])
+        with self.assertRaises(storage.DiwanError):diwan.request(receipt['url'],'/document')
+        self.cli('create',renamed,'--title','نافذة','--text-file',self.source)
+        updated = self.cli('update',renamed,'--if-version',before['version'],'--request-id','rename-edit',
+                           '--input','-',input=json.dumps({'text':'النص المنقول'}))
+        self.assertEqual(updated['poem']['id'],before['poem']['id'])
+        self.assertEqual(len(self.cli('history',renamed)['revisions']),2)
+        opened = self.cli('open',renamed,'--no-browser')
+        self.addCleanup(lambda:self.cli('stop',renamed))
+        self.assertNotEqual(receipt['url'],opened['url'])
+        self.assertEqual(self.cli('get',self.file)['version'],replacement['version'])
+
+    @staticmethod
+    def shutdown_if_running(url):
+        try:diwan.request(url,'/shutdown',{})
+        except (OSError,storage.DiwanError):pass
+
+    def test_stop_after_rename_reports_the_owned_server_was_stopped(self):
+        self.create();receipt = self.cli('open',self.file,'--no-browser')
+        self.addCleanup(lambda:self.shutdown_if_running(receipt['url']))
+        renamed = self.root/'renamed.diwan.json';self.file.rename(renamed)
+        result = self.cli('stop',renamed)
+        self.assertTrue(result['stopped'])
+        self.assertFalse(result['already_stopped'])
+        self.assertTrue(self.cli('stop',renamed)['already_stopped'])
+
+    def test_shutdown_races_preserve_uncertain_session_receipts(self):
+        receipt = {'url':'http://127.0.0.1:1/token/diwan.html'}
+        with patch.object(diwan,'request',side_effect=[ConnectionRefusedError(),ConnectionRefusedError()]):
+            diwan.shutdown_session(receipt)
+        with patch.object(diwan,'request',side_effect=[TimeoutError(),{'id':'still-running'}]):
+            with self.assertRaises(storage.DiwanError) as error:diwan.shutdown_session(receipt)
+        self.assertEqual(error.exception.code,'STOP_UNKNOWN')
+        self.assertEqual(receipt,{'url':'http://127.0.0.1:1/token/diwan.html'})
 
 
 if __name__ == '__main__':

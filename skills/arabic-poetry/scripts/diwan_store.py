@@ -171,12 +171,9 @@ class Store:
 
     def bind(self):
         """Aliases share document history; unrelated copies must get a new id."""
+        self.check_binding()
         self.state.mkdir(parents=True, exist_ok=True, mode=0o700)
         binding = self.state / 'binding.json'
-        if binding.exists():
-            old = Path(parse(bounded_read(binding))['path'])
-            if old.exists() and not os.path.samefile(old, self.path):
-                raise DiwanError('DUPLICATE_ID', 'Two different files share this poem id. Import a new document with create instead of copying its JSON.', 5)
         atomic_write(binding, encode({'path': str(self.path)}))
 
     def snapshot(self, envelope):
@@ -246,6 +243,7 @@ class Store:
         fingerprint = digest(json.dumps({'patch': patch, 'if_version': expected}, ensure_ascii=False, sort_keys=True).encode())
         self.get()
         if dry_run:
+            self.check_binding()
             current = self.get()
             self.check_version(current, expected)
             return dict(current, dry_run=True, would_update=patch)
@@ -283,12 +281,17 @@ class Store:
                              expected_version=expected, current_version=current['version'], path=current['path'])
 
     def check_binding(self):
-        self.get()
+        current = self.get()
         binding = self.state / 'binding.json'
         if binding.exists():
             old = Path(parse(bounded_read(binding))['path'])
             if old.exists() and not os.path.samefile(old, self.path):
-                raise DiwanError('DUPLICATE_ID', 'This copied JSON shares another document id; import a new poem instead.', 5)
+                try:
+                    previous = validate_document(parse(bounded_read(old)))
+                except DiwanError:
+                    return
+                if previous['id'] == current['poem']['id']:
+                    raise DiwanError('DUPLICATE_ID', 'This copied JSON shares another document id; import a new poem instead.', 5)
 
     def history(self, limit=20, before=None):
         if not 1 <= limit <= 100:

@@ -1,6 +1,6 @@
-# Preservation follow-up trial
+# Workflow regression trial
 
-Final package `a3b317098ccc844a02039d4a316650e6ba88e50b` (combined-pr2) restores Firas's report interpretation, review-first choices, repair loop and Diwan walkthrough. PR #3 additionally repairs our host/manual/local-bridge regressions. These frozen package bytes were executed against all eight unchanged requests. Baseline Git pins, requests and semantic criteria remain unchanged.
+Final package `a3b317098ccc844a02039d4a316650e6ba88e50b` (combined-pr2) includes report interpretation, review-first choices, the repair loop and Diwan walkthrough. PR #3 additionally covers host/manual/local-bridge changes. These frozen package bytes were executed against all eight unchanged requests. Baseline Git pins, requests and semantic criteria remain unchanged.
 
 | Condition | Cases meeting all frozen criteria | Execution |
 | --- | --- | --- |
@@ -15,4 +15,4 @@ The execution worker received the assigned final package and requests without th
 
 Actual commands and failures remain in raw responses. Package hashes match the current skill tree. Artifact sizes/hashes were verified while recording; temporary paths are provenance rather than durable downloads. Baseline responses, grades and artifact records were copied unchanged from the earlier review trial. The final combined artifacts were separately checked for executable inline JavaScript syntax, DOCX ZIP/XML integrity and literal title/text. No browser was opened, no Word layout was rendered and no PDF or global fonts were installed. No live host/shared storage or existing-chat bridge journey was exercised by these trials.
 
-See [the contribution audit](../../../docs/research/firas-preservation-audit-2026-10-19.md) for Claude's review, lead dispositions, unchanged-core inventory, concrete regression proofs and remaining live/Arabic-expert review. The software-check and artifact-check receipts in this directory are separate from semantic judgments. Both PRs remain unmerged.
+Software-check and artifact-check receipts in this directory are separate from semantic judgments. Live host journeys and Arabic-expert assessment remain outside this trial. Both PRs remain unmerged.

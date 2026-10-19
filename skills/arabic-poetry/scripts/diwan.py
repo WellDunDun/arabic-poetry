@@ -9,6 +9,7 @@ import select
 import subprocess
 import sys
 import tempfile
+import time
 from urllib.parse import urlsplit
 import webbrowser
 
@@ -17,6 +18,7 @@ from diwan_store import DiwanError, Store, VERSION, MAX_BYTES, atomic_write, bou
 import serve_diwan
 
 SCRIPT = Path(__file__).resolve()
+SHUTDOWN_WAIT = 5
 EXAMPLES = {
     'create': 'create poem.diwan.json --title نافذة --text-file poem.txt --json',
     'get': 'get poem.diwan.json --json',
@@ -93,11 +95,11 @@ def input_bytes(path):
     return raw
 
 
-def request(url, route, body=None):
+def request(url, route, body=None, timeout=3):
     parsed = urlsplit(url)
     if parsed.scheme != 'http' or parsed.hostname != '127.0.0.1' or not parsed.port or not parsed.path.endswith('/diwan.html'):
         raise DiwanError('INVALID_SESSION', 'Invalid local Diwan session receipt', 6)
-    conn = http.client.HTTPConnection('127.0.0.1', parsed.port, timeout=3)
+    conn = http.client.HTTPConnection('127.0.0.1', parsed.port, timeout=timeout)
     try:
         path = parsed.path.removesuffix('/diwan.html') + route
         conn.request('GET' if body is None else 'POST', path, body=None if body is None else encode(body), headers={} if body is None else {'Content-Type': 'application/json'})
@@ -118,8 +120,10 @@ def session(store):
     receipt = parse(bounded_read(path))
     try:
         health = request(receipt['url'], '/status')
-    except (OSError, DiwanError, KeyError, http.client.HTTPException):
+    except ConnectionRefusedError:
         return None
+    except (OSError, DiwanError, KeyError, http.client.HTTPException) as error:
+        raise DiwanError('STOP_UNKNOWN', 'Could not verify the saved server session. Retry stop or open; keep its receipt.', 6) from error
     if health.get('id') != receipt.get('id') or health.get('id') != store.get()['poem']['id']:
         return None
     try:
@@ -134,13 +138,17 @@ def shutdown_session(receipt):
     try:
         request(receipt['url'], '/shutdown', {})
     except (OSError, DiwanError, http.client.HTTPException):
+        pass
+    deadline = time.monotonic() + SHUTDOWN_WAIT
+    while time.monotonic() < deadline:
         try:
-            request(receipt['url'], '/status')
-        except (ConnectionRefusedError, ConnectionResetError, http.client.RemoteDisconnected):
+            request(receipt['url'], '/status', timeout=0.25)
+        except ConnectionRefusedError:
             return
         except (OSError, DiwanError, http.client.HTTPException):
             pass
-        raise DiwanError('STOP_UNKNOWN', 'Could not confirm server shutdown. Retry stop or open; keep the existing session receipt.', 6)
+        time.sleep(0.05)
+    raise DiwanError('STOP_UNKNOWN', 'Could not confirm server shutdown. Retry stop or open; keep the existing session receipt.', 6)
 
 
 def serve(store, port):
@@ -167,6 +175,11 @@ def open_poem(store, args):
     if args.dry_run:
         return {'path': str(store.path), 'dry_run': True, 'would_open': True}
     receipt = session(store)
+    if receipt and receipt['moved']:
+        with store.locked():
+            current = session(store)
+            if current and current['moved']:
+                shutdown_session(current)
     if receipt and not receipt['moved']:
         receipt = dict(receipt, reused=True)
     else:

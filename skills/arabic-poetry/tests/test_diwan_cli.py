@@ -423,10 +423,46 @@ class DiwanCLITests(unittest.TestCase):
         receipt = {'url':'http://127.0.0.1:1/token/diwan.html'}
         with patch.object(diwan,'request',side_effect=[ConnectionRefusedError(),ConnectionRefusedError()]):
             diwan.shutdown_session(receipt)
-        with patch.object(diwan,'request',side_effect=[TimeoutError(),{'id':'still-running'}]):
+        def timeout_or_live(url,route,*args,**kwargs):
+            if route=='/shutdown':raise TimeoutError()
+            return {'id':'still-running'}
+        with patch.object(diwan,'request',side_effect=timeout_or_live),patch.object(diwan,'SHUTDOWN_WAIT',0.05):
             with self.assertRaises(storage.DiwanError) as error:diwan.shutdown_session(receipt)
         self.assertEqual(error.exception.code,'STOP_UNKNOWN')
         self.assertEqual(receipt,{'url':'http://127.0.0.1:1/token/diwan.html'})
+
+    def test_renamed_open_can_reuse_the_previous_fixed_port(self):
+        self.create();receipt = self.cli('open',self.file,'--no-browser')
+        self.addCleanup(lambda:self.shutdown_if_running(receipt['url']))
+        port = __import__('urllib.parse',fromlist=['urlsplit']).urlsplit(receipt['url']).port
+        renamed = self.root/'renamed.diwan.json';self.file.rename(renamed)
+        reopened = self.cli('open',renamed,'--no-browser','--port',port)
+        self.addCleanup(lambda:self.cli('stop',renamed))
+        self.assertEqual(__import__('urllib.parse',fromlist=['urlsplit']).urlsplit(reopened['url']).port,port)
+        self.assertNotEqual(reopened['url'],receipt['url'])
+        self.assertEqual(diwan.request(reopened['url'],'/document')['poem']['id'],reopened['id'])
+
+    def test_unresponsive_session_preserves_receipt_and_reports_uncertainty(self):
+        self.create();store = storage.Store(self.file)
+        path = store.state/'session.json'
+        raw = storage.encode({'url':'http://127.0.0.1:1/token/diwan.html','id':store.get()['poem']['id']})
+        path.write_bytes(raw)
+        with patch.object(diwan,'request',side_effect=TimeoutError()):
+            with self.assertRaises(storage.DiwanError) as error:diwan.session(store)
+        self.assertEqual(error.exception.code,'STOP_UNKNOWN')
+        self.assertEqual(path.read_bytes(),raw)
+
+    def test_renamed_open_preserves_shutdown_error_before_starting_a_child(self):
+        self.create();receipt = self.cli('open',self.file,'--no-browser')
+        self.addCleanup(lambda:self.shutdown_if_running(receipt['url']))
+        renamed = self.root/'renamed.diwan.json';self.file.rename(renamed)
+        store = storage.Store(renamed);path = store.state/'session.json';before = path.read_bytes()
+        args = diwan.parser()[0].parse_args(['open',str(renamed),'--no-browser'])
+        with patch.object(diwan,'shutdown_session',side_effect=storage.DiwanError('STOP_UNKNOWN','retry stop/open',6)),patch.object(diwan.subprocess,'Popen',side_effect=AssertionError('Do not replace a server before shutdown is confirmed')) as spawn:
+            with self.assertRaises(storage.DiwanError) as error:diwan.open_poem(store,args)
+        self.assertEqual(error.exception.code,'STOP_UNKNOWN')
+        spawn.assert_not_called()
+        self.assertEqual(path.read_bytes(),before)
 
 
 if __name__ == '__main__':

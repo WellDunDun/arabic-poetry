@@ -4,7 +4,13 @@
 
 The frozen [diwan-cli.json](diwan-cli.json) suite covers discovery, exact import, accepted conditional editing, stale saves, idempotent retry and restoring history as a new revision. Run `python3 evals/run_diwan_cli.py --skill /absolute/path/to/skill --output /absolute/new/temp/directory`. It uses fresh Codex sessions and disposable local files, with no browser, installs or publication. Inspect recorded commands and actual initial/final documents and history, then grade each frozen criterion. Software concurrency/crash tests and real browser checks are separate from these agent cases.
 
-The [shared-file trial](results/2026-10-19-shared-cli/report.md) is the current candidate: six CLI cases, nine automatic-routing cases, four explicit-launch cases and eight unchanged poetry cases. It retains one failed pronoun-choice disclosure criterion in the poetry run. Original historical baselines are reused by reference, not rerun. The default evidence checker validates this candidate's original poetry records and package inventory; additional CLI/routing grades are recorded separately and remain reviewer judgments.
+The [shared-file trial](results/2026-10-19-shared-cli/report.md) records the preceding candidate: six CLI cases, nine automatic-routing cases, four explicit-launch cases and eight unchanged poetry cases. It retains one failed pronoun-choice disclosure criterion in the poetry run. Original historical baselines are reused by reference, not rerun. The default evidence checker validates this candidate's original poetry records and package inventory; additional CLI/routing grades are recorded separately and remain reviewer judgments.
+
+## Pronoun-reading follow-up
+
+The frozen [pronoun-reading.json](pronoun-reading.json) suite tests ambiguous address in Arabic and English, a supplied feminine vowel and a feminine referent fixed by context. Use the same isolated runner with `--suite evals/pronoun-reading.json`. Grade the actual reading and explanation: ambiguous readings need explicit disclosure, while supplied or context-fixed readings must remain intact without an invented question. Preserve all original words, spaces and marks, and respect line-only/review-first scope.
+
+The [pronoun-reading trial](results/2026-10-19-pronoun-reading/report.md) is the current candidate. It reruns the unchanged eight poetry cases, all CLI/routing/explicit-launch cases and the four new cases. The original review-only case now passes; the earlier failed execution remains in the shared-file trial. The default evidence checker validates this current poetry package and evidence inventory. Other suites retain their separate frozen criteria and recorded semantic grades.
 
 ## Automatic drafting triggers
 

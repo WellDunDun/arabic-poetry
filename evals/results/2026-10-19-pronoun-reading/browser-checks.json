@@ -1,0 +1,77 @@
+{
+  "source_commit": "f37a979",
+  "method": "Real Codex in-app browser, accessible UI actions; CLI independently reads same local file. Synthetic poem only.",
+  "checks": [
+    {
+      "check": "Initial canonical title and poem render",
+      "passed": true
+    },
+    {
+      "check": "Blank title reverts with Arabic explanation",
+      "passed": true
+    },
+    {
+      "check": "Empty poem HTTP validation preserves revision 1 and offers draft download/reload without retry",
+      "passed": true
+    },
+    {
+      "check": "Normal browser save is CLI-visible at revision 2",
+      "passed": true
+    },
+    {
+      "check": "Agent save while browser draft is open preserves local typing",
+      "passed": true
+    },
+    {
+      "check": "Stale browser save conflicts; canonical remains agent revision 3",
+      "passed": true
+    },
+    {
+      "check": "Explicit discard/reload displays agent revision 3",
+      "passed": true
+    },
+    {
+      "check": "CLI restore produces revision 4; clean browser refreshes original poem",
+      "passed": true
+    },
+    {
+      "check": "Word export reports جُهّز ملف Word with integrity-pinned JSZip (toast evidence, browser download contents not inspected)",
+      "passed": true
+    }
+  ],
+  "artifacts": [
+    {
+      "path": "/private/tmp/poetry-cli-evals-20261019/browser-reviewed/initial.json",
+      "sha256": "6825a50589538e1ad9aef55b3a0b3187075db4f5d4d4a630d35ef68a6738f37b"
+    },
+    {
+      "path": "/private/tmp/poetry-cli-evals-20261019/browser-reviewed/after-invalid.json",
+      "sha256": "5e58459a2dd7461d570595dd1bc3362b8598204ca14d0c5291a92cec0d1120b0"
+    },
+    {
+      "path": "/private/tmp/poetry-cli-evals-20261019/browser-reviewed/browser-save.json",
+      "sha256": "50d87c3ee4007d10019bf2b09daee09f84e6e5c27cd7c75c751f7fc94f60443a"
+    },
+    {
+      "path": "/private/tmp/poetry-cli-evals-20261019/browser-reviewed/agent-save.json",
+      "sha256": "1a55e68b056b58a531dcea47f3372a8cf2a690859e7317ebd3ff7f137b7c2b3f"
+    },
+    {
+      "path": "/private/tmp/poetry-cli-evals-20261019/browser-reviewed/after-conflict.json",
+      "sha256": "2d097847cc36ac1852ba4d67e371caf0a9b3b57dc068f1f9c550ca940a4601d0"
+    },
+    {
+      "path": "/private/tmp/poetry-cli-evals-20261019/browser-reviewed/restored.json",
+      "sha256": "fa7da2c312ed8d278188db771dfe677a858bffbe40403de9135f8b69bfd27664"
+    },
+    {
+      "path": "/private/tmp/poetry-cli-evals-20261019/browser-reviewed/history.json",
+      "sha256": "8dad3fd97be928e827a17a5068ca1fabe050f6b252c355141d1ec40539db3824"
+    },
+    {
+      "path": "/private/tmp/poetry-cli-evals-20261019/browser-reviewed/conflict.png",
+      "sha256": "6a358baed0cf191134f7edbf1c2401126f1e8f715cb3702705aabb512492daa3"
+    }
+  ],
+  "provenance": "Historical browser execution from the shared-file CLI trial; browser code unchanged, not rerun for this instruction-only change."
+}

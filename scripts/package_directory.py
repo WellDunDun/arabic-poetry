@@ -26,10 +26,10 @@ def git_env():
 
 
 def git(root, *args):
-    return subprocess.check_output(['git', *args], cwd=root, env=git_env())
+    return subprocess.check_output(['git', '--literal-pathspecs', *args], cwd=root, env=git_env())
 
 
-def package_files(root):
+def package_files(root, commit=None):
     documents, _, version = declarations(root)
     manifest = documents['plugin.json']
     interface = manifest['extensions']['com.openai']['interface']
@@ -69,7 +69,9 @@ def package_files(root):
         if len(box) != 4 or box[2] != box[3] or box[2] < 48:
             raise ValueError('Listing icons need a square viewBox of at least 48 units')
         files.add(path.as_posix())
-    tracked = git(root, 'ls-files', '-z', '--', 'skills/arabic-poetry').decode().split('\0')
+    tracked = (git(root, 'ls-tree', '-r', '--name-only', '-z', commit, '--', 'skills/arabic-poetry')
+               if commit else git(root, 'ls-files', '-z', '--', 'skills/arabic-poetry'))
+    tracked = tracked.decode().split('\0')
     files.update(name for name in tracked if name)
     if 'skills/arabic-poetry/SKILL.md' not in files:
         raise ValueError('The tracked arabic-poetry skill is missing')
@@ -85,10 +87,12 @@ def build(root, output):
         raise ValueError('The output filename must end in .zip')
     if output.resolve().is_relative_to(root.resolve()):
         raise ValueError('Write generated archives outside the Git checkout')
-    version, names = package_files(root)
+    commit = git(root, 'rev-parse', 'HEAD').decode().strip()
+    if git(root, 'diff', 'HEAD', '--name-only', '--', 'skills/arabic-poetry').strip():
+        raise ValueError('Commit package inputs before building the submission archive')
+    version, names = package_files(root, commit)
     if git(root, 'status', '--porcelain', '--untracked-files=all', '--', *names).strip():
         raise ValueError('Commit package inputs before building the submission archive')
-    commit = git(root, 'rev-parse', 'HEAD').decode().strip()
     content = {name: git(root, 'show', f'{commit}:{name}') for name in names}
     buffer = io.BytesIO()
     with zipfile.ZipFile(buffer, 'w', compression=zipfile.ZIP_DEFLATED) as archive:

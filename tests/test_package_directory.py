@@ -74,7 +74,7 @@ class DirectoryPackage(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'shortDescription'):
             package.package_files(self.root)
 
-    def test_missing_or_escaping_icon_is_rejected(self):
+    def test_escaping_icon_is_rejected(self):
         self.change_interface('logo', './assets/plugin/../../private.svg')
         with self.assertRaisesRegex(ValueError, 'logo'):
             package.package_files(self.root)
@@ -119,6 +119,19 @@ class DirectoryPackage(unittest.TestCase):
         with self.assertRaises(FileNotFoundError):
             package.build(self.root, output)
         self.assertFalse(output.exists())
+
+    def test_staged_skill_removal_cannot_disappear_from_inventory(self):
+        subprocess.run(['git', 'rm', '--cached', 'skills/arabic-poetry/tests/gold_verses.tsv'],
+                       cwd=self.root, env=package.git_env(), check=True, capture_output=True)
+        with self.assertRaisesRegex(ValueError, 'Commit package inputs'):
+            package.build(self.root, Path(self.temp.name) / 'candidate.zip')
+
+    def test_staged_skill_addition_requires_commit(self):
+        p = self.root / 'skills/arabic-poetry/references/new.md'
+        p.write_text('new reference')
+        subprocess.run(['git', 'add', str(p)], cwd=self.root, env=package.git_env(), check=True)
+        with self.assertRaisesRegex(ValueError, 'Commit package inputs'):
+            package.build(self.root, Path(self.temp.name) / 'candidate.zip')
 
 
 if __name__ == '__main__':

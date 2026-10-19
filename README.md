@@ -6,57 +6,106 @@ Use it for عمودي، تفعيلة، قصيدة نثر, evidence-led meter and
 
 ## Quickstart
 
-### Install the plugin, recommended
+Choose one installation method. Both include the same poetry skill, scanner and optional Diwan editor.
 
-Install from the repository-backed **Arabic Poetry** marketplace to keep receiving reviewed updates. Claude and ChatGPT/Codex use the same poetry skill inside their plugin packages. The plugin is not listed in either public plugin directory.
+اختر إحدى طريقتي التثبيت. تتضمن كلتاهما مهارة الشعر نفسها وبرنامج التقطيع ومحرر ديوان الاختياري.
 
-Copy this into your agent:
+| Installation · التثبيت | Updates · التحديثات |
+| --- | --- |
+| [Plugin · إضافة](#option-1-install-the-plugin) for supported Claude, Codex and ChatGPT workspaces | Through your host's plugin manager. Automatic updates depend on its settings. · عبر مدير الإضافات في بيئتك، ويعتمد التحديث التلقائي على إعداداته. |
+| [Standalone skill with Skills CLI · مهارة مستقلة بأداة Skills CLI](#option-2-install-with-skills-cli) for agents that can run commands | Update manually with Skills CLI. · حدّثها يدويًا بأداة Skills CLI. |
+
+### Option 1: install the plugin
+
+**الخيار الأول: تثبيت الإضافة**
+
+Use the repository marketplace in a supported Claude or Codex host, or a ChatGPT workspace with admin Git import. Copy the English or Arabic prompt into your agent.
+
+استخدم دليل الإضافات المرتبط بالمستودع في بيئة Claude أو Codex تدعمه، أو في مساحة عمل ChatGPT تتيح استيراد Git للمسؤول. انسخ النص الإنجليزي أو العربي إلى وكيلك.
+
+#### English plugin prompt
 
 ```text
-Install Arabic Poetry from the Git-backed plugin marketplace at https://github.com/WellDunDun/arabic-poetry for the agent I am using. Keep the installation connected to the repository for future updates, explain any update opt-in, and preserve my existing setup. Verify that the installed plugin exposes its arabic-poetry skill, then help me try a poem. If this browser account requires a workspace admin to import the marketplace, explain that limitation and the supported alternative. Do not replace this with a one-time skill copy unless plugin installation is unavailable.
+Install Arabic Poetry from the Git-backed plugin marketplace at https://github.com/WellDunDun/arabic-poetry for the agent I am using. Follow the repository's INSTALL.md for this host and preserve my existing setup. Explain whether updates are automatic, require an opt-in, or need a manual command. Verify the installed version and arabic-poetry skill, then help me try a poem. If this account cannot import the marketplace, explain the limitation and point me to the standalone skill option.
 ```
 
-للتثبيت مع تلقّي التحديثات، استخدم إضافة **الشعر العربي** من دليل الإضافات المرتبط بالمستودع. تستخدم Claude وChatGPT/Codex المهارة نفسها داخل الإضافة. لم تُنشر الإضافة في دليلي الإضافات العامين.
+#### نص تثبيت الإضافة بالعربية
 
 ```text
-ثبّت إضافة الشعر العربي من دليل الإضافات المرتبط بمستودع Git على https://github.com/WellDunDun/arabic-poetry للوكيل الذي أستخدمه الآن. أبقِ التثبيت مرتبطًا بالمستودع لتلقّي التحديثات، ووضّح أي خيار يلزم تفعيله للتحديث، وحافظ على إعداداتي الحالية. تحقّق من ظهور مهارة arabic-poetry ضمن الإضافة المثبّتة، ثم ساعدني على تجربة قصيدة. إذا كان استيراد الدليل في حساب المتصفح يحتاج إلى مسؤول مساحة عمل، فوضّح ذلك والبديل المدعوم. لا تستبدل الإضافة بنسخة مستقلة من المهارة إلا إذا تعذّر تثبيت الإضافات.
+ثبّت إضافة الشعر العربي من دليل الإضافات المرتبط بمستودع Git على https://github.com/WellDunDun/arabic-poetry للوكيل الذي أستخدمه الآن. اتّبع دليل INSTALL.md الخاص بهذه البيئة وحافظ على إعداداتي الحالية. وضّح هل التحديث تلقائي، أم يحتاج إلى تفعيل خيار، أم يتطلب أمرًا يدويًا. تحقّق من النسخة المثبّتة وظهور مهارة arabic-poetry، ثم ساعدني على تجربة قصيدة. إذا كان حسابي لا يتيح استيراد الدليل، فوضّح القيد وأرشدني إلى خيار المهارة المستقلة.
 ```
 
-[Installation and update instructions](INSTALL.md) cover Claude web/Desktop/Code, ChatGPT workspace import, and Codex. Automatic updates depend on the host and its settings. Claude Code third-party marketplaces need auto-update enabled; ZIP uploads and standalone skill copies do not follow this repository automatically.
+#### Plugin updates · تحديث الإضافة
 
-يتضمن [دليل التثبيت والتحديث](INSTALL.md) طرق Claude في المتصفح وسطح المكتب وCode، واستيراد الدليل في مساحات عمل ChatGPT، وCodex. يعتمد التحديث التلقائي على البيئة وإعداداتها؛ ويلزم تفعيله للأدلة الخارجية في Claude Code. ملفات ZIP والنسخ المستقلة من المهارة لا تتبع تحديثات هذا المستودع تلقائيًا.
+Updates come through the host's plugin manager. Claude Code requires auto-update to be enabled for this third-party marketplace. ChatGPT workspace Git imports use workspace sync. For Codex and manual refreshes, follow the [installation and update guide](INSTALL.md). Verify the installed version after updating and reload or start a new chat as your host requires.
 
-Scanner scripts need execution capability. Diwan runs in a browser; its local agent bridge needs shared local file access. Browser-only chats can use its copy/paste exchange. This package does not add a cloud Diwan connection.
+تصل التحديثات عبر مدير الإضافات في بيئتك. يتطلب Claude Code تفعيل التحديث التلقائي لهذا الدليل الخارجي. ويستخدم استيراد Git في مساحات عمل ChatGPT مزامنة مساحة العمل. لتحديث Codex أو التحديث اليدوي، اتّبع [دليل التثبيت والتحديث](INSTALL.md). تحقّق من النسخة المثبّتة بعد التحديث، وأعد التحميل أو ابدأ محادثة جديدة حسب متطلبات البيئة.
 
-تحتاج برامج التقطيع إلى إمكانية تنفيذ الأوامر. يعمل ديوان في المتصفح، ويحتاج اتصاله المحلي بالوكيل إلى الوصول إلى ملفات مساحة العمل نفسها. ويمكن لمحادثات المتصفح استخدام تبادل الطلب والإجابة بالنسخ واللصق. لا تضيف الحزمة اتصالًا سحابيًا بديوان.
+The plugin is not listed in either public plugin directory yet. The public ChatGPT directory package is being prepared for review. Personal ChatGPT accounts cannot use workspace-admin Git import. After approval and publication, directory users receive published package versions. Maintainers must upload and publish each update. GitHub commits alone do not update the public listing, and a manually uploaded ZIP does not follow GitHub updates.
 
-### Fallback: use the skill in your current chat
+لم تُنشر الإضافة في دليلي الإضافات العامين بعد. يجري إعداد حزمة دليل ChatGPT العام للمراجعة. لا تستطيع حسابات ChatGPT الشخصية استخدام استيراد Git المخصص لمسؤولي مساحات العمل. بعد الاعتماد والنشر، يحصل مستخدمو الدليل على نسخ الحزمة المنشورة. ويجب على القائمين على الإضافة رفع كل تحديث ونشره. لا تُحدّث تغييرات GitHub وحدها القائمة العامة، ولا يتبع ملف ZIP المرفوع يدويًا تحديثات GitHub.
 
-Copy one of these prompts into your agent's chat.
+### Option 2: install with Skills CLI
 
-انسخ أحد النصين والصقه في محادثتك مع وكيلك.
+**الخيار الثاني: تثبيت المهارة بأداة Skills CLI**
 
-#### English
+Install the complete standalone skill with [Skills CLI](https://github.com/vercel-labs/skills#install-a-skill). Your agent needs command execution and Node.js/npm. This route works independently of plugin marketplace support. Copy one of these prompts into your agent.
+
+ثبّت المهارة المستقلة كاملة بأداة [Skills CLI](https://github.com/vercel-labs/skills#install-a-skill). يحتاج وكيلك إلى تنفيذ الأوامر وتوفّر Node.js/npm. تعمل هذه الطريقة دون الحاجة إلى دعم أدلة الإضافات. انسخ أحد النصين إلى وكيلك.
+
+#### English skill prompt
+
+```text
+Install the arabic-poetry skill from https://github.com/WellDunDun/arabic-poetry using `npx skills@latest add WellDunDun/arabic-poetry --skill arabic-poetry --global`. Add the appropriate --agent flag to target only the agent I am using. Preserve my existing skills and local changes. Verify that this agent can discover the complete installed skill and its supporting files. Explain how to update it manually with Skills CLI, then help me try a poem. If command execution or Node.js/npm is unavailable, explain what is missing.
+```
+
+#### نص تثبيت المهارة بالعربية
+
+```text
+ثبّت مهارة arabic-poetry من https://github.com/WellDunDun/arabic-poetry باستخدام `npx skills@latest add WellDunDun/arabic-poetry --skill arabic-poetry --global`. أضف خيار --agent بالقيمة المناسبة لاستهداف الوكيل الذي أستخدمه فقط. حافظ على مهاراتي الحالية وتعديلاتي المحلية. تحقّق من أن الوكيل يستطيع العثور على المهارة المثبّتة كاملة وملفاتها المساندة. وضّح كيفية تحديثها يدويًا بأداة Skills CLI، ثم ساعدني على تجربة قصيدة. إذا تعذّر تنفيذ الأوامر أو لم يتوفّر Node.js/npm، فوضّح ما ينقص.
+```
+
+If you prefer running the installation yourself, this command lets you select the agent:
+
+إذا أردت تنفيذ التثبيت بنفسك، يتيح لك هذا الأمر اختيار الوكيل:
+
+```sh
+npx skills@latest add WellDunDun/arabic-poetry --skill arabic-poetry --global
+```
+
+#### Standalone skill updates · تحديث المهارة المستقلة
+
+The installed skill stays at its current revision until you update it. Skills CLI does not enable background plugin updates. To update only this skill in the user-wide installation above, ask your agent to preserve local changes, run the command below, and verify the result. For a project-only installation, use `--project` instead of `--global` from that project. See [Skills CLI update options](https://github.com/vercel-labs/skills#skills-update).
+
+تبقى المهارة المثبّتة على نسختها الحالية حتى تحدّثها. لا تفعّل أداة Skills CLI تحديثات الإضافات في الخلفية. لتحديث هذه المهارة وحدها في التثبيت على مستوى المستخدم أعلاه، اطلب من وكيلك الحفاظ على التعديلات المحلية، وتنفيذ الأمر أدناه، والتحقّق من النتيجة. للتثبيت داخل مشروع فقط، استخدم `--project` بدلًا من `--global` من داخل المشروع. راجع [خيارات التحديث](https://github.com/vercel-labs/skills#skills-update).
+
+```sh
+npx skills@latest update arabic-poetry --global
+```
+
+### Try in this chat without installing
+
+**جرّب المهارة في هذه المحادثة دون تثبيت**
+
+For temporary use, copy one of these prompts into an agent that can run commands. This downloads supporting files to a temporary directory. Run the prompt again when you want to load the latest repository version. An existing chat does not reload it automatically.
+
+للاستخدام المؤقت، انسخ أحد النصين إلى وكيل يستطيع تنفيذ الأوامر. يحمّل الأمر الملفات المساندة إلى مجلد مؤقت. أعد تنفيذ النص عندما تريد تحميل أحدث نسخة من المستودع. لا تُحدّث المحادثة الحالية تعليمات المهارة تلقائيًا.
+
+#### English current-chat prompt
 
 ```text
 Run `npx skills use "https://github.com/WellDunDun/arabic-poetry" --skill "arabic-poetry"` and follow the generated skill instructions now. Read its complete output, redirecting it to a temporary file first if necessary. Resolve relative paths from the supporting-files directory it provides.
 ```
 
-#### العربية
+#### نص الاستخدام في المحادثة بالعربية
 
 ```text
 شغّل `npx skills use "https://github.com/WellDunDun/arabic-poetry" --skill "arabic-poetry"` واتّبع تعليمات المهارة الناتجة الآن. اقرأ المخرجات كاملة، واحفظها أولًا في ملف مؤقت إذا لزم الأمر. اعتبر مجلد الملفات المساندة الذي يحدده الأمر أساسًا لأي مسارات نسبية.
 ```
 
-This loads the skill for the current conversation without permanently installing it. Your agent needs command execution. For persistent installation, use the command below or the [installation guide](INSTALL.md).
+Scanner scripts need execution capability. Diwan runs in a browser; its local agent bridge needs shared local file access. Browser-only chats can use its copy/paste exchange. Neither installation method adds a cloud Diwan connection.
 
-يحمّل هذا المهارة للمحادثة الحالية دون تثبيتها بشكل دائم. يلزم وكيل يستطيع تنفيذ الأوامر. للتثبيت الدائم، استخدم الأمر أدناه أو [دليل التثبيت](INSTALL.md).
-
-### Fallback: install a standalone skill
-
-```sh
-npx skills@latest add WellDunDun/arabic-poetry
-```
+تحتاج برامج التقطيع إلى إمكانية تنفيذ الأوامر. يعمل ديوان في المتصفح، ويحتاج اتصاله المحلي بالوكيل إلى الوصول إلى ملفات مساحة العمل نفسها. ويمكن لمحادثات المتصفح استخدام تبادل الطلب والإجابة بالنسخ واللصق. لا تضيف أي من طريقتي التثبيت اتصالًا سحابيًا بديوان.
 
 The repository serves one skill, `arabic-poetry`, with writing and interpretation guidance, a local meter scanner, and the optional **Diwan** editing workbench.
 
@@ -104,3 +153,5 @@ Contributions to poetic examples, Arabic terminology, research, and technical ch
 ## License
 
 MIT. See [LICENSE](LICENSE). Linked works remain subject to their own terms; references do not relicense third-party texts.
+
+[Support](SUPPORT.md) · [Privacy](PRIVACY.md)

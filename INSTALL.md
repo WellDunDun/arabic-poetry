@@ -1,8 +1,16 @@
 # Install and update Arabic Poetry
 
-Prefer a repository-backed plugin. It keeps the installed package connected to future releases. Use a standalone skill or ZIP only when the current host cannot install from a repository marketplace. The source is [WellDunDun/arabic-poetry](https://github.com/WellDunDun/arabic-poetry), and the marketplace is `arabic-poetry-plugins`.
+Choose a repository-backed plugin for host-managed updates, or install the standalone skill with Skills CLI and update it manually. Both include the same poetry skill, scanner and optional Diwan editor. Copy-and-paste prompts in English and Arabic are in the [README quickstart](README.md#quickstart). The source is [WellDunDun/arabic-poetry](https://github.com/WellDunDun/arabic-poetry), and the marketplace is `arabic-poetry-plugins`.
 
 The default commands below follow the reviewed `main` branch. The plugin is available from this repository and has not been listed in either public plugin directory.
+
+## Public ChatGPT directory for personal accounts
+
+The directory candidate is being prepared for review. It is not approved or published, and no live directory installation or update has been verified. A public GitHub repository alone does not make it installable from a personal ChatGPT browser account.
+
+After approval and publication, personal users will find the plugin in **Plugins**, install it, and choose its bundled skill in a new chat. They will use published directory package versions. The maintainers must upload the updated skills and metadata to the existing plugin, complete the applicable checks/review, and publish the approved version. This is separate from Git-backed workspace sync and does not require users to copy a ZIP or reinstall from GitHub for each release. See [OpenAI's directory update process](https://developers.openai.com/plugins/deploy/submission#update-your-published-plugin).
+
+The [privacy notice](PRIVACY.md) describes conversation processing, optional local tools, browser storage and third-party requests. Use [support](SUPPORT.md) for installation or analysis problems.
 
 ## Claude web and Desktop
 
@@ -79,15 +87,27 @@ The default Git source follows reviewed `main` commits. Separately authorized re
 
 Prefer an update over uninstall/reinstall. Preserve user-authored local modifications and poem workspaces. An accepted update does not synchronize browser-stored poems with an agent or another browser. Diwan still uses its local bridge or manual JSON exchange as described in [DIWAN.md](skills/arabic-poetry/references/DIWAN.md).
 
-## Fallback for other agents
+## Standalone skill with Skills CLI
 
-If plugin installation is unavailable, explain the missing capability first, then install the complete `skills/arabic-poetry` directory using the agent's supported skill installer. Preserve existing modifications. In Codex, `$skill-installer` is one standalone route. If an appropriate native installer is absent, the [Skills CLI](https://github.com/vercel-labs/skills#install-a-skill) can target the current agent only:
+Use this option independently of plugin support. Install the complete `skills/arabic-poetry` directory and preserve existing modifications. The [Skills CLI](https://github.com/vercel-labs/skills#install-a-skill) can target only the current agent. For example, for Codex:
 
 ```sh
 npx --yes skills@latest add WellDunDun/arabic-poetry --global --agent codex --skill arabic-poetry --yes
 ```
 
-Replace `codex` with the current supported agent's identifier when appropriate. Omit `--global` only for a requested project-only install. This installs a standalone skill and is not subscribed to our plugin marketplace updates. The [README's current-chat prompt](README.md#fallback-use-the-skill-in-your-current-chat) is temporary use, not a persistent plugin installation.
+Replace `codex` with the current supported agent's identifier when appropriate. Omit `--global` for a project-only install. In Codex, `$skill-installer` is another standalone route.
+
+Skills CLI installations do not update in the background. Preserve local changes, then update only this globally installed skill with:
+
+```sh
+npx skills@latest update arabic-poetry --global
+```
+
+For a project installation, run the command from that project with `--project` instead of `--global`. Verify the installed files and skill discovery after updating. Follow the host's reload or new-chat step. See [Skills CLI update options](https://github.com/vercel-labs/skills#skills-update).
+
+لا تُحدّث أداة Skills CLI المهارة في الخلفية. حافظ على تعديلاتك المحلية، ثم استخدم أمر التحديث أعلاه لتحديث هذه المهارة وحدها على مستوى المستخدم. للتثبيت داخل مشروع، نفّذ الأمر من ذلك المشروع مع `--project` بدلًا من `--global`. تحقّق من الملفات المثبّتة وظهور المهارة، ثم أعد التحميل أو ابدأ محادثة جديدة حسب متطلبات الوكيل.
+
+The [README's current-chat prompt](README.md#try-in-this-chat-without-installing) downloads a temporary skill copy instead of installing it persistently. Repeat that prompt to load the latest repository version. It does not subscribe an existing chat to updates.
 
 ## Confirm and try a poem
 
@@ -95,4 +115,4 @@ Replace `codex` with the current supported agent's identifier when appropriate. 
 - When execution is available, run the installed scanner's `--help` and then analyze a supplied line. Otherwise follow the skill's explicit manual-analysis limits. Do not invent a scanner run.
 - Keep ordinary writing and interpretation in chat. Editor, Word/PDF and hosted services are optional. Tell the user which capabilities are ready and ask them to paste a poem or describe one they want to write.
 
-راجع [بداية الاستخدام بالعربية](README.md#install-the-plugin-recommended) لنسخ طلب التثبيت. الإضافات المرتبطة بالمستودع هي المسار المفضّل؛ ويعتمد وصول التحديث على إعدادات البيئة. يغطّي اختبار العميل المحلي التثبيت والتحديث بأوامر Claude Code وCodex، ولا يثبت وحده نجاح مزامنة حساب Claude أو مساحة عمل ChatGPT في المتصفح.
+راجع [بداية الاستخدام](README.md#quickstart) للتمييز بين الدليل العام لحسابات ChatGPT الشخصية والإضافات المرتبطة بالمستودع في البيئات المدعومة. لم تُنشر الإضافة في الدليل العام بعد. يغطّي اختبار العميل المحلي التثبيت والتحديث بأوامر Claude Code وCodex، ولا يثبت وحده نجاح مزامنة حساب Claude أو مساحة عمل ChatGPT في المتصفح.

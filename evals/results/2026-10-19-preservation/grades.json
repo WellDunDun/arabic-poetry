@@ -589,7 +589,7 @@
         },
         {
           "status": "pass",
-          "evidence": "combined.responses.json case workbench-export: prepare_local.py created local HTML/JSON; export_book.py produced masafa.docx and text. Mode was corrected from auto to free/mutaqarib and exported again; both runs are retained. Verification checks exact title/text, ZIP/XML and inline JavaScript syntax; response supplies real paths."
+          "evidence": "combined.responses.json case workbench-export: prepare_workbench.py created local HTML/JSON and source text; export_book.py produced masafa.docx and masafa-export.txt. Mode was corrected from auto to free/mutaqarib and exported again; both runs are retained. verify_export.py checked exact title/text, ZIP/XML and executable inline JavaScript syntax. The response supplies actual paths."
         },
         {
           "status": "pass",

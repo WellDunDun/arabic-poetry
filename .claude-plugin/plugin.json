@@ -2,5 +2,14 @@
   "name": "arabic-poetry",
   "skills": [
     "./skills/arabic-poetry"
-  ]
+  ],
+  "version": "0.1.0",
+  "description": "Write, revise and understand classical and modern Arabic poetry, with a meter scanner and optional Diwan editor.",
+  "author": {
+    "name": "Daniel Petro and Firas F. Khabour",
+    "url": "https://github.com/WellDunDun/arabic-poetry#credits"
+  },
+  "homepage": "https://github.com/WellDunDun/arabic-poetry",
+  "repository": "https://github.com/WellDunDun/arabic-poetry",
+  "license": "MIT"
 }

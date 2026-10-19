@@ -1,0 +1,16 @@
+{
+  "name": "arabic-poetry-plugins",
+  "owner": {
+    "name": "Daniel Petro and Firas F. Khabour",
+    "url": "https://github.com/WellDunDun/arabic-poetry#credits"
+  },
+  "plugins": [
+    {
+      "name": "arabic-poetry",
+      "source": "./",
+      "version": "0.1.0",
+      "description": "Write, revise and understand classical and modern Arabic poetry, with a meter scanner and optional Diwan editor."
+    }
+  ],
+  "description": "Repository-backed Arabic poetry plugin for classical and modern forms."
+}

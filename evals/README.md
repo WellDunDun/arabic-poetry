@@ -34,3 +34,5 @@ The [manual draft-review trial](results/2026-10-18-draft-review/report.md) and [
 The [earlier workflow regression trial](results/2026-10-19-preservation/report.md) retains original baseline executions, adds final-package follow-up batches, and discloses the workers' earlier same-condition context.
 
 The current source-reference package is checked by [the source-cleanup trial](results/2026-10-19-source-cleanup/report.md). It references the existing frozen baseline execution files directly rather than copying them again. The test fixture materializes those references only in its temporary mutation workspace.
+
+The [plugin lifecycle receipts](results/2026-10-19-plugin-lifecycle/receipts.json) cover real Claude Code and Codex Git marketplace installs, fixture-only patch updates, repeated updates, skill discovery and installed-file hashes. Reproduce them with `tests/plugin_lifecycle.py` as documented in `AGENTS.md`. These are distribution tests, with no model requests or poetry grading. They do not verify browser account/workspace sync or automatic update timers; temporary paths in the receipts are execution provenance.

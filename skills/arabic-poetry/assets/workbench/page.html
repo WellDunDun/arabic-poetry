@@ -498,7 +498,7 @@ input, textarea, select { box-sizing: border-box }
 <script>
 window.__METERS__ = /*METERS*/null;
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" integrity="sha512-XMVd28F1oH/O71fzwBnV7HucLxVwtxf26XV8P4wPk26EDxuGZ91N8bsOttmnomcCD3CS5ZMRL50H0GgOHvegtg==" crossorigin="anonymous"></script>
 <script>
 /*ENGINE*/
 </script>
@@ -1627,7 +1627,7 @@ ${linesOf(p).join('\n')}
     if (e.key === 'Enter' && e.target.classList && e.target.classList.contains('edit-line')) { e.preventDefault(); const li = +e.target.id.split('-')[1]; saveLine(li, pendingNew === li); }
     if (e.key === 'Escape' && editing !== null) { dropPending(); editing = null; renderLines(); }
   });
-  $('title').addEventListener('change', e => { const p = cur(); if (!p) return; p.title = e.target.value.trim(); save(p); renderSelect(); });
+  $('title').addEventListener('change', e => { const p = cur(); if (!p) return; const value = e.target.value.trim(); if (window.DiwanFile && !value) { e.target.value = p.title; toast('اكتب عنوانًا غير فارغ؛ بقي العنوان السابق'); return; } p.title = value; save(p); renderSelect(); });
   const setMode = m => { const p = cur(); if (!p) return; p.mode = m; p.meter = ''; save(p); render(); };
   document.querySelectorAll('#modeSeg button').forEach(b => { b.onclick = () => setMode(b.dataset.mode); });
   $('meterSel').onchange = e => { const p = cur(); if (!p) return; p.meter = e.target.value; save(p); render(); };

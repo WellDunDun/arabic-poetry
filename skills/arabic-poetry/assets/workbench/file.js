@@ -39,7 +39,7 @@
       const value = await response.json();
       if (!response.ok) {
         const error = new Error(value.error && value.error.message || 'تعذّر الاتصال بالملف');
-        error.code = value.error && value.error.code; throw error;
+        error.code = value.error && value.error.code; error.status = response.status; throw error;
       }
       return value;
     }
@@ -76,9 +76,9 @@
             panel('حُفظ في الملف، المراجعة ' + result.poem.revision);
             return { version: result.applied_version || result.version };
           } catch (error) {
-            panel(error.code === 'CONFLICT'
+            panel(error.status === 400 ? 'لم يُحفظ التعديل: ' + error.message : error.code === 'CONFLICT'
               ? 'حُفظت نسخة أحدث. لم نستبدلها؛ مسودتك باقية هنا. نزّلها قبل تحميل المحفوظ.'
-              : 'لم يتأكد الحفظ. مسودتك باقية هنا؛ أعد المحاولة نفسها أو نزّلها.', error.code === 'CONFLICT' ? 'conflict' : 'retry');
+              : 'لم يتأكد الحفظ. مسودتك باقية هنا؛ أعد المحاولة نفسها أو نزّلها.', error.status === 400 ? 'validation' : error.code === 'CONFLICT' ? 'conflict' : 'retry');
             throw error;
           }
         },

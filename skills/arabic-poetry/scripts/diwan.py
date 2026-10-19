@@ -117,7 +117,7 @@ def session(store):
     receipt = parse(bounded_read(path))
     try:
         health = request(receipt['url'], '/status')
-        if health['path'] == str(store.path) and health['id'] == store.get()['poem']['id']:
+        if os.path.samefile(health['path'], store.path) and health['id'] == store.get()['poem']['id']:
             return receipt
     except (OSError, DiwanError, KeyError, http.client.HTTPException):
         pass
@@ -174,7 +174,9 @@ def open_poem(store, args):
 def export(store, args):
     current = store.get()
     destination = Store(args.output).path
-    if destination == store.path or store.state in destination.parents:
+    same_poem = destination.exists() and os.path.samefile(destination, store.path)
+    in_history = any(parent.exists() and store.state.exists() and os.path.samefile(parent, store.state) for parent in destination.parents)
+    if same_poem or in_history:
         raise DiwanError('INVALID_OUTPUT', 'Export to a separate file outside the document/history path')
     if not destination.parent.is_dir():
         raise DiwanError('NOT_FOUND', 'Create the output directory first', 4)
@@ -266,11 +268,16 @@ def run(args, commands):
     if args.command == 'export':
         return export(store, args)
     if args.command == 'pending':
+        store.get()
         if not 1 <= args.limit <= 100:
             raise DiwanError('INVALID_LIMIT', '--limit must be 1–100')
-        rows = serve_diwan.pending(store.state / 'agent')
+        workspace = store.state / 'agent'
+        rows = serve_diwan.pending(workspace) if (workspace/'.diwan/requests').is_dir() else []
         return {'requests': rows[:args.limit], 'truncated': len(rows) > args.limit, 'hint': 'respond to oldest pending requests before requesting more'}
     if args.command == 'respond':
+        store.get()
+        if not (store.state/'agent/.diwan/requests').is_dir():
+            raise DiwanError('NOT_FOUND', 'No pending request workspace; open Diwan and ask the existing chat to handle a request', 4)
         serve_diwan.respond(store.state / 'agent', args.id, parse(input_bytes(args.input)))
         return {'id': args.id, 'status': 'response_saved', 'poem_changed': False}
 

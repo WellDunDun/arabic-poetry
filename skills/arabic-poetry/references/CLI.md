@@ -4,7 +4,7 @@ Use the bundled `scripts/diwan.py` when the editor and agent can reach the same 
 
 ## One authoritative poem
 
-The canonical `.diwan.json` file contains the title, exact UTF-8 poem text, review choices, suggestions, status, layout, meter, stable id and increasing revision. Both CLI and editor read/write this document. Browser storage is not the poem store in this mode. Hidden `.diwan/shared/` files contain immutable history, save receipts and local session state, not a competing current poem.
+The canonical `.diwan.json` file contains the title, exact UTF-8 poem text, review choices, suggestions, status, layout, meter, stable id, increasing revision and save identity. Both CLI and editor read/write this document. Browser storage is not the poem store in this mode. Hidden `.diwan/shared/` files contain immutable history, save receipts and local session state, not a competing current poem.
 
 Import `.txt` or `.md` with `create --text-file`. Their complete contents are literal poem text; Markdown headings/frontmatter are not parsed or stripped. The original import file remains unchanged and is no longer the live draft. Export `txt`/`md` to obtain plain poem text again. Do not treat an old import/export as the latest shared document.
 
@@ -40,7 +40,7 @@ On `CONFLICT`, preserve the newer file and your proposed draft. Reread, compare 
 
 All supported writers use the same advisory file lock and conditional check, followed by an atomic complete-file replacement. Version history is durable before replacement. This prevents stale CLI/browser writes and torn saves between cooperating clients. A tool directly overwriting JSON outside this API ignores that lock and is unsupported; agents must use `update`, not a raw file write. Directory/file I/O failures can leave a committed save with an incomplete receipt: inspect `get` and retry the same operation identity, not a new create.
 
-Create, update, restore, open and export accept `--dry-run`. A preview validates inputs without changing files, reserving a version or starting a browser/server. No delete command is provided. History and sessions are associated with the canonical file's absolute path. Moving or renaming a document preserves its current contents but does not automatically migrate that history/session association; this version has no move/migration command.
+Create, update, restore, open and export accept `--dry-run`. A preview validates inputs without changing files, reserving a version or starting a browser/server. No delete command is provided. History and receipts are keyed by the stable poem id, while a directory-wide lock also covers case and Unicode filename aliases on macOS. Different files with a copied id in one workspace are rejected; import a new document instead. Keep the canonical file and its .diwan history together when moving a workspace. Renaming within the same directory retains history, but a running session may need reopening. Moving only the poem retains current content, not history in its former directory. There is no dedicated migration command.
 
 ## Scan, export and existing chat
 

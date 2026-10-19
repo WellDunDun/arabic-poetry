@@ -121,9 +121,14 @@ class Store:
         skill = Path(__file__).resolve().parent.parent
         if self.path == skill or skill in self.path.parents:
             raise DiwanError('INVALID_PATH', 'Keep poem files outside the installed skill')
-        self.state = self.path.parent / '.diwan' / 'shared' / digest(str(self.path).encode())[:24]
+    @property
+    def state(self):
+        identity = self.get()['poem']['id'] if self.path.exists() else 'pending'
+        return self.path.parent / '.diwan' / 'shared' / identity
 
     def get(self):
+        if self.path.exists() and self.path.stat().st_nlink != 1:
+            raise DiwanError('INVALID_PATH', 'Hard-linked documents are unsupported; import a separate poem instead')
         raw = bounded_read(self.path)
         doc = validate_document(parse(raw))
         return {'schema_version': 1, 'path': str(self.path), 'version': digest(raw), 'poem': doc}
@@ -134,22 +139,36 @@ class Store:
             raise DiwanError('UNSUPPORTED_PLATFORM', 'Safe writes currently require macOS or Linux file locking', 6)
         if not self.path.parent.is_dir():
             raise DiwanError('NOT_FOUND', 'Create the poem directory first: ' + str(self.path.parent), 4)
-        self.state.mkdir(parents=True, exist_ok=True, mode=0o700)
+        private = self.path.parent / '.diwan'
+        private.mkdir(parents=True, exist_ok=True, mode=0o700)
         ignore = self.path.parent / '.diwan/.gitignore'
         try:
             with ignore.open('x') as stream:
                 stream.write('*\n')
         except FileExistsError:
             pass
-        lock = self.state / 'lock'
+        lock = private / 'write.lock'
         fd = os.open(lock, os.O_CREAT | os.O_RDWR, 0o600)
         try:
             fcntl.flock(fd, fcntl.LOCK_EX)
+            if self.path.exists():
+                self.bind()
             yield
         finally:
             os.close(fd)
 
+    def bind(self):
+        """Aliases share document history; unrelated copies must get a new id."""
+        self.state.mkdir(parents=True, exist_ok=True, mode=0o700)
+        binding = self.state / 'binding.json'
+        if binding.exists():
+            old = Path(parse(bounded_read(binding))['path'])
+            if old.exists() and not os.path.samefile(old, self.path):
+                raise DiwanError('DUPLICATE_ID', 'Two different files share this poem id. Import a new document with create instead of copying its JSON.', 5)
+        atomic_write(binding, encode({'path': str(self.path)}))
+
     def snapshot(self, envelope):
+        self.bind()
         folder = self.state / 'history'
         folder.mkdir(exist_ok=True, mode=0o700)
         raw = bounded_read(self.path)
@@ -165,6 +184,8 @@ class Store:
     def create(self, patch, dry_run=False):
         patch = dict(title=self.path.stem, text='', choices=[], suggestions={}, status='review', mode='auto', meter='') | patch
         validate_patch(patch)
+        if not self.path.parent.is_dir():
+            raise DiwanError('NOT_FOUND', 'Create the poem directory first: ' + str(self.path.parent), 4)
         if self.path.exists():
             current = self.get()
             if all(current['poem'][key] == patch[key] for key in FIELDS):
@@ -203,6 +224,7 @@ class Store:
         if not isinstance(request_id, str) or not re.fullmatch(r'[A-Za-z0-9_-]{1,80}', request_id):
             raise DiwanError('INVALID_REQUEST_ID', '--request-id must be 1–80 letters, digits, hyphens or underscores')
         fingerprint = digest(json.dumps({'patch': patch, 'if_version': expected}, ensure_ascii=False, sort_keys=True).encode())
+        self.get()
         if dry_run:
             current = self.get()
             self.check_version(current, expected)
@@ -244,6 +266,11 @@ class Store:
         if not 1 <= limit <= 100:
             raise DiwanError('INVALID_LIMIT', '--limit must be between 1 and 100')
         current = self.get()
+        binding = self.state / 'binding.json'
+        if binding.exists():
+            old = Path(parse(bounded_read(binding))['path'])
+            if old.exists() and not os.path.samefile(old, self.path):
+                raise DiwanError('DUPLICATE_ID', 'This copied JSON shares another document id; import a new poem instead.', 5)
         rows = {current['version']: {'version': current['version'], 'revision': current['poem']['revision'], 'current': True}}
         for path in (self.state / 'history').glob('*.json'):
             match = re.fullmatch(r'(\d+)-([0-9a-f]{64})\.json', path.name)

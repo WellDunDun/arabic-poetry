@@ -9,6 +9,8 @@ import sys
 import tempfile
 import select
 import shlex
+import shutil
+import unicodedata
 import threading
 import unittest
 from unittest.mock import patch
@@ -82,6 +84,44 @@ class DiwanCLITests(unittest.TestCase):
         self.assertEqual(sorted(r.returncode for r in results), [0, 5])
         self.assertEqual(self.cli('get', self.file)['poem']['revision'], 2)
         self.assertEqual(len(self.cli('history', self.file)['revisions']), 2)
+
+    def test_case_aliases_share_lock_history_and_cannot_export_over_poem(self):
+        first = self.create()
+        alias = self.file.with_name(self.file.name.upper())
+        if not alias.exists():
+            self.skipTest('Filesystem is case-sensitive')
+        self.assertEqual(storage.Store(alias).state, storage.Store(self.file).state)
+        def write(file, identity):
+            return subprocess.run([sys.executable,str(SCRIPTS/'diwan.py'),'update',str(file),'--if-version',first['version'],
+                '--request-id',identity,'--input','-','--json'], input=json.dumps({'text':identity}),text=True,capture_output=True,timeout=12,
+                env=dict(os.environ,PYTHONDONTWRITEBYTECODE='1'))
+        with concurrent.futures.ThreadPoolExecutor(2) as pool:
+            a = pool.submit(write,self.file,'alias-a');b = pool.submit(write,alias,'alias-b')
+            results = [a.result(),b.result()]
+        self.assertEqual(sorted(r.returncode for r in results),[0,5])
+        self.assertEqual(len(self.cli('history',alias)['revisions']),2)
+        before = self.file.read_bytes()
+        error = self.cli('export',self.file,'--format','txt','--output',alias,'--overwrite',status=2)
+        self.assertEqual(error['error']['code'],'INVALID_OUTPUT')
+        self.assertEqual(self.file.read_bytes(),before)
+
+    def test_unicode_aliases_reuse_document_identity(self):
+        path = self.root/'أمل.diwan.json'
+        first = storage.Store(path).create({'text':self.text,'title':'أمل'})
+        alias = path.with_name(unicodedata.normalize('NFD',path.name))
+        if not alias.exists():self.skipTest('Filesystem distinguishes Unicode normalization')
+        self.assertEqual(storage.Store(path).state,storage.Store(alias).state)
+        updated = storage.Store(alias).update({'text':'نص جديد'},first['version'],'unicode-edit')
+        self.assertEqual(storage.Store(path).get()['version'],updated['version'])
+        self.assertEqual(len(storage.Store(path).history()['revisions']),2)
+
+    def test_unrelated_copy_cannot_share_an_existing_poem_id(self):
+        first = self.create()
+        copied = self.root/'copy.diwan.json';shutil.copyfile(self.file,copied)
+        with self.assertRaises(storage.DiwanError) as error:
+            storage.Store(copied).update({'text':'overwrite'},first['version'],'duplicate')
+        self.assertEqual(error.exception.code,'DUPLICATE_ID')
+        self.assertEqual(self.cli('get',self.file)['version'],first['version'])
 
     def test_restore_is_new_revision_and_history_paginates(self):
         first = self.create()

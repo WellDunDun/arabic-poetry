@@ -7,14 +7,16 @@ function harness() {
   let state = { version: 'v1', poem: { id: 'one', title: 'نافذة', text: 'original', revision: 1,
     choices: [], suggestions: {}, status: 'review', mode: 'auto', meter: '' } };
   const operations = new Map(), callbacks = [], posted = [], messages = [];
-  let drop = false, writes = 0, poll;
-  function node() { return { textContent: '', appendChild() {}, prepend() {}, replaceChildren() {} }; }
+  let drop = false, invalid = false, writes = 0, poll;
+  const nodes = [];
+  function node() { const value = { textContent: '', appendChild() {}, prepend() {}, replaceChildren() {} }; nodes.push(value); return value; }
   const context = { window: { DiwanFile: { base: '/session' } }, crypto: require('node:crypto').webcrypto,
     setInterval(fn) { poll = fn; return 1; }, clearInterval() {},
     document: { createElement: node, querySelector: node, body: node() },
     async fetch(url, options) {
       if (!options.method) return { ok: true, async json() { return structuredClone(state); } };
       const request = JSON.parse(options.body); posted.push(request);
+      if (invalid) return { ok:false, status:400, async json() { return {error:{code:'INVALID_PATCH',message:'title must not be empty'}}; } };
       if (operations.has(request.request_id)) {
         const applied = operations.get(request.request_id);
         return { ok: true, async json() { return { ...structuredClone(state), replayed: true, applied_version: applied }; } };
@@ -33,7 +35,7 @@ function harness() {
   return { host, callbacks, posted, get state() { return state; }, get writes() { return writes; },
     async tick() { await new Promise(resolve => setImmediate(resolve)); await poll(); },
     external(text) { state = { version: 'v' + (state.poem.revision + 1), poem: { ...state.poem, text, revision: state.poem.revision + 1 } }; },
-    dropNext() { drop = true; } };
+    dropNext() { drop = true; }, invalidNext() { invalid = true; }, labels() { return nodes.map(n => n.textContent); } };
 }
 
 (async () => {
@@ -61,5 +63,10 @@ function harness() {
   advanced.external('newer agent update'); await advanced.tick();
   await assert.rejects(advanced.host.db.collection('poems').doc('one').set(staleBody), { code: 'CONFLICT' });
   assert.equal(advanced.state.poem.text, 'newer agent update');
+  const invalid = harness(); await invalid.tick(); invalid.invalidNext();
+  await assert.rejects(invalid.host.db.collection('poems').doc('one').set({...invalid.callbacks.at(-1),title:''}), {code:'INVALID_PATCH',status:400});
+  assert.equal(invalid.writes,0);
+  assert(invalid.labels().some(x=>x.includes('title must not be empty')));
+  assert(!invalid.labels().includes('إعادة محاولة الحفظ نفسه'));
   console.log('PASS shared-file transport: external refresh, stale preconditions, one-write retry and later-version preservation');
 })().catch(error => { console.error(error); process.exitCode = 1; });

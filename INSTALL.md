@@ -2,7 +2,7 @@
 
 Prefer a repository-backed plugin. It keeps the installed package connected to future releases. Use a standalone skill or ZIP only when the current host cannot install from a repository marketplace. The source is [WellDunDun/arabic-poetry](https://github.com/WellDunDun/arabic-poetry), and the marketplace is `arabic-poetry-plugins`.
 
-The first plugin release is unmerged and unreleased. The default commands below target the reviewed `main` branch after packaging merges. To test an unmerged preview, choose its review branch in the host's source controls; for this preview, use `codex/chatgpt-plugin`. Do not claim that an unreleased package is in a public plugin directory.
+The default commands below follow the reviewed `main` branch. The plugin is available from this repository and has not been listed in either public plugin directory.
 
 ## Claude web and Desktop
 
@@ -24,7 +24,7 @@ claude plugin list
 claude plugin details arabic-poetry
 ```
 
-For a review branch, append `#codex/chatgpt-plugin` to the repository URL when adding the marketplace. Avoid a local filesystem path for the default install; that tracks a local copy rather than fetching future Git releases.
+Avoid a local filesystem path for the default install; that tracks a local copy rather than fetching future Git releases.
 
 In a Claude Code session, open `/plugin`, choose **Marketplaces > arabic-poetry-plugins > Enable auto-update**. Third-party marketplaces have auto-update off by default. Updates apply at the next session; use `/reload-plugins` when the host offers it. Select the skill as `/arabic-poetry:arabic-poetry`.
 
@@ -43,8 +43,8 @@ Confirm the installed version changed, then start a new session. Refreshing a ma
 For a workspace with GitHub marketplace import, a workspace admin can connect the repository:
 
 1. Open **Admin > Plugins > Add > Import marketplace**.
-2. Set **Source** to `https://github.com/WellDunDun/arabic-poetry`, leave **Path** empty, and select `main` to follow reviewed releases. For this unmerged preview, select `codex/chatgpt-plugin` instead. A fixed commit does not follow later releases.
-3. Complete the host's normal GitHub authorization, inspect the import result, and make **Arabic Poetry** available to the intended test users.
+2. Set **Source** to `https://github.com/WellDunDun/arabic-poetry`, leave **Path** empty, and select `main` to follow reviewed releases. A fixed commit does not follow later releases.
+3. Complete the host's normal GitHub authorization, inspect the import result, and make **Arabic Poetry** available to the intended users.
 4. Install it from the workspace's **Plugins** list, start a new chat, and choose its poetry skill with `@`. Verify discovery and try a poem in that environment.
 
 New Git-backed workspace marketplaces have daily sync enabled. For an immediate refresh, use **Admin > Plugins > Marketplaces > Sync now**, inspect the sync report, then verify the installed skill in a new chat. This is the [workspace import and update route](https://learn.chatgpt.com/docs/enterprise/plugin-management); it is not a promise that every personal account can import a repository. If the account lacks these admin controls, explain the limitation. Do not ask a user to send passwords or turn a workspace-wide import into an unannounced personal install.
@@ -59,7 +59,7 @@ codex plugin add arabic-poetry@arabic-poetry-plugins
 codex plugin list --json
 ```
 
-For an unmerged preview, replace `main` with `codex/chatgpt-plugin`. In compatible desktop hosts, use the registered repository marketplace in **Plugins**. Select the installed skill from the skill picker. Native plugins may namespace it as `$arabic-poetry:arabic-poetry`; use the exact name shown by the host.
+In compatible desktop hosts, use the registered repository marketplace in **Plugins**. Select the installed skill from the skill picker. Native plugins may namespace it as `$arabic-poetry:arabic-poetry`; use the exact name shown by the host.
 
 To refresh and install the current version explicitly:
 

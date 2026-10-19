@@ -8,7 +8,7 @@ Use it for عمودي، تفعيلة، قصيدة نثر, evidence-led meter and
 
 ### Install the plugin, recommended
 
-Install from the repository-backed **Arabic Poetry** marketplace to keep receiving reviewed updates. Claude and ChatGPT/Codex use the same poetry skill inside their plugin packages. The first plugin release is still under review; it is not listed in either public plugin directory.
+Install from the repository-backed **Arabic Poetry** marketplace to keep receiving reviewed updates. Claude and ChatGPT/Codex use the same poetry skill inside their plugin packages. The plugin is not listed in either public plugin directory.
 
 Copy this into your agent:
 
@@ -16,7 +16,7 @@ Copy this into your agent:
 Install Arabic Poetry from the Git-backed plugin marketplace at https://github.com/WellDunDun/arabic-poetry for the agent I am using. Keep the installation connected to the repository for future updates, explain any update opt-in, and preserve my existing setup. Verify that the installed plugin exposes its arabic-poetry skill, then help me try a poem. If this browser account requires a workspace admin to import the marketplace, explain that limitation and the supported alternative. Do not replace this with a one-time skill copy unless plugin installation is unavailable.
 ```
 
-للتثبيت مع تلقّي التحديثات، استخدم إضافة **الشعر العربي** من دليل الإضافات المرتبط بالمستودع. تستخدم Claude وChatGPT/Codex المهارة نفسها داخل الإضافة. الإصدار الأول ما زال قيد المراجعة، ولم يُنشر في دليلي الإضافات العامين.
+للتثبيت مع تلقّي التحديثات، استخدم إضافة **الشعر العربي** من دليل الإضافات المرتبط بالمستودع. تستخدم Claude وChatGPT/Codex المهارة نفسها داخل الإضافة. لم تُنشر الإضافة في دليلي الإضافات العامين.
 
 ```text
 ثبّت إضافة الشعر العربي من دليل الإضافات المرتبط بمستودع Git على https://github.com/WellDunDun/arabic-poetry للوكيل الذي أستخدمه الآن. أبقِ التثبيت مرتبطًا بالمستودع لتلقّي التحديثات، ووضّح أي خيار يلزم تفعيله للتحديث، وحافظ على إعداداتي الحالية. تحقّق من ظهور مهارة arabic-poetry ضمن الإضافة المثبّتة، ثم ساعدني على تجربة قصيدة. إذا كان استيراد الدليل في حساب المتصفح يحتاج إلى مسؤول مساحة عمل، فوضّح ذلك والبديل المدعوم. لا تستبدل الإضافة بنسخة مستقلة من المهارة إلا إذا تعذّر تثبيت الإضافات.

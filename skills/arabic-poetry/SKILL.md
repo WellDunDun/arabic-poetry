@@ -54,7 +54,7 @@ Support classical and modern Arabic poetry equally. Judge each poem by its inten
 3. Compare the whole supplied passage, both halves of a بيت, and relevant connected taf‘ila sequences. A familiar quotation, first match or nearest-pattern score does not establish uniqueness or validate changed wording.
 4. Analyze الروي and the pronounced rhyme ending separately. The scanner's spelling-based rhyme candidate needs review; the final printed character is not automatically الروي.
 5. Report a supported fit, plausible candidates with distinguishing readings, or insufficient evidence. Locate mismatches before proposing repair. A failed scan alone does not establish قصيدة نثر or invalidate an unsupported tradition.
-6. For a concise request, give the likely form/meter, compact evidence and consequential assumptions. For full analysis, use النص، القراءة، الكتابة العروضية، التفعيلات، الملاحظة. Explain symbols and keep technical detail proportional.
+6. For a concise metrical explanation, give the likely meter, consequential assumptions and one complete hemistich's pronounced groups mapped to syllables and feet, without ellipses. For a shorter fragment, cover the whole fragment. Meter and foot names alone are not evidence. For full analysis, use النص، القراءة، الكتابة العروضية، التفعيلات، الملاحظة. Explain symbols and keep technical detail proportional.
 7. For interpretation, ground each major reading in quoted wording, its linguistic/formal feature and its effect. Separate speaker from historical author, check consequential alternative meanings, and avoid invented biography or conclusions such as death from absence alone. Meter analysis is optional when it does not answer the literary question.
 
 ## Evidence, tools and delivery

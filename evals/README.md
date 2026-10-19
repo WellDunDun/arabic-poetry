@@ -1,5 +1,11 @@
 # Poetry skill evaluations
 
+## Shared-file CLI
+
+The frozen [diwan-cli.json](diwan-cli.json) suite covers discovery, exact import, accepted conditional editing, stale saves, idempotent retry and restoring history as a new revision. Run `python3 evals/run_diwan_cli.py --skill /absolute/path/to/skill --output /absolute/new/temp/directory`. It uses fresh Codex sessions and disposable local files, with no browser, installs or publication. Inspect recorded commands and actual initial/final documents and history, then grade each frozen criterion. Software concurrency/crash tests and real browser checks are separate from these agent cases.
+
+The [shared-file trial](results/2026-10-19-shared-cli/report.md) is the current candidate: six CLI cases, nine automatic-routing cases, four explicit-launch cases and eight unchanged poetry cases. It retains one failed pronoun-choice disclosure criterion in the poetry run. Original historical baselines are reused by reference, not rerun. The default evidence checker validates this candidate's original poetry records and package inventory; additional CLI/routing grades are recorded separately and remain reviewer judgments.
+
 ## Automatic drafting triggers
 
 The frozen [diwan-auto-open.json](diwan-auto-open.json) suite tests English/Arabic composition and revision without an explicit editor request, quick interpretation and meter analysis, composition/revision chat-only overrides, and revision with no local viewer. Its baseline is PR #9 at `8fbdef835a02773d7153ba4c523b2e1de7e6663a`. Requests and criteria are independent of the older suites and were fixed before the comparison runs.
@@ -61,4 +67,4 @@ The [Diwan launch trial](results/2026-10-19-diwan-launch/report.md) records the 
 
 The [scansion explanation follow-up](results/2026-10-19-scansion-explanation/report.md) records the earlier package against the same eight poetry requests and four launch requests. It preserves the earlier failed response and references historical baseline/browser evidence separately from the fresh candidate executions.
 
-The [automatic-opening trial](results/2026-10-19-auto-open/report.md) records the current package: a fresh nine-case before/after routing comparison, all eight frozen poetry cases, and all four original launch cases. It retains source-preservation diagnostic failures separately from the final execution and keeps the earlier suites unchanged.
+The [automatic-opening trial](results/2026-10-19-auto-open/report.md) records the preceding package: a fresh nine-case before/after routing comparison, all eight frozen poetry cases, and all four original launch cases. It retains source-preservation diagnostic failures separately from the final execution and keeps the earlier suites unchanged.

@@ -47,6 +47,7 @@ PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s skills/arabic-poetry/t
 node skills/arabic-poetry/tests/workbench_state.js
 node skills/arabic-poetry/tests/workbench_host.js
 node skills/arabic-poetry/tests/workbench_file.js
+node skills/arabic-poetry/tests/workbench_shared.js
 PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s evals -p 'test_*.py'
 python3 evals/check_results.py
 git diff --check

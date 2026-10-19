@@ -52,7 +52,7 @@
       busy = true;
       try {
         const value = await api('/document'); latest = value;
-        if (seen !== value.version) { seen = value.version; callback(snapshot(value)); }
+        if (seen !== value.version && callback(snapshot(value)) !== false) seen = value.version;
       } catch (error) {
         if (!latest && failed) failed(error);
         panel('تعذّر قراءة الملف. بقيت مسودتك في المحرر؛ يمكنك تنزيلها.', 'retry');

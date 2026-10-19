@@ -16,6 +16,12 @@ REQUEST_TTL = 10 * 60
 ID = re.compile(r'^[0-9a-f]{32}$')
 
 
+class RequestError(ValueError):
+    def __init__(self, code, message, exit_code):
+        super().__init__(message)
+        self.code, self.exit_code = code, exit_code
+
+
 def write_json(path, value, *, overwrite=True):
     """Publish complete JSON atomically, optionally rejecting an existing file."""
     temp = path.with_name(path.name + '.' + uuid.uuid4().hex + '.tmp')
@@ -214,20 +220,22 @@ def pending(workspace):
 def respond(workspace, identity, value):
     """Publish one complete answer; concurrent responders cannot overwrite it."""
     queue = queue_dirs(workspace)
-    if not ID.fullmatch(identity) or not (queue / 'requests' / (identity + '.json')).exists():
-        raise ValueError('Unknown request ID')
+    if not ID.fullmatch(identity):
+        raise RequestError('INVALID_REQUEST_ID', 'Unknown request ID format; expected 32 lowercase hexadecimal characters', 2)
+    if not (queue / 'requests' / (identity + '.json')).exists():
+        raise RequestError('NOT_FOUND', 'Unknown request ID; use pending to select a live request', 4)
     if (queue / 'cancelled' / (identity + '.json')).exists():
-        raise ValueError('Request was cancelled')
+        raise RequestError('CONFLICT', 'Request was cancelled; use pending to select a live request', 5)
     if (queue / 'responses' / (identity + '.json')).exists():
-        raise ValueError('Request already has a response')
+        raise RequestError('CONFLICT', 'Request already has a response; do not resubmit it', 5)
     if (queue / 'requests' / (identity + '.json')).stat().st_mtime < time.time() - REQUEST_TTL:
-        raise ValueError('Request expired')
+        raise RequestError('NOT_FOUND', 'Request expired; use pending to select a live request', 4)
     if not isinstance(value, (dict, list)):
-        raise ValueError('Response must be a JSON object or array')
+        raise RequestError('INVALID_RESPONSE', 'Response must be a JSON object or array', 2)
     try:
         write_json(queue / 'responses' / (identity + '.json'), value, overwrite=False)
     except FileExistsError as error:
-        raise ValueError('Request already has a response') from error
+        raise RequestError('CONFLICT', 'Request already has a response; do not resubmit it', 5) from error
 
 
 def main():

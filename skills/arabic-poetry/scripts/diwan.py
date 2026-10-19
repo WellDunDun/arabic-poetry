@@ -279,7 +279,10 @@ def run(args, commands):
         store.check_binding()
         if not (store.state/'agent/.diwan/requests').is_dir():
             raise DiwanError('NOT_FOUND', 'No pending request workspace; open Diwan and ask the existing chat to handle a request', 4)
-        serve_diwan.respond(store.state / 'agent', args.id, parse(input_bytes(args.input)))
+        try:
+            serve_diwan.respond(store.state / 'agent', args.id, parse(input_bytes(args.input)))
+        except serve_diwan.RequestError as error:
+            raise DiwanError(error.code, str(error), error.exit_code) from error
         return {'id': args.id, 'status': 'response_saved', 'poem_changed': False}
 
 

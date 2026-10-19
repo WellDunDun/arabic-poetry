@@ -12,6 +12,7 @@ import shlex
 import shutil
 import unicodedata
 import threading
+import time
 import unittest
 from unittest.mock import patch
 import urllib.error
@@ -305,6 +306,33 @@ class DiwanCLITests(unittest.TestCase):
         with self.assertRaises(urllib.error.HTTPError) as error: urllib.request.urlopen(request)
         self.assertEqual(error.exception.code, 403)
         error.exception.close()
+
+    def test_response_failures_use_actionable_exit_codes_without_writing(self):
+        initial = self.create()
+        queue = serve_diwan.queue_dirs(storage.Store(self.file).state/'agent')
+        cases = [('unknown',4,'NOT_FOUND'),('expired',4,'NOT_FOUND'),
+                 ('answered',5,'CONFLICT'),('cancelled',5,'CONFLICT'),
+                 ('invalid-value',2,'INVALID_RESPONSE'),('invalid-id',2,'INVALID_REQUEST_ID')]
+        for index,(kind,status,code) in enumerate(cases):
+            with self.subTest(kind=kind):
+                identity = f'{index:032x}'
+                request = queue/'requests'/(identity+'.json')
+                response = queue/'responses'/(identity+'.json')
+                if kind not in ('unknown','invalid-id'):
+                    serve_diwan.write_json(request,{'id':identity,'input':'test'})
+                if kind == 'expired':
+                    expired = time.time()-serve_diwan.REQUEST_TTL-5
+                    os.utime(request,(expired,expired))
+                if kind == 'answered':serve_diwan.write_json(response,{'answer':'keep existing'})
+                if kind == 'cancelled':serve_diwan.write_json(queue/'cancelled'/(identity+'.json'),{'cancelled':True})
+                if kind == 'invalid-id':identity = '../invalid'
+                error = self.cli('respond',self.file,'--id',identity,'--input','-',
+                                 input='42' if kind=='invalid-value' else '{}',status=status)
+                self.assertEqual(error['error']['code'],code)
+                self.assertNotIn('inspect get',error['error']['message'])
+                if kind == 'answered':self.assertEqual(json.loads(response.read_text()),{'answer':'keep existing'})
+                else:self.assertFalse(response.exists())
+        self.assertEqual(self.cli('get',self.file)['version'],initial['version'])
 
     def test_open_reuses_owned_session_and_stop_does_not_modify_poem(self):
         before = self.create()['version']

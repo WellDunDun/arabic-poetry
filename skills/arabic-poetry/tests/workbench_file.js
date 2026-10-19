@@ -38,7 +38,9 @@ function harness() {
     dropNext() { drop = true; }, invalidNext() { invalid = true; }, labels() { return nodes.map(n => n.textContent); } };
 }
 
-(async () => {
+module.exports = { harness };
+
+if (require.main === module) (async () => {
   const h = harness(); await h.tick();
   const original = h.callbacks.at(-1);
   h.external('agent saved'); await h.tick();

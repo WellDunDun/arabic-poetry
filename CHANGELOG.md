@@ -2,6 +2,8 @@
 
 ## 0.2.0, shared-file Diwan CLI, unreleased
 
+- Refresh a clean editor after closing or cancelling an edit that deferred an agent save. Preserve literal bulk-edit whitespace and avoid a revision for unchanged text. Report missing, conflicting and invalid queue responses with their documented CLI error codes.
+
 - Explicitly disclose consequential pronoun readings introduced by tashkeel, while preserving readings fixed by supplied marks or context.
 
 - Add a bundled CLI for discovery, import/create, reading, conditional updates, history, restore, local opening, scanning, export and existing-agent requests.

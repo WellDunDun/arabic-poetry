@@ -1632,9 +1632,19 @@ ${linesOf(p).join('\n')}
   document.querySelectorAll('#modeSeg button').forEach(b => { b.onclick = () => setMode(b.dataset.mode); });
   $('meterSel').onchange = e => { const p = cur(); if (!p) return; p.meter = e.target.value; save(p); render(); };
   $('resetBtn').onclick = () => { const p = cur(); if (!p) return; p.mode = 'auto'; p.meter = ''; save(p); render(); toast('عاد الاكتشاف التلقائي'); };
-  $('bulkBtn').onclick = () => { const p = cur(); if (!p) return; $('bulk').value = p.text; $('bulkWrap').hidden = false; $('lines').hidden = true; $('bulk').focus(); };
-  $('bulkCancel').onclick = () => { $('bulkWrap').hidden = true; $('lines').hidden = false; };
-  $('bulkSave').onclick = () => { const p = cur(); p.text = $('bulk').value.replace(/\r/g, '').replace(/\n{3,}/g, '\n\n').trim(); $('bulkWrap').hidden = true; $('lines').hidden = false; save(p); render(); };
+  let bulkInitialText = null;
+  $('bulkBtn').onclick = () => { const p = cur(); if (!p) return; $('bulk').value = p.text; bulkInitialText = $('bulk').value; $('bulkWrap').hidden = false; $('lines').hidden = true; $('bulk').focus(); };
+  $('bulkCancel').onclick = () => { bulkInitialText = null; $('bulkWrap').hidden = true; $('lines').hidden = false; };
+  $('bulkSave').onclick = () => {
+    const p = cur(), value = $('bulk').value;
+    $('bulkWrap').hidden = true; $('lines').hidden = false;
+    if (!window.DiwanFile || value !== bulkInitialText) {
+      p.text = window.DiwanFile ? value : value.replace(/\r/g, '').replace(/\n{3,}/g, '\n\n').trim();
+      save(p);
+    }
+    bulkInitialText = null;
+    render();
+  };
   if (window.DiwanFile) {
     $('newBtn').hidden = true;
     window.DiwanFileDraft = () => {
@@ -1772,6 +1782,7 @@ ${linesOf(p).join('\n')}
       // keep local edits that are still waiting to be written
       const local = new Map(poems.map(p => [p.id, p]));
       const editingShared = window.DiwanFile && (editing !== null || !$('bulkWrap').hidden || !$('pop').hidden);
+      const deferredShared = window.DiwanFile && incoming.some(x => local.has(x.id) && (dirty.has(x.id) || editingShared && x.id === curId));
       poems = incoming.map(x => ((dirty.has(x.id) || editingShared && x.id === curId) && local.has(x.id)) ? local.get(x.id) : JSON.parse(JSON.stringify(x)));
       for (const id of dirty) if (!poems.find(p => p.id === id) && local.has(id)) poems.push(local.get(id));
       for (const p of poems) { p.choices = p.choices || []; p.suggestions = p.suggestions || {}; }
@@ -1779,6 +1790,7 @@ ${linesOf(p).join('\n')}
       if (!cur() && poems.length) curId = poems[poems.length - 1].id;
       const typing = document.activeElement && document.activeElement.id && document.activeElement.id.startsWith('askin-');
       if (editing === null && $('bulkWrap').hidden && $('pop').hidden && !typing) render(); else renderSelect();
+      return !deferredShared;
     }, () => { toast('انقطع الاتصال بالديوان'); });
   })();
 })();

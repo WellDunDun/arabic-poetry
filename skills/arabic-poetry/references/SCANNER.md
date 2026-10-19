@@ -18,7 +18,7 @@ Use `coverage raw.txt` when checking how much tashkeel the poet supplied. `full`
 
 ## When the poet requests tashkeel review
 
-Keep the raw text and proposed reading separate. Present the fully vocalized proposal in the poet's layout and list the consequential choices only, such as active/passive «عَلِمَ / عُلِمَ», a shadda, a role-changing case ending, or a line-end pause versus lengthening. If the poet left a hemistich-final letter bare and its reading remains undecided, leave that final mark open in the proposal so the text agrees with the choice list. Never remove a supplied mark to create that ambiguity.
+Keep the raw text and proposed reading separate. Present the fully vocalized proposal in the poet's layout and list the consequential choices only, such as an unmarked pronoun’s addressee/referent («كتابكَ / كتابكِ»), active/passive «عَلِمَ / عُلِمَ», a shadda, a role-changing case ending, or a line-end pause versus lengthening. If the poet left a hemistich-final letter bare and its reading remains undecided, leave that final mark open in the proposal so the text agrees with the choice list. Never remove a supplied mark to create that ambiguity.
 
 For example, a real decision list can say: «١. عَلِمَ أم عُلِمَ؟ اخترتُ المعلوم مؤقتًا» and «٢. نهاية الأمل تركتُها مفتوحة: وقف أم إشباع؟». Use only choices actually present in the poem.
 

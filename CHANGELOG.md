@@ -2,6 +2,8 @@
 
 ## 0.2.0, shared-file Diwan CLI, unreleased
 
+- Explicitly disclose consequential pronoun readings introduced by tashkeel, while preserving readings fixed by supplied marks or context.
+
 - Add a bundled CLI for discovery, import/create, reading, conditional updates, history, restore, local opening, scanning, export and existing-agent requests.
 - Share one `.diwan.json` poem document between editor and agent. Preserve exact imported text and keep title/review state with it. Browser edits save to that file; clean editors refresh when another writer saves.
 - Reject stale saves, retain conflicting browser drafts, and provide recovery controls. Add atomic file replacement, immutable revision snapshots and save identities that recover interrupted acknowledgements without duplicating a save.

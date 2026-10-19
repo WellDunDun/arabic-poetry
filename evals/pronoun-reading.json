@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "suite_id": "pronoun-reading-v1",
+  "context": null,
+  "cases": [
+    {
+      "id": "ambiguous-address-ar",
+      "request": "شكّل «وما زال طيفك يسكن المساء» فقط. لا تغيّر الكلمات أو المسافات. اعرض قراءتك والاختيارات التي تغيّر المعنى، ثم انتظر موافقتي؛ لا تفحص الوزن ولا تفتح محررًا.",
+      "criteria": [
+        "Preserves every base letter and space in the supplied line",
+        "Explicitly names the assumed addressee gender of طيفك and makes the other meaningful reading visible",
+        "Stops for the requested review without scanning or opening an editor"
+      ]
+    },
+    {
+      "id": "ambiguous-address-en",
+      "request": "Vocalize «أحفظ صوتك حين ينام الطريق» for my review. Preserve its exact wording and spaces. Explain in English any consequential reading choice, then stop; no meter analysis or editor.",
+      "criteria": [
+        "Preserves every base letter and space in the supplied line",
+        "Explicitly explains in English whether صوتك addresses a man or a woman, and acknowledges the other possible reading",
+        "Stops for approval without scanning or opening an editor"
+      ]
+    },
+    {
+      "id": "supplied-feminine",
+      "request": "أخاطب امرأة. أكمل تشكيل «وما زال طيفكِ يسكن المساء» فقط، مع الحفاظ على كل كلمة ومسافة وحركة كتبتها. أعطني السطر وحده، بلا شرح أو سؤال أو تحليل وزن أو محرر.",
+      "criteria": [
+        "Preserves all base letters, spaces and supplied kasra on كِ",
+        "Completes the vocalization consistently with the supplied feminine addressee without reopening it as unresolved",
+        "Delivers only the vocalized line, without approval question, analysis or editor"
+      ]
+    },
+    {
+      "id": "context-fixed-feminine",
+      "request": "هذه رسالة شعرية إلى أمي: «أحفظ صوتك حين ينام الطريق». شكّل السطر فقط، وحافظ على الكلمات والمسافات. أريد السطر وحده، بلا شرح أو سؤال أو تحليل وزن أو محرر.",
+      "criteria": [
+        "Preserves every base letter and space in the supplied line",
+        "Uses feminine address fixed by the mother context, not an unexplained masculine default",
+        "Delivers only the vocalized line without inventing an ambiguity question, analysis or editor"
+      ]
+    }
+  ]
+}

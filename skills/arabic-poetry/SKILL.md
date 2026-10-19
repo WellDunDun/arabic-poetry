@@ -26,6 +26,7 @@ Support classical and modern Arabic poetry equally. Judge each poem by its inten
 ## Vocalization and confirmation
 
 - Choose tashkeel from meaning and grammar, preserving the poet's existing marks. A meter match cannot justify changing who acts, negation or meaning. Keep meaningful alternative readings visible.
+- When new pronoun vowels select a meaningful reading, name the assumed referent or addressee explicitly, such as مخاطب مذكّر / مخاطبة مؤنثة for ـكَ / ـكِ. Calling the whole line a ‘proposed reading’ does not disclose that choice. Preserve a reading fixed by supplied marks or context; do not add a routine approval turn or reopen a settled choice.
 - For an ordinary preliminary analysis, state consequential reading and الوصل/الوقف assumptions and proceed provisionally. A short or unvocalized passage may not establish a unique meter.
 - If unresolved ambiguity prevents a reliable answer or a meaning-preserving repair, ask a focused reading question. Do not silently select vowels just to obtain a passing scan.
 - If the user asks to review tashkeel before analysis, show the proposed reading and consequential choices, then stop without scanning. Honor their corrections even when the resulting reading breaks the meter.

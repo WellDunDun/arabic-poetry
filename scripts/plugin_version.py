@@ -17,10 +17,17 @@ def version_tuple(value):
 
 def declarations(root):
     documents = {name: json.loads((root / name).read_text(encoding='utf-8')) for name in FILES}
+    return validate_declarations(documents)
+
+
+def validate_declarations(documents):
+    """Check the same release declarations from files or pinned Git objects."""
     catalog = documents[FILES[2]]
     if len(catalog['plugins']) != 1 or catalog['plugins'][0]['name'] != 'arabic-poetry':
         raise ValueError('Expected one arabic-poetry plugin in the Claude marketplace')
     entries = [documents[FILES[0]], documents[FILES[1]], catalog['plugins'][0]]
+    if any(entry.get('name') != 'arabic-poetry' for entry in entries):
+        raise ValueError('Expected arabic-poetry in every plugin declaration')
     versions = [entry.get('version') for entry in entries]
     for value in versions:
         version_tuple(value)

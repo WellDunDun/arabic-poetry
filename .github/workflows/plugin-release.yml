@@ -1,0 +1,72 @@
+name: Plugin release
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Release checks
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    outputs:
+      publish: ${{ steps.plan.outputs.publish }}
+      version: ${{ steps.plan.outputs.version }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Install pinned release tooling
+        run: |
+          python3 -m venv "$RUNNER_TEMP/release-venv"
+          "$RUNNER_TEMP/release-venv/bin/python" -m pip install --require-hashes -r scripts/release-requirements.txt
+          echo "$RUNNER_TEMP/release-venv/bin" >> "$GITHUB_PATH"
+      - name: Test release and version guards
+        run: python3 -m unittest discover -s tests -p 'test_*.py'
+      - name: Validate version and bilingual notes
+        id: plan
+        env:
+          BEFORE: ${{ github.event.before || github.event.pull_request.base.sha }}
+          COMMIT: ${{ github.sha }}
+        run: >-
+          python3 scripts/github_release.py
+          --before "$BEFORE" --commit "$COMMIT"
+          --repository "$GITHUB_REPOSITORY" --github-output "$GITHUB_OUTPUT"
+
+  publish:
+    name: Publish versioned release
+    needs: check
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.check.outputs.publish == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    concurrency:
+      group: plugin-release-${{ needs.check.outputs.version }}
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Install pinned release tooling
+        run: |
+          python3 -m venv "$RUNNER_TEMP/release-venv"
+          "$RUNNER_TEMP/release-venv/bin/python" -m pip install --require-hashes -r scripts/release-requirements.txt
+          echo "$RUNNER_TEMP/release-venv/bin" >> "$GITHUB_PATH"
+      - name: Publish reviewed notes at the merge commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BEFORE: ${{ github.event.before }}
+          COMMIT: ${{ github.sha }}
+        run: >-
+          python3 scripts/github_release.py --publish
+          --before "$BEFORE" --commit "$COMMIT" --repository "$GITHUB_REPOSITORY"

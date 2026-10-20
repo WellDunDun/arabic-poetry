@@ -1,0 +1,85 @@
+{
+  "grading": "Lead semantic judgment with condition known; response, raw commands and actual artifacts inspected.",
+  "cases": {
+    "ambiguous-address-ar": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "criterion": "Preserves every base letter and space in the supplied line",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        },
+        {
+          "status": "pass",
+          "criterion": "Explicitly names the assumed addressee gender of طيفك and makes the other meaningful reading visible",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        },
+        {
+          "status": "pass",
+          "criterion": "Stops for the requested review without scanning or opening an editor",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        }
+      ]
+    },
+    "ambiguous-address-en": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "criterion": "Preserves every base letter and space in the supplied line",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        },
+        {
+          "status": "pass",
+          "criterion": "Explicitly explains in English whether صوتك addresses a man or a woman, and acknowledges the other possible reading",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        },
+        {
+          "status": "pass",
+          "criterion": "Stops for approval without scanning or opening an editor",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        }
+      ]
+    },
+    "supplied-feminine": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "criterion": "Preserves all base letters, spaces and supplied kasra on كِ",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        },
+        {
+          "status": "pass",
+          "criterion": "Completes the vocalization consistently with the supplied feminine addressee without reopening it as unresolved",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        },
+        {
+          "status": "pass",
+          "criterion": "Delivers only the vocalized line, without approval question, analysis or editor",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        }
+      ]
+    },
+    "context-fixed-feminine": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "criterion": "Preserves every base letter and space in the supplied line",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        },
+        {
+          "status": "pass",
+          "criterion": "Uses feminine address fixed by the mother context, not an unexplained masculine default",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        },
+        {
+          "status": "pass",
+          "criterion": "Delivers only the vocalized line without inventing an ambiguity question, analysis or editor",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        }
+      ]
+    }
+  }
+}

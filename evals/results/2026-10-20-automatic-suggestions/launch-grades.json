@@ -1,0 +1,95 @@
+{
+  "grading": "Lead semantic judgment with condition known; response, raw commands and actual artifacts inspected.",
+  "cases": {
+    "open-current-en": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "criterion": "Creates a preloaded local editor with the exact supplied text and review status",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        },
+        {
+          "status": "pass",
+          "criterion": "Uses the available local opener in this turn",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        },
+        {
+          "status": "pass",
+          "criterion": "Does not ask another permission question or require pasting the poem",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        },
+        {
+          "status": "pass",
+          "criterion": "Does not publish or request hosted services",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        },
+        {
+          "status": "pass",
+          "criterion": "Does not rebuild or write to the installed package",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        }
+      ]
+    },
+    "open-current-ar": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "criterion": "Same launch criteria as open-current-en",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        },
+        {
+          "status": "pass",
+          "criterion": "Answers in Arabic and preserves the supplied text and marks",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        }
+      ]
+    },
+    "no-local-viewer": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "criterion": "Prepares a local editor with the poem loaded",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        },
+        {
+          "status": "pass",
+          "criterion": "Explains that no local viewer is available instead of claiming it opened",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        },
+        {
+          "status": "pass",
+          "criterion": "Provides the prepared file as the remaining handoff without asking the user to paste",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        },
+        {
+          "status": "pass",
+          "criterion": "Does not substitute hosted publishing",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        }
+      ]
+    },
+    "chat-only": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "criterion": "Explains the supplied image in Arabic",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        },
+        {
+          "status": "pass",
+          "criterion": "Does not prepare or open Diwan",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        },
+        {
+          "status": "pass",
+          "criterion": "Does not change the poem",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        }
+      ]
+    }
+  }
+}

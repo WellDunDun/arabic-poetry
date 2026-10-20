@@ -1,0 +1,29 @@
+{
+  "source_commit": "9e9e90e234ce2367fe0821b80bf92bbc0a6b5c46",
+  "poetry_cases": 8,
+  "other_suites": [
+    {
+      "suite": "diwan-auto-open",
+      "cases": 9,
+      "pass": 9
+    },
+    {
+      "suite": "diwan-launch",
+      "cases": 4,
+      "pass": 4
+    },
+    {
+      "suite": "pronoun-reading",
+      "cases": 4,
+      "pass": 4
+    },
+    {
+      "suite": "diwan-cli",
+      "cases": 6,
+      "pass": 6
+    }
+  ],
+  "live_client_cases": 2,
+  "all_fresh_agent_cases": 31,
+  "notes": "Historical baseline conditions retained by reference. A diagnostic sample does not establish broad literary accuracy."
+}

@@ -1,15 +1,17 @@
-"""Serve Diwan with a local file queue for an existing agent. No model calls."""
+"""Serve Diwan with automatic local-client suggestions or a manual chat queue."""
 import argparse
 import json
 import os
 import re
 import secrets
+import signal
 import threading
 import time
 import uuid
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urlsplit
+from diwan_agent import AgentError, Dispatcher, MAX_PROMPT, select_agent
 
 MAX_BODY = 2_000_000
 REQUEST_TTL = 10 * 60
@@ -38,7 +40,7 @@ def write_json(path, value, *, overwrite=True):
 def queue_dirs(workspace):
     """Keep the bridge's files together, separate from the installed skill."""
     queue = Path(workspace).resolve() / '.diwan'
-    for name in ('requests', 'responses', 'cancelled'):
+    for name in ('requests', 'responses', 'cancelled', 'failed'):
         (queue / name).mkdir(parents=True, exist_ok=True)
     try:
         with (queue / '.gitignore').open('x', encoding='utf-8') as ignore:
@@ -52,16 +54,19 @@ def open_requests(queue):
     """List unanswered, uncancelled files, including expired requests."""
     return [path for path in (queue / 'requests').glob('*.json')
             if not (queue / 'responses' / path.name).exists()
+            and not (queue / 'failed' / path.name).exists()
             and not (queue / 'cancelled' / path.name).exists()]
 
 
-def make_server(workspace, port=None, page=None, document=None):
+def make_server(workspace, port=None, page=None, document=None, agent='manual'):
     """Start a loopback session and invalidate requests from earlier sessions."""
     if page is not None:
         page = Path(page).resolve()
         if Path(workspace).resolve() not in page.parents or page.suffix != '.html' or not page.is_file():
             raise ValueError('Prepared page must be an HTML file inside the poem workspace')
+    client = select_agent(agent)
     queue = queue_dirs(workspace)
+    dispatcher = Dispatcher(client, queue, respond, write_json) if client else None
     port_file = queue / 'port.json'
     if port is None:
         port = 0
@@ -115,7 +120,8 @@ def make_server(workspace, port=None, page=None, document=None):
                 return
             if path in ('/', '/diwan.html'):
                 config = {'base': prefix, 'workspace': str(Path(workspace).resolve()),
-                          'script': str(Path(__file__).resolve())}
+                          'script': str(Path(__file__).resolve()), 'agent': client.name if client else 'manual',
+                          'manual': agent == 'manual'}
                 encoded = json.dumps(config, ensure_ascii=False).replace('<', '\\u003c')
                 html = (page or assets / 'diwan.html').read_text(encoding='utf-8')
                 html = '<script>window.DiwanLocal=' + encoded + ';</script>\n' + html
@@ -131,6 +137,8 @@ def make_server(workspace, port=None, page=None, document=None):
                     self.send(404, {'error': 'Unknown request'})
                 elif (queue / 'cancelled' / (identity + '.json')).exists():
                     self.send(410, {'error': 'Cancelled'})
+                elif (queue / 'failed' / (identity + '.json')).exists():
+                    self.send(502, (queue / 'failed' / (identity + '.json')).read_bytes())
                 elif response.exists():
                     self.send(200, response.read_bytes())
                 else:
@@ -167,13 +175,25 @@ def make_server(workspace, port=None, page=None, document=None):
                         isinstance(t.get('content'), str) for t in value)):
                     self.send(400, {'error': 'Expected a prompt or conversation turns'})
                     return
+                if not value or len(json.dumps(value, ensure_ascii=False).encode('utf-8')) > MAX_PROMPT:
+                    self.send(400, {'error': {'code': 'PROMPT_TOO_LARGE', 'message': 'Use a nonempty poetry request under 128000 UTF-8 bytes.'}})
+                    return
                 identity = uuid.uuid4().hex
                 write_json(queue / 'requests' / (identity + '.json'), {'id': identity, 'input': value})
+                if dispatcher:
+                    try:
+                        dispatcher.submit(identity, value)
+                    except AgentError as error:
+                        write_json(queue / 'cancelled' / (identity + '.json'), {'cancelled': True})
+                        self.send(409, {'error': {'code': error.code, 'message': str(error)}})
+                        return
                 self.send(201, {'id': identity})
             elif path.startswith('/cancel/') and ID.fullmatch(path.split('/')[-1]):
                 identity = path.split('/')[-1]
                 with lock:
                     write_json(queue / 'cancelled' / (identity + '.json'), {'cancelled': True})
+                if dispatcher:
+                    dispatcher.cancel(identity)
                 self.send(200, {'cancelled': True})
             else:
                 self.send(404, {'error': 'Not found'})
@@ -199,8 +219,14 @@ def make_server(workspace, port=None, page=None, document=None):
             except OSError:
                 self.send(500, {'error': {'code': 'IO_ERROR', 'message': 'Save may be incomplete. Keep the draft and retry the same request id, or inspect the document with get.'}})
 
+    class Server(ThreadingHTTPServer):
+        def server_close(self):
+            if dispatcher:
+                dispatcher.close()
+            super().server_close()
+
     try:
-        server = ThreadingHTTPServer(('127.0.0.1', port), Handler)
+        server = Server(('127.0.0.1', port), Handler)
     except OSError as error:
         raise OSError(f'Diwan port {port} is unavailable. Stop the existing server or choose --port explicitly; a different port uses separate browser storage.') from error
     try:
@@ -210,6 +236,7 @@ def make_server(workspace, port=None, page=None, document=None):
     except OSError:
         server.server_close()
         raise
+    server.diwan_agent = client.name if client else 'manual'
     return server, f'http://127.0.0.1:{server.server_port}{prefix}/diwan.html'
 
 
@@ -233,6 +260,8 @@ def respond(workspace, identity, value):
         raise RequestError('CONFLICT', 'Request was cancelled; use pending to select a live request', 5)
     if (queue / 'responses' / (identity + '.json')).exists():
         raise RequestError('CONFLICT', 'Request already has a response; do not resubmit it', 5)
+    if (queue / 'failed' / (identity + '.json')).exists():
+        raise RequestError('CONFLICT', 'Request failed; request new suggestions instead of answering it', 5)
     if (queue / 'requests' / (identity + '.json')).stat().st_mtime < time.time() - REQUEST_TTL:
         raise RequestError('NOT_FOUND', 'Request expired; use pending to select a live request', 4)
     if not isinstance(value, (dict, list)):
@@ -243,6 +272,26 @@ def respond(workspace, identity, value):
         raise RequestError('CONFLICT', 'Request already has a response; do not resubmit it', 5) from error
 
 
+def run_server(server):
+    """Drain owned client workers on normal stop, Ctrl-C, SIGTERM and SIGHUP."""
+    previous = {}
+    def stop(signum, frame):
+        raise KeyboardInterrupt
+    if threading.current_thread() is threading.main_thread():
+        for name in ('SIGTERM', 'SIGHUP'):
+            number = getattr(signal, name, None)
+            if number is not None:
+                previous[number] = signal.signal(number, stop)
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        pass
+    finally:
+        server.server_close()
+        for number, handler in previous.items():
+            signal.signal(number, handler)
+
+
 def main():
     """Run the selected local server, pending-list or response command."""
     parser = argparse.ArgumentParser(description=__doc__)
@@ -250,22 +299,19 @@ def main():
     parser.add_argument('--workspace', required=True, help='Writable poem workspace, outside the installed skill')
     parser.add_argument('--port', type=int, help='Override the saved workspace port; 0 chooses a new free port')
     parser.add_argument('--page', type=Path, help='Prepared Diwan HTML inside the workspace, for serve')
+    parser.add_argument('--agent', choices=('auto', 'claude', 'codex', 'manual'), default='auto',
+                        help='AI client for serve; auto detects installed Codex/Claude, manual queues for the existing chat')
     parser.add_argument('--id', help='Request ID for respond')
     parser.add_argument('--response', type=Path, help='UTF-8 JSON answer file for respond')
     args = parser.parse_args()
     if args.action == 'serve':
         try:
-            server, url = make_server(args.workspace, args.port, args.page)
+            server, url = make_server(args.workspace, args.port, args.page, agent=args.agent)
         except (OSError, ValueError) as error:
             parser.exit(1, str(error) + '\n')
         print(url, flush=True)
-        print('Uses the existing agent via local request files. No agent is started automatically.', flush=True)
-        try:
-            server.serve_forever()
-        except KeyboardInterrupt:
-            pass
-        finally:
-            server.server_close()
+        print('AI: ' + server.diwan_agent + '. Automatic requests use the selected installed client; manual requests wait for your chat.', flush=True)
+        run_server(server)
     elif args.action == 'pending':
         print(json.dumps(pending(args.workspace), ensure_ascii=False, indent=2))
     else:

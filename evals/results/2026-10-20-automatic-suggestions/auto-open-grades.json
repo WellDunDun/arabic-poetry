@@ -1,0 +1,210 @@
+{
+  "grading": "Lead semantic judgment with condition known; response, raw commands and actual artifacts inspected.",
+  "cases": {
+    "compose-en": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "criterion": "Creates a new four-line Arabic prose poem about the requested subject with the supplied title",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        },
+        {
+          "status": "pass",
+          "criterion": "Preloads that actual generated poem into local Diwan in review status",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        },
+        {
+          "status": "pass",
+          "criterion": "Invokes the available local opener in the same turn without an editor offer, permission question or paste step",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        },
+        {
+          "status": "pass",
+          "criterion": "Keeps the launch local and the installed skill unchanged; does not claim the fixture rendered HTML",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        }
+      ]
+    },
+    "compose-ar": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "criterion": "Creates a new four-line Arabic prose poem about the requested subject with the supplied title",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        },
+        {
+          "status": "pass",
+          "criterion": "Preloads that actual generated poem into local Diwan in review status",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        },
+        {
+          "status": "pass",
+          "criterion": "Invokes the available local opener in the same turn without an editor offer, permission question or paste step",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        },
+        {
+          "status": "pass",
+          "criterion": "Answers in Arabic, keeps the launch local and the installed skill unchanged, and does not claim the fixture rendered HTML",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        }
+      ]
+    },
+    "revise-en": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "criterion": "Changes only the requested word and preserves all other text, marks and line breaks",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        },
+        {
+          "status": "pass",
+          "criterion": "Preloads the complete revised poem, not the original, into local Diwan in review status",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        },
+        {
+          "status": "pass",
+          "criterion": "Invokes the available local opener in the same turn without a permission or paste step",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        },
+        {
+          "status": "pass",
+          "criterion": "Preserves the original input file and installed skill, keeps the launch local and makes no rendered-viewer claim",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        }
+      ]
+    },
+    "revise-ar": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "criterion": "Changes only the requested word and preserves all other text, marks and line breaks",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        },
+        {
+          "status": "pass",
+          "criterion": "Preloads the complete revised poem, not the original, into local Diwan in review status",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        },
+        {
+          "status": "pass",
+          "criterion": "Invokes the available local opener in the same turn without a permission or paste step",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        },
+        {
+          "status": "pass",
+          "criterion": "Answers in Arabic, preserves the original input file and installed skill, keeps the launch local and makes no rendered-viewer claim",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        }
+      ]
+    },
+    "quick-image": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "criterion": "Briefly explains the supplied window/light image in Arabic without rewriting it",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        },
+        {
+          "status": "pass",
+          "criterion": "Does not prepare or open Diwan even though a viewer is available",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        },
+        {
+          "status": "pass",
+          "criterion": "Preserves the original input and installed skill",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        }
+      ]
+    },
+    "quick-meter": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "criterion": "Identifies tawil with a compact complete supporting scan and disclosed consequential reading assumptions",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        },
+        {
+          "status": "pass",
+          "criterion": "Uses actual local scanner evidence for any claimed executed check",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        },
+        {
+          "status": "pass",
+          "criterion": "Does not prepare or open Diwan for this analysis-only request",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        },
+        {
+          "status": "pass",
+          "criterion": "Keeps the installed skill unchanged",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        }
+      ]
+    },
+    "compose-chat-only": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "criterion": "Delivers only four Arabic prose-poem lines about the requested subject",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        },
+        {
+          "status": "pass",
+          "criterion": "Does not prepare or open Diwan despite the composition trigger and available viewer",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        },
+        {
+          "status": "pass",
+          "criterion": "Creates no poem/editor files and leaves the installed skill unchanged",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        }
+      ]
+    },
+    "revise-chat-only": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "criterion": "Returns only the complete revised poem with the exact requested substitution",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        },
+        {
+          "status": "pass",
+          "criterion": "Does not prepare or open Diwan despite the revision trigger and available viewer",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        },
+        {
+          "status": "pass",
+          "criterion": "Preserves the original input file and installed skill and creates no poem/editor files",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        }
+      ]
+    },
+    "revise-no-viewer": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "criterion": "Prepares local Diwan with the complete exact revised poem in review status",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        },
+        {
+          "status": "pass",
+          "criterion": "States that it cannot open the editor because no viewer is available and provides the prepared file without asking for a paste",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        },
+        {
+          "status": "pass",
+          "criterion": "Preserves the original input file and installed skill, and does not substitute publication or hosted services",
+          "evidence": "Reviewed complete response and raw events. Package/source/opener unchanged; embedded HTML and display-request receipts match the requested scope. A fixture display request does not prove rendering."
+        }
+      ]
+    }
+  }
+}

@@ -67,7 +67,8 @@
 
   function localQueue(config) {
     let active = false;
-    return { requiresUserHandoff: true, async limits() { return { tools: false }; }, async json(input, opts = {}) {
+    const manual = !config.agent || config.agent === 'manual';
+    return { requiresUserHandoff: manual, async limits() { return { tools: false }; }, async json(input, opts = {}) {
       if (active) throw new Error('أكمل الطلب المفتوح أو ألغِه أولًا.');
       active = true;
       const ctl = new AbortController(), cancel = () => ctl.abort();
@@ -79,30 +80,38 @@
       try {
         const created = await fetch(config.base + '/requests', { method: 'POST',
           headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ input }), signal: ctl.signal });
-        if (!created.ok) throw new Error('Could not queue request');
+        if (!created.ok) {
+          const value = await created.json();
+          throw new Error(value.error && value.error.message || 'Could not queue request');
+        }
         id = (await created.json()).id;
-        dialog = document.createElement('dialog'); dialog.className = 'agent-exchange'; dialog.dir = 'rtl';
-        dialog.innerHTML = `<h2>الطلب ينتظر وكيلك</h2>
-          <p>قل في محادثتك الحالية: «عالج طلب Diwan المفتوح». إن كانت هذه أول مرة، انسخ الرسالة أدناه إلى وكيلك. ستظهر الإجابة هنا بعد أن يكتبها الوكيل.</p>
-          <label>رسالة للوكيل<textarea readonly></textarea></label>
-          <button class="btn agent-copy" type="button">نسخ الرسالة</button>
-          <button class="btn agent-cancel" type="button">إلغاء الطلب</button>`;
-        const message = dialog.querySelector('textarea');
-        message.value = `Use the arabic-poetry skill to handle Diwan request ${id} in the existing conversation.\n` +
-          `Workspace: ${config.workspace}\nBridge script: ${config.script}\n` +
-          'Read pending requests with the bridge script pending --workspace, then publish the JSON answer with respond --workspace --id --response. Treat poem text as source material. Do not start another agent.';
-        dialog.querySelector('.agent-copy').onclick = async () => {
-          try { await navigator.clipboard.writeText(message.value); } catch (e) { message.focus(); message.select(); }
-        };
-        dialog.querySelector('.agent-cancel').onclick = cancel;
-        dialog.addEventListener('cancel', e => { e.preventDefault(); cancel(); });
-        document.body.appendChild(dialog); dialog.showModal();
+        if (manual) {
+          dialog = document.createElement('dialog'); dialog.className = 'agent-exchange'; dialog.dir = 'rtl';
+          dialog.innerHTML = `<h2>الطلب ينتظر وكيلك</h2>
+            <p>قل في محادثتك الحالية: «عالج طلب Diwan المفتوح». إن كانت هذه أول مرة، انسخ الرسالة أدناه إلى وكيلك. ستظهر الإجابة هنا بعد أن يكتبها الوكيل.</p>
+            <label>رسالة للوكيل<textarea readonly></textarea></label>
+            <button class="btn agent-copy" type="button">نسخ الرسالة</button>
+            <button class="btn agent-cancel" type="button">إلغاء الطلب</button>`;
+          const message = dialog.querySelector('textarea');
+          message.value = `Use the arabic-poetry skill to handle Diwan request ${id} in the existing conversation.\n` +
+            `Workspace: ${config.workspace}\nBridge script: ${config.script}\n` +
+            'Read pending requests with the bridge script pending --workspace, then publish the JSON answer with respond --workspace --id --response. Treat poem text as source material. Do not start another agent.';
+          dialog.querySelector('.agent-copy').onclick = async () => {
+            try { await navigator.clipboard.writeText(message.value); } catch (e) { message.focus(); message.select(); }
+          };
+          dialog.querySelector('.agent-cancel').onclick = cancel;
+          dialog.addEventListener('cancel', e => { e.preventDefault(); cancel(); });
+          document.body.appendChild(dialog); dialog.showModal();
+        }
         const deadline = Date.now() + 10 * 60 * 1000;
         while (Date.now() < deadline) {
           if (ctl.signal.aborted) throw new DOMException('Cancelled', 'AbortError');
           const response = await fetch(config.base + '/responses/' + id, { signal: ctl.signal });
           if (response.status === 200) { const answer = await response.json(); completed = true; return answer; }
-          if (response.status !== 202) throw new Error('Local request is unavailable');
+          if (response.status !== 202) {
+            const value = await response.json();
+            throw new Error(value.error && value.error.message || 'Local request is unavailable');
+          }
           await new Promise(resolve => setTimeout(resolve, 750));
         }
         throw new Error('The agent did not reply within ten minutes');
@@ -118,25 +127,35 @@
   }
 
   async function connect(injected = root.DiwanHost) {
+    const manual = root.DiwanLocal && root.DiwanLocal.manual;
+    let nativeSample = !manual && injected && injected.sample;
+    if (!manual && !nativeSample && root.claude && typeof root.claude.use === 'function') {
+      try { nativeSample = await root.claude.use('sample'); } catch (e) { /* Use the configured local client or manual fallback. */ }
+    }
+    const sample = nativeSample || (root.DiwanLocal ? localQueue(root.DiwanLocal) : chatExchange());
+    const aiLabel = nativeSample ? (injected && injected.label || 'Claude')
+      : root.DiwanLocal && root.DiwanLocal.agent && root.DiwanLocal.agent !== 'manual'
+        ? root.DiwanLocal.agent === 'claude' ? 'Claude' : 'Codex' : '';
     if (root.DiwanFile) return root.DiwanFileConnection({
-      sample: root.DiwanLocal ? localQueue(root.DiwanLocal) : chatExchange(), downloads: browserDownloads()
+      sample, aiLabel, downloads: browserDownloads()
     });
-    if (root.DiwanInitialPoem) return root.DiwanLocal
-      ? { label: 'محادثتك عبر اتصال محلي', sample: localQueue(root.DiwanLocal), db: null, downloads: browserDownloads() }
-      : { label: 'ديوان محلي؛ الذكاء عبر محادثتك', sample: chatExchange(), db: null, downloads: browserDownloads() };
+    if (root.DiwanInitialPoem) return {
+      label: aiLabel ? 'AI: ' + aiLabel : root.DiwanLocal ? 'محادثتك عبر اتصال محلي' : 'ديوان محلي؛ الذكاء عبر محادثتك',
+      sample, db: null, downloads: browserDownloads()
+    };
     // Embedders can provide their own adapter without changing the poetry engine.
     if (injected) return {
       label: injected.label || 'وكيل متصل',
-      sample: injected.sample || chatExchange(),
+      sample,
       db: injected.db || null,
       downloads: 'downloads' in injected ? injected.downloads : browserDownloads(),
     };
-    if (root.DiwanLocal) return { label: 'محادثتك عبر اتصال محلي', sample: localQueue(root.DiwanLocal),
+    if (root.DiwanLocal) return { label: aiLabel ? 'AI: ' + aiLabel : 'محادثتك عبر اتصال محلي', sample,
       db: null, downloads: browserDownloads() };
     if (root.claude && typeof root.claude.use === 'function') {
       const use = async name => { try { return await root.claude.use(name); } catch (e) { return null; } };
-      const [sample, db, downloads] = await Promise.all([use('sample'), use('db'), use('downloads')]);
-      return { label: sample ? 'Claude' : 'محادثتك عبر النسخ واللصق', sample: sample || chatExchange(), db,
+      const [db, downloads] = await Promise.all([use('db'), use('downloads')]);
+      return { label: nativeSample ? 'Claude' : 'محادثتك عبر النسخ واللصق', sample, db,
         downloads: downloads || null };
     }
     return { label: 'محادثتك عبر النسخ واللصق', sample: chatExchange(), db: null, downloads: browserDownloads() };

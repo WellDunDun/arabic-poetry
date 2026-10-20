@@ -1,0 +1,12 @@
+{
+  "source_commit": "f25ae4c1248f3289a46fd4d26187a6d00c091fa6",
+  "suites": {
+    "poetry": {
+      "executed": 8,
+      "passed": 8,
+      "failed": 0
+    }
+  },
+  "historical_workflows": "../2026-10-20-review-fixes-pr11/report.md",
+  "limits": "Single sample per frozen case with lead grading; no statistical or literary-quality claim."
+}

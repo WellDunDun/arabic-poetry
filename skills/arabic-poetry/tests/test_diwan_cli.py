@@ -208,6 +208,9 @@ class DiwanCLITests(unittest.TestCase):
         self.assertEqual(before, sorted(p.relative_to(self.root) for p in self.root.rglob('*')))
 
     def test_documented_command_examples_execute_on_disposable_fixtures(self):
+        bins = self.root/'example-bin'; bins.mkdir()
+        node = shutil.which('node')
+        if node: (bins/'node').symlink_to(node)
         for name, example in diwan.EXAMPLES.items():
             with self.subTest(command=name):
                 folder = self.root/name;folder.mkdir()
@@ -229,7 +232,7 @@ class DiwanCLITests(unittest.TestCase):
                 replacements = {'$VERSION':version,'$OLD_VERSION':old,'$REQUEST_ID':identity}
                 args = [replacements.get(token,token) for token in shlex.split(example)]
                 command = [sys.executable,str(SCRIPTS/'diwan.py'),*args]
-                env = dict(os.environ,PYTHONDONTWRITEBYTECODE='1')
+                env = dict(os.environ,PYTHONDONTWRITEBYTECODE='1',PATH=str(bins))
                 if name == 'serve':
                     process = subprocess.Popen(command,cwd=folder,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True,env=env)
                     try:
@@ -361,6 +364,84 @@ class DiwanCLITests(unittest.TestCase):
         self.assertEqual(diwan.request(receipt['url'],'/status')['id'],again['id'])
         self.assertTrue(self.cli('stop', self.file)['stopped'])
         self.assertEqual(self.cli('get', self.file)['version'], before)
+
+    def test_implicit_reopen_keeps_manual_and_explicit_switch_reuses_port(self):
+        before = self.create()['version']
+        first = self.cli('open', self.file, '--no-browser', '--agent', 'manual')
+        self.addCleanup(lambda: self.cli('stop', self.file))
+        self.assertEqual(first['agent'], 'manual')
+        repeated = self.cli('open', self.file, '--no-browser')
+        self.assertTrue(repeated['reused'])
+        self.assertEqual(repeated['url'], first['url'])
+        client = self.root / 'codex'
+        client.write_text('#!' + sys.executable + '\nraise SystemExit("No model request expected")\n')
+        client.chmod(0o755)
+        with patch.dict(os.environ, {'PATH': str(self.root) + os.pathsep + os.environ['PATH']}):
+            changed = self.cli('open', self.file, '--no-browser', '--agent', 'codex')
+            self.assertEqual(changed['agent'], 'codex')
+            self.assertFalse(changed['reused'])
+            self.assertEqual(diwan.urlsplit(changed['url']).port, diwan.urlsplit(first['url']).port)
+            self.assertTrue(self.cli('open', self.file, '--no-browser')['reused'])
+        self.assertEqual(self.cli('get', self.file)['version'], before)
+
+    def test_implicit_serve_reuses_a_healthy_client_missing_from_new_path(self):
+        before = self.create()['version']
+        bins = self.root/'client-bin'; bins.mkdir()
+        client = bins/'codex'
+        client.write_text('#!' + sys.executable + '\nraise SystemExit("No model request expected")\n')
+        client.chmod(0o755)
+        with patch.dict(os.environ, {'PATH':str(bins)}):
+            first = self.cli('open',self.file,'--no-browser','--agent','codex')
+        self.addCleanup(lambda:self.cli('stop',self.file))
+        empty = self.root/'empty-bin'; empty.mkdir()
+        with patch.dict(os.environ, {'PATH':str(empty)}):
+            reused = self.cli('serve',self.file)
+        self.assertTrue(reused['reused'])
+        self.assertEqual(reused['url'],first['url'])
+        self.assertEqual(reused['agent'],'codex')
+        self.assertEqual(diwan.request(first['url'],'/status')['id'],first['id'])
+        self.assertEqual(self.cli('get',self.file)['version'],before)
+
+    def test_auto_without_client_survives_rename_and_legacy_receipts(self):
+        bins = self.root/'no-clients'; bins.mkdir()
+        for legacy in (False,True):
+            with self.subTest(legacy=legacy):
+                folder = self.root/str(legacy); folder.mkdir()
+                file = folder/'poem.diwan.json'
+                before = self.cli('create',file,'--text-file',self.source)
+                with patch.dict(os.environ, {'PATH':str(bins)}):
+                    first = self.cli('open',file,'--no-browser','--agent','auto')
+                    self.addCleanup(lambda url=first['url']:self.shutdown_if_running(url))
+                    self.assertFalse(first['manual'])
+                    self.assertEqual(first['agent'],'manual')
+                    if legacy:
+                        receipt = storage.Store(file).state/'session.json'
+                        value = json.loads(receipt.read_text()); value.pop('mode',None)
+                        receipt.write_text(json.dumps(value))
+                    moved = folder/'renamed.diwan.json'; file.rename(moved)
+                    reopened = self.cli('open',moved,'--no-browser')
+                    self.addCleanup(lambda path=moved:self.cli('stop',path))
+                    self.assertEqual(reopened.get('mode'),'auto')
+                    self.assertFalse(reopened['manual'])
+                    self.assertEqual(reopened['id'],first['id'])
+                    self.assertEqual(self.cli('get',moved)['version'],before['version'])
+
+    def test_explicit_client_mode_changes_are_retained_with_the_same_client(self):
+        self.create()
+        bins = self.root/'mode-bin'; bins.mkdir()
+        client = bins/'codex'
+        client.write_text('#!' + sys.executable + '\nraise SystemExit("No model request expected")\n')
+        client.chmod(0o755)
+        self.addCleanup(lambda:self.cli('stop',self.file))
+        with patch.dict(os.environ, {'PATH':str(bins),'CLAUDECODE':''}):
+            first = self.cli('open',self.file,'--no-browser','--agent','auto')
+            explicit = self.cli('open',self.file,'--no-browser','--agent','codex')
+            self.assertEqual(explicit.get('mode'),'codex')
+            self.assertFalse(explicit['reused'])
+            automatic = self.cli('open',self.file,'--no-browser','--agent','auto')
+            self.assertEqual(automatic.get('mode'),'auto')
+            self.assertFalse(automatic['reused'])
+            self.assertEqual(diwan.urlsplit(automatic['url']).port,diwan.urlsplit(first['url']).port)
 
     def test_open_after_rename_shuts_down_the_previous_owned_server(self):
         before = self.create()['version']

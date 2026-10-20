@@ -85,6 +85,6 @@
         async delete() { throw new Error('لا يحذف المحرر ملف القصيدة المشتركة'); }
       }; }
     }; } };
-    return { ...services, label: 'قصيدة مشتركة مع وكيلك؛ الحفظ في الملف', db };
+    return { ...services, label: 'قصيدة مشتركة مع وكيلك؛ الحفظ في الملف' + (services.aiLabel ? ' · AI: ' + services.aiLabel : ''), db };
   };
 })(typeof window === 'undefined' ? globalThis : window);

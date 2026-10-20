@@ -1,0 +1,99 @@
+{
+  "source_commit": "f25ae4c1248f3289a46fd4d26187a6d00c091fa6",
+  "client": "codex-cli 0.155.1",
+  "runner": "evals/run_diwan_launch.py with unchanged frozen prompts.json",
+  "raw_record": "/private/tmp/diwan-coderabbit-followup-20261020/pr11-evals/poetry/runs.json",
+  "raw_record_sha256": "a8b430c6d9c6bdfc4af3fd608e443714bdd0197393af4a24695783d26813b23c",
+  "grading": "Lead semantic review with condition known; actual responses, command traces and generated artifacts inspected. Frozen criteria unchanged.",
+  "cases": [
+    {
+      "id": "prose-compose",
+      "exit_code": 0,
+      "timed_out": false,
+      "events_sha256": "4880d4bde389e33034c77c418d4998f4cd875fc262e57ed0d2750474473568d4",
+      "package_unchanged": true,
+      "poem_unchanged": true,
+      "opener_unchanged": true,
+      "receipt_matches_file": true,
+      "raw_events": "/private/tmp/diwan-coderabbit-followup-20261020/pr11-evals/poetry/prose-compose/events.jsonl"
+    },
+    {
+      "id": "close-reading",
+      "exit_code": 0,
+      "timed_out": false,
+      "events_sha256": "fb1e144f1cf76189261b9e5b03bfacf1a42fca5fd5a60c8c2f77cd8be599069e",
+      "package_unchanged": true,
+      "poem_unchanged": true,
+      "opener_unchanged": true,
+      "receipt_matches_file": true,
+      "raw_events": "/private/tmp/diwan-coderabbit-followup-20261020/pr11-evals/poetry/close-reading/events.jsonl"
+    },
+    {
+      "id": "classical-scan",
+      "exit_code": 0,
+      "timed_out": false,
+      "events_sha256": "75170785e4c4b1bbd06463397eb23000af7993a4427adf12c46d0da537741b68",
+      "package_unchanged": true,
+      "poem_unchanged": true,
+      "opener_unchanged": true,
+      "receipt_matches_file": true,
+      "raw_events": "/private/tmp/diwan-coderabbit-followup-20261020/pr11-evals/poetry/classical-scan/events.jsonl"
+    },
+    {
+      "id": "provisional-reading",
+      "exit_code": 0,
+      "timed_out": false,
+      "events_sha256": "2abc25d6bb269bafd5740019cf3908e7c2dfa13acfac7ec49d9e8218f5b398b9",
+      "package_unchanged": true,
+      "poem_unchanged": true,
+      "opener_unchanged": true,
+      "receipt_matches_file": true,
+      "raw_events": "/private/tmp/diwan-coderabbit-followup-20261020/pr11-evals/poetry/provisional-reading/events.jsonl"
+    },
+    {
+      "id": "review-only",
+      "exit_code": 0,
+      "timed_out": false,
+      "events_sha256": "6dd2c61f31564ff5153bdfa69c1e604a25c5d9fc7a9b4c2890f2287e3e057dea",
+      "package_unchanged": true,
+      "poem_unchanged": true,
+      "opener_unchanged": true,
+      "receipt_matches_file": true,
+      "raw_events": "/private/tmp/diwan-coderabbit-followup-20261020/pr11-evals/poetry/review-only/events.jsonl"
+    },
+    {
+      "id": "bounded-repair",
+      "exit_code": 0,
+      "timed_out": false,
+      "events_sha256": "ead5bf07f88c4190f8ec21ce8e0eba4b0c962e2e6456a945d34eefa0fb737433",
+      "package_unchanged": true,
+      "poem_unchanged": true,
+      "opener_unchanged": true,
+      "receipt_matches_file": true,
+      "raw_events": "/private/tmp/diwan-coderabbit-followup-20261020/pr11-evals/poetry/bounded-repair/events.jsonl"
+    },
+    {
+      "id": "tafila-boundary",
+      "exit_code": 0,
+      "timed_out": false,
+      "events_sha256": "a34de1baa336cd1f3df689f8366627c7b75a983e7455daf9a216837d9ed9a58a",
+      "package_unchanged": true,
+      "poem_unchanged": true,
+      "opener_unchanged": true,
+      "receipt_matches_file": true,
+      "raw_events": "/private/tmp/diwan-coderabbit-followup-20261020/pr11-evals/poetry/tafila-boundary/events.jsonl"
+    },
+    {
+      "id": "workbench-export",
+      "exit_code": 0,
+      "timed_out": false,
+      "events_sha256": "d04b1c43cc190156a6b6c20bc544c7d712455463ec63d2b20acf35832f56e6ea",
+      "package_unchanged": true,
+      "poem_unchanged": true,
+      "opener_unchanged": true,
+      "receipt_matches_file": true,
+      "raw_events": "/private/tmp/diwan-coderabbit-followup-20261020/pr11-evals/poetry/workbench-export/events.jsonl"
+    }
+  ],
+  "limits": "Eight fresh isolated poetry sessions, default Codex model with no override. Historical baseline records reused unchanged. Other workflow suites, browser rendering, live suggestions and installation lifecycle were not rerun for this documentation-only correction."
+}

@@ -1,5 +1,19 @@
 # Poetry skill evaluations
 
+## Automatic/manual documentation follow-up
+
+The [current parent follow-up](results/2026-10-20-coderabbit-followup-pr11/report.md) records eight fresh frozen poetry cases after clarifying automatic and manual requests and correcting historical grading/provenance. The default checker validates this exact package. Earlier workflow, browser and installation runs remain tied to their recorded sources.
+
+## Client/session review fixes
+
+The [client/session trial](results/2026-10-20-review-fixes-pr11/report.md) records the fixed parent package: 73 skill tests and 31 fresh agent cases, with case-specific grades, actual commands and resulting artifacts/state. The documented examples run without optional clients. Earlier trial records remain historical.
+
+## Automatic word suggestions
+
+The [diwan-automatic-suggestions.json](diwan-automatic-suggestions.json) scenarios cover real browser word requests through both installed clients, no handoff dialog, acceptance-only saves, agent/browser synchronization and reload persistence. These live model calls require the user's authorization and normal client login. Use the disposable poem and frozen steps, capture the rendered menu and canonical revisions, and record failed attempts as well as the final run. `test_diwan_agent.py`, `workbench_host.js` and `workbench_state.js` provide repeatable fixture-based regressions without live calls. Native host sampling is verified separately from the CLI adapters; passing one does not establish the other. Reports must distinguish current package proof from historical runs and must not claim broad poetic accuracy.
+
+The [earlier automatic-suggestions trial](results/2026-10-20-automatic-suggestions/report.md) includes both real client/browser flows and fresh executions of all 31 existing agent cases. Earlier execution records remain historical.
+
 ## Shared-file CLI
 
 The frozen [diwan-cli.json](diwan-cli.json) suite covers discovery, exact import, accepted conditional editing, stale saves, idempotent retry and restoring history as a new revision. Run `python3 evals/run_diwan_cli.py --skill /absolute/path/to/skill --output /absolute/new/temp/directory`. It uses fresh Codex sessions and disposable local files, with no browser, installs or publication. Inspect recorded commands and actual initial/final documents and history, then grade each frozen criterion. Software concurrency/crash tests and real browser checks are separate from these agent cases.
@@ -12,7 +26,7 @@ The [editor/queue review-fix trial](results/2026-10-20-editor-fixes/report.md) r
 
 The [merge-readiness trial](results/2026-10-20-merge-readiness/report.md) records the earlier fixes for renamed server sessions and copied-document create replay. It preserves failing-before/passing-after regressions and reruns all 31 frozen agent cases, software checks and isolated installation/update checks.
 
-The [session lifecycle trial](results/2026-10-20-session-lifecycle/report.md) records the current package: identity/history survive reuse of a renamed poem's old filename, server replacement and stop are serialized, fixed-port reopening waits for socket closure, and stale tokens recover without discarding uncertain live sessions. All 31 frozen agent cases, software checks and isolated install/update checks are rerun. The default checker validates this trial's poetry package and evidence; other suites retain separate frozen criteria and grades. Earlier real-browser evidence is identified separately because the browser source is unchanged.
+The [session lifecycle trial](results/2026-10-20-session-lifecycle/report.md) records the preceding package: identity/history survive reuse of a renamed poem's old filename, server replacement and stop are serialized, fixed-port reopening waits for socket closure, and stale tokens recover without discarding uncertain live sessions. All 31 frozen agent cases, software checks and isolated install/update checks were rerun against that package; other suites retain separate frozen criteria and grades. Earlier real-browser evidence is identified separately because the browser source is unchanged.
 
 ## Pronoun-reading follow-up
 

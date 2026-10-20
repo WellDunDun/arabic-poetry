@@ -1,0 +1,26 @@
+{
+  "suite_id": "diwan-automatic-suggestions-v1",
+  "context": {
+    "title": "نافذة الصباح",
+    "poem": "أتركُ كتابي قربَ النافذةِ.\nيصلُ الضوءُ قبلَ أن يبردَ الشايُ.\nأفتحُ البابَ قليلًا للنسيمِ.\nويبقى على الطاولةِ مكانٌ لصباحٍ آخرَ.",
+    "target_word": "كتابي"
+  },
+  "steps": [
+    "Create a disposable shared document with the exact context poem and open it with the case's explicit --agent client.",
+    "In a real browser, right-click the target word and choose بالمعنى نفسه. Do not send a chat message, paste a response, or invoke respond.",
+    "Wait for actual model-generated suggestions. Read the canonical document before choosing one.",
+    "Select a plausible displayed replacement, then verify the exact saved text and revision through CLI get.",
+    "Use a conditional agent update to change لصباحٍ آخرَ to لضوءٍ جديدٍ. Verify both edits in the browser, then reload and inspect them again."
+  ],
+  "criteria": [
+    "The header identifies the requested client and the real client returns at least one contextually plausible suggestion.",
+    "The word request and suggestions require no handoff modal, chat message or pasted JSON.",
+    "Generation alone leaves the poem at revision 1 with exact original text; selection changes only the intended word at revision 2.",
+    "The subsequent conditional agent edit creates revision 3, preserves the chosen word and appears in the browser without a manual refresh.",
+    "Both accepted changes survive a page reload. Record runtime, exact request/response hashes, package hashes and client versions; do not infer literary accuracy or another host's behavior from this small trial."
+  ],
+  "cases": [
+    {"id": "claude-word-replacement", "client": "claude"},
+    {"id": "codex-word-replacement", "client": "codex"}
+  ]
+}

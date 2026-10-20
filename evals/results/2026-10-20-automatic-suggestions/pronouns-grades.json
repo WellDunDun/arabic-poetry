@@ -1,0 +1,85 @@
+{
+  "grading": "Lead semantic judgment with condition known; response, raw commands and actual artifacts inspected.",
+  "cases": {
+    "ambiguous-address-ar": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "criterion": "Preserves every base letter and space in the supplied line",
+          "evidence": "The proposed line وَمَا زَالَ طَيْفُكَ يَسْكُنُ الْمَسَاءَ retains every supplied base letter and space."
+        },
+        {
+          "status": "pass",
+          "criterion": "Explicitly names the assumed addressee gender of طيفك and makes the other meaningful reading visible",
+          "evidence": "The Arabic explanation names the masculine addressee in طَيْفُكَ and gives طَيْفُكِ for a female addressee; it also distinguishes يَسْكُنُ from يُسَكِّنُ."
+        },
+        {
+          "status": "pass",
+          "criterion": "Stops for the requested review without scanning or opening an editor",
+          "evidence": "The response explicitly says أنتظر موافقتك على القراءة وتحديد المخاطَب. The recorded trace contains no scanner or editor command; opened is null and html is empty."
+        }
+      ]
+    },
+    "ambiguous-address-en": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "criterion": "Preserves every base letter and space in the supplied line",
+          "evidence": "The proposed line أَحْفَظُ صَوْتَكَ حِينَ يَنَامُ الطَّرِيقُ retains every supplied base letter and space."
+        },
+        {
+          "status": "pass",
+          "criterion": "Explicitly explains in English whether صوتك addresses a man or a woman, and acknowledges the other possible reading",
+          "evidence": "The English explanation says صوتك addresses a male and supplies صَوْتَكِ for a female addressee."
+        },
+        {
+          "status": "pass",
+          "criterion": "Stops for approval without scanning or opening an editor",
+          "evidence": "The response stops after the proposed reading and explanation, as the frozen user request says then stop. It does not ask an explicit approval question; stopping is judged to satisfy the review boundary here. The trace contains no scanner or editor command; opened is null and html is empty."
+        }
+      ]
+    },
+    "supplied-feminine": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "criterion": "Preserves all base letters, spaces and supplied kasra on كِ",
+          "evidence": "The single returned line وَمَا زَالَ طَيْفُكِ يَسْكُنُ الْمَسَاءَ retains every supplied base letter, space and the kasra on كِ."
+        },
+        {
+          "status": "pass",
+          "criterion": "Completes the vocalization consistently with the supplied feminine addressee without reopening it as unresolved",
+          "evidence": "The supplied feminine طيفكِ is retained and vocalized as طَيْفُكِ, without treating its gender as unresolved."
+        },
+        {
+          "status": "pass",
+          "criterion": "Delivers only the vocalized line, without approval question, analysis or editor",
+          "evidence": "The complete response is only the vocalized line, with no approval question or analysis. The trace contains no scanner or editor command; opened is null and html is empty."
+        }
+      ]
+    },
+    "context-fixed-feminine": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "criterion": "Preserves every base letter and space in the supplied line",
+          "evidence": "The single returned line أَحْفَظُ صَوْتَكِ حِينَ يَنَامُ الطَّرِيقُ retains every supplied base letter and space."
+        },
+        {
+          "status": "pass",
+          "criterion": "Uses feminine address fixed by the mother context, not an unexplained masculine default",
+          "evidence": "The answer uses feminine صَوْتَكِ, consistent with the mother context in the frozen request."
+        },
+        {
+          "status": "pass",
+          "criterion": "Delivers only the vocalized line without inventing an ambiguity question, analysis or editor",
+          "evidence": "The complete response is only the vocalized line, without an ambiguity question or analysis. The trace contains no scanner or editor command; opened is null and html is empty."
+        }
+      ]
+    }
+  }
+}

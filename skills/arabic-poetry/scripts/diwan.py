@@ -15,6 +15,7 @@ import webbrowser
 
 sys.dont_write_bytecode = True
 from diwan_store import DiwanError, Store, VERSION, MAX_BYTES, atomic_write, bounded_read, digest, encode, parse, validate_patch
+from diwan_agent import session_mode
 import serve_diwan
 
 SCRIPT = Path(__file__).resolve()
@@ -26,7 +27,7 @@ EXAMPLES = {
     'history': 'history poem.diwan.json --limit 20 --json',
     'restore': 'restore poem.diwan.json --revision "$OLD_VERSION" --if-version "$VERSION" --request-id restore-1 --json',
     'open': 'open poem.diwan.json --agent auto --no-browser --json',
-    'serve': 'serve poem.diwan.json --agent codex --port 0 --json',
+    'serve': 'serve poem.diwan.json --agent manual --port 0 --json',
     'stop': 'stop poem.diwan.json --json',
     'scan': 'scan poem.diwan.json --json',
     'export': 'export poem.diwan.json --format txt --output poem-export.txt --json',
@@ -158,10 +159,13 @@ def shutdown_session(receipt):
 def serve(store, port, agent=None):
     with store.locked():
         existing = session(store)
-        selected_mode = agent or (existing and ('manual' if existing.get('manual') else existing.get('agent', 'manual'))) or 'auto'
+        if existing and not existing['moved'] and agent is None:
+            print(json.dumps(dict(existing, reused=True)), flush=True)
+            return
+        selected_mode = agent or session_mode(existing)
         selected = serve_diwan.select_agent(selected_mode)
         selected_name = selected.name if selected else 'manual'
-        if existing and not existing['moved'] and (agent is None or existing.get('agent', 'manual') == selected_name and existing.get('manual', False) == (agent == 'manual')):
+        if existing and not existing['moved'] and session_mode(existing) == selected_mode and existing.get('agent', 'manual') == selected_name:
             print(json.dumps(dict(existing, reused=True)), flush=True)
             return
         if existing:
@@ -170,7 +174,7 @@ def serve(store, port, agent=None):
                 port = urlsplit(existing['url']).port
         current = store.get()
         server, url = serve_diwan.make_server(store.state / 'agent', port=port, document=store, agent=selected_mode)
-        receipt = {'path': str(store.path), 'id': current['poem']['id'], 'url': url, 'pid': os.getpid(), 'agent': server.diwan_agent, 'manual': selected_mode == 'manual', 'reused': False, 'rendered': False}
+        receipt = {'path': str(store.path), 'id': current['poem']['id'], 'url': url, 'pid': os.getpid(), 'agent': server.diwan_agent, 'mode': selected_mode, 'manual': selected_mode == 'manual', 'reused': False, 'rendered': False}
         atomic_write(store.state / 'session.json', encode(receipt))
         print(json.dumps(receipt, ensure_ascii=False), flush=True)
     serve_diwan.run_server(server)
@@ -184,7 +188,7 @@ def open_poem(store, args):
         return {'path': str(store.path), 'dry_run': True, 'would_open': True, 'agent': selected_name}
     receipt = session(store)
     def needs_replacement(value):
-        return value and (value['moved'] or args.agent is not None and (value.get('agent', 'manual') != selected_name or value.get('manual', False) != (args.agent == 'manual')))
+        return value and (value['moved'] or args.agent is not None and (session_mode(value) != args.agent or value.get('agent', 'manual') != selected_name))
     replace = needs_replacement(receipt)
     if replace:
         with store.locked():
@@ -201,7 +205,7 @@ def open_poem(store, args):
         command = [sys.executable, str(SCRIPT), 'serve', str(store.path), '--port', str(args.port), '--json']
         launch_mode = args.agent
         if launch_mode is None and receipt:
-            launch_mode = 'manual' if receipt.get('manual') else receipt.get('agent', 'manual')
+            launch_mode = session_mode(receipt)
         if launch_mode is not None:
             command += ['--agent', launch_mode]
         child = subprocess.Popen(command,

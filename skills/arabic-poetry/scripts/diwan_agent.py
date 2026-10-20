@@ -26,6 +26,17 @@ class AgentError(ValueError):
         self.code = code
 
 
+def session_mode(receipt):
+    """Recover the requested mode, including receipts predating the mode field."""
+    if not receipt:
+        return 'auto'
+    if receipt.get('mode'):
+        return receipt['mode']
+    if receipt.get('manual'):
+        return 'manual'
+    return 'auto' if receipt.get('agent', 'manual') == 'manual' else receipt['agent']
+
+
 def select_agent(name):
     if name == 'manual':
         return None

@@ -1,0 +1,31 @@
+{
+  "source_commit": "471033720c3ade691ddd9e260be18c06e937efa7",
+  "suites": {
+    "poetry": {
+      "executed": 8,
+      "passed": 8,
+      "failed": 0
+    },
+    "routing": {
+      "executed": 9,
+      "passed": 9,
+      "failed": 0
+    },
+    "launch": {
+      "executed": 4,
+      "passed": 4,
+      "failed": 0
+    },
+    "pronouns": {
+      "executed": 4,
+      "passed": 4,
+      "failed": 0
+    },
+    "cli": {
+      "executed": 6,
+      "passed": 6,
+      "failed": 0
+    }
+  },
+  "limits": "31 fresh isolated executions; default Codex model, no model override. Fixture display receipts are not real rendering. No live model-service adapter tests, hosted account sync or public directory publication in this trial. Historical three baseline conditions reused unchanged."
+}

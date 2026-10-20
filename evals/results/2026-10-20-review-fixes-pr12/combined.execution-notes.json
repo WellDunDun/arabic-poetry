@@ -1,0 +1,64 @@
+{
+  "source_commit": "471033720c3ade691ddd9e260be18c06e937efa7",
+  "client": "codex-cli 0.155.1",
+  "runner": "evals/run_diwan_launch.py with frozen prompts.json, plus the existing launch/routing/pronoun and CLI suites",
+  "cases": [
+    {
+      "id": "prose-compose",
+      "exit_code": 0,
+      "events_sha256": "c5f615acb647e4878409de578e342b4e0f0824a5f0722c1b96fcd26827791dca",
+      "raw_events": "/private/tmp/diwan-review-fixes-20261020/pr12-evals/poetry/prose-compose/events.jsonl",
+      "package_unchanged": true
+    },
+    {
+      "id": "close-reading",
+      "exit_code": 0,
+      "events_sha256": "617ee728d9d8191e5eb0d63f9c66fed62454a08f98343e7a6edc9a0d455e9e67",
+      "raw_events": "/private/tmp/diwan-review-fixes-20261020/pr12-evals/poetry/close-reading/events.jsonl",
+      "package_unchanged": true
+    },
+    {
+      "id": "classical-scan",
+      "exit_code": 0,
+      "events_sha256": "8ecdad686ba0f48a4fe013d381e490ec19af4b44dbbbef5b5efd93439e579d60",
+      "raw_events": "/private/tmp/diwan-review-fixes-20261020/pr12-evals/poetry/classical-scan/events.jsonl",
+      "package_unchanged": true
+    },
+    {
+      "id": "provisional-reading",
+      "exit_code": 0,
+      "events_sha256": "47b79729f6385f442ab50f7d0a54c950d429ce241338ae17da9697c3a5b42d85",
+      "raw_events": "/private/tmp/diwan-review-fixes-20261020/pr12-evals/poetry/provisional-reading/events.jsonl",
+      "package_unchanged": true
+    },
+    {
+      "id": "review-only",
+      "exit_code": 0,
+      "events_sha256": "449e4a63134033fad3b5bfa865268a5ea31db5c5b8cd679a57610973b2f90145",
+      "raw_events": "/private/tmp/diwan-review-fixes-20261020/pr12-evals/poetry/review-only/events.jsonl",
+      "package_unchanged": true
+    },
+    {
+      "id": "bounded-repair",
+      "exit_code": 0,
+      "events_sha256": "5954648cec95d76e45ba6de8c8b16ca29eb9951c2534c752e7047b98be31dfba",
+      "raw_events": "/private/tmp/diwan-review-fixes-20261020/pr12-evals/poetry/bounded-repair/events.jsonl",
+      "package_unchanged": true
+    },
+    {
+      "id": "tafila-boundary",
+      "exit_code": 0,
+      "events_sha256": "1fcc10031b682670e6cc0e185e91d287cee6b953549694e518bf97ebde3b3408",
+      "raw_events": "/private/tmp/diwan-review-fixes-20261020/pr12-evals/poetry/tafila-boundary/events.jsonl",
+      "package_unchanged": true
+    },
+    {
+      "id": "workbench-export",
+      "exit_code": 0,
+      "events_sha256": "c477f2d42241cf4267b99498ec5cbcbb53089d7deecdc17daf84e5e07fac51e4",
+      "raw_events": "/private/tmp/diwan-review-fixes-20261020/pr12-evals/poetry/workbench-export/events.jsonl",
+      "package_unchanged": true
+    }
+  ],
+  "limits": "31 fresh isolated executions; default Codex model, no model override. Fixture display receipts are not real rendering. No live model-service adapter tests, hosted account sync or public directory publication in this trial. Historical three baseline conditions reused unchanged."
+}

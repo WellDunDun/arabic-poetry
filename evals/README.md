@@ -1,14 +1,22 @@
 # Poetry skill evaluations
 
+## Runtime review fixes
+
+The [current combined trial](results/2026-10-20-review-fixes-pr12/report.md) records the protocol-2 supervisor fixes, regression evidence, 100 skill tests and 31 fresh agent cases. Its recorded browser handoff keeps an unsaved draft pending, then retains the exact saved text at the same address. The default checker validates this package. Each preceding trial remains tied to its recorded source.
+
 ## Updates in an open editor
 
-The frozen [diwan-runtime-updates.json](diwan-runtime-updates.json) scenarios cover safe application of already-installed compatible packages, idle reload, unsaved buffers, save conflicts, late input, failure rollback and client preservation. Run the normal skill Python tests and `node skills/arabic-poetry/tests/workbench_updates.js`; the native installer lifecycle also verifies installed-version detection. The [current runtime-update trial](results/2026-10-20-runtime-updates/report.md) records the final browser handoffs, 105 Python tests, package checks and all 31 fresh agent cases. Internal review notes and screenshots remain outside Git.
+The frozen [diwan-runtime-updates.json](diwan-runtime-updates.json) scenarios cover safe application of already-installed compatible packages, idle reload, unsaved buffers, save conflicts, late input, failure rollback and client preservation. Run the normal skill Python tests and `node skills/arabic-poetry/tests/workbench_updates.js`; the native installer lifecycle also verifies installed-version detection. The [earlier runtime-update trial](results/2026-10-20-runtime-updates/report.md) records its browser handoffs, 105 Python tests, package checks and all 31 fresh agent cases. Internal review notes and screenshots remain outside Git.
+
+## Client/session review fixes
+
+The [client/session trial](results/2026-10-20-review-fixes-pr11/report.md) records the fixed parent package: 73 skill tests and 31 fresh agent cases, with case-specific grades, actual commands and resulting artifacts/state. The documented examples run without optional clients. Earlier trial records remain historical.
 
 ## Automatic word suggestions
 
 The [diwan-automatic-suggestions.json](diwan-automatic-suggestions.json) scenarios cover real browser word requests through both installed clients, no handoff dialog, acceptance-only saves, agent/browser synchronization and reload persistence. These live model calls require the user's authorization and normal client login. Use the disposable poem and frozen steps, capture the rendered menu and canonical revisions, and record failed attempts as well as the final run. `test_diwan_agent.py`, `workbench_host.js` and `workbench_state.js` provide repeatable fixture-based regressions without live calls. Native host sampling is verified separately from the CLI adapters; passing one does not establish the other. Reports must distinguish current package proof from historical runs and must not claim broad poetic accuracy.
 
-The [current automatic-suggestions trial](results/2026-10-20-automatic-suggestions/report.md) includes both real client/browser flows and fresh executions of all 31 existing agent cases. Earlier trials remain unchanged.
+The [earlier automatic-suggestions trial](results/2026-10-20-automatic-suggestions/report.md) includes both real client/browser flows and fresh executions of all 31 existing agent cases. Earlier trials remain unchanged.
 
 ## Shared-file CLI
 
@@ -22,7 +30,7 @@ The [editor/queue review-fix trial](results/2026-10-20-editor-fixes/report.md) r
 
 The [merge-readiness trial](results/2026-10-20-merge-readiness/report.md) records the earlier fixes for renamed server sessions and copied-document create replay. It preserves failing-before/passing-after regressions and reruns all 31 frozen agent cases, software checks and isolated installation/update checks.
 
-The [session lifecycle trial](results/2026-10-20-session-lifecycle/report.md) records the current package: identity/history survive reuse of a renamed poem's old filename, server replacement and stop are serialized, fixed-port reopening waits for socket closure, and stale tokens recover without discarding uncertain live sessions. All 31 frozen agent cases, software checks and isolated install/update checks are rerun. The default checker validates this trial's poetry package and evidence; other suites retain separate frozen criteria and grades. Earlier real-browser evidence is identified separately because the browser source is unchanged.
+The [session lifecycle trial](results/2026-10-20-session-lifecycle/report.md) records the preceding package: identity/history survive reuse of a renamed poem's old filename, server replacement and stop are serialized, fixed-port reopening waits for socket closure, and stale tokens recover without discarding uncertain live sessions. All 31 frozen agent cases, software checks and isolated install/update checks were rerun against that package; other suites retain separate frozen criteria and grades. Earlier real-browser evidence is identified separately because the browser source is unchanged.
 
 ## Pronoun-reading follow-up
 

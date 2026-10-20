@@ -1,0 +1,220 @@
+{
+  "package_hashes": {
+    "skills/arabic-poetry/SKILL.md": "0fb9bc9f364f0225b8f09f25e648d0fd40c70c86c54e3c01cfa32e27280a3f69",
+    "skills/arabic-poetry/references/EXAMPLES.md": "1bce0416879b3fc78a9e7c36fa601ac659117edc9d30af23a6b8d9c1bf6ad49d",
+    "skills/arabic-poetry/references/CLI.md": "5c26d7c2fc2e0f67dd4811947338f642f4782446e3f9ee52348e33986cbc0d12",
+    "skills/arabic-poetry/references/free-verse.md": "6779a2d4c32cc1b720ad520c39b1de439321a2ff3453e4b3139ae82fb046bbdf",
+    "skills/arabic-poetry/references/SOURCES.md": "bacaba14382e0fe874920922e6b654689a51efd1c0bf3b892125748dd3bd61e0",
+    "skills/arabic-poetry/references/fixing.md": "19c48e0a4640b94ff9dd902b3d21b57b540a08e60e84e23d5b5546d46ea077da",
+    "skills/arabic-poetry/references/DIWAN.md": "cf542004755cc245165b6eb27e50ac7d876d1dcf2286190856e963da673020df",
+    "skills/arabic-poetry/references/zihafat.md": "cec102cf9780874804a0f642211710208794ce9076f4e9904de41fd56340f4f3",
+    "skills/arabic-poetry/references/CRAFT.md": "57faf5c1cb7a0622ac369fe8ce73c179d1daad92a969ba9f94998ad7f4064896",
+    "skills/arabic-poetry/references/meters.md": "c470f5b0fc83887a27fb6ed0c3e8f46a80e6b043392b196ca045d52cc314109d",
+    "skills/arabic-poetry/references/PROSODY.md": "67a6c1816ab241d0974b9b4a2abf73519eb915e5b99656498ebdaee7cbe783f3",
+    "skills/arabic-poetry/references/SCANNER-SOURCES.md": "bc348837b38c08e7d39032cab9ee911a1ff66c47c4521f225cebf5aa9531a286",
+    "skills/arabic-poetry/references/SCANNER.md": "a347953184cba9b0711f62c73c5251307913efbbcd2fcecc492ed2c9643f7095",
+    "skills/arabic-poetry/references/READING.md": "5c5f640fb11b8c2eafd766a1782295ab9158593a15d834402a4a65da151c95e5",
+    "skills/arabic-poetry/references/arudi-writing.md": "59815114f0c40c0b4699c0853df61ff8da476d968c489d0dd86187c3dfbbb846",
+    "skills/arabic-poetry/references/qafiya.md": "526648c56326a91ec43dcfc8cf353442e7c6b2a38ebd4e29bf66bf4a78959802",
+    "skills/arabic-poetry/references/SIMILAR_SKILLS.md": "cacb16cff34f9c282c527ac91bf654ca2184e91dd0c8ccd70e7b8a764402d776",
+    "skills/arabic-poetry/references/TOOLS.md": "ed34f5192646a5042d519b76b5e225ad12f22301764739bb377f5c5fb3129c7d",
+    "skills/arabic-poetry/tests/test_diwan_cli.py": "dc74654c1605689526c3d739578e34561e10cceaa91da3844d5fa496e1eec9f4",
+    "skills/arabic-poetry/tests/workbench_updates.js": "b0b2b791d6c7f487369dbcf969842ff24497f113e21b166b9ac990686fa1200a",
+    "skills/arabic-poetry/tests/test_scanner_regressions.py": "6f9e8239b619e28821389e892abf58b8e83ccef989c5715368a1859e2ffc232f",
+    "skills/arabic-poetry/tests/workbench_host.js": "fdf69ce31cb8d3d80dd74878e148c706d2b685261a2d66b1d618525de53e89ea",
+    "skills/arabic-poetry/tests/test_verify_context.py": "c51cdf8beb37bef1a6376d7a40e163faa28190cefc08e6a1e05f62cfe5d1764a",
+    "skills/arabic-poetry/tests/run_gold.py": "2230800983e4ebb0ac8c4f0e00e85e2eec5d90b7408c3b39db70e7d31ad695b4",
+    "skills/arabic-poetry/tests/parity.js": "ca7620664fb6feb20d9dd8ba495f7bbf1de3d3ce50ff05a2a19b2b3ceeffd766",
+    "skills/arabic-poetry/tests/parity_snapshot.py": "f5937069452801fdc95603d61dbc7e150396f3151a613c142a9fbf333a1ad62d",
+    "skills/arabic-poetry/tests/test_diwan_agent.py": "ca83ed08f34e061523c272435f216a68cc726fd77a1918d5ec2335cb908be71a",
+    "skills/arabic-poetry/tests/test_diwan_updates.py": "83c063e34dc29a605ae145093c5f54d58a7e4adb667eac05ec22f38b0c223ca1",
+    "skills/arabic-poetry/tests/workbench_shared.js": "76753bba3afb96b2554d1ae36c3253b86d3b49a729119107b6d167c5a9571b2c",
+    "skills/arabic-poetry/tests/workbench_state.js": "600c29c2686b8b6ee1d67e6155503cc76bc0840e72564e3d918542875576285f",
+    "skills/arabic-poetry/tests/workbench_file.js": "5618fea780ee18107cf9e886c863608d6cd62033c04000bbc63e21b58054fdae",
+    "skills/arabic-poetry/tests/test_prepare_diwan.py": "d406d94d080e777aaeaefa8e75aa3c5d45751262f345e87a02aa000afec9986d",
+    "skills/arabic-poetry/tests/test_serve_diwan.py": "60d78779507db37046a433bcd34a3d3f0346da609f23d9cad761e2ba9b70f8c6",
+    "skills/arabic-poetry/tests/gold_verses.tsv": "aea5ed9aed26bdbc6f4468a89323eb94104421e3b1ea7000f98193e5b65203f5",
+    "skills/arabic-poetry/tests/free_verse_kamil.txt": "da41f9088dd05c6ec2f79ddcfa09180d212884cbe2a6d548f431b0a0cfad085f",
+    "skills/arabic-poetry/scripts/export_book.js": "8ad94a78a19c46848571a27419140754a5a62308667366680b7acf098f1a2282",
+    "skills/arabic-poetry/scripts/export_meters.py": "5df7caa4d03cb47f5828945cc2a9455f1ff78a520e89c74712197ecb4dac9a6a",
+    "skills/arabic-poetry/scripts/export_book.py": "7589468c07563550c9cf2756196996f60a7bb91212c5dda1a854895b8e3248bf",
+    "skills/arabic-poetry/scripts/diwan_store.py": "b8591ea29b64a20fbed3429dd756b4fc45467900a1e9062ee6e983aaf49f855e",
+    "skills/arabic-poetry/scripts/serve_diwan.py": "c48bd0f2b04ce0af8a01d3f4c3eff06c1ffea0b42b5e0834d555094997eebebf",
+    "skills/arabic-poetry/scripts/build_workbench.py": "af10428331576eb6d823c11fadfdf5997bafba30229fb88302ac829b1d283a66",
+    "skills/arabic-poetry/scripts/prepare_diwan.py": "d01069cf081d753a33452b655dacb469668648f4a71680f736f57be718652369",
+    "skills/arabic-poetry/scripts/diwan_updates.py": "0bde198555c768ef11c74e5d623f2f1b1e081396e1e1ae970585d1e2de4bebf4",
+    "skills/arabic-poetry/scripts/scan.py": "3f6a1fbc2d850ac6b99baca5a1aba19527d05df4d6d02607e23ddd882106ae47",
+    "skills/arabic-poetry/scripts/diwan_agent.py": "5cf0cff47472db49ba5def81a8b60043e56b544b7838fa0cf21e9a240fd35f11",
+    "skills/arabic-poetry/scripts/diwan.py": "d94fc9b32f927c273070b1fbca1c14c96d16aa51ddd4f3d1ffd7b851c2b0e927",
+    "skills/arabic-poetry/assets/workbench/updates.js": "0600769efc7feb0d2ccb57ecc00a001488bb1289bf55402372a670cf161242e6",
+    "skills/arabic-poetry/assets/workbench/page.html": "815e99e70290754220f9ab78b7c25db04a5ac2bcabeed014952dd45b7da812fa",
+    "skills/arabic-poetry/assets/workbench/runtime.json": "19e3fdde0bf0770ef3bd89489794317c819cae5d668376b1d8849e0791f04b11",
+    "skills/arabic-poetry/assets/workbench/host.js": "b276612309dcd7a22ed92b6986494046becc7fec4c563012e0e7e0da729cc5ef",
+    "skills/arabic-poetry/assets/workbench/export.js": "00fd76cfe314fd480a6cb341da5e198aa05ad1b405ecd9c2a184a5e84e14787d",
+    "skills/arabic-poetry/assets/workbench/meters.json": "7c2c63f24f7ee8db4b083c11dca278a0596c06011395643dd7013242428f573f",
+    "skills/arabic-poetry/assets/workbench/diwan.html": "bb02aa784501c95700ee0cdaf3ce5f50b3c9340b4906c0fa2c7ae28ffd36d051",
+    "skills/arabic-poetry/assets/workbench/engine.js": "61d872127446645a260811784c09497da144eae0f7952203806ce3e695fda169",
+    "skills/arabic-poetry/assets/workbench/file.js": "f1f966bf710cda7d3eac8427422e9737774586851fb5d04fa24da777674c71e5",
+    "skills/arabic-poetry/assets/fonts/Amiri-Bold.ttf": "c20c5fda0b648bfd7672fd3ded17488daa3a4810673b9b012fbb4a0af6a26aab",
+    "skills/arabic-poetry/assets/fonts/Amiri-Regular.ttf": "b092096eb992aebe59084b0cb5cf0015ae82c7e76b0aac5e7d60ae5113af5f54",
+    "skills/arabic-poetry/assets/fonts/OFL.txt": "51aac3e37ad762f728297f8638a27cb71e85e63649cc7594b674bf96f85b92bb",
+    "skills/arabic-poetry/scripts/arud/freeverse.py": "0977a0c2001455f1fdf713d6879dc171b64ed06581460dabe56270824e7a7d52",
+    "skills/arabic-poetry/scripts/arud/aligner.py": "13e8688663aa4cc6d99c3b7149e217d22b3ad49e16cf2dfa155f4673ab119cbc",
+    "skills/arabic-poetry/scripts/arud/meters.py": "3c67f2db91ee78969fca4588bdc7152a04210df6da74c34a8e6a6c521861a5a5",
+    "skills/arabic-poetry/scripts/arud/qafiya.py": "95805ffae871f483e5bfd80bd786da98151e57c270264904b05c9add006010a8",
+    "skills/arabic-poetry/scripts/arud/__init__.py": "cebec1d1de7d2fe0d6ea0983d4d2caada6d8168e2a56019f9860f303dc2a1d7f",
+    "skills/arabic-poetry/scripts/arud/classical.py": "c63fdbcdbacd62863b731f738e62428963a3c829227a04aafc1280318070eabf",
+    "skills/arabic-poetry/scripts/arud/lattice.py": "f57b4822389da11b386ea4fa8f35bf33190694f7ef15111ae6642cb656160375",
+    "skills/arabic-poetry/scripts/arud/report.py": "9336e793e2eee68122532ddd80fa39e6d8489f29a0bfc2b084e23e173df823f7"
+  },
+  "package_unchanged": true,
+  "commands": [
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "skills/arabic-poetry/tests",
+        "-p",
+        "test_*.py"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "....................................................................................................\n----------------------------------------------------------------------\nRan 100 tests in 71.261s\n\nOK\n"
+    },
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-p",
+        "test_*.py"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.247s\n\nOK\n"
+    },
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "evals",
+        "-p",
+        "test_*.py"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "................\n----------------------------------------------------------------------\nRan 16 tests in 1.628s\n\nOK\n",
+      "capture": "Observed final unittest output from the same command after refreshing the evaluation index; actual initial stale-snapshot failure retained separately."
+    },
+    {
+      "command": [
+        "/private/tmp/product-learning-validation-20261018/bin/skills-ref",
+        "validate",
+        "skills/arabic-poetry"
+      ],
+      "exit_code": 0,
+      "stdout": "Valid skill: skills/arabic-poetry\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "claude",
+        "plugin",
+        "validate",
+        "."
+      ],
+      "exit_code": 0,
+      "stdout": "Validating marketplace manifest: /private/tmp/poetry-cli-20261019/.claude-plugin/marketplace.json\n\nℹ Advice (does not change the verdict):\n\n  ❯ /private/tmp/poetry-cli-20261019/README.md: This README has no line that installs \"arabic-poetry\" from a marketplace. Add the install line, which works in one step on Claude Code 2.1.275 or later. In it, replace <owner>/<repo> with the repository that holds the marketplace.\n      /plugin install arabic-poetry --marketplace <owner>/<repo>\n\n✔ Validation passed\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "scripts/plugin_version.py"
+      ],
+      "exit_code": 0,
+      "stdout": "Plugin versions agree: 0.3.1\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/opt/homebrew/opt/python@3.14/bin/python3.14",
+        "skills/arabic-poetry/tests/run_gold.py"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS tawil -> tawil/تام 0.1 | 2nd: kamil/تام 3.1 | فعولن مفاعيلن فعولن مفاعلن + فعولن مفاعيلن فعولُ مفاعلن\nPASS tawil -> tawil/تام 0.0 | 2nd: rajaz/تام 4.0 | فعولن مفاعيلن فعولن مفاعلن + فعولن مفاعيلن فعولن مفاعلن\nPASS tawil -> tawil/تام 0.3 | 2nd: rajaz/تام 4.2 | فعولُ مفاعيلن فعولُ مفاعلن + فعولُ مفاعيلن فعولن مفاعلن\nPASS madid -> madid/تام (مجزوء وجوبًا) 0.0 | 2nd: ramal/تام 2.1 | فاعلاتن فاعلن فاعلاتن + فاعلاتن فاعلن فاعلاتن\nPASS basit -> basit/تام 0.0 | 2nd: tawil/تام 6.0 | مستفعلن فاعلن مستفعلن فعِلن + مستفعلن فاعلن مستفعلن فعِلن\nPASS basit -> basit/تام 0.3 | 2nd: munsarih/تام 5.6 | متفعلن فعِلن مستفعلن فعِلن + متفعلن فاعلن مستفعلن فعِلن\nPASS basit -> basit/تام 0.6 | 2nd: munsarih/تام 5.7 | متفعلن فاعلن مستفعلن فعْلن + متفعلن فعِلن مستفعلن فعْلن\nPASS wafir -> wafir/تام 0.15 | 2nd: ramal/تام 2.5 | مفاعلْتن مفاعَلَتن فعولن + مفاعلْتن مفاعلْتن فعولن\nPASS wafir -> wafir/تام 0.05 | 2nd: mutaqarib/تام 3.3 | مفاعَلَتن مفاعلْتن فعولن + مفاعَلَتن مفاعَلَتن فعولن\nPASS wafir -> wafir/تام 0.6 | 2nd: ramal/تام 1.6 | مفاعلْتن مفاعلْتن فعولن + مفاعلْتن مفاعلْتن فعولن\nPASS kamil -> kamil/تام 0.0 | 2nd: tawil/تام 4.2 | متَفاعلن متَفاعلن متفاعلن + متَفاعلن متَفاعلن متفاعلن\nPASS kamil -> kamil/تام 0.15 | 2nd: tawil/تام 2.8 | متْفاعلن متَفاعلن متفاعلن + متْفاعلن متْفاعلن متفاعلن\nPASS kamil -> kamil/تام 0.1 | 2nd: tawil/تام 2.8 | متْفاعلن متَفاعلن متفاعلن + متَفاعلن متْفاعلن متفاعلن\nPASS hazaj -> hazaj/مجزوء وجوبًا 0.0 | 2nd: wafir/مجزوء 0.15 | مفاعيلن مفاعيلن + مفاعيلن مفاعيلن\nPASS rajaz -> rajaz/تام 0.6 | 2nd: sari/تام 2.4 | مستعلن متفعلن متفعلن + مستعلن مستفعلن متفعلن\nPASS ramal -> ramal/تام 0.05 | 2nd: mutadarak/تام 2.2 | فاعلاتن فاعلاتن فاعلن + فاعلاتن فاعلاتن فعِلن\nPASS khafif -> khafif/تام 0.15 | 2nd: madid/تام (مجزوء وجوبًا) 3.1 | فاعلاتن مستفع لن فاعلاتن + فاعلاتن متفع لن فعِلاتن\nPASS munsarih -> munsarih/تام 0.7 | 2nd: khafif/تام 2.25 | مستفعلن مفعولاتُ مستفعلن + مستفعلن مفعولاتُ مفتعلن\nPASS mujtath -> mujtath/مجزوء وجوبًا 0.0 | 2nd: mutadarak/مجزوء 1.5 | مستفع لن فاعلاتن + مستفع لن فاعلاتن\nPASS muqtadab -> muqtadab/مجزوء وجوبًا 0.3 | 2nd: mutadarak/مجزوء 2.1 | مفعلاتُ مفتعلن + مفعلاتُ مفتعلن\nPASS mudari -> mudari/مجزوء وجوبًا 0.3 | 2nd: mutaqarib/مجزوء 2.2 | مفاعيلُ فاع لاتن + مفاعيلُ فاع لاتن\nPASS mutaqarib -> mutaqarib/تام 0.15 | 2nd: mutadarak/تام 2.0 | فعولن فعولن فعولن فعو + فعولن فعولُ فعولن فعو\nPASS mutaqarib -> mutaqarib/تام 0.0 | 2nd: mutadarak/تام 1.5 | فعولن فعولن فعولن فعولن + فعولن فعولن فعولن فعولن\nPASS mutadarak -> mutadarak/تام 0.3 | 2nd: madid/تام (مجزوء وجوبًا) 2.4 | فعْلن فعْلن فعِلن فعِلن + فعِلن فعْلن فعِلن فعِلن\n24/24 passed\nPASS free verse kamil -> kamil errors 0\nPASS ending ambiguity -> tawil مفاعلن\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "skills/arabic-poetry/tests/parity.js"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS: 24 classical verses, taf‘ila, ending ambiguity, and Python/JS patterns and feet agree\ntadwir kamil قَلْبٍ\nrun-on kept only where sound\nqat' al-wasl as licence\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "skills/arabic-poetry/tests/workbench_state.js"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS workbench state: revision-safe saves, isolated conversations, stale responses, preserved wording/marks, line identities/metadata and word context\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "skills/arabic-poetry/tests/workbench_host.js"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS workbench host: portable exchange, invalid input, cancellation, native download, optional host adapters\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "skills/arabic-poetry/tests/workbench_file.js"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS shared-file transport: external refresh, stale preconditions, one-write retry and later-version preservation\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "skills/arabic-poetry/tests/workbench_shared.js"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS bulk cancel/close refresh\nPASS line cancel/close refresh\nPASS word cancel/close refresh\nPASS unchanged LF\nPASS unchanged CRLF\nPASS literal bulk edit\nPASS dirty conflict remains protected\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "skills/arabic-poetry/tests/workbench_updates.js"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS runtime updates: clean reload, active editor/draft/AI guards, late typing, save acknowledgement, conflict, foreign identity and rollback\n",
+      "stderr": ""
+    }
+  ],
+  "json_manifests_valid": true,
+  "superseded_evidence_check": {
+    "exit_code": 1,
+    "reason": "The default checker still referenced the earlier package before the new execution records were installed. Full old output remains outside Git.",
+    "raw_record": "/private/tmp/diwan-review-fixes-20261020/software-accepted.json",
+    "raw_record_sha256": "a972e7e0d9217016e7aa3438806f4c38be1a4d76b62da7c3e01588aec664934a"
+  },
+  "source_commit": "471033720c3ade691ddd9e260be18c06e937efa7"
+}

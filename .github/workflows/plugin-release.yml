@@ -23,6 +23,11 @@ jobs:
           ref: ${{ github.sha }}
           fetch-depth: 0
           persist-credentials: false
+      - name: Install pinned release tooling
+        run: |
+          python3 -m venv "$RUNNER_TEMP/release-venv"
+          "$RUNNER_TEMP/release-venv/bin/python" -m pip install --require-hashes -r scripts/release-requirements.txt
+          echo "$RUNNER_TEMP/release-venv/bin" >> "$GITHUB_PATH"
       - name: Test release and version guards
         run: python3 -m unittest discover -s tests -p 'test_*.py'
       - name: Validate version and bilingual notes
@@ -52,6 +57,11 @@ jobs:
           ref: ${{ github.sha }}
           fetch-depth: 0
           persist-credentials: false
+      - name: Install pinned release tooling
+        run: |
+          python3 -m venv "$RUNNER_TEMP/release-venv"
+          "$RUNNER_TEMP/release-venv/bin/python" -m pip install --require-hashes -r scripts/release-requirements.txt
+          echo "$RUNNER_TEMP/release-venv/bin" >> "$GITHUB_PATH"
       - name: Publish reviewed notes at the merge commit
         env:
           GH_TOKEN: ${{ github.token }}

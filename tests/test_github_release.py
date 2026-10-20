@@ -1,3 +1,5 @@
+from contextlib import redirect_stderr, redirect_stdout
+import io
 import json
 from pathlib import Path
 import subprocess
@@ -144,6 +146,24 @@ class GitFixture(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'notes'):
             self.plan(after=self.commit())
 
+    def staged_notes(self):
+        self.git('checkout', '-qb', 'notes-staged-first', self.before)
+        self.notes.parent.mkdir(parents=True, exist_ok=True)
+        self.notes.write_text(NOTES.format(version=self.next), encoding='utf-8')
+        return self.commit()
+
+    def test_preexisting_notes_must_change_with_the_version_bump(self):
+        before = self.staged_notes()
+        versions.set_version(self.root, self.next)
+        with self.assertRaisesRegex(ValueError, 'notes.*change'):
+            self.plan(before=before, after=self.commit())
+
+    def test_preexisting_notes_updated_with_the_bump_are_accepted(self):
+        before = self.staged_notes()
+        versions.set_version(self.root, self.next)
+        self.notes.write_text(NOTES.format(version=self.next) + '\nتفصيل جديد.\n')
+        self.assertTrue(self.plan(before=before, after=self.commit())['publish'])
+
     def test_both_language_sections_need_content_in_their_language(self):
         for bad in ['## English\n\n## العربية\nنص',
                     '## English\nEnglish notes\n## العربية\n',
@@ -191,6 +211,54 @@ class GitFixture(unittest.TestCase):
         self.assertIn('[here](#english)', body)
         self.assertIn('/blob/', body)
         self.assertTrue(body.rstrip().endswith('/README.md)'))
+
+    def test_reference_links_and_titles_are_pinned_without_losing_labels(self):
+        self.notes.write_text(NOTES.format(version=self.next) + '''
+[guide][install]
+
+[install]: ../../INSTALL.md "Update guide"
+
+[titled](../../README.md "Read more")
+![image](../../assets/cover.png "Cover")
+''')
+        after = self.commit()
+        body = self.plan(after=after)['body']
+        for path in ('INSTALL.md', 'README.md', 'assets/cover.png'):
+            self.assertIn(f'/blob/{after}/{path}', body)
+        self.assertNotIn('../../', body)
+        self.assertIn('Update guide', body)
+        self.assertIn('Read more', body)
+        self.assertIn('Cover', body)
+
+    def test_link_syntax_in_code_examples_is_not_rewritten(self):
+        self.notes.write_text(NOTES.format(version=self.next) + '''
+```md
+[example](../../KEEP.md)
+```
+
+`[literal](../../KEEP.md)`
+''')
+        body = self.plan(after=self.commit())['body']
+        self.assertEqual(body.count('[example](../../KEEP.md)'), 1)
+        self.assertEqual(body.count('[literal](../../KEEP.md)'), 1)
+
+    def test_github_markdown_tables_and_footnotes_keep_their_links(self):
+        self.notes.write_text(NOTES.format(version=self.next) + '''
+| Guide | Status |
+| --- | --- |
+| [read](../../README.md) | ~~old~~ new |
+
+- [x] checked
+
+See note[^one].
+
+[^one]: [install](../../INSTALL.md)
+''')
+        body = self.plan(after=self.commit())['body']
+        self.assertIn('~~old~~', body)
+        self.assertIn('- [x] checked', body)
+        self.assertIn('[^one]', body.lower())
+        self.assertNotIn('../../', body)
 
 
 class FakeGitHub:
@@ -303,5 +371,3 @@ class Publication(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-from contextlib import redirect_stderr, redirect_stdout
-import io

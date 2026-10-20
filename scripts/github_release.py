@@ -59,15 +59,38 @@ def bilingual_notes(text):
 
 
 def pinned_links(text, repository, commit, notes_path):
+    try:
+        import mistune
+        from mistune.renderers.markdown import MarkdownRenderer
+    except ImportError as error:
+        raise ValueError('Install release tooling with pip install --require-hashes -r scripts/release-requirements.txt') from error
     base = f'https://github.com/{repository}/blob/{commit}/'
     directory = base + str(Path(notes_path).parent).replace(os.sep, '/') + '/'
-    def replace(match):
-        target = match[1]
+    def pin(target):
         if target.startswith('#') or urllib.parse.urlsplit(target).scheme or target.startswith('//'):
-            return match[0]
-        url = base + target.lstrip('/') if target.startswith('/') else urllib.parse.urljoin(directory, target)
-        return '](' + url + ')'
-    return re.sub(r'\]\(([^\s)]+)\)', replace, text)
+            return target
+        return base + target.lstrip('/') if target.startswith('/') else urllib.parse.urljoin(directory, target)
+    markdown = mistune.create_markdown(renderer='ast', plugins=['table', 'strikethrough', 'task_lists', 'footnotes'])
+    tokens, state = markdown.parse(text)
+    def rewrite(nodes):
+        for token in nodes:
+            if token['type'] in ('link', 'image'):
+                token['attrs']['url'] = pin(token['attrs']['url'])
+            rewrite(token.get('children', []))
+    rewrite(tokens)
+    for reference in state.env.get('ref_links', {}).values():
+        reference['url'] = pin(reference['url'])
+    class ReleaseMarkdown(MarkdownRenderer):
+        def footnote_ref(self, token, state):
+            return '[^' + token['raw'] + ']'
+
+        def footnotes(self, token, state):
+            return self.render_children(token, state)
+
+        def footnote_item(self, token, state):
+            content = self.render_children(token, state).rstrip().replace('\n', '\n    ')
+            return '[^' + token['attrs']['key'] + ']: ' + content + '\n\n'
+    return ReleaseMarkdown()(tokens, state)
 
 
 def plan(root, before, commit, repository):
@@ -87,6 +110,9 @@ def plan(root, before, commit, repository):
         body = git(root, 'show', f'{commit}:{path}')
     except ValueError as error:
         raise ValueError(f'Missing version-specific release notes: {path}') from error
+    if (git(root, 'ls-tree', '--name-only', before, '--', path).strip()
+            and git(root, 'show', f'{before}:{path}') == body):
+        raise ValueError('Version-specific release notes must be added or changed with the version bump')
     bilingual_notes(body)
     result.update(tag='v' + version, name='Arabic Poetry v' + version,
                   body=pinned_links(body, repository, commit, path))

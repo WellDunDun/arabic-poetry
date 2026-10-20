@@ -2,6 +2,8 @@
 
 ## 0.3.1, safe updates in an open Diwan, unreleased
 
+[Customer release notes in English and Arabic](docs/releases/0.3.1.md) include automatic word suggestions from the pending 0.3.0 changes, safe editor updates and the one-time upgrade steps. This candidate is not yet released.
+
 - Follow compatible plugin versions already installed in the same Claude Code user-scope or Codex versioned cache. Keep the open editor's address, poem identity, saved text, revision history and selected AI client through a supervised restart.
 - Wait for saved, idle editors before reloading. Preserve unsaved bulk/line/word/title edits, unsent questions, in-flight saves, conflicts and AI requests, including when another tab initiates the update.
 - Return to the working package if an updated worker fails to start. Keep plugin installation under the host's existing update settings; older sessions require one safe reopen.

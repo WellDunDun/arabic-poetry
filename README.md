@@ -4,6 +4,10 @@ A collaborative Agent Skill for writing, revising, continuing, and understanding
 
 Use it for عمودي، تفعيلة، قصيدة نثر, evidence-led meter and rhyme analysis, and revisions that preserve the poet's meaning and voice.
 
+[Upcoming release notes in English and Arabic](docs/releases/0.3.1.md), including how to update an existing Diwan. Version 0.3.1 is awaiting review.
+
+[ملاحظات الإصدار القادم بالعربية والإنجليزية](docs/releases/0.3.1.md)، مع خطوات تحديث ديوان المفتوح. الإصدار 0.3.1 قيد المراجعة.
+
 ## Quickstart
 
 ### Install the plugin, recommended

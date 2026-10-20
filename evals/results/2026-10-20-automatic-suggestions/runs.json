@@ -49,6 +49,6 @@
     }
   },
   "artifacts_sha256": "f8003466578390c2894bc753c82dbcc6fb6947702f040d23a8d9ce69095a2d89",
-  "supersedes_for_current_package": "Final socket-closure, identity, serialized lifecycle and copied-preview fixes at the recorded source commit; earlier trials remain historical.",
-  "previous_trial": "2026-10-20-merge-readiness"
+  "supersedes_for_current_package": "Automatic Claude/Codex word suggestions, host-sampling preservation and failure/retry handling at the recorded source commit; earlier trials remain historical.",
+  "previous_trial": "2026-10-20-session-lifecycle"
 }

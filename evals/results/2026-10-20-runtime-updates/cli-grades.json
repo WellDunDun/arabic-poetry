@@ -1,0 +1,125 @@
+{
+  "grading": "Lead semantic review with condition known; complete responses, actual commands, state and artifacts inspected.",
+  "cases": {
+    "discover": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "criterion": "Actually inspects CLI help and structured discovery",
+          "evidence": "Actual help and structured contract commands inspected; explains opaque version, stable request id, conflict reassessment and no mutations. See cli-after.json and hashed raw events."
+        },
+        {
+          "status": "pass",
+          "criterion": "Explains mandatory version and stable request-id, rereading/reassessing on conflict",
+          "evidence": "Actual help and structured contract commands inspected; explains opaque version, stable request id, conflict reassessment and no mutations. See cli-after.json and hashed raw events."
+        },
+        {
+          "status": "pass",
+          "criterion": "Makes no poem mutation or editor launch",
+          "evidence": "Actual help and structured contract commands inspected; explains opaque version, stable request id, conflict reassessment and no mutations. See cli-after.json and hashed raw events."
+        }
+      ]
+    },
+    "create": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "criterion": "Uses the CLI to create and read a canonical shared document",
+          "evidence": "Actual create/get preserve exact source text/marks and original input. Canonical JSON is revision 1; no editor. See cli-after.json and hashed raw events."
+        },
+        {
+          "status": "pass",
+          "criterion": "Preserves the exact input text and marks and keeps the import source unchanged",
+          "evidence": "Actual create/get preserve exact source text/marks and original input. Canonical JSON is revision 1; no editor. See cli-after.json and hashed raw events."
+        },
+        {
+          "status": "pass",
+          "criterion": "Identifies the JSON document as authoritative without claiming browser display or automatic future-chat access",
+          "evidence": "Actual create/get preserve exact source text/marks and original input. Canonical JSON is revision 1; no editor. See cli-after.json and hashed raw events."
+        }
+      ]
+    },
+    "accepted-update": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "criterion": "Reads the current version and performs a conditional CLI update with a request id",
+          "evidence": "Actual get and conditional update use a request id. Only للضوء becomes للصباح at revision 2 with the same poem id. See cli-after.json and hashed raw events."
+        },
+        {
+          "status": "pass",
+          "criterion": "Saves exactly the accepted text change in the original canonical document and preserves its id",
+          "evidence": "Actual get and conditional update use a request id. Only للضوء becomes للصباح at revision 2 with the same poem id. See cli-after.json and hashed raw events."
+        },
+        {
+          "status": "pass",
+          "criterion": "Reports the real saved revision without a competing browser-only copy or editor launch",
+          "evidence": "Actual get and conditional update use a request id. Only للضوء becomes للصباح at revision 2 with the same poem id. See cli-after.json and hashed raw events."
+        }
+      ]
+    },
+    "stale-save": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "criterion": "Uses the supplied stale version and receives a real conflict",
+          "evidence": "Recorded CLI returns CONFLICT using stale.json version; final version/text unchanged from newer agent revision, proposal retained. See cli-after.json and hashed raw events."
+        },
+        {
+          "status": "pass",
+          "criterion": "Does not retry with a fresh precondition or overwrite the newer text",
+          "evidence": "Recorded CLI returns CONFLICT using stale.json version; final version/text unchanged from newer agent revision, proposal retained. See cli-after.json and hashed raw events."
+        },
+        {
+          "status": "pass",
+          "criterion": "Reports the conflict and leaves the proposal available",
+          "evidence": "Recorded CLI returns CONFLICT using stale.json version; final version/text unchanged from newer agent revision, proposal retained. See cli-after.json and hashed raw events."
+        }
+      ]
+    },
+    "retry": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "criterion": "Uses the same request id, original version and payload for both CLI saves",
+          "evidence": "Two identical saves reuse original version and retry-demo; second is replayed and history has exactly two revisions. See cli-after.json and hashed raw events."
+        },
+        {
+          "status": "pass",
+          "criterion": "The canonical document advances exactly once and the second save is a replay",
+          "evidence": "Two identical saves reuse original version and retry-demo; second is replayed and history has exactly two revisions. See cli-after.json and hashed raw events."
+        },
+        {
+          "status": "pass",
+          "criterion": "Checks actual state/history rather than claiming retry safety without execution",
+          "evidence": "Two identical saves reuse original version and retry-demo; second is replayed and history has exactly two revisions. See cli-after.json and hashed raw events."
+        }
+      ]
+    },
+    "restore": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "criterion": "Reads current and historical versions and uses conditional restore with a request id",
+          "evidence": "Reads state/history and conditionally restores original text as revision 3; same id and all three history entries remain. See cli-after.json and hashed raw events."
+        },
+        {
+          "status": "pass",
+          "criterion": "Restores the original text as revision 3 with the same poem id",
+          "evidence": "Reads state/history and conditionally restores original text as revision 3; same id and all three history entries remain. See cli-after.json and hashed raw events."
+        },
+        {
+          "status": "pass",
+          "criterion": "Retains all three history entries and reports the real result",
+          "evidence": "Reads state/history and conditionally restores original text as revision 3; same id and all three history entries remain. See cli-after.json and hashed raw events."
+        }
+      ]
+    }
+  }
+}

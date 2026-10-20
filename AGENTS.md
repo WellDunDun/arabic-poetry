@@ -48,6 +48,7 @@ node skills/arabic-poetry/tests/workbench_state.js
 node skills/arabic-poetry/tests/workbench_host.js
 node skills/arabic-poetry/tests/workbench_file.js
 node skills/arabic-poetry/tests/workbench_shared.js
+node skills/arabic-poetry/tests/workbench_updates.js
 PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s evals -p 'test_*.py'
 python3 evals/check_results.py
 git diff --check
@@ -68,3 +69,9 @@ Final responses for edits should report changed files, checks performed, and any
 Run `test_diwan_cli.py` through the skill unittest discovery above and `workbench_file.js` for transport regressions. Exercise real browser-to-file saving, agent-to-browser refresh, stale browser conflict preservation, explicit reload and history restore in a disposable workspace. Stop owned test servers through `diwan.py stop FILE`; never kill an unverified PID. CLI help and `agent-context` must work offline before file setup. Record applicable CLI-design principles and conditional capabilities in the evaluation report. Safe writes rely on cooperating macOS/Linux writers using this API; direct file edits bypass advisory locks.
 
 `scripts/diwan_agent.py` dispatches automatic AI requests to the selected installed Claude/Codex client. Software tests use fixture executables and make no live model calls. For a user-authorized live trial, verify both providers through real browser word-menu actions, no handoff modal, displayed suggestions, accepted replacement saved to the canonical file, and unchanged text before selection. Keep prompts in a disposable poem workspace. Preserve native host sampling independently of local poem storage; do not replace it with a manual queue. Manual mode remains explicit and must not call a model.
+
+`scripts/diwan_updates.py` supervises shared-file workers and follows compatible, newer versions already installed in the same versioned plugin cache. Keep the loopback address, document identity, agent selection and CAS/history protocol stable across a handoff. The page must defer reload while a draft, editor, save, conflict or AI request is active. Never install packages from the editor, accept an executable path from HTTP input, force a draft save, or reload a dirty page. A failed successor returns to the last working package without retrying that target in a loop. `assets/workbench/runtime.json` declares the handoff protocol; change its number for incompatible runtime/document APIs.
+
+The session's supervising launcher stays alive while workers update. A release that requires different running launcher behavior must advance the handoff protocol and require a safe reopen. Protocol compatibility covers document/history formats as well as HTTP and worker-launch behavior.
+
+Protocol 2 uses a supervisor-specific stop request and shutdown receipt in the poem's private state directory. Stop must remain reachable during a worker handoff and report success only after the supervisor has drained its owned worker; uncertain shutdown keeps the session receipt.

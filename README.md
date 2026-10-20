@@ -4,6 +4,10 @@ A collaborative Agent Skill for writing, revising, continuing, and understanding
 
 Use it for عمودي، تفعيلة، قصيدة نثر, evidence-led meter and rhyme analysis, and revisions that preserve the poet's meaning and voice.
 
+[Upcoming release notes in English and Arabic](docs/releases/0.3.1.md), including how to update an existing Diwan. Version 0.3.1 is awaiting review.
+
+[ملاحظات الإصدار القادم بالعربية والإنجليزية](docs/releases/0.3.1.md)، مع خطوات تحديث ديوان المفتوح. الإصدار 0.3.1 قيد المراجعة.
+
 ## Quickstart
 
 ### Install the plugin, recommended
@@ -100,6 +104,10 @@ The bundled [Diwan CLI](skills/arabic-poetry/references/CLI.md) lets your agent 
 **Word replacements:** right-click a word, or two-finger click on a Mac trackpad. Choose **بالمعنى نفسه** for synonyms, **بالتقطيع نفسه** for the same rhythm, or **تؤدّي المعنى وتقيم الوزن** to preserve meaning and repair meter. A normal click edits spelling/vowels. With a connected host or an installed, signed-in Claude/Codex client, suggestions arrive automatically. Select a suggestion to apply it. Local AI actions make separate requests using that client's login and usage allowance; they do not send a turn into your open chat. Ask your agent to open Diwan with Claude, Codex, or manual chat mode. The manual dialog remains available when automatic AI is unavailable.
 
 **بدائل الكلمات:** انقر على الكلمة بزر الفأرة الأيمن، أو بإصبعين على لوحة تتبّع Mac. اختر «بالمعنى نفسه» للمرادفات، أو «بالتقطيع نفسه» للحفاظ على الإيقاع، أو «تؤدّي المعنى وتقيم الوزن» لإصلاح الوزن مع حفظ المعنى. النقر العادي يفتح تعديل الكلمة وتشكيلها. تصل الاقتراحات تلقائيًا إذا كان المضيف متصلًا بنموذج، أو كان Claude/Codex مثبتًا ومسجّل الدخول محليًا. اختر اقتراحًا لتطبيقه. تستخدم طلبات الذكاء المحلية تسجيل الدخول وحصة الاستخدام للعميل المحدد بطلبات مستقلة عن محادثتك المفتوحة. اطلب من وكيلك فتح ديوان مع Claude أو Codex أو وضع المحادثة اليدوي. يبقى مربع الطلب اليدوي بديلًا عند تعذّر الاتصال التلقائي.
+
+An open shared-file Diwan can pick up compatible updates after your plugin manager installs them. It waits until your edits are saved and you finish editing, then reconnects automatically with the same poem and history. Unsaved edits or a save conflict keep the update pending. This requires a session opened with 0.3.1 or later and a supported versioned plugin cache; see [updates](INSTALL.md#versions-and-releases).
+
+يمكن لديوان المشترك المفتوح التقاط تحديث متوافق بعد أن يثبّته مدير الإضافات. ينتظر حفظ تعديلاتك وانتهاء التحرير، ثم يعيد الاتصال تلقائيًا بالقصيدة وسجلها نفسيهما. تبقى المسودات غير المحفوظة أو تعارضات الحفظ سببًا لتعليق التحديث. يلزم فتح الجلسة بالإصدار 0.3.1 أو أحدث واستخدام ذاكرة إضافات ذات إصدارات مدعومة؛ راجع [التحديثات](INSTALL.md#versions-and-releases).
 
 ## Collaboration
 

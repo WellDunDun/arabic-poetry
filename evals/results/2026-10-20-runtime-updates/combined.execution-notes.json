@@ -1,0 +1,65 @@
+{
+  "source_commit": "30cd2962f497a3bc54e81a8cc7dc793d9156ff28",
+  "client": "codex-cli 0.155.1",
+  "suite_sha256": "2c4c204c2cc0e233a8360ff2622a0540dbef52e46c33e18195e8ebe0755c0dac",
+  "model": "CLI default; no override, backend identifier not emitted",
+  "limits": "One fresh session per case; local filesystem/Python/Node only. Semantic grading by lead with condition known. Not a literary-quality or reliability benchmark.",
+  "cases": [
+    {
+      "id": "prose-compose",
+      "exit_code": 0,
+      "events_sha256": "b565c983e1c498619d17c454830f68c23597fd05fc4275f6bfa897f233bbd4e4",
+      "package_unchanged": true,
+      "raw_events": "/private/tmp/diwan-runtime-accepted-evals-20261020/poetry/prose-compose/events.jsonl"
+    },
+    {
+      "id": "close-reading",
+      "exit_code": 0,
+      "events_sha256": "6737b93a134e611b1fadc3a731180a5b83d67cdfc9ac499598d528c2ccd4eba8",
+      "package_unchanged": true,
+      "raw_events": "/private/tmp/diwan-runtime-accepted-evals-20261020/poetry/close-reading/events.jsonl"
+    },
+    {
+      "id": "classical-scan",
+      "exit_code": 0,
+      "events_sha256": "9fde6d6009e0cc254de9778bb267980f3f929b5507ea95e4adf21e59240f950c",
+      "package_unchanged": true,
+      "raw_events": "/private/tmp/diwan-runtime-accepted-evals-20261020/poetry/classical-scan/events.jsonl"
+    },
+    {
+      "id": "provisional-reading",
+      "exit_code": 0,
+      "events_sha256": "85df3a0c7c10e95574449c7876b934da467e3669232a7a6976e415c6972cbfbf",
+      "package_unchanged": true,
+      "raw_events": "/private/tmp/diwan-runtime-accepted-evals-20261020/poetry/provisional-reading/events.jsonl"
+    },
+    {
+      "id": "review-only",
+      "exit_code": 0,
+      "events_sha256": "530f21f4bd4a02ab3010f37589c52c82a3d648d29dc1e33833f027116476df4a",
+      "package_unchanged": true,
+      "raw_events": "/private/tmp/diwan-runtime-accepted-evals-20261020/poetry/review-only/events.jsonl"
+    },
+    {
+      "id": "bounded-repair",
+      "exit_code": 0,
+      "events_sha256": "a3e0f6b9c0057d25ef53912cd7a471af94aa964b1040a05901eb80bb065150c7",
+      "package_unchanged": true,
+      "raw_events": "/private/tmp/diwan-runtime-accepted-evals-20261020/poetry/bounded-repair/events.jsonl"
+    },
+    {
+      "id": "tafila-boundary",
+      "exit_code": 0,
+      "events_sha256": "fb4ffa933258ce677a8a69477d512983606ac558a9761d1db4338208748a5468",
+      "package_unchanged": true,
+      "raw_events": "/private/tmp/diwan-runtime-accepted-evals-20261020/poetry/tafila-boundary/events.jsonl"
+    },
+    {
+      "id": "workbench-export",
+      "exit_code": 0,
+      "events_sha256": "4f46dc4d305eaca6e6f00adff9d03fbebe7ceec4b387e511961eb0abf02a2bf7",
+      "package_unchanged": true,
+      "raw_events": "/private/tmp/diwan-runtime-accepted-evals-20261020/poetry/workbench-export/events.jsonl"
+    }
+  ]
+}

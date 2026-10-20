@@ -12,6 +12,8 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urlsplit
 from diwan_agent import AgentError, Dispatcher, MAX_PROMPT, select_agent
+from diwan_updates import CONTROL_ENV, InstalledRuntime, RuntimeControl, TOKEN_ENV
+from diwan_store import DiwanError
 
 MAX_BODY = 2_000_000
 REQUEST_TTL = 10 * 60
@@ -76,10 +78,19 @@ def make_server(workspace, port=None, page=None, document=None, agent='manual'):
                 raise ValueError('Invalid saved Diwan port; use --port to choose one explicitly')
             port = saved['port']
     assets = Path(__file__).resolve().parent.parent / 'assets' / 'workbench'
-    token = secrets.token_urlsafe(32)
+    page_html = (page or assets / 'diwan.html').read_text(encoding='utf-8')
+    if '<script' not in page_html or 'DiwanFileConnection' not in page_html:
+        raise ValueError('Diwan page is incomplete; keep the previous runtime')
+    token = os.environ.pop(TOKEN_ENV, '') if document is not None else ''
+    if token and not re.fullmatch(r'[A-Za-z0-9_-]{43}', token):
+        raise ValueError('Invalid runtime handoff token')
+    token = token or secrets.token_urlsafe(32)
     prefix = '/' + token
     lock = threading.Lock()
+    document_writes = 0
     served = None if document is None else {'path': str(document.path), 'id': document.get()['poem']['id']}
+    runtime = InstalledRuntime() if document is not None else None
+    control = RuntimeControl(document,os.environ[CONTROL_ENV]) if document is not None and os.environ.get(CONTROL_ENV) else None
 
     class Handler(BaseHTTPRequestHandler):
         def log_message(self, *args):
@@ -123,11 +134,13 @@ def make_server(workspace, port=None, page=None, document=None, agent='manual'):
                           'script': str(Path(__file__).resolve()), 'agent': client.name if client else 'manual',
                           'manual': agent == 'manual'}
                 encoded = json.dumps(config, ensure_ascii=False).replace('<', '\\u003c')
-                html = (page or assets / 'diwan.html').read_text(encoding='utf-8')
+                html = page_html
                 html = '<script>window.DiwanLocal=' + encoded + ';</script>\n' + html
                 if document is not None:
-                    html = '<script>window.DiwanFile=' + json.dumps({'base': prefix}).replace('<', '\\u003c') + ';</script>\n' + html
+                    html = '<script>window.DiwanFile=' + json.dumps({'base': prefix, 'runtime': runtime.version, 'id': served['id']}).replace('<', '\\u003c') + ';</script>\n' + html
                 self.send(200, html.encode('utf-8'), 'text/html; charset=utf-8')
+            elif runtime is not None and path == '/runtime':
+                self.send(200, dict(runtime.status(), id=served['id']))
             elif document is not None and path in ('/document', '/status', '/history'):
                 self.document_call(path)
             elif path.startswith('/responses/') and ID.fullmatch(path.split('/')[-1]):
@@ -148,6 +161,7 @@ def make_server(workspace, port=None, page=None, document=None, agent='manual'):
 
         def do_POST(self):
             """Validate JSON input before queuing or cancelling a request."""
+            nonlocal document_writes
             path = self.route()
             if path is None:
                 return
@@ -162,11 +176,56 @@ def make_server(workspace, port=None, page=None, document=None, agent='manual'):
                 self.send(400, {'error': 'Invalid JSON request'})
                 return
             if document is not None and path == '/document':
-                self.document_call(path, data)
+                with lock:
+                    if self.server.diwan_restart:
+                        self.send(503, {'error': {'code': 'UPDATING', 'message': 'Diwan is updating. Keep the draft and retry this same save after reconnecting.'}})
+                        return
+                    document_writes += 1
+                try:
+                    self.document_call(path, data)
+                finally:
+                    with lock:
+                        document_writes -= 1
                 return
             if document is not None and path == '/shutdown':
-                self.send(200, {'stopped': True})
-                threading.Thread(target=self.server.shutdown, daemon=True).start()
+                with lock:
+                    if control:
+                        try:
+                            control.request_stop()
+                        except (OSError,DiwanError):
+                            pass  # Still stop this owned worker; its supervisor observes exit 0.
+                    self.server.diwan_stopping = True
+                    self.server.diwan_restart = False
+                    self.send(200, {'stopped': True})
+                    threading.Thread(target=self.server.shutdown, daemon=True).start()
+                return
+            if runtime is not None and path == '/runtime':
+                # A browser sends no paths or executable arguments. The installation decides.
+                if data:
+                    self.send(400, {'error': 'Runtime updates take no arguments'})
+                    return
+                with lock:
+                    if self.server.diwan_stopping:
+                        self.send(200,{'restarting':False})
+                        return
+                    try:
+                        if document.get()['poem']['id'] != served['id']:
+                            raise ValueError('Document identity changed')
+                    except (OSError, ValueError, DiwanError):
+                        self.send(409, {'error': 'Reopen the intended poem before updating Diwan'})
+                        return
+                    candidate = runtime.candidate(force=True)
+                    if dispatcher:
+                        with dispatcher.lock:
+                            active = bool(dispatcher.jobs)
+                    else:
+                        active = bool(pending(workspace))
+                    if candidate and not active and not document_writes and not self.server.diwan_restart:
+                        self.server.diwan_restart = True
+                        self.send(200, {'restarting': True})
+                        threading.Thread(target=self.server.shutdown, daemon=True).start()
+                    else:
+                        self.send(200, {'restarting': self.server.diwan_restart})
                 return
             if path == '/requests':
                 value = data.get('input')
@@ -179,14 +238,18 @@ def make_server(workspace, port=None, page=None, document=None, agent='manual'):
                     self.send(400, {'error': {'code': 'PROMPT_TOO_LARGE', 'message': 'Use a nonempty poetry request under 128000 UTF-8 bytes.'}})
                     return
                 identity = uuid.uuid4().hex
-                write_json(queue / 'requests' / (identity + '.json'), {'id': identity, 'input': value})
-                if dispatcher:
-                    try:
-                        dispatcher.submit(identity, value)
-                    except AgentError as error:
-                        write_json(queue / 'cancelled' / (identity + '.json'), {'cancelled': True})
-                        self.send(409, {'error': {'code': error.code, 'message': str(error)}})
+                with lock:
+                    if self.server.diwan_restart:
+                        self.send(503, {'error': {'code': 'UPDATING', 'message': 'Diwan is updating. Retry this suggestion after it reconnects.'}})
                         return
+                    write_json(queue / 'requests' / (identity + '.json'), {'id': identity, 'input': value})
+                    if dispatcher:
+                        try:
+                            dispatcher.submit(identity, value)
+                        except AgentError as error:
+                            write_json(queue / 'cancelled' / (identity + '.json'), {'cancelled': True})
+                            self.send(409, {'error': {'code': error.code, 'message': str(error)}})
+                            return
                 self.send(201, {'id': identity})
             elif path.startswith('/cancel/') and ID.fullmatch(path.split('/')[-1]):
                 identity = path.split('/')[-1]
@@ -237,6 +300,8 @@ def make_server(workspace, port=None, page=None, document=None, agent='manual'):
         server.server_close()
         raise
     server.diwan_agent = client.name if client else 'manual'
+    server.diwan_restart = False
+    server.diwan_stopping = False
     return server, f'http://127.0.0.1:{server.server_port}{prefix}/diwan.html'
 
 

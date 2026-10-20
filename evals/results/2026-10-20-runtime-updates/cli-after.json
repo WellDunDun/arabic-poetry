@@ -1,0 +1,724 @@
+{
+  "suite_id": "diwan-shared-cli-v1",
+  "suite_sha256": "67b6caae6ee6a8551c386802bed25e95fa85ff558b442a0b289170d219fe5167",
+  "client": "codex-cli 0.155.1",
+  "skill_hashes": {
+    "SKILL.md": "0fb9bc9f364f0225b8f09f25e648d0fd40c70c86c54e3c01cfa32e27280a3f69",
+    "references/EXAMPLES.md": "1bce0416879b3fc78a9e7c36fa601ac659117edc9d30af23a6b8d9c1bf6ad49d",
+    "references/CLI.md": "5c26d7c2fc2e0f67dd4811947338f642f4782446e3f9ee52348e33986cbc0d12",
+    "references/free-verse.md": "6779a2d4c32cc1b720ad520c39b1de439321a2ff3453e4b3139ae82fb046bbdf",
+    "references/SOURCES.md": "bacaba14382e0fe874920922e6b654689a51efd1c0bf3b892125748dd3bd61e0",
+    "references/fixing.md": "19c48e0a4640b94ff9dd902b3d21b57b540a08e60e84e23d5b5546d46ea077da",
+    "references/DIWAN.md": "cf542004755cc245165b6eb27e50ac7d876d1dcf2286190856e963da673020df",
+    "references/zihafat.md": "cec102cf9780874804a0f642211710208794ce9076f4e9904de41fd56340f4f3",
+    "references/CRAFT.md": "57faf5c1cb7a0622ac369fe8ce73c179d1daad92a969ba9f94998ad7f4064896",
+    "references/meters.md": "c470f5b0fc83887a27fb6ed0c3e8f46a80e6b043392b196ca045d52cc314109d",
+    "references/PROSODY.md": "67a6c1816ab241d0974b9b4a2abf73519eb915e5b99656498ebdaee7cbe783f3",
+    "references/SCANNER-SOURCES.md": "bc348837b38c08e7d39032cab9ee911a1ff66c47c4521f225cebf5aa9531a286",
+    "references/SCANNER.md": "a347953184cba9b0711f62c73c5251307913efbbcd2fcecc492ed2c9643f7095",
+    "references/READING.md": "5c5f640fb11b8c2eafd766a1782295ab9158593a15d834402a4a65da151c95e5",
+    "references/arudi-writing.md": "59815114f0c40c0b4699c0853df61ff8da476d968c489d0dd86187c3dfbbb846",
+    "references/qafiya.md": "526648c56326a91ec43dcfc8cf353442e7c6b2a38ebd4e29bf66bf4a78959802",
+    "references/SIMILAR_SKILLS.md": "cacb16cff34f9c282c527ac91bf654ca2184e91dd0c8ccd70e7b8a764402d776",
+    "references/TOOLS.md": "ed34f5192646a5042d519b76b5e225ad12f22301764739bb377f5c5fb3129c7d",
+    "tests/test_diwan_cli.py": "b3af2ad32aab77ec71afb096e6609ca069a557e23f1cea976da4ed265a71c1a6",
+    "tests/workbench_updates.js": "5f0d688ca2475d706f6df1a09c19e3466324ffadf154985ceb5fee4cb36a2aa0",
+    "tests/test_scanner_regressions.py": "6f9e8239b619e28821389e892abf58b8e83ccef989c5715368a1859e2ffc232f",
+    "tests/workbench_host.js": "fdf69ce31cb8d3d80dd74878e148c706d2b685261a2d66b1d618525de53e89ea",
+    "tests/test_verify_context.py": "c51cdf8beb37bef1a6376d7a40e163faa28190cefc08e6a1e05f62cfe5d1764a",
+    "tests/run_gold.py": "2230800983e4ebb0ac8c4f0e00e85e2eec5d90b7408c3b39db70e7d31ad695b4",
+    "tests/parity.js": "ca7620664fb6feb20d9dd8ba495f7bbf1de3d3ce50ff05a2a19b2b3ceeffd766",
+    "tests/parity_snapshot.py": "f5937069452801fdc95603d61dbc7e150396f3151a613c142a9fbf333a1ad62d",
+    "tests/test_diwan_agent.py": "ca83ed08f34e061523c272435f216a68cc726fd77a1918d5ec2335cb908be71a",
+    "tests/test_diwan_updates.py": "354c58cf55f5c9a8bed103b06187243700a949d7029819e048e268bf3748d2b5",
+    "tests/workbench_shared.js": "76753bba3afb96b2554d1ae36c3253b86d3b49a729119107b6d167c5a9571b2c",
+    "tests/workbench_state.js": "600c29c2686b8b6ee1d67e6155503cc76bc0840e72564e3d918542875576285f",
+    "tests/workbench_file.js": "5618fea780ee18107cf9e886c863608d6cd62033c04000bbc63e21b58054fdae",
+    "tests/test_prepare_diwan.py": "d406d94d080e777aaeaefa8e75aa3c5d45751262f345e87a02aa000afec9986d",
+    "tests/test_serve_diwan.py": "60d78779507db37046a433bcd34a3d3f0346da609f23d9cad761e2ba9b70f8c6",
+    "tests/gold_verses.tsv": "aea5ed9aed26bdbc6f4468a89323eb94104421e3b1ea7000f98193e5b65203f5",
+    "tests/free_verse_kamil.txt": "da41f9088dd05c6ec2f79ddcfa09180d212884cbe2a6d548f431b0a0cfad085f",
+    "scripts/export_book.js": "8ad94a78a19c46848571a27419140754a5a62308667366680b7acf098f1a2282",
+    "scripts/export_meters.py": "5df7caa4d03cb47f5828945cc2a9455f1ff78a520e89c74712197ecb4dac9a6a",
+    "scripts/export_book.py": "7589468c07563550c9cf2756196996f60a7bb91212c5dda1a854895b8e3248bf",
+    "scripts/diwan_store.py": "b8591ea29b64a20fbed3429dd756b4fc45467900a1e9062ee6e983aaf49f855e",
+    "scripts/serve_diwan.py": "9576420e4ac0d521775942664449ebf9b58c33e4927af87e8e9211afbf9b94b4",
+    "scripts/build_workbench.py": "af10428331576eb6d823c11fadfdf5997bafba30229fb88302ac829b1d283a66",
+    "scripts/prepare_diwan.py": "d01069cf081d753a33452b655dacb469668648f4a71680f736f57be718652369",
+    "scripts/diwan_updates.py": "e67981a33a9370bbbef2b91e946447dfc3d7d03bf46ef3e3b72a69628d0ca5af",
+    "scripts/scan.py": "3f6a1fbc2d850ac6b99baca5a1aba19527d05df4d6d02607e23ddd882106ae47",
+    "scripts/diwan_agent.py": "9094347a8e4d03ee4a8a02a9b1a83158be26a230ea7db073fa78ba304c4cf6c6",
+    "scripts/diwan.py": "4247d1f2b7876aada49e5627cb3b985bb68706e69204ae5753a0bada0d216d76",
+    "assets/workbench/updates.js": "0b34e1c86e5f655451863d25ec28144ff1b10e0e30598bf8efe7dca70bc9197d",
+    "assets/workbench/page.html": "815e99e70290754220f9ab78b7c25db04a5ac2bcabeed014952dd45b7da812fa",
+    "assets/workbench/runtime.json": "6d4e31102d3fe40f1cef79d4fdac11394eee47d7e629dbab4a699d57bab85d50",
+    "assets/workbench/host.js": "b276612309dcd7a22ed92b6986494046becc7fec4c563012e0e7e0da729cc5ef",
+    "assets/workbench/export.js": "00fd76cfe314fd480a6cb341da5e198aa05ad1b405ecd9c2a184a5e84e14787d",
+    "assets/workbench/meters.json": "7c2c63f24f7ee8db4b083c11dca278a0596c06011395643dd7013242428f573f",
+    "assets/workbench/diwan.html": "5d3d0a2df97df6ffd3c2fbece281603d99237177d1e351a0d33a380b31a57f00",
+    "assets/workbench/engine.js": "61d872127446645a260811784c09497da144eae0f7952203806ce3e695fda169",
+    "assets/workbench/file.js": "f1f966bf710cda7d3eac8427422e9737774586851fb5d04fa24da777674c71e5",
+    "assets/fonts/Amiri-Bold.ttf": "c20c5fda0b648bfd7672fd3ded17488daa3a4810673b9b012fbb4a0af6a26aab",
+    "assets/fonts/Amiri-Regular.ttf": "b092096eb992aebe59084b0cb5cf0015ae82c7e76b0aac5e7d60ae5113af5f54",
+    "assets/fonts/OFL.txt": "51aac3e37ad762f728297f8638a27cb71e85e63649cc7594b674bf96f85b92bb",
+    "scripts/arud/freeverse.py": "0977a0c2001455f1fdf713d6879dc171b64ed06581460dabe56270824e7a7d52",
+    "scripts/arud/aligner.py": "13e8688663aa4cc6d99c3b7149e217d22b3ad49e16cf2dfa155f4673ab119cbc",
+    "scripts/arud/meters.py": "3c67f2db91ee78969fca4588bdc7152a04210df6da74c34a8e6a6c521861a5a5",
+    "scripts/arud/qafiya.py": "95805ffae871f483e5bfd80bd786da98151e57c270264904b05c9add006010a8",
+    "scripts/arud/__init__.py": "cebec1d1de7d2fe0d6ea0983d4d2caada6d8168e2a56019f9860f303dc2a1d7f",
+    "scripts/arud/classical.py": "c63fdbcdbacd62863b731f738e62428963a3c829227a04aafc1280318070eabf",
+    "scripts/arud/lattice.py": "f57b4822389da11b386ea4fa8f35bf33190694f7ef15111ae6642cb656160375",
+    "scripts/arud/report.py": "9336e793e2eee68122532ddd80fa39e6d8489f29a0bfc2b084e23e173df823f7"
+  },
+  "cases": [
+    {
+      "id": "discover",
+      "exit_code": 0,
+      "timed_out": false,
+      "command": [
+        "codex",
+        "--ask-for-approval",
+        "never",
+        "exec",
+        "--ignore-user-config",
+        "--ignore-rules",
+        "--ephemeral",
+        "--sandbox",
+        "workspace-write",
+        "--skip-git-repo-check",
+        "--json",
+        "--output-last-message",
+        "/private/tmp/diwan-runtime-accepted-evals-20261020/cli/discover/response.txt",
+        "-"
+      ],
+      "initial": null,
+      "final": null,
+      "history": null,
+      "package_unchanged": true,
+      "source_unchanged": true,
+      "proposal_exists": true,
+      "events_sha256": "9fd436033b882425a7f0f7413cd47706b21628ff456c79c8e09ac68707795fd2",
+      "response": "Inspected `--help`, `update --help`, and `agent-context --command update --json` (CLI 0.3.1).\n\nTo save safely:\n\n1. Read the current document with `get FILE --json`. Keep its opaque `version`, not `poem.revision`.\n2. Run `update FILE --text-file revised.txt --if-version \"$VERSION\" --request-id edit-1 --json`. Alternatively, use `--input patch.json`; exactly one input option is required.\n3. If another save changed the version, the update fails with **conflict (exit 5)**. Reread, compare, and reassess before saving again—never blindly substitute the newer version.\n4. If a save’s outcome is uncertain, retry with the **same request ID, version, and input**.\n\nUse `--dry-run` to preview; it does not reserve a version. Never directly overwrite the shared JSON file.\n\nNo poem was created or editor opened.",
+      "commands": [
+        {
+          "command": "/bin/zsh -lc 'cat /private/tmp/diwan-runtime-accepted-evals-20261020/cli/skill/SKILL.md'",
+          "exit_code": 0,
+          "stdout": "[Bundled documentation output SHA-256: 0fb9bc9f364f0225b8f09f25e648d0fd40c70c86c54e3c01cfa32e27280a3f69]",
+          "stderr": "",
+          "capture": "Codex aggregated output, not separate stderr. Repeated documentation is represented by its output digest; full raw events remain at the hashed execution path."
+        },
+        {
+          "command": "/bin/zsh -lc 'python /private/tmp/diwan-runtime-accepted-evals-20261020/cli/skill/scripts/diwan.py --help'",
+          "exit_code": 127,
+          "stdout": "zsh:1: command not found: python\n",
+          "stderr": "",
+          "capture": "Codex aggregated output, not separate stderr. Repeated documentation is represented by its output digest; full raw events remain at the hashed execution path."
+        },
+        {
+          "command": "/bin/zsh -lc 'python3 /private/tmp/diwan-runtime-accepted-evals-20261020/cli/skill/scripts/diwan.py --help'",
+          "exit_code": 0,
+          "stdout": "usage: diwan.py [-h] [--version] [--json]\n                {create,get,update,history,restore,open,serve,stop,scan,export,pending,respond,agent-context} ...\n\nAgent-native commands for a shared local Diwan poem document.\n\npositional arguments:\n  {create,get,update,history,restore,open,serve,stop,scan,export,pending,respond,agent-context}\n    create              create\n    get                 get\n    update              update\n    history             history\n    restore             restore\n    open                open\n    serve               serve\n    stop                stop\n    scan                scan\n    export              export\n    pending             pending\n    respond             respond\n    agent-context       agent context\n\noptions:\n  -h, --help            show this help message and exit\n  --version             show program's version number and exit\n  --json                Structured results and structured stderr errors\n\nExamples:\n  python3 diwan.py agent-context --json\n  python3 diwan.py open poem.diwan.json --json\n",
+          "stderr": "",
+          "capture": "Codex aggregated output, not separate stderr. Repeated documentation is represented by its output digest; full raw events remain at the hashed execution path."
+        },
+        {
+          "command": "/bin/zsh -lc 'cat /private/tmp/diwan-runtime-accepted-evals-20261020/cli/skill/references/CLI.md'",
+          "exit_code": 0,
+          "stdout": "[Bundled documentation output SHA-256: 5c26d7c2fc2e0f67dd4811947338f642f4782446e3f9ee52348e33986cbc0d12]",
+          "stderr": "",
+          "capture": "Codex aggregated output, not separate stderr. Repeated documentation is represented by its output digest; full raw events remain at the hashed execution path."
+        },
+        {
+          "command": "/bin/zsh -lc 'python3 /private/tmp/diwan-runtime-accepted-evals-20261020/cli/skill/scripts/diwan.py update --help'",
+          "exit_code": 0,
+          "stdout": "usage: diwan.py update [-h] [--json] (--text-file TEXT_FILE | --input INPUT)\n                       [--dry-run] --if-version IF_VERSION\n                       --request-id REQUEST_ID\n                       file\n\npositional arguments:\n  file                  Authoritative .diwan.json poem document\n\noptions:\n  -h, --help            show this help message and exit\n  --json\n  --text-file TEXT_FILE\n                        UTF-8 text/Markdown body; - reads stdin literally\n  --input INPUT         JSON field object; - reads stdin\n  --dry-run             Validate and preview without writes or browser launch\n  --if-version IF_VERSION\n                        Exact current opaque version from get --json\n  --request-id REQUEST_ID\n                        Stable id for this logical save; reuse unchanged on\n                        retry\n\nExamples:\n  python3 diwan.py update poem.diwan.json --text-file revised.txt --if-version \"$VERSION\" --request-id edit-1 --json\nVersion variables come from get/history --json; request ids come from pending --json.\n",
+          "stderr": "",
+          "capture": "Codex aggregated output, not separate stderr. Repeated documentation is represented by its output digest; full raw events remain at the hashed execution path."
+        },
+        {
+          "command": "/bin/zsh -lc 'python3 /private/tmp/diwan-runtime-accepted-evals-20261020/cli/skill/scripts/diwan.py agent-context --json'",
+          "exit_code": 0,
+          "stdout": "{\n  \"schema_version\": 1,\n  \"cli_version\": \"0.3.1\",\n  \"commands\": {\n    \"create\": {\n      \"example\": \"python3 diwan.py create poem.diwan.json --title نافذة --text-file poem.txt --json\",\n      \"mutates_poem\": true,\n      \"local_server\": false\n    },\n    \"get\": {\n      \"example\": \"python3 diwan.py get poem.diwan.json --json\",\n      \"mutates_poem\": false,\n      \"local_server\": false\n    },\n    \"update\": {\n      \"example\": \"python3 diwan.py update poem.diwan.json --text-file revised.txt --if-version \\\"$VERSION\\\" --request-id edit-1 --json\",\n      \"mutates_poem\": true,\n      \"local_server\": false\n    },\n    \"history\": {\n      \"example\": \"python3 diwan.py history poem.diwan.json --limit 20 --json\",\n      \"mutates_poem\": false,\n      \"local_server\": false\n    },\n    \"restore\": {\n      \"example\": \"python3 diwan.py restore poem.diwan.json --revision \\\"$OLD_VERSION\\\" --if-version \\\"$VERSION\\\" --request-id restore-1 --json\",\n      \"mutates_poem\": true,\n      \"local_server\": false\n    },\n    \"open\": {\n      \"example\": \"python3 diwan.py open poem.diwan.json --agent auto --no-browser --json\",\n      \"mutates_poem\": false,\n      \"local_server\": true\n    },\n    \"serve\": {\n      \"example\": \"python3 diwan.py serve poem.diwan.json --agent codex --port 0 --json\",\n      \"mutates_poem\": false,\n      \"local_server\": true\n    },\n    \"stop\": {\n      \"example\": \"python3 diwan.py stop poem.diwan.json --json\",\n      \"mutates_poem\": false,\n      \"local_server\": true\n    },\n    \"scan\": {\n      \"example\": \"python3 diwan.py scan poem.diwan.json --json\",\n      \"mutates_poem\": false,\n      \"local_server\": false\n    },\n    \"export\": {\n      \"example\": \"python3 diwan.py export poem.diwan.json --format txt --output poem-export.txt --json\",\n      \"mutates_poem\": false,\n      \"local_server\": false\n    },\n    \"pending\": {\n      \"example\": \"python3 diwan.py pending poem.diwan.json --limit 20 --json\",\n      \"mutates_poem\": false,\n      \"local_server\": false\n    },\n    \"respond\": {\n      \"example\": \"python3 diwan.py respond poem.diwan.json --id \\\"$REQUEST_ID\\\" --input answer.json --json\",\n      \"mutates_poem\": false,\n      \"local_server\": false\n    },\n    \"agent-context\": {\n      \"example\": \"python3 diwan.py agent-context --command update --json\",\n      \"mutates_poem\": false,\n      \"local_server\": false\n    }\n  },\n  \"detail_command\": \"agent-context --command COMMAND --json\",\n  \"delivery_schemes\": [\n    \"stdout:json\",\n    \"file:atomic\",\n    \"browser:loopback\"\n  ],\n  \"exit_codes\": {\n    \"0\": \"success\",\n    \"2\": \"invalid input\",\n    \"4\": \"not found\",\n    \"5\": \"conflict\",\n    \"6\": \"I/O or delivery uncertainty\"\n  },\n  \"conditional_capabilities\": {\n    \"profiles\": \"explicit document paths; --agent selects an installed client with its own authentication\",\n    \"remote_jobs\": \"not applicable: local synchronous operations; open owns a reusable local server\",\n    \"upstream_feedback\": \"not configured; no remote sending\",\n    \"platforms\": \"safe writes: macOS/Linux\"\n  },\n  \"mutations\": \"update/restore require if-version and a stable request-id. Conflicts require rereading/reassessment. Direct writes outside this API do not honor advisory locks.\"\n}\n",
+          "stderr": "",
+          "capture": "Codex aggregated output, not separate stderr. Repeated documentation is represented by its output digest; full raw events remain at the hashed execution path."
+        },
+        {
+          "command": "/bin/zsh -lc 'python3 /private/tmp/diwan-runtime-accepted-evals-20261020/cli/skill/scripts/diwan.py agent-context --command update --json'",
+          "exit_code": 0,
+          "stdout": "{\n  \"schema_version\": 1,\n  \"cli_version\": \"0.3.1\",\n  \"commands\": {\n    \"update\": {\n      \"example\": \"python3 diwan.py update poem.diwan.json --text-file revised.txt --if-version \\\"$VERSION\\\" --request-id edit-1 --json\",\n      \"mutates_poem\": true,\n      \"local_server\": false,\n      \"one_of\": [\n        {\n          \"required\": true,\n          \"flags\": [\n            \"--text-file\",\n            \"--input\"\n          ]\n        }\n      ],\n      \"arguments\": [\n        {\n          \"flags\": [\n            \"--json\"\n          ],\n          \"required\": false,\n          \"type\": \"boolean\",\n          \"choices\": null,\n          \"default\": null\n        },\n        {\n          \"flags\": [\n            \"file\"\n          ],\n          \"required\": true,\n          \"type\": \"Path\",\n          \"choices\": null,\n          \"default\": null\n        },\n        {\n          \"flags\": [\n            \"--text-file\"\n          ],\n          \"required\": false,\n          \"type\": \"string\",\n          \"choices\": null,\n          \"default\": null\n        },\n        {\n          \"flags\": [\n            \"--input\"\n          ],\n          \"required\": false,\n          \"type\": \"string\",\n          \"choices\": null,\n          \"default\": null\n        },\n        {\n          \"flags\": [\n            \"--dry-run\"\n          ],\n          \"required\": false,\n          \"type\": \"boolean\",\n          \"choices\": null,\n          \"default\": false\n        },\n        {\n          \"flags\": [\n            \"--if-version\"\n          ],\n          \"required\": true,\n          \"type\": \"string\",\n          \"choices\": null,\n          \"default\": null\n        },\n        {\n          \"flags\": [\n            \"--request-id\"\n          ],\n          \"required\": true,\n          \"type\": \"string\",\n          \"choices\": null,\n          \"default\": null\n        }\n      ]\n    }\n  },\n  \"detail_command\": \"agent-context --command COMMAND --json\",\n  \"delivery_schemes\": [\n    \"stdout:json\",\n    \"file:atomic\",\n    \"browser:loopback\"\n  ],\n  \"exit_codes\": {\n    \"0\": \"success\",\n    \"2\": \"invalid input\",\n    \"4\": \"not found\",\n    \"5\": \"conflict\",\n    \"6\": \"I/O or delivery uncertainty\"\n  },\n  \"conditional_capabilities\": {\n    \"profiles\": \"explicit document paths; --agent selects an installed client with its own authentication\",\n    \"remote_jobs\": \"not applicable: local synchronous operations; open owns a reusable local server\",\n    \"upstream_feedback\": \"not configured; no remote sending\",\n    \"platforms\": \"safe writes: macOS/Linux\"\n  },\n  \"mutations\": \"update/restore require if-version and a stable request-id. Conflicts require rereading/reassessment. Direct writes outside this API do not honor advisory locks.\"\n}\n",
+          "stderr": "",
+          "capture": "Codex aggregated output, not separate stderr. Repeated documentation is represented by its output digest; full raw events remain at the hashed execution path."
+        }
+      ],
+      "raw_events": "/private/tmp/diwan-runtime-accepted-evals-20261020/cli/discover/events.jsonl"
+    },
+    {
+      "id": "create",
+      "exit_code": 0,
+      "timed_out": false,
+      "command": [
+        "codex",
+        "--ask-for-approval",
+        "never",
+        "exec",
+        "--ignore-user-config",
+        "--ignore-rules",
+        "--ephemeral",
+        "--sandbox",
+        "workspace-write",
+        "--skip-git-repo-check",
+        "--json",
+        "--output-last-message",
+        "/private/tmp/diwan-runtime-accepted-evals-20261020/cli/create/response.txt",
+        "-"
+      ],
+      "initial": null,
+      "final": {
+        "schema_version": 1,
+        "path": "/private/tmp/diwan-runtime-accepted-evals-20261020/cli/create/poem.diwan.json",
+        "version": "a05ac60264b7c1828a99b6462be6a0462e4ad983d48d12e1d0532b4cdac02dd2",
+        "poem": {
+          "title": "نافذة",
+          "text": "لَمْ أبع الوعد ولم أنسَ وجهك\nوأتركُ نافذتي للضوء\n",
+          "choices": [],
+          "suggestions": {},
+          "status": "review",
+          "mode": "auto",
+          "meter": "",
+          "schema_version": 1,
+          "id": "e0d7e5885e484ecfadabd2fd3511ba11",
+          "revision": 1,
+          "last_save_id": "create-b9c2e81ff28a4bce8d97d3aa69078eb4"
+        }
+      },
+      "history": {
+        "path": "/private/tmp/diwan-runtime-accepted-evals-20261020/cli/create/poem.diwan.json",
+        "revisions": [
+          {
+            "version": "a05ac60264b7c1828a99b6462be6a0462e4ad983d48d12e1d0532b4cdac02dd2",
+            "revision": 1,
+            "current": true
+          }
+        ],
+        "truncated": false,
+        "next_cursor": null
+      },
+      "package_unchanged": true,
+      "source_unchanged": true,
+      "proposal_exists": true,
+      "events_sha256": "d1bdc36dc8570b21ff761c4d83cbbddac6276004decee65edd08bcc3d0e0c0da",
+      "response": "Imported `source.txt` as **«نافذة»** and verified it with the CLI’s `get` command:\n\n> لَمْ أبع الوعد ولم أنسَ وجهك  \n> وأتركُ نافذتي للضوء\n\nThe live shared poem is saved in [poem.diwan.json](/private/tmp/diwan-runtime-accepted-evals-20261020/cli/create/poem.diwan.json), revision 1. `source.txt` remains unchanged. No editor was opened.",
+      "commands": [
+        {
+          "command": "/bin/zsh -lc 'cat /private/tmp/diwan-runtime-accepted-evals-20261020/cli/skill/SKILL.md'",
+          "exit_code": 0,
+          "stdout": "[Bundled documentation output SHA-256: 0fb9bc9f364f0225b8f09f25e648d0fd40c70c86c54e3c01cfa32e27280a3f69]",
+          "stderr": "",
+          "capture": "Codex aggregated output, not separate stderr. Repeated documentation is represented by its output digest; full raw events remain at the hashed execution path."
+        },
+        {
+          "command": "/bin/zsh -lc 'cat /private/tmp/diwan-runtime-accepted-evals-20261020/cli/skill/references/CLI.md'",
+          "exit_code": 0,
+          "stdout": "[Bundled documentation output SHA-256: 5c26d7c2fc2e0f67dd4811947338f642f4782446e3f9ee52348e33986cbc0d12]",
+          "stderr": "",
+          "capture": "Codex aggregated output, not separate stderr. Repeated documentation is represented by its output digest; full raw events remain at the hashed execution path."
+        },
+        {
+          "command": "/bin/zsh -lc 'python3 /private/tmp/diwan-runtime-accepted-evals-20261020/cli/skill/scripts/diwan.py create /private/tmp/diwan-runtime-accepted-evals-20261020/cli/create/poem.diwan.json --title نافذة --text-file /private/tmp/diwan-runtime-accepted-evals-20261020/cli/create/source.txt --json'",
+          "exit_code": 0,
+          "stdout": "{\n  \"schema_version\": 1,\n  \"path\": \"/private/tmp/diwan-runtime-accepted-evals-20261020/cli/create/poem.diwan.json\",\n  \"version\": \"a05ac60264b7c1828a99b6462be6a0462e4ad983d48d12e1d0532b4cdac02dd2\",\n  \"poem\": {\n    \"title\": \"نافذة\",\n    \"text\": \"لَمْ أبع الوعد ولم أنسَ وجهك\\nوأتركُ نافذتي للضوء\\n\",\n    \"choices\": [],\n    \"suggestions\": {},\n    \"status\": \"review\",\n    \"mode\": \"auto\",\n    \"meter\": \"\",\n    \"schema_version\": 1,\n    \"id\": \"e0d7e5885e484ecfadabd2fd3511ba11\",\n    \"revision\": 1,\n    \"last_save_id\": \"create-b9c2e81ff28a4bce8d97d3aa69078eb4\"\n  },\n  \"replayed\": false\n}\n",
+          "stderr": "",
+          "capture": "Codex aggregated output, not separate stderr. Repeated documentation is represented by its output digest; full raw events remain at the hashed execution path."
+        },
+        {
+          "command": "/bin/zsh -lc 'python3 /private/tmp/diwan-runtime-accepted-evals-20261020/cli/skill/scripts/diwan.py get /private/tmp/diwan-runtime-accepted-evals-20261020/cli/create/poem.diwan.json --json'",
+          "exit_code": 0,
+          "stdout": "{\n  \"schema_version\": 1,\n  \"path\": \"/private/tmp/diwan-runtime-accepted-evals-20261020/cli/create/poem.diwan.json\",\n  \"version\": \"a05ac60264b7c1828a99b6462be6a0462e4ad983d48d12e1d0532b4cdac02dd2\",\n  \"poem\": {\n    \"title\": \"نافذة\",\n    \"text\": \"لَمْ أبع الوعد ولم أنسَ وجهك\\nوأتركُ نافذتي للضوء\\n\",\n    \"choices\": [],\n    \"suggestions\": {},\n    \"status\": \"review\",\n    \"mode\": \"auto\",\n    \"meter\": \"\",\n    \"schema_version\": 1,\n    \"id\": \"e0d7e5885e484ecfadabd2fd3511ba11\",\n    \"revision\": 1,\n    \"last_save_id\": \"create-b9c2e81ff28a4bce8d97d3aa69078eb4\"\n  }\n}\n",
+          "stderr": "",
+          "capture": "Codex aggregated output, not separate stderr. Repeated documentation is represented by its output digest; full raw events remain at the hashed execution path."
+        }
+      ],
+      "raw_events": "/private/tmp/diwan-runtime-accepted-evals-20261020/cli/create/events.jsonl"
+    },
+    {
+      "id": "accepted-update",
+      "exit_code": 0,
+      "timed_out": false,
+      "command": [
+        "codex",
+        "--ask-for-approval",
+        "never",
+        "exec",
+        "--ignore-user-config",
+        "--ignore-rules",
+        "--ephemeral",
+        "--sandbox",
+        "workspace-write",
+        "--skip-git-repo-check",
+        "--json",
+        "--output-last-message",
+        "/private/tmp/diwan-runtime-accepted-evals-20261020/cli/accepted-update/response.txt",
+        "-"
+      ],
+      "initial": {
+        "schema_version": 1,
+        "path": "/private/tmp/diwan-runtime-accepted-evals-20261020/cli/accepted-update/poem.diwan.json",
+        "version": "5b725c8fd534a5038776fc5793fc4c17847a578267fd152933628a7cd25c5a53",
+        "poem": {
+          "title": "نافذة",
+          "text": "لَمْ أبع الوعد ولم أنسَ وجهك\nوأتركُ نافذتي للضوء\n",
+          "choices": [],
+          "suggestions": {},
+          "status": "review",
+          "mode": "auto",
+          "meter": "",
+          "schema_version": 1,
+          "id": "818503bb1d7944c7851a0cbe530b4855",
+          "revision": 1,
+          "last_save_id": "create-7df25f8d41d043b3b9eb03767aee1efc"
+        }
+      },
+      "final": {
+        "schema_version": 1,
+        "path": "/private/tmp/diwan-runtime-accepted-evals-20261020/cli/accepted-update/poem.diwan.json",
+        "version": "666e7edf57dc27310d9ca5738e90928968cbe3d71b3fcf08fdd89c531d585956",
+        "poem": {
+          "title": "نافذة",
+          "text": "لَمْ أبع الوعد ولم أنسَ وجهك\nوأتركُ نافذتي للصباح\n",
+          "choices": [],
+          "suggestions": {},
+          "status": "review",
+          "mode": "auto",
+          "meter": "",
+          "schema_version": 1,
+          "id": "818503bb1d7944c7851a0cbe530b4855",
+          "revision": 2,
+          "last_save_id": "accepted-lilsabah-20261020-1"
+        }
+      },
+      "history": {
+        "path": "/private/tmp/diwan-runtime-accepted-evals-20261020/cli/accepted-update/poem.diwan.json",
+        "revisions": [
+          {
+            "version": "666e7edf57dc27310d9ca5738e90928968cbe3d71b3fcf08fdd89c531d585956",
+            "revision": 2,
+            "current": true
+          },
+          {
+            "version": "5b725c8fd534a5038776fc5793fc4c17847a578267fd152933628a7cd25c5a53",
+            "revision": 1,
+            "current": false
+          }
+        ],
+        "truncated": false,
+        "next_cursor": null
+      },
+      "package_unchanged": true,
+      "source_unchanged": true,
+      "proposal_exists": true,
+      "events_sha256": "e63b5af7cbe1d14a97573338df78fa13a4f03b859b47de900d0b7e4a8e45ed29",
+      "response": "Saved through the Diwan CLI and read back revision 2. Only «للضوء» → «للصباح» changed, apart from automatic save metadata. No editor opened.\n\nنافذة\n\nلَمْ أبع الوعد ولم أنسَ وجهك  \nوأتركُ نافذتي للصباح",
+      "commands": [
+        {
+          "command": "/bin/zsh -lc 'cat /private/tmp/diwan-runtime-accepted-evals-20261020/cli/skill/SKILL.md'",
+          "exit_code": 0,
+          "stdout": "[Bundled documentation output SHA-256: 0fb9bc9f364f0225b8f09f25e648d0fd40c70c86c54e3c01cfa32e27280a3f69]",
+          "stderr": "",
+          "capture": "Codex aggregated output, not separate stderr. Repeated documentation is represented by its output digest; full raw events remain at the hashed execution path."
+        },
+        {
+          "command": "/bin/zsh -lc \"cat /private/tmp/diwan-runtime-accepted-evals-20261020/cli/skill/references/CLI.md\nrg --files -g '\"'!node_modules'\"' -g '\"'!package-lock.json'\"' -g '\"'!'\"\\\\.git' .\"",
+          "exit_code": 0,
+          "stdout": "[Bundled documentation output SHA-256: ea60143e53395256c488dd05528c2bec0aef1620977ffb7297c5fae20ad97ced]",
+          "stderr": "",
+          "capture": "Codex aggregated output, not separate stderr. Repeated documentation is represented by its output digest; full raw events remain at the hashed execution path."
+        },
+        {
+          "command": "/bin/zsh -lc 'python3 /private/tmp/diwan-runtime-accepted-evals-20261020/cli/skill/scripts/diwan.py get /private/tmp/diwan-runtime-accepted-evals-20261020/cli/accepted-update/poem.diwan.json --json\npython3 /private/tmp/diwan-runtime-accepted-evals-20261020/cli/skill/scripts/diwan.py agent-context --command update --json'",
+          "exit_code": 0,
+          "stdout": "{\n  \"schema_version\": 1,\n  \"cli_version\": \"0.3.1\",\n  \"commands\": {\n    \"update\": {\n      \"example\": \"python3 diwan.py update poem.diwan.json --text-file revised.txt --if-version \\\"$VERSION\\\" --request-id edit-1 --json\",\n      \"mutates_poem\": true,\n      \"local_server\": false,\n      \"one_of\": [\n        {\n          \"required\": true,\n          \"flags\": [\n            \"--text-file\",\n            \"--input\"\n          ]\n        }\n      ],\n      \"arguments\": [\n        {\n          \"flags\": [\n            \"--json\"\n          ],\n          \"required\": false,\n          \"type\": \"boolean\",\n          \"choices\": null,\n          \"default\": null\n        },\n        {\n          \"flags\": [\n            \"file\"\n          ],\n          \"required\": true,\n          \"type\": \"Path\",\n          \"choices\": null,\n          \"default\": null\n        },\n        {\n          \"flags\": [\n            \"--text-file\"\n          ],\n          \"required\": false,\n          \"type\": \"string\",\n          \"choices\": null,\n          \"default\": null\n        },\n        {\n          \"flags\": [\n            \"--input\"\n          ],\n          \"required\": false,\n          \"type\": \"string\",\n          \"choices\": null,\n          \"default\": null\n        },\n        {\n          \"flags\": [\n            \"--dry-run\"\n          ],\n          \"required\": false,\n          \"type\": \"boolean\",\n          \"choices\": null,\n          \"default\": false\n        },\n        {\n          \"flags\": [\n            \"--if-version\"\n          ],\n          \"required\": true,\n          \"type\": \"string\",\n          \"choices\": null,\n          \"default\": null\n        },\n        {\n          \"flags\": [\n            \"--request-id\"\n          ],\n          \"required\": true,\n          \"type\": \"string\",\n          \"choices\": null,\n          \"default\": null\n        }\n      ]\n    }\n  },\n  \"detail_command\": \"agent-context --command COMMAND --json\",\n  \"delivery_schemes\": [\n    \"stdout:json\",\n    \"file:atomic\",\n    \"browser:loopback\"\n  ],\n  \"exit_codes\": {\n    \"0\": \"success\",\n    \"2\": \"invalid input\",\n    \"4\": \"not found\",\n    \"5\": \"conflict\",\n    \"6\": \"I/O or delivery uncertainty\"\n  },\n  \"conditional_capabilities\": {\n    \"profiles\": \"explicit document paths; --agent selects an installed client with its own authentication\",\n    \"remote_jobs\": \"not applicable: local synchronous operations; open owns a reusable local server\",\n    \"upstream_feedback\": \"not configured; no remote sending\",\n    \"platforms\": \"safe writes: macOS/Linux\"\n  },\n  \"mutations\": \"update/restore require if-version and a stable request-id. Conflicts require rereading/reassessment. Direct writes outside this API do not honor advisory locks.\"\n}\n",
+          "stderr": "",
+          "capture": "Codex aggregated output, not separate stderr. Repeated documentation is represented by its output digest; full raw events remain at the hashed execution path."
+        },
+        {
+          "command": "/bin/zsh -lc \"python3 /private/tmp/diwan-runtime-accepted-evals-20261020/cli/skill/scripts/diwan.py update /private/tmp/diwan-runtime-accepted-evals-20261020/cli/accepted-update/poem.diwan.json --input - --if-version 5b725c8fd534a5038776fc5793fc4c17847a578267fd152933628a7cd25c5a53 --request-id accepted-lilsabah-20261020-1 --json <<'JSON'\n{\\\"text\\\":\\\"لَمْ أبع الوعد ولم أنسَ وجهك\\\\nوأتركُ نافذتي للصباح\\\\n\\\"}\nJSON\"",
+          "exit_code": 0,
+          "stdout": "{\n  \"schema_version\": 1,\n  \"path\": \"/private/tmp/diwan-runtime-accepted-evals-20261020/cli/accepted-update/poem.diwan.json\",\n  \"version\": \"666e7edf57dc27310d9ca5738e90928968cbe3d71b3fcf08fdd89c531d585956\",\n  \"poem\": {\n    \"title\": \"نافذة\",\n    \"text\": \"لَمْ أبع الوعد ولم أنسَ وجهك\\nوأتركُ نافذتي للصباح\\n\",\n    \"choices\": [],\n    \"suggestions\": {},\n    \"status\": \"review\",\n    \"mode\": \"auto\",\n    \"meter\": \"\",\n    \"schema_version\": 1,\n    \"id\": \"818503bb1d7944c7851a0cbe530b4855\",\n    \"revision\": 2,\n    \"last_save_id\": \"accepted-lilsabah-20261020-1\"\n  },\n  \"replayed\": false,\n  \"applied_version\": \"666e7edf57dc27310d9ca5738e90928968cbe3d71b3fcf08fdd89c531d585956\",\n  \"request_id\": \"accepted-lilsabah-20261020-1\"\n}\n",
+          "stderr": "",
+          "capture": "Codex aggregated output, not separate stderr. Repeated documentation is represented by its output digest; full raw events remain at the hashed execution path."
+        },
+        {
+          "command": "/bin/zsh -lc 'python3 /private/tmp/diwan-runtime-accepted-evals-20261020/cli/skill/scripts/diwan.py get /private/tmp/diwan-runtime-accepted-evals-20261020/cli/accepted-update/poem.diwan.json --json'",
+          "exit_code": 0,
+          "stdout": "{\n  \"schema_version\": 1,\n  \"path\": \"/private/tmp/diwan-runtime-accepted-evals-20261020/cli/accepted-update/poem.diwan.json\",\n  \"version\": \"666e7edf57dc27310d9ca5738e90928968cbe3d71b3fcf08fdd89c531d585956\",\n  \"poem\": {\n    \"title\": \"نافذة\",\n    \"text\": \"لَمْ أبع الوعد ولم أنسَ وجهك\\nوأتركُ نافذتي للصباح\\n\",\n    \"choices\": [],\n    \"suggestions\": {},\n    \"status\": \"review\",\n    \"mode\": \"auto\",\n    \"meter\": \"\",\n    \"schema_version\": 1,\n    \"id\": \"818503bb1d7944c7851a0cbe530b4855\",\n    \"revision\": 2,\n    \"last_save_id\": \"accepted-lilsabah-20261020-1\"\n  }\n}\n",
+          "stderr": "",
+          "capture": "Codex aggregated output, not separate stderr. Repeated documentation is represented by its output digest; full raw events remain at the hashed execution path."
+        }
+      ],
+      "raw_events": "/private/tmp/diwan-runtime-accepted-evals-20261020/cli/accepted-update/events.jsonl"
+    },
+    {
+      "id": "stale-save",
+      "exit_code": 0,
+      "timed_out": false,
+      "command": [
+        "codex",
+        "--ask-for-approval",
+        "never",
+        "exec",
+        "--ignore-user-config",
+        "--ignore-rules",
+        "--ephemeral",
+        "--sandbox",
+        "workspace-write",
+        "--skip-git-repo-check",
+        "--json",
+        "--output-last-message",
+        "/private/tmp/diwan-runtime-accepted-evals-20261020/cli/stale-save/response.txt",
+        "-"
+      ],
+      "initial": {
+        "schema_version": 1,
+        "path": "/private/tmp/diwan-runtime-accepted-evals-20261020/cli/stale-save/poem.diwan.json",
+        "version": "c635a16141a837eaa5336c2ac92e68ce9df935686071eaffbc181327d735d86d",
+        "poem": {
+          "title": "نافذة",
+          "text": "هذه نسخة أحدث من كاتب آخر\n",
+          "choices": [],
+          "suggestions": {},
+          "status": "review",
+          "mode": "auto",
+          "meter": "",
+          "schema_version": 1,
+          "id": "2cab59f4814e41f0abf545247fa9702a",
+          "revision": 2,
+          "last_save_id": "fixture-advance"
+        }
+      },
+      "final": {
+        "schema_version": 1,
+        "path": "/private/tmp/diwan-runtime-accepted-evals-20261020/cli/stale-save/poem.diwan.json",
+        "version": "c635a16141a837eaa5336c2ac92e68ce9df935686071eaffbc181327d735d86d",
+        "poem": {
+          "title": "نافذة",
+          "text": "هذه نسخة أحدث من كاتب آخر\n",
+          "choices": [],
+          "suggestions": {},
+          "status": "review",
+          "mode": "auto",
+          "meter": "",
+          "schema_version": 1,
+          "id": "2cab59f4814e41f0abf545247fa9702a",
+          "revision": 2,
+          "last_save_id": "fixture-advance"
+        }
+      },
+      "history": {
+        "path": "/private/tmp/diwan-runtime-accepted-evals-20261020/cli/stale-save/poem.diwan.json",
+        "revisions": [
+          {
+            "version": "c635a16141a837eaa5336c2ac92e68ce9df935686071eaffbc181327d735d86d",
+            "revision": 2,
+            "current": true
+          },
+          {
+            "version": "c290d5ad452d15a68b63fbb0064f46c30d8d87995b7dd01b24e14420614eb42f",
+            "revision": 1,
+            "current": false
+          }
+        ],
+        "truncated": false,
+        "next_cursor": null
+      },
+      "package_unchanged": true,
+      "source_unchanged": true,
+      "proposal_exists": true,
+      "events_sha256": "217c42d8828ddb9970e5880eb7417c77b33517e598c6c826180a00ffb6b104b5",
+      "response": "The save returned `CONFLICT`: `poem.diwan.json` changed since the snapshot in `stale.json`.\n\nThe proposal was not saved. I stopped without refreshing the version or retrying. `proposal.txt` remains unchanged.",
+      "commands": [
+        {
+          "command": "/bin/zsh -lc 'cat /private/tmp/diwan-runtime-accepted-evals-20261020/cli/skill/SKILL.md'",
+          "exit_code": 0,
+          "stdout": "[Bundled documentation output SHA-256: 0fb9bc9f364f0225b8f09f25e648d0fd40c70c86c54e3c01cfa32e27280a3f69]",
+          "stderr": "",
+          "capture": "Codex aggregated output, not separate stderr. Repeated documentation is represented by its output digest; full raw events remain at the hashed execution path."
+        },
+        {
+          "command": "/bin/zsh -lc 'cat /private/tmp/diwan-runtime-accepted-evals-20261020/cli/skill/references/CLI.md\ncat stale.json\ncat proposal.txt'",
+          "exit_code": 0,
+          "stdout": "[Bundled documentation output SHA-256: 9089156ad2366c015d0bc29313df6089cd454c53ff480bc349c786b42b503a37]",
+          "stderr": "",
+          "capture": "Codex aggregated output, not separate stderr. Repeated documentation is represented by its output digest; full raw events remain at the hashed execution path."
+        },
+        {
+          "command": "/bin/zsh -lc 'python3 /private/tmp/diwan-runtime-accepted-evals-20261020/cli/skill/scripts/diwan.py update /private/tmp/diwan-runtime-accepted-evals-20261020/cli/stale-save/poem.diwan.json --text-file /private/tmp/diwan-runtime-accepted-evals-20261020/cli/stale-save/proposal.txt --if-version c290d5ad452d15a68b63fbb0064f46c30d8d87995b7dd01b24e14420614eb42f --request-id stale-proposal-20261020-1 --json'",
+          "exit_code": 5,
+          "stdout": "{\"error\": {\"code\": \"CONFLICT\", \"message\": \"Another writer saved this poem. Get the latest version and reassess; do not blindly retry.\", \"expected_version\": \"c290d5ad452d15a68b63fbb0064f46c30d8d87995b7dd01b24e14420614eb42f\", \"current_version\": \"c635a16141a837eaa5336c2ac92e68ce9df935686071eaffbc181327d735d86d\", \"path\": \"/private/tmp/diwan-runtime-accepted-evals-20261020/cli/stale-save/poem.diwan.json\"}}\n",
+          "stderr": "",
+          "capture": "Codex aggregated output, not separate stderr. Repeated documentation is represented by its output digest; full raw events remain at the hashed execution path."
+        }
+      ],
+      "raw_events": "/private/tmp/diwan-runtime-accepted-evals-20261020/cli/stale-save/events.jsonl"
+    },
+    {
+      "id": "retry",
+      "exit_code": 0,
+      "timed_out": false,
+      "command": [
+        "codex",
+        "--ask-for-approval",
+        "never",
+        "exec",
+        "--ignore-user-config",
+        "--ignore-rules",
+        "--ephemeral",
+        "--sandbox",
+        "workspace-write",
+        "--skip-git-repo-check",
+        "--json",
+        "--output-last-message",
+        "/private/tmp/diwan-runtime-accepted-evals-20261020/cli/retry/response.txt",
+        "-"
+      ],
+      "initial": {
+        "schema_version": 1,
+        "path": "/private/tmp/diwan-runtime-accepted-evals-20261020/cli/retry/poem.diwan.json",
+        "version": "2321a5381ec8d1255a510351c77f6464257135d13fb403e42fc5004a3659eb16",
+        "poem": {
+          "title": "نافذة",
+          "text": "لَمْ أبع الوعد ولم أنسَ وجهك\nوأتركُ نافذتي للضوء\n",
+          "choices": [],
+          "suggestions": {},
+          "status": "review",
+          "mode": "auto",
+          "meter": "",
+          "schema_version": 1,
+          "id": "5098f03b45344f7ca2e140d7ef594d0c",
+          "revision": 1,
+          "last_save_id": "create-ba2b9d097e884dc58ff8e9666031a797"
+        }
+      },
+      "final": {
+        "schema_version": 1,
+        "path": "/private/tmp/diwan-runtime-accepted-evals-20261020/cli/retry/poem.diwan.json",
+        "version": "e918174a4c70d1074916422065b19119abe79e6ef7ffe8f56e5bc6c4c1ecd92b",
+        "poem": {
+          "title": "نافذة",
+          "text": "لَمْ أبع الوعد ولم أنسَ وجهك\nوأتركُ نافذتي للصباح\n",
+          "choices": [],
+          "suggestions": {},
+          "status": "review",
+          "mode": "auto",
+          "meter": "",
+          "schema_version": 1,
+          "id": "5098f03b45344f7ca2e140d7ef594d0c",
+          "revision": 2,
+          "last_save_id": "retry-demo"
+        }
+      },
+      "history": {
+        "path": "/private/tmp/diwan-runtime-accepted-evals-20261020/cli/retry/poem.diwan.json",
+        "revisions": [
+          {
+            "version": "e918174a4c70d1074916422065b19119abe79e6ef7ffe8f56e5bc6c4c1ecd92b",
+            "revision": 2,
+            "current": true
+          },
+          {
+            "version": "2321a5381ec8d1255a510351c77f6464257135d13fb403e42fc5004a3659eb16",
+            "revision": 1,
+            "current": false
+          }
+        ],
+        "truncated": false,
+        "next_cursor": null
+      },
+      "package_unchanged": true,
+      "source_unchanged": true,
+      "proposal_exists": true,
+      "events_sha256": "2546b72572f0ceca5f8cd83a260bf2f547bb843333c9fa77bcaf9d5d8911b8eb",
+      "response": "Saved `proposal.txt` to `poem.diwan.json` using request ID `retry-demo`, then repeated the identical save with the original version.\n\n- First save: revision **2**, `replayed: false`.\n- Retry: revision **2**, `replayed: true`.\n- History confirms exactly **one new revision** (1 → 2).\n\nNo editor opened.",
+      "commands": [
+        {
+          "command": "/bin/zsh -lc 'cat /private/tmp/diwan-runtime-accepted-evals-20261020/cli/skill/SKILL.md'",
+          "exit_code": 0,
+          "stdout": "[Bundled documentation output SHA-256: 0fb9bc9f364f0225b8f09f25e648d0fd40c70c86c54e3c01cfa32e27280a3f69]",
+          "stderr": "",
+          "capture": "Codex aggregated output, not separate stderr. Repeated documentation is represented by its output digest; full raw events remain at the hashed execution path."
+        },
+        {
+          "command": "/bin/zsh -lc 'cat /private/tmp/diwan-runtime-accepted-evals-20261020/cli/skill/references/CLI.md\nls -la'",
+          "exit_code": 0,
+          "stdout": "[Bundled documentation output SHA-256: a28c26545dacc6eff615ec88baf18c69a1a1ec6483b3a1f62731f4cd1fbd1149]",
+          "stderr": "",
+          "capture": "Codex aggregated output, not separate stderr. Repeated documentation is represented by its output digest; full raw events remain at the hashed execution path."
+        },
+        {
+          "command": "/bin/zsh -lc 'python3 /private/tmp/diwan-runtime-accepted-evals-20261020/cli/skill/scripts/diwan.py get poem.diwan.json --json\npython3 /private/tmp/diwan-runtime-accepted-evals-20261020/cli/skill/scripts/diwan.py history poem.diwan.json --json'",
+          "exit_code": 0,
+          "stdout": "{\n  \"path\": \"/private/tmp/diwan-runtime-accepted-evals-20261020/cli/retry/poem.diwan.json\",\n  \"revisions\": [\n    {\n      \"version\": \"2321a5381ec8d1255a510351c77f6464257135d13fb403e42fc5004a3659eb16\",\n      \"revision\": 1,\n      \"current\": true\n    }\n  ],\n  \"truncated\": false,\n  \"next_cursor\": null\n}\n",
+          "stderr": "",
+          "capture": "Codex aggregated output, not separate stderr. Repeated documentation is represented by its output digest; full raw events remain at the hashed execution path."
+        },
+        {
+          "command": "/bin/zsh -lc 'python3 /private/tmp/diwan-runtime-accepted-evals-20261020/cli/skill/scripts/diwan.py update poem.diwan.json --text-file proposal.txt --if-version 2321a5381ec8d1255a510351c77f6464257135d13fb403e42fc5004a3659eb16 --request-id retry-demo --json'",
+          "exit_code": 0,
+          "stdout": "{\n  \"schema_version\": 1,\n  \"path\": \"/private/tmp/diwan-runtime-accepted-evals-20261020/cli/retry/poem.diwan.json\",\n  \"version\": \"e918174a4c70d1074916422065b19119abe79e6ef7ffe8f56e5bc6c4c1ecd92b\",\n  \"poem\": {\n    \"title\": \"نافذة\",\n    \"text\": \"لَمْ أبع الوعد ولم أنسَ وجهك\\nوأتركُ نافذتي للصباح\\n\",\n    \"choices\": [],\n    \"suggestions\": {},\n    \"status\": \"review\",\n    \"mode\": \"auto\",\n    \"meter\": \"\",\n    \"schema_version\": 1,\n    \"id\": \"5098f03b45344f7ca2e140d7ef594d0c\",\n    \"revision\": 2,\n    \"last_save_id\": \"retry-demo\"\n  },\n  \"replayed\": false,\n  \"applied_version\": \"e918174a4c70d1074916422065b19119abe79e6ef7ffe8f56e5bc6c4c1ecd92b\",\n  \"request_id\": \"retry-demo\"\n}\n",
+          "stderr": "",
+          "capture": "Codex aggregated output, not separate stderr. Repeated documentation is represented by its output digest; full raw events remain at the hashed execution path."
+        },
+        {
+          "command": "/bin/zsh -lc 'python3 /private/tmp/diwan-runtime-accepted-evals-20261020/cli/skill/scripts/diwan.py update poem.diwan.json --text-file proposal.txt --if-version 2321a5381ec8d1255a510351c77f6464257135d13fb403e42fc5004a3659eb16 --request-id retry-demo --json'",
+          "exit_code": 0,
+          "stdout": "{\n  \"schema_version\": 1,\n  \"path\": \"/private/tmp/diwan-runtime-accepted-evals-20261020/cli/retry/poem.diwan.json\",\n  \"version\": \"e918174a4c70d1074916422065b19119abe79e6ef7ffe8f56e5bc6c4c1ecd92b\",\n  \"poem\": {\n    \"title\": \"نافذة\",\n    \"text\": \"لَمْ أبع الوعد ولم أنسَ وجهك\\nوأتركُ نافذتي للصباح\\n\",\n    \"choices\": [],\n    \"suggestions\": {},\n    \"status\": \"review\",\n    \"mode\": \"auto\",\n    \"meter\": \"\",\n    \"schema_version\": 1,\n    \"id\": \"5098f03b45344f7ca2e140d7ef594d0c\",\n    \"revision\": 2,\n    \"last_save_id\": \"retry-demo\"\n  },\n  \"replayed\": true,\n  \"applied_version\": \"e918174a4c70d1074916422065b19119abe79e6ef7ffe8f56e5bc6c4c1ecd92b\",\n  \"request_id\": \"retry-demo\"\n}\n",
+          "stderr": "",
+          "capture": "Codex aggregated output, not separate stderr. Repeated documentation is represented by its output digest; full raw events remain at the hashed execution path."
+        },
+        {
+          "command": "/bin/zsh -lc 'python3 /private/tmp/diwan-runtime-accepted-evals-20261020/cli/skill/scripts/diwan.py history poem.diwan.json --json'",
+          "exit_code": 0,
+          "stdout": "{\n  \"path\": \"/private/tmp/diwan-runtime-accepted-evals-20261020/cli/retry/poem.diwan.json\",\n  \"revisions\": [\n    {\n      \"version\": \"e918174a4c70d1074916422065b19119abe79e6ef7ffe8f56e5bc6c4c1ecd92b\",\n      \"revision\": 2,\n      \"current\": true\n    },\n    {\n      \"version\": \"2321a5381ec8d1255a510351c77f6464257135d13fb403e42fc5004a3659eb16\",\n      \"revision\": 1,\n      \"current\": false\n    }\n  ],\n  \"truncated\": false,\n  \"next_cursor\": null\n}\n",
+          "stderr": "",
+          "capture": "Codex aggregated output, not separate stderr. Repeated documentation is represented by its output digest; full raw events remain at the hashed execution path."
+        }
+      ],
+      "raw_events": "/private/tmp/diwan-runtime-accepted-evals-20261020/cli/retry/events.jsonl"
+    },
+    {
+      "id": "restore",
+      "exit_code": 0,
+      "timed_out": false,
+      "command": [
+        "codex",
+        "--ask-for-approval",
+        "never",
+        "exec",
+        "--ignore-user-config",
+        "--ignore-rules",
+        "--ephemeral",
+        "--sandbox",
+        "workspace-write",
+        "--skip-git-repo-check",
+        "--json",
+        "--output-last-message",
+        "/private/tmp/diwan-runtime-accepted-evals-20261020/cli/restore/response.txt",
+        "-"
+      ],
+      "initial": {
+        "schema_version": 1,
+        "path": "/private/tmp/diwan-runtime-accepted-evals-20261020/cli/restore/poem.diwan.json",
+        "version": "ad2598dd41017b097a93edc2986fff4ee253025c2d55f81113c51122377a34b4",
+        "poem": {
+          "title": "نافذة",
+          "text": "هذه نسخة أحدث من كاتب آخر\n",
+          "choices": [],
+          "suggestions": {},
+          "status": "review",
+          "mode": "auto",
+          "meter": "",
+          "schema_version": 1,
+          "id": "a6ca3a595e544210ab8f758cb1585bba",
+          "revision": 2,
+          "last_save_id": "fixture-advance"
+        }
+      },
+      "final": {
+        "schema_version": 1,
+        "path": "/private/tmp/diwan-runtime-accepted-evals-20261020/cli/restore/poem.diwan.json",
+        "version": "51bcfb7702e3c483279a953450a77bd49d1f0315cc93478ba3c6d7b63b6f05bd",
+        "poem": {
+          "title": "نافذة",
+          "text": "لَمْ أبع الوعد ولم أنسَ وجهك\nوأتركُ نافذتي للضوء\n",
+          "choices": [],
+          "suggestions": {},
+          "status": "review",
+          "mode": "auto",
+          "meter": "",
+          "schema_version": 1,
+          "id": "a6ca3a595e544210ab8f758cb1585bba",
+          "revision": 3,
+          "last_save_id": "restore-earliest-revision-1"
+        }
+      },
+      "history": {
+        "path": "/private/tmp/diwan-runtime-accepted-evals-20261020/cli/restore/poem.diwan.json",
+        "revisions": [
+          {
+            "version": "51bcfb7702e3c483279a953450a77bd49d1f0315cc93478ba3c6d7b63b6f05bd",
+            "revision": 3,
+            "current": true
+          },
+          {
+            "version": "ad2598dd41017b097a93edc2986fff4ee253025c2d55f81113c51122377a34b4",
+            "revision": 2,
+            "current": false
+          },
+          {
+            "version": "c4fee91f564a9f42c1f15ab931e29561d8b04f964c5f23d62338fa8940f696ec",
+            "revision": 1,
+            "current": false
+          }
+        ],
+        "truncated": false,
+        "next_cursor": null
+      },
+      "package_unchanged": true,
+      "source_unchanged": true,
+      "proposal_exists": true,
+      "events_sha256": "760c1c1b43c5d70d418bc9ccaa22380560ec147acdba94f166552753def02cf0",
+      "response": "Restored the earliest text (revision 1) as revision 3 using Diwan CLI. Read-back confirmed the text below, and history retains revisions 1 and 2. No editor opened.\n\n```text\nلَمْ أبع الوعد ولم أنسَ وجهك\nوأتركُ نافذتي للضوء\n```",
+      "commands": [
+        {
+          "command": "/bin/zsh -lc 'cat /private/tmp/diwan-runtime-accepted-evals-20261020/cli/skill/SKILL.md'",
+          "exit_code": 0,
+          "stdout": "[Bundled documentation output SHA-256: 0fb9bc9f364f0225b8f09f25e648d0fd40c70c86c54e3c01cfa32e27280a3f69]",
+          "stderr": "",
+          "capture": "Codex aggregated output, not separate stderr. Repeated documentation is represented by its output digest; full raw events remain at the hashed execution path."
+        },
+        {
+          "command": "/bin/zsh -lc 'cat /private/tmp/diwan-runtime-accepted-evals-20261020/cli/skill/references/CLI.md'",
+          "exit_code": 0,
+          "stdout": "[Bundled documentation output SHA-256: 5c26d7c2fc2e0f67dd4811947338f642f4782446e3f9ee52348e33986cbc0d12]",
+          "stderr": "",
+          "capture": "Codex aggregated output, not separate stderr. Repeated documentation is represented by its output digest; full raw events remain at the hashed execution path."
+        },
+        {
+          "command": "/bin/zsh -lc 'python3 /private/tmp/diwan-runtime-accepted-evals-20261020/cli/skill/scripts/diwan.py history poem.diwan.json --limit 100 --json'",
+          "exit_code": 0,
+          "stdout": "{\n  \"path\": \"/private/tmp/diwan-runtime-accepted-evals-20261020/cli/restore/poem.diwan.json\",\n  \"revisions\": [\n    {\n      \"version\": \"ad2598dd41017b097a93edc2986fff4ee253025c2d55f81113c51122377a34b4\",\n      \"revision\": 2,\n      \"current\": true\n    },\n    {\n      \"version\": \"c4fee91f564a9f42c1f15ab931e29561d8b04f964c5f23d62338fa8940f696ec\",\n      \"revision\": 1,\n      \"current\": false\n    }\n  ],\n  \"truncated\": false,\n  \"next_cursor\": null\n}\n",
+          "stderr": "",
+          "capture": "Codex aggregated output, not separate stderr. Repeated documentation is represented by its output digest; full raw events remain at the hashed execution path."
+        },
+        {
+          "command": "/bin/zsh -lc 'python3 /private/tmp/diwan-runtime-accepted-evals-20261020/cli/skill/scripts/diwan.py get poem.diwan.json --json'",
+          "exit_code": 0,
+          "stdout": "{\n  \"schema_version\": 1,\n  \"path\": \"/private/tmp/diwan-runtime-accepted-evals-20261020/cli/restore/poem.diwan.json\",\n  \"version\": \"ad2598dd41017b097a93edc2986fff4ee253025c2d55f81113c51122377a34b4\",\n  \"poem\": {\n    \"title\": \"نافذة\",\n    \"text\": \"هذه نسخة أحدث من كاتب آخر\\n\",\n    \"choices\": [],\n    \"suggestions\": {},\n    \"status\": \"review\",\n    \"mode\": \"auto\",\n    \"meter\": \"\",\n    \"schema_version\": 1,\n    \"id\": \"a6ca3a595e544210ab8f758cb1585bba\",\n    \"revision\": 2,\n    \"last_save_id\": \"fixture-advance\"\n  }\n}\n",
+          "stderr": "",
+          "capture": "Codex aggregated output, not separate stderr. Repeated documentation is represented by its output digest; full raw events remain at the hashed execution path."
+        },
+        {
+          "command": "/bin/zsh -lc 'python3 /private/tmp/diwan-runtime-accepted-evals-20261020/cli/skill/scripts/diwan.py restore poem.diwan.json --revision c4fee91f564a9f42c1f15ab931e29561d8b04f964c5f23d62338fa8940f696ec --if-version ad2598dd41017b097a93edc2986fff4ee253025c2d55f81113c51122377a34b4 --request-id restore-earliest-revision-1 --json'",
+          "exit_code": 0,
+          "stdout": "{\n  \"schema_version\": 1,\n  \"path\": \"/private/tmp/diwan-runtime-accepted-evals-20261020/cli/restore/poem.diwan.json\",\n  \"version\": \"51bcfb7702e3c483279a953450a77bd49d1f0315cc93478ba3c6d7b63b6f05bd\",\n  \"poem\": {\n    \"title\": \"نافذة\",\n    \"text\": \"لَمْ أبع الوعد ولم أنسَ وجهك\\nوأتركُ نافذتي للضوء\\n\",\n    \"choices\": [],\n    \"suggestions\": {},\n    \"status\": \"review\",\n    \"mode\": \"auto\",\n    \"meter\": \"\",\n    \"schema_version\": 1,\n    \"id\": \"a6ca3a595e544210ab8f758cb1585bba\",\n    \"revision\": 3,\n    \"last_save_id\": \"restore-earliest-revision-1\"\n  },\n  \"replayed\": false,\n  \"applied_version\": \"51bcfb7702e3c483279a953450a77bd49d1f0315cc93478ba3c6d7b63b6f05bd\",\n  \"request_id\": \"restore-earliest-revision-1\"\n}\n",
+          "stderr": "",
+          "capture": "Codex aggregated output, not separate stderr. Repeated documentation is represented by its output digest; full raw events remain at the hashed execution path."
+        },
+        {
+          "command": "/bin/zsh -lc 'python3 /private/tmp/diwan-runtime-accepted-evals-20261020/cli/skill/scripts/diwan.py get poem.diwan.json --json'",
+          "exit_code": 0,
+          "stdout": "{\n  \"schema_version\": 1,\n  \"path\": \"/private/tmp/diwan-runtime-accepted-evals-20261020/cli/restore/poem.diwan.json\",\n  \"version\": \"51bcfb7702e3c483279a953450a77bd49d1f0315cc93478ba3c6d7b63b6f05bd\",\n  \"poem\": {\n    \"title\": \"نافذة\",\n    \"text\": \"لَمْ أبع الوعد ولم أنسَ وجهك\\nوأتركُ نافذتي للضوء\\n\",\n    \"choices\": [],\n    \"suggestions\": {},\n    \"status\": \"review\",\n    \"mode\": \"auto\",\n    \"meter\": \"\",\n    \"schema_version\": 1,\n    \"id\": \"a6ca3a595e544210ab8f758cb1585bba\",\n    \"revision\": 3,\n    \"last_save_id\": \"restore-earliest-revision-1\"\n  }\n}\n",
+          "stderr": "",
+          "capture": "Codex aggregated output, not separate stderr. Repeated documentation is represented by its output digest; full raw events remain at the hashed execution path."
+        },
+        {
+          "command": "/bin/zsh -lc 'python3 /private/tmp/diwan-runtime-accepted-evals-20261020/cli/skill/scripts/diwan.py history poem.diwan.json --limit 100 --json'",
+          "exit_code": 0,
+          "stdout": "{\n  \"path\": \"/private/tmp/diwan-runtime-accepted-evals-20261020/cli/restore/poem.diwan.json\",\n  \"revisions\": [\n    {\n      \"version\": \"51bcfb7702e3c483279a953450a77bd49d1f0315cc93478ba3c6d7b63b6f05bd\",\n      \"revision\": 3,\n      \"current\": true\n    },\n    {\n      \"version\": \"ad2598dd41017b097a93edc2986fff4ee253025c2d55f81113c51122377a34b4\",\n      \"revision\": 2,\n      \"current\": false\n    },\n    {\n      \"version\": \"c4fee91f564a9f42c1f15ab931e29561d8b04f964c5f23d62338fa8940f696ec\",\n      \"revision\": 1,\n      \"current\": false\n    }\n  ],\n  \"truncated\": false,\n  \"next_cursor\": null\n}\n",
+          "stderr": "",
+          "capture": "Codex aggregated output, not separate stderr. Repeated documentation is represented by its output digest; full raw events remain at the hashed execution path."
+        }
+      ],
+      "raw_events": "/private/tmp/diwan-runtime-accepted-evals-20261020/cli/restore/events.jsonl"
+    }
+  ]
+}

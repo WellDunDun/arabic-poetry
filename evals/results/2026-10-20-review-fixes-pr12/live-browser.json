@@ -1,0 +1,60 @@
+{
+  "source_commit": "471033720c3ade691ddd9e260be18c06e937efa7",
+  "host": "Codex in-app browser; disposable shared-file poem, manual suggestion mode, no model request.",
+  "versions": "Fixture install declarations 0.3.1 -> 0.3.2 with protocol 2; no release was published.",
+  "same_address_verified": true,
+  "address_sha256": "29c4cd291f86a3dea272b1375a6ab730173e56e5bfefc0e1e1709c5b8302b3c4",
+  "same_supervisor_verified": true,
+  "pending": {
+    "runtime": {
+      "protocol": 2,
+      "version": "0.3.1",
+      "available": "0.3.2",
+      "recovered": false,
+      "id": "baca91b5d2f240e488cd704d3464d280"
+    },
+    "saved_revision": 1,
+    "saved_version_unchanged": true,
+    "visible_draft": "أتركُ كتابي قربَ النافذةِ.\nهذه مسودة تبقى أثناء التحديث."
+  },
+  "after_save": {
+    "runtime": {
+      "protocol": 2,
+      "version": "0.3.2",
+      "available": null,
+      "recovered": false,
+      "id": "baca91b5d2f240e488cd704d3464d280"
+    },
+    "saved_revision": 2,
+    "text": "أتركُ كتابي قربَ النافذةِ.\nهذه مسودة تبقى أثناء التحديث.",
+    "same_poem_id": true
+  },
+  "stop": {
+    "stopped": true,
+    "connection_refused_verified": true,
+    "canonical_document_unchanged_verified": true
+  },
+  "screenshots": [
+    {
+      "path": "/Users/danielpetro/.codex/visualizations/2026/10/14/01a139b6-194f-75b1-a0f3-b2c67302353e/diwan-review-fixes-20261020/pending.png",
+      "sha256": "6ea6962fc73c845f41170632a74347fa977a478559712f7b12d08a77ea95d4a1",
+      "bytes": 93998
+    },
+    {
+      "path": "/Users/danielpetro/.codex/visualizations/2026/10/14/01a139b6-194f-75b1-a0f3-b2c67302353e/diwan-review-fixes-20261020/saved.png",
+      "sha256": "fa22088e946142de7798be5cffda296dedb46078718a2cb8fdc802f656195208",
+      "bytes": 112638
+    }
+  ],
+  "accessibility_receipts": [
+    {
+      "path": "/Users/danielpetro/.codex/visualizations/2026/10/14/01a139b6-194f-75b1-a0f3-b2c67302353e/diwan-review-fixes-20261020/pending.txt",
+      "sha256": "fbf489898fe337dbdf320d409b732f60778538e0917af8cded988ee3e566d197"
+    },
+    {
+      "path": "/Users/danielpetro/.codex/visualizations/2026/10/14/01a139b6-194f-75b1-a0f3-b2c67302353e/diwan-review-fixes-20261020/saved.txt",
+      "sha256": "3f22d600d35211884604d5b28f140e78648d819bf2aaff986411d41087d79018"
+    }
+  ],
+  "limits": "Raw URL tokens and browser receipts remain outside Git. Earlier two-tab conflict tests are historical; current software covers conflicts and current browser covers pending/save/handoff. This is not ChatGPT extension/account-sync proof."
+}

@@ -60,7 +60,8 @@ function harness(initial, options = {}) {
     const fn = listeners.get('click').find(f => f.toString().includes("act === 'edit'"));
     fn({ target: { closest: query => query === '[data-act]' ? { dataset: { act, li: String(li) } } : null } });
   }
-  return { api, select, receive, element, elements, timers, storage, click, dialogMouseDown() {
+  return { api, select, receive, element, elements, timers, storage, click,
+    runtimeReady() { return context.window.DiwanFileReady(); }, focus(el) { context.document.activeElement = el; }, dialogMouseDown() {
     const fn = listeners.get('mousedown').find(f => f.toString().includes("$('cmenu')"));
     fn({target:{closest: selector => selector.includes('.agent-exchange') ? {} : null}});
   } };

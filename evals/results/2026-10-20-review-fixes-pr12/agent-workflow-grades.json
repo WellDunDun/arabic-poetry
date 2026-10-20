@@ -1,0 +1,508 @@
+{
+  "grading": "Lead semantic review, condition known; actual responses, command traces and resulting artifacts/state inspected against unchanged criteria. ",
+  "suites": {
+    "routing": {
+      "compose-en": {
+        "status": "pass",
+        "criteria": [
+          {
+            "criterion": "Creates a new four-line Arabic prose poem about the requested subject with the supplied title",
+            "status": "pass",
+            "evidence": "A new four-line rain poem has the requested title."
+          },
+          {
+            "criterion": "Preloads that actual generated poem into local Diwan in review status",
+            "status": "pass",
+            "evidence": "The actual generated text, title and review state are embedded in the prepared HTML."
+          },
+          {
+            "criterion": "Invokes the available local opener in the same turn without an editor offer, permission question or paste step",
+            "status": "pass",
+            "evidence": "A matching opener receipt records delivery in the same turn without permission or paste."
+          },
+          {
+            "criterion": "Keeps the launch local and the installed skill unchanged; does not claim the fixture rendered HTML",
+            "status": "pass",
+            "evidence": "Local-only commands, unchanged package and an explicit fixture-rendering limit are recorded."
+          }
+        ]
+      },
+      "compose-ar": {
+        "status": "pass",
+        "criteria": [
+          {
+            "criterion": "Creates a new four-line Arabic prose poem about the requested subject with the supplied title",
+            "status": "pass",
+            "evidence": "A new four-line coffee poem has the requested title."
+          },
+          {
+            "criterion": "Preloads that actual generated poem into local Diwan in review status",
+            "status": "pass",
+            "evidence": "The HTML contains the actual generated poem in review state."
+          },
+          {
+            "criterion": "Invokes the available local opener in the same turn without an editor offer, permission question or paste step",
+            "status": "pass",
+            "evidence": "The available opener is invoked without permission or paste."
+          },
+          {
+            "criterion": "Answers in Arabic, keeps the launch local and the installed skill unchanged, and does not claim the fixture rendered HTML",
+            "status": "pass",
+            "evidence": "The answer is Arabic, launch is local, package unchanged and fixture rendering is not claimed."
+          }
+        ]
+      },
+      "revise-en": {
+        "status": "pass",
+        "criteria": [
+          {
+            "criterion": "Changes only the requested word and preserves all other text, marks and line breaks",
+            "status": "pass",
+            "evidence": "Only the requested lilsabah substitution changes the original; other bytes and newlines are preserved."
+          },
+          {
+            "criterion": "Preloads the complete revised poem, not the original, into local Diwan in review status",
+            "status": "pass",
+            "evidence": "The full revised poem, not the original, is embedded in review state."
+          },
+          {
+            "criterion": "Invokes the available local opener in the same turn without a permission or paste step",
+            "status": "pass",
+            "evidence": "The available opener records the revised HTML without an extra permission or paste step."
+          },
+          {
+            "criterion": "Preserves the original input file and installed skill, keeps the launch local and makes no rendered-viewer claim",
+            "status": "pass",
+            "evidence": "Original input/opener/package remain unchanged; rendering is accurately limited to the fixture receipt."
+          }
+        ]
+      },
+      "revise-ar": {
+        "status": "pass",
+        "criteria": [
+          {
+            "criterion": "Changes only the requested word and preserves all other text, marks and line breaks",
+            "status": "pass",
+            "evidence": "Only the requested babi substitution is made, preserving all other marks and line breaks."
+          },
+          {
+            "criterion": "Preloads the complete revised poem, not the original, into local Diwan in review status",
+            "status": "pass",
+            "evidence": "The full revised poem is embedded in review state."
+          },
+          {
+            "criterion": "Invokes the available local opener in the same turn without a permission or paste step",
+            "status": "pass",
+            "evidence": "A local opener receipt is recorded in the same turn without permission or pasting."
+          },
+          {
+            "criterion": "Answers in Arabic, preserves the original input file and installed skill, keeps the launch local and makes no rendered-viewer claim",
+            "status": "pass",
+            "evidence": "Arabic response; original input/package unchanged, no hosted launch or rendered-view claim."
+          }
+        ]
+      },
+      "quick-image": {
+        "status": "pass",
+        "criteria": [
+          {
+            "criterion": "Briefly explains the supplied window/light image in Arabic without rewriting it",
+            "status": "pass",
+            "evidence": "A brief Arabic interpretation uses the supplied window/light image without rewriting."
+          },
+          {
+            "criterion": "Does not prepare or open Diwan even though a viewer is available",
+            "status": "pass",
+            "evidence": "No HTML is prepared and no opener is invoked despite viewer availability."
+          },
+          {
+            "criterion": "Preserves the original input and installed skill",
+            "status": "pass",
+            "evidence": "The input and installed package digests are unchanged."
+          }
+        ]
+      },
+      "quick-meter": {
+        "status": "pass",
+        "criteria": [
+          {
+            "criterion": "Identifies tawil with a compact complete supporting scan and disclosed consequential reading assumptions",
+            "status": "pass",
+            "evidence": "Tawil is named with one complete sound-to-foot hemistich and the final-vowel assumption."
+          },
+          {
+            "criterion": "Uses actual local scanner evidence for any claimed executed check",
+            "status": "pass",
+            "evidence": "The successful local scan.py verification command is in the actual trace."
+          },
+          {
+            "criterion": "Does not prepare or open Diwan for this analysis-only request",
+            "status": "pass",
+            "evidence": "No HTML or opener is used for this quick analysis request."
+          },
+          {
+            "criterion": "Keeps the installed skill unchanged",
+            "status": "pass",
+            "evidence": "The package hash is unchanged."
+          }
+        ]
+      },
+      "compose-chat-only": {
+        "status": "pass",
+        "criteria": [
+          {
+            "criterion": "Delivers only four Arabic prose-poem lines about the requested subject",
+            "status": "pass",
+            "evidence": "Only four Arabic prose-poem lines are returned about the requested bread subject."
+          },
+          {
+            "criterion": "Does not prepare or open Diwan despite the composition trigger and available viewer",
+            "status": "pass",
+            "evidence": "No editor HTML or opener receipt is created."
+          },
+          {
+            "criterion": "Creates no poem/editor files and leaves the installed skill unchanged",
+            "status": "pass",
+            "evidence": "The workspace has no generated poem/editor files and the skill hash is unchanged."
+          }
+        ]
+      },
+      "revise-chat-only": {
+        "status": "pass",
+        "criteria": [
+          {
+            "criterion": "Returns only the complete revised poem with the exact requested substitution",
+            "status": "pass",
+            "evidence": "Only the complete poem with the exact requested word change is returned."
+          },
+          {
+            "criterion": "Does not prepare or open Diwan despite the revision trigger and available viewer",
+            "status": "pass",
+            "evidence": "No editor is prepared or opened."
+          },
+          {
+            "criterion": "Preserves the original input file and installed skill and creates no poem/editor files",
+            "status": "pass",
+            "evidence": "The original input/package remain unchanged and no poem/editor files are generated."
+          }
+        ]
+      },
+      "revise-no-viewer": {
+        "status": "pass",
+        "criteria": [
+          {
+            "criterion": "Prepares local Diwan with the complete exact revised poem in review status",
+            "status": "pass",
+            "evidence": "The complete exact requested revision is embedded in local HTML in review state."
+          },
+          {
+            "criterion": "States that it cannot open the editor because no viewer is available and provides the prepared file without asking for a paste",
+            "status": "pass",
+            "evidence": "The answer states the missing viewer and supplies the prepared file, without a paste request."
+          },
+          {
+            "criterion": "Preserves the original input file and installed skill, and does not substitute publication or hosted services",
+            "status": "pass",
+            "evidence": "Original/package unchanged; the trace uses no hosting or publication."
+          }
+        ]
+      }
+    },
+    "launch": {
+      "open-current-en": {
+        "status": "pass",
+        "criteria": [
+          {
+            "criterion": "Creates a preloaded local editor with the exact supplied text and review status",
+            "status": "pass",
+            "evidence": "HTML embeds the exact supplied poem and review state."
+          },
+          {
+            "criterion": "Uses the available local opener in this turn",
+            "status": "pass",
+            "evidence": "The opener receipt matches that generated HTML."
+          },
+          {
+            "criterion": "Does not ask another permission question or require pasting the poem",
+            "status": "pass",
+            "evidence": "No permission question or paste step appears."
+          },
+          {
+            "criterion": "Does not publish or request hosted services",
+            "status": "pass",
+            "evidence": "All operations are local; no hosting is requested."
+          },
+          {
+            "criterion": "Does not rebuild or write to the installed package",
+            "status": "pass",
+            "evidence": "The read-only package digests remain unchanged."
+          }
+        ]
+      },
+      "open-current-ar": {
+        "status": "pass",
+        "criteria": [
+          {
+            "criterion": "Same launch criteria as open-current-en",
+            "status": "pass",
+            "evidence": "All shared launch checks hold: exact poem/review state, local matching opener, no permission/paste/hosting and unchanged package."
+          },
+          {
+            "criterion": "Answers in Arabic and preserves the supplied text and marks",
+            "status": "pass",
+            "evidence": "The response is Arabic and the embedded poem retains every supplied mark."
+          }
+        ]
+      },
+      "no-local-viewer": {
+        "status": "pass",
+        "criteria": [
+          {
+            "criterion": "Prepares a local editor with the poem loaded",
+            "status": "pass",
+            "evidence": "A local editor snapshot contains the complete supplied poem."
+          },
+          {
+            "criterion": "Explains that no local viewer is available instead of claiming it opened",
+            "status": "pass",
+            "evidence": "The response explicitly says the viewer is unavailable rather than claiming it opened."
+          },
+          {
+            "criterion": "Provides the prepared file as the remaining handoff without asking the user to paste",
+            "status": "pass",
+            "evidence": "The actual prepared file is linked without a paste request."
+          },
+          {
+            "criterion": "Does not substitute hosted publishing",
+            "status": "pass",
+            "evidence": "The trace does not substitute hosted publication."
+          }
+        ]
+      },
+      "chat-only": {
+        "status": "pass",
+        "criteria": [
+          {
+            "criterion": "Explains the supplied image in Arabic",
+            "status": "pass",
+            "evidence": "The answer explains the supplied window/light image in Arabic."
+          },
+          {
+            "criterion": "Does not prepare or open Diwan",
+            "status": "pass",
+            "evidence": "No editor HTML is prepared or opened."
+          },
+          {
+            "criterion": "Does not change the poem",
+            "status": "pass",
+            "evidence": "The input poem is unchanged."
+          }
+        ]
+      }
+    },
+    "pronouns": {
+      "ambiguous-address-ar": {
+        "status": "pass",
+        "criteria": [
+          {
+            "criterion": "Preserves every base letter and space in the supplied line",
+            "status": "pass",
+            "evidence": "All letters/spaces are preserved in the vocalized proposed line."
+          },
+          {
+            "criterion": "Explicitly names the assumed addressee gender of طيفك and makes the other meaningful reading visible",
+            "status": "pass",
+            "evidence": "The masculine tayfuka reading and feminine tayfuki alternative are explicit."
+          },
+          {
+            "criterion": "Stops for the requested review without scanning or opening an editor",
+            "status": "pass",
+            "evidence": "The response explicitly waits for approval; there is no scanner or editor command."
+          }
+        ]
+      },
+      "ambiguous-address-en": {
+        "status": "pass",
+        "criteria": [
+          {
+            "criterion": "Preserves every base letter and space in the supplied line",
+            "status": "pass",
+            "evidence": "All letters and spaces remain in the vocalized supplied line."
+          },
+          {
+            "criterion": "Explicitly explains in English whether صوتك addresses a man or a woman, and acknowledges the other possible reading",
+            "status": "pass",
+            "evidence": "English explanation discloses masculine sawtaka and the feminine sawtaki alternative."
+          },
+          {
+            "criterion": "Stops for approval without scanning or opening an editor",
+            "status": "pass",
+            "evidence": "The response stops after the proposed reading/explanation, without scan or editor. The request says then stop; it does not require an explicit confirmation question."
+          }
+        ]
+      },
+      "supplied-feminine": {
+        "status": "pass",
+        "criteria": [
+          {
+            "criterion": "Preserves all base letters, spaces and supplied kasra on كِ",
+            "status": "pass",
+            "evidence": "The supplied base letters, spaces and kasra on ki remain."
+          },
+          {
+            "criterion": "Completes the vocalization consistently with the supplied feminine addressee without reopening it as unresolved",
+            "status": "pass",
+            "evidence": "Vocalization follows the explicitly supplied feminine addressee."
+          },
+          {
+            "criterion": "Delivers only the vocalized line, without approval question, analysis or editor",
+            "status": "pass",
+            "evidence": "Only the vocalized line is delivered, with no invented question, scanner or editor."
+          }
+        ]
+      },
+      "context-fixed-feminine": {
+        "status": "pass",
+        "criteria": [
+          {
+            "criterion": "Preserves every base letter and space in the supplied line",
+            "status": "pass",
+            "evidence": "All base letters and spaces remain."
+          },
+          {
+            "criterion": "Uses feminine address fixed by the mother context, not an unexplained masculine default",
+            "status": "pass",
+            "evidence": "The mother context is honored with feminine sawtaki."
+          },
+          {
+            "criterion": "Delivers only the vocalized line without inventing an ambiguity question, analysis or editor",
+            "status": "pass",
+            "evidence": "Only the vocalized line is returned, without reopening resolved ambiguity."
+          }
+        ]
+      }
+    },
+    "cli": {
+      "discover": {
+        "status": "pass",
+        "criteria": [
+          {
+            "criterion": "Actually inspects CLI help and structured discovery",
+            "status": "pass",
+            "evidence": "Actual top-level help, update help and structured discovery are in the trace. Any unavailable python attempt is retained together with recovery through python3."
+          },
+          {
+            "criterion": "Explains mandatory version and stable request-id, rereading/reassessing on conflict",
+            "status": "pass",
+            "evidence": "The explanation requires opaque version and stable request id, including reassessment after conflict."
+          },
+          {
+            "criterion": "Makes no poem mutation or editor launch",
+            "status": "pass",
+            "evidence": "No poem mutation or editor launch occurs."
+          }
+        ]
+      },
+      "create": {
+        "status": "pass",
+        "criteria": [
+          {
+            "criterion": "Uses the CLI to create and read a canonical shared document",
+            "status": "pass",
+            "evidence": "CLI create and get are executed on the canonical document."
+          },
+          {
+            "criterion": "Preserves the exact input text and marks and keeps the import source unchanged",
+            "status": "pass",
+            "evidence": "Canonical text exactly matches the import source, including marks/newlines; source is unchanged."
+          },
+          {
+            "criterion": "Identifies the JSON document as authoritative without claiming browser display or automatic future-chat access",
+            "status": "pass",
+            "evidence": "The shared JSON is identified as the live poem without display or future-chat access claims."
+          }
+        ]
+      },
+      "accepted-update": {
+        "status": "pass",
+        "criteria": [
+          {
+            "criterion": "Reads the current version and performs a conditional CLI update with a request id",
+            "status": "pass",
+            "evidence": "The actual trace reads get and performs a conditional update with a request id."
+          },
+          {
+            "criterion": "Saves exactly the accepted text change in the original canonical document and preserves its id",
+            "status": "pass",
+            "evidence": "Final text is exactly the accepted substitution in the same poem id."
+          },
+          {
+            "criterion": "Reports the real saved revision without a competing browser-only copy or editor launch",
+            "status": "pass",
+            "evidence": "Read-back and actual revision 2 support the saved-result claim; no competing snapshot is created."
+          }
+        ]
+      },
+      "stale-save": {
+        "status": "pass",
+        "criteria": [
+          {
+            "criterion": "Uses the supplied stale version and receives a real conflict",
+            "status": "pass",
+            "evidence": "The update uses the supplied stale precondition and actually returns CONFLICT, exit 5."
+          },
+          {
+            "criterion": "Does not retry with a fresh precondition or overwrite the newer text",
+            "status": "pass",
+            "evidence": "There is no fresh-precondition overwrite; final document/version equal the initial newer state."
+          },
+          {
+            "criterion": "Reports the conflict and leaves the proposal available",
+            "status": "pass",
+            "evidence": "The response reports conflict and leaves the proposal file available."
+          }
+        ]
+      },
+      "retry": {
+        "status": "pass",
+        "criteria": [
+          {
+            "criterion": "Uses the same request id, original version and payload for both CLI saves",
+            "status": "pass",
+            "evidence": "Both executed saves use the same original version, request id and proposal."
+          },
+          {
+            "criterion": "The canonical document advances exactly once and the second save is a replay",
+            "status": "pass",
+            "evidence": "Second output is replayed and the document has only one new revision."
+          },
+          {
+            "criterion": "Checks actual state/history rather than claiming retry safety without execution",
+            "status": "pass",
+            "evidence": "Actual get/history outputs verify the final document and two-entry history."
+          }
+        ]
+      },
+      "restore": {
+        "status": "pass",
+        "criteria": [
+          {
+            "criterion": "Reads current and historical versions and uses conditional restore with a request id",
+            "status": "pass",
+            "evidence": "Actual current/history reads precede conditional restore with a stable request id."
+          },
+          {
+            "criterion": "Restores the original text as revision 3 with the same poem id",
+            "status": "pass",
+            "evidence": "Revision 1 text is restored as revision 3 while retaining the poem id."
+          },
+          {
+            "criterion": "Retains all three history entries and reports the real result",
+            "status": "pass",
+            "evidence": "Actual history contains all three revisions and supports the reported result."
+          }
+        ]
+      }
+    }
+  }
+}

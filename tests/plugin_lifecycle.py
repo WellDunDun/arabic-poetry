@@ -7,6 +7,7 @@ import os
 import selectors
 import shutil
 import subprocess
+import sys
 import tempfile
 import time
 from pathlib import Path
@@ -80,6 +81,9 @@ def runtime_skill(env, cwd, receipts):
 
 
 def test_lifecycle(report):
+    sys.path.insert(0, str(ROOT / 'skills/arabic-poetry/scripts'))
+    from diwan_updates import InstalledRuntime
+    monitors = {}
     for executable in ('git', 'python3', 'codex', 'claude'):
         if not shutil.which(executable):
             raise RuntimeError(f'Missing required executable: {executable}')
@@ -164,6 +168,13 @@ def test_lifecycle(report):
                 skill = installed / 'skills/arabic-poetry'
                 assert (skill / PROBE).read_text() == version
                 assert hashes(skill) == original_hashes, f'{host}: installed skill files differ'
+                if version == initial:
+                    monitors[host] = InstalledRuntime(installed)
+                    assert monitors[host].candidate(force=True) is None
+                else:
+                    detected = monitors[host].candidate(force=True)
+                    assert detected == {'version': version, 'root': str(installed)}, (host, detected)
+                    report.setdefault('open_editor_update_detection', []).append({'host': host, **detected})
                 run(['python3', str(skill / 'scripts/scan.py'), '--help'], cwd=scratch)
                 report.setdefault('verified', []).append({
                     'host': host, 'version': version, 'skill_files_matching_source': len(original_hashes),

@@ -1795,7 +1795,56 @@ window.__METERS__ = {"info": {"tawil": ["الطويل", "al-Tawil", "طويلٌ 
         async delete() { throw new Error('لا يحذف المحرر ملف القصيدة المشتركة'); }
       }; }
     }; } };
+    if (root.DiwanRuntimeUpdates) root.DiwanRuntimeUpdates(api,
+      () => !busy && !!latest && !!root.DiwanFileReady && root.DiwanFileReady());
     return { ...services, label: 'قصيدة مشتركة مع وكيلك؛ الحفظ في الملف' + (services.aiLabel ? ' · AI: ' + services.aiLabel : ''), db };
+  };
+})(typeof window === 'undefined' ? globalThis : window);
+
+</script>
+<script>
+/* A compatible server may restart; only a clean, idle page may reload. */
+(function (root) {
+  'use strict';
+  root.DiwanRuntimeUpdates = function (api, ready) {
+    const loaded = root.DiwanFile.runtime;
+    if (!loaded) return () => {};
+    let busy = false, restarting = false, note;
+    function message(text) {
+      if (!note) {
+        note = document.createElement('div'); note.className = 'note'; note.dir = 'rtl';
+        note.id = 'runtimeUpdateStatus'; note.setAttribute('role', 'status');
+        (document.querySelector('.app') || document.body).prepend(note);
+      }
+      note.textContent = text;
+    }
+    async function check() {
+      if (busy) return;
+      busy = true;
+      try {
+        const state = await api('/runtime');
+        if (state.protocol !== 2 || state.id !== root.DiwanFile.id) return;
+        if (state.version !== loaded) {
+          message('تحديث ديوان جاهز. سيُطبّق بعد حفظ تعديلاتك وإغلاق أدوات التحرير.');
+          if (ready()) root.location.reload();
+        } else if (state.available && !restarting) {
+          message('يتوفر تحديث لديوان؛ ننتظر حفظ تعديلاتك وانتهاء التحرير قبل تطبيقه.');
+          if (ready()) {
+            const result = await api('/runtime', {});
+            restarting = result.restarting === true;
+            if (restarting) message(ready() ? 'جارٍ تحديث ديوان. قصيدتك باقية في ملفها.'
+              : 'بدأ التحديث؛ ستبقى مسودتك هنا حتى تؤكّد حفظها وينتهي التحرير.');
+          }
+        } else if (state.recovered) {
+          restarting = false;
+          message('تعذّر تشغيل التحديث؛ عاد ديوان إلى النسخة السابقة. قصيدتك ومسودتك باقية.');
+        }
+      } catch (error) {
+        if (restarting) message('جارٍ إعادة الاتصال بعد التحديث؛ مسودتك باقية في المحرر.');
+      } finally { busy = false; }
+    }
+    const timer = setInterval(check, 3000);
+    return () => clearInterval(timer);
   };
 })(typeof window === 'undefined' ? globalThis : window);
 
@@ -2936,6 +2985,10 @@ ${linesOf(p).join('\n')}
   };
   if (window.DiwanFile) {
     $('newBtn').hidden = true;
+    window.DiwanFileReady = () => !!cur() && !dirty.size && !writing.size && editing === null && pendingNew === null &&
+      $('bulkWrap').hidden && $('pop').hidden && $('cmenu').hidden && $('exportDlg').hidden && !$('diacBtn').disabled &&
+      ![...wordAlts.values(), ...Object.values(altResults), ...Object.values(askState)].some(s => s.busy || s.draft) &&
+      !(document.activeElement && (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName) || document.activeElement.isContentEditable));
     window.DiwanFileDraft = () => {
       const p = cur(); if (!p) return null;
       const draft = JSON.parse(JSON.stringify(p));

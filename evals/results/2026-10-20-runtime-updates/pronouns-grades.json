@@ -1,0 +1,85 @@
+{
+  "grading": "Lead semantic review with condition known; complete responses, actual commands, state and artifacts inspected.",
+  "cases": {
+    "ambiguous-address-ar": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "criterion": "Preserves every base letter and space in the supplied line",
+          "evidence": "Preserves all letters/spaces, explicitly gives masculine and feminine طيفك readings, stops for approval without scan/editor. See pronouns-after.json and hashed raw events."
+        },
+        {
+          "status": "pass",
+          "criterion": "Explicitly names the assumed addressee gender of طيفك and makes the other meaningful reading visible",
+          "evidence": "Preserves all letters/spaces, explicitly gives masculine and feminine طيفك readings, stops for approval without scan/editor. See pronouns-after.json and hashed raw events."
+        },
+        {
+          "status": "pass",
+          "criterion": "Stops for the requested review without scanning or opening an editor",
+          "evidence": "Preserves all letters/spaces, explicitly gives masculine and feminine طيفك readings, stops for approval without scan/editor. See pronouns-after.json and hashed raw events."
+        }
+      ]
+    },
+    "ambiguous-address-en": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "criterion": "Preserves every base letter and space in the supplied line",
+          "evidence": "Preserves wording/spaces, explains masculine صوتكَ and feminine صوتكِ in English, then stops without scan/editor. See pronouns-after.json and hashed raw events."
+        },
+        {
+          "status": "pass",
+          "criterion": "Explicitly explains in English whether صوتك addresses a man or a woman, and acknowledges the other possible reading",
+          "evidence": "Preserves wording/spaces, explains masculine صوتكَ and feminine صوتكِ in English, then stops without scan/editor. See pronouns-after.json and hashed raw events."
+        },
+        {
+          "status": "pass",
+          "criterion": "Stops for approval without scanning or opening an editor",
+          "evidence": "Preserves wording/spaces, explains masculine صوتكَ and feminine صوتكِ in English, then stops without scan/editor. See pronouns-after.json and hashed raw events."
+        }
+      ]
+    },
+    "supplied-feminine": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "criterion": "Preserves all base letters, spaces and supplied kasra on كِ",
+          "evidence": "One fully vocalized line preserving supplied كِ, every base letter and space, without extra commentary or question. See pronouns-after.json and hashed raw events."
+        },
+        {
+          "status": "pass",
+          "criterion": "Completes the vocalization consistently with the supplied feminine addressee without reopening it as unresolved",
+          "evidence": "One fully vocalized line preserving supplied كِ, every base letter and space, without extra commentary or question. See pronouns-after.json and hashed raw events."
+        },
+        {
+          "status": "pass",
+          "criterion": "Delivers only the vocalized line, without approval question, analysis or editor",
+          "evidence": "One fully vocalized line preserving supplied كِ, every base letter and space, without extra commentary or question. See pronouns-after.json and hashed raw events."
+        }
+      ]
+    },
+    "context-fixed-feminine": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "criterion": "Preserves every base letter and space in the supplied line",
+          "evidence": "One fully vocalized line using feminine صوتكِ from the mother context; exact words/spaces retained, no extra question or analysis. See pronouns-after.json and hashed raw events."
+        },
+        {
+          "status": "pass",
+          "criterion": "Uses feminine address fixed by the mother context, not an unexplained masculine default",
+          "evidence": "One fully vocalized line using feminine صوتكِ from the mother context; exact words/spaces retained, no extra question or analysis. See pronouns-after.json and hashed raw events."
+        },
+        {
+          "status": "pass",
+          "criterion": "Delivers only the vocalized line without inventing an ambiguity question, analysis or editor",
+          "evidence": "One fully vocalized line using feminine صوتكِ from the mother context; exact words/spaces retained, no extra question or analysis. See pronouns-after.json and hashed raw events."
+        }
+      ]
+    }
+  }
+}

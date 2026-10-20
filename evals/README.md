@@ -2,7 +2,15 @@
 
 ## Automatic/manual documentation follow-up
 
-The [current parent follow-up](results/2026-10-20-coderabbit-followup-pr11/report.md) records eight fresh frozen poetry cases after clarifying automatic and manual requests and correcting historical grading/provenance. The default checker validates this exact package. Earlier workflow, browser and installation runs remain tied to their recorded sources.
+The [current combined follow-up](results/2026-10-20-coderabbit-followup-pr12/report.md) records eight fresh frozen poetry cases after clarifying automatic and manual requests and correcting historical grading/provenance. The default checker validates this exact combined package. The parent has a separate [eight-case follow-up](results/2026-10-20-coderabbit-followup-pr11/report.md). Earlier workflow, browser and installation runs remain tied to their recorded sources.
+
+## Runtime review fixes
+
+The [runtime review trial](results/2026-10-20-review-fixes-pr12/report.md) records the protocol-2 supervisor fixes, regression evidence, 100 skill tests and 31 fresh agent cases. Its recorded browser handoff keeps an unsaved draft pending, then retains the exact saved text at the same address. Each preceding trial remains tied to its recorded source.
+
+## Updates in an open editor
+
+The frozen [diwan-runtime-updates.json](diwan-runtime-updates.json) scenarios cover safe application of already-installed compatible packages, idle reload, unsaved buffers, save conflicts, late input, failure rollback and client preservation. Run the normal skill Python tests and `node skills/arabic-poetry/tests/workbench_updates.js`; the native installer lifecycle also verifies installed-version detection. The [earlier runtime-update trial](results/2026-10-20-runtime-updates/report.md) records its browser handoffs, 105 Python tests, package checks and all 31 fresh agent cases. Internal review notes and screenshots remain outside Git.
 
 ## Client/session review fixes
 

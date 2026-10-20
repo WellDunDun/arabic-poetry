@@ -1,0 +1,68 @@
+{
+  "source_commit": "471033720c3ade691ddd9e260be18c06e937efa7",
+  "failing_before": [
+    {
+      "scope": "Original accepted-update stop and socket-gap failure; requested auto mode lost during handoff.",
+      "raw_log": "/private/tmp/diwan-review-fixes-20261020/pr12-red.log",
+      "sha256": "ec29261e82721d8a4675c220abb42b796d20506a166e069dc6d8f339c19d6e91",
+      "observed_failures": [
+        "FAIL: test_explicit_http_shutdown_cancels_an_accepted_update (test_diwan_updates.RuntimeUpdateTests.test_explicit_http_shutdown_cancels_an_accepted_update)",
+        "AssertionError: True is not false",
+        "FAIL: test_stop_cancels_an_update_during_the_socket_gap (test_diwan_updates.RuntimeUpdateTests.test_stop_cancels_an_update_during_the_socket_gap)",
+        "AssertionError: False is not true",
+        "FAIL: test_handoff_keeps_auto_mode_without_an_installed_client (test_diwan_updates.RuntimeUpdateTests.test_handoff_keeps_auto_mode_without_an_installed_client)",
+        "AssertionError: 'manual' != 'auto'",
+        "FAILED (failures=3)"
+      ]
+    },
+    {
+      "scope": "Crash/orphan and unreadable-control failures on an intermediate candidate.",
+      "raw_log": "/private/tmp/diwan-review-fixes-20261020/claude-findings-red.log",
+      "sha256": "272cba747b9e1f34954d766c96331e61b37f9dc50a00da8df6c3fce7fb0726f0",
+      "observed_failures": [
+        "ERROR: test_http_stop_survives_an_unreadable_control_record (test_diwan_updates.RuntimeUpdateTests.test_http_stop_survives_an_unreadable_control_record)",
+        "FAIL: test_stop_recovers_a_crashed_supervisor_and_its_orphan_worker (test_diwan_updates.RuntimeUpdateTests.test_stop_recovers_a_crashed_supervisor_and_its_orphan_worker)",
+        "AssertionError: 6 != 0 : {\"error\": {\"code\": \"STOP_UNKNOWN\", \"message\": \"Shutdown is not yet confirmed. Keep the session receipt and retry stop.\"}}",
+        "FAILED (failures=1, errors=1)"
+      ]
+    },
+    {
+      "scope": "Duplicate runtime in the gap and a too-short stop deadline on an intermediate candidate.",
+      "raw_log": "/private/tmp/diwan-review-fixes-20261020/claude-final-red.log",
+      "sha256": "e73fbde23d91bb78267e82cc692ebddf8d8834b8793c804d1baff6096d9d64be",
+      "observed_failures": [
+        "FAIL: test_open_and_serve_do_not_create_a_second_runtime_in_the_socket_gap (test_diwan_updates.RuntimeUpdateTests.test_open_and_serve_do_not_create_a_second_runtime_in_the_socket_gap)",
+        "AssertionError: 0 != 6 : {",
+        "FAIL: test_stop_waits_for_the_supervisors_bounded_forced_teardown (test_diwan_updates.RuntimeUpdateTests.test_stop_waits_for_the_supervisors_bounded_forced_teardown)",
+        "AssertionError: 6 != 0 : {\"error\": {\"code\": \"STOP_UNKNOWN\", \"message\": \"Shutdown is not yet confirmed. Keep the session receipt and retry stop.\"}}",
+        "FAILED (failures=2)"
+      ]
+    },
+    {
+      "scope": "Explicit reopen returning before acknowledged supervisor shutdown.",
+      "raw_log": "/private/tmp/diwan-review-fixes-20261020/replacement-red.log",
+      "sha256": "7c891648803eb2b698ad0b76651afc8aabb2dfe8c3b946fa5523675d45467c24",
+      "observed_failures": [
+        "FAIL: test_explicit_replacement_waits_for_supervisor_shutdown_acknowledgement (test_diwan_updates.RuntimeUpdateTests.test_explicit_replacement_waits_for_supervisor_shutdown_acknowledgement)",
+        "AssertionError: 6 != 0 : {\"error\": {\"code\": \"START_FAILED\", \"message\": \"Server failed; inspect /private/var/folders/ry/n2x9qf1j21n1r38t0pdfxt2m0000gn/T/tmpoojcqjty/poems/.diwan/shared/cf78f93a07684b22b286f66b072e49b7/server.log\"}}",
+        "FAILED (failures=1)"
+      ]
+    },
+    {
+      "scope": "Direct serve startup deadline shorter than old-session shutdown.",
+      "raw_log": "/private/tmp/diwan-review-fixes-20261020/serve-deadline-red.log",
+      "sha256": "3000645556ee65e69429825f53910532820519843ab5fcedac57f851fee9a3cf",
+      "observed_failures": [
+        "FAIL: test_serve_replacement_can_outlast_the_old_workers_term_grace (test_diwan_updates.RuntimeUpdateTests.test_serve_replacement_can_outlast_the_old_workers_term_grace)",
+        "AssertionError: b'' is not true : Replacement failed before old teardown could complete",
+        "FAILED (failures=1)"
+      ]
+    }
+  ],
+  "passing_after": {
+    "command": "python3 -m unittest discover -s skills/arabic-poetry/tests -p test_*.py",
+    "observed_summary": "Ran 100 tests; OK",
+    "full_output": "software-checks.json"
+  },
+  "limits": "Red runs reflect the original and intermediate candidates described per run. They are not all attributed to the final source or a single baseline."
+}

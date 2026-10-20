@@ -1,0 +1,19 @@
+{
+  "suite_id": "diwan-runtime-updates-v1",
+  "scope": "Local shared-file sessions and compatible versions already installed by a plugin manager; no model or publication requests",
+  "cases": [
+    {"id": "installed-only", "criterion": "A newer cached directory alone does not trigger an update. Follow the same enabled installed plugin and reject incompatible protocols and foreign paths."},
+    {"id": "idle-update", "criterion": "An idle browser picks up the installed update automatically at the same address. Poem identity, exact saved text, revision history and selected client remain intact."},
+    {"id": "unsaved-buffer", "criterion": "An open bulk/line/word editor, title input or unsent question prevents automatic reload. Preserve actual buffer text, even when another tab restarts the compatible server."},
+    {"id": "save-and-conflict", "criterion": "Wait for acknowledgement of the latest save. A stale or failed save retains its draft and never reloads or overwrites another writer's revision."},
+    {"id": "late-input", "criterion": "Typing during an asynchronous version check or server restart prevents reload until that edit is saved or explicitly cancelled."},
+    {"id": "failed-update", "criterion": "A failed successor returns to the working version at the same address and shows a notice without repeatedly trying that failed target."},
+    {"id": "clients", "criterion": "Real Claude/Codex install/update commands yield detectable packages; handoffs preserve Claude, Codex and explicit manual selections without making a model request."}
+  ],
+  "browser_steps": [
+    "Open an isolated versioned install's shared poem in a real browser. Begin bulk editing and type a visibly different unsaved line.",
+    "Point only the fixture's installed-plugin record at its compatible newer package. Wait for the pending-update message; verify the textarea and original saved file remain unchanged.",
+    "Save the draft in the browser and wait for acknowledgement and automatic reconnect/reload. Verify the same address and exact saved text through the browser and CLI, with only one new poem revision.",
+    "Start another unsaved draft, advance the saved poem through conditional CLI update, and make a newer runtime available. Confirm no reload or overwrite, a visible save conflict, and continued access to the unsaved buffer."
+  ]
+}

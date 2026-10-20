@@ -166,7 +166,7 @@ def supervise(file, port, agent):
             command = [sys.executable, str(script), 'serve', str(file), '--port', str(port), '--json', '--runtime-worker']
             if agent is not None:
                 command += ['--agent', agent]
-            env = dict(os.environ, **{BLOCKED_ENV: blocked})
+            env = dict(os.environ, **{BLOCKED_ENV: blocked if current == good else ''})
             if token:
                 env[TOKEN_ENV] = token
             else:
@@ -199,11 +199,18 @@ def supervise(file, port, agent):
             port = address.port
             token = address.path.split('/')[1]
             agent = 'manual' if receipt.get('manual') else receipt['agent']
-            good = current
-            good_script = script
             code = child.wait()
-            if stopping or code != RESTART:
+            if stopping or code == 0:
                 return
+            if code != RESTART:
+                if current == good:
+                    raise DiwanError('RUNTIME_FAILED', 'Diwan stopped unexpectedly; reopen the poem. Its saved text is unchanged.', 6)
+                blocked = str(current)
+                current, script = good, good_script
+                continue
+            # A real update request proves this worker served the document and runtime API.
+            good, good_script = current, script
+            blocked = ''
             monitor = InstalledRuntime(current)
             candidate = monitor.candidate(force=True)
             current = Path(candidate['root']) if candidate else current

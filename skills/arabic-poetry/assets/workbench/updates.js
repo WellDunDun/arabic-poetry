@@ -27,7 +27,8 @@
           if (ready()) {
             const result = await api('/runtime', {});
             restarting = result.restarting === true;
-            if (restarting) message('جارٍ تحديث ديوان. قصيدتك باقية في ملفها.');
+            if (restarting) message(ready() ? 'جارٍ تحديث ديوان. قصيدتك باقية في ملفها.'
+              : 'بدأ التحديث؛ ستبقى مسودتك هنا حتى تؤكّد حفظها وينتهي التحرير.');
           }
         } else if (state.recovered) {
           restarting = false;

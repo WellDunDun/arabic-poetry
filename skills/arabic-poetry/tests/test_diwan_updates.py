@@ -7,6 +7,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import threading
 import time
 import unittest
 import urllib.request
@@ -15,6 +16,7 @@ from unittest.mock import patch
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / 'scripts'))
 import diwan
 import diwan_updates as updates
+import serve_diwan
 from diwan_store import Store
 
 
@@ -152,6 +154,57 @@ class RuntimeUpdateTests(unittest.TestCase):
         self.assertFalse(diwan.request(first['url'], '/runtime', {})['restarting'])
         self.assertEqual(self.store.get(), self.before)
         self.assertIsNone(process.poll())
+        newer = self.copy_package('0.3.3')
+        self.install(newer)
+        self.assertTrue(diwan.request(first['url'], '/runtime', {})['restarting'])
+        state = self.wait_version(first['url'], '0.3.3')
+        self.assertFalse(state['recovered'], 'a later successful update must clear the rollback notice')
+
+    def test_successor_crash_after_acknowledgement_rolls_back(self):
+        process, first = self.launch()
+        receipt = dict(first, pid=1)
+        self.new.joinpath(updates.SCRIPTS / 'diwan.py').write_text(
+            'import json\nprint(' + repr(json.dumps(receipt)) + ', flush=True)\nraise SystemExit(23)\n')
+        self.install(self.new)
+        self.assertTrue(diwan.request(first['url'], '/runtime', {})['restarting'])
+        self.wait_version(first['url'], '0.3.1', recovered=True)
+        self.assertEqual(self.store.get(), self.before)
+        self.assertIsNone(process.poll())
+
+    def test_update_waits_for_document_writes_and_rejects_late_saves(self):
+        server, url = serve_diwan.make_server(self.root / 'agent', document=self.store, agent='manual', port=0)
+        worker = threading.Thread(target=server.serve_forever, daemon=True)
+        worker.start()
+        self.addCleanup(server.server_close)
+        self.addCleanup(server.shutdown)
+        entered, release = threading.Event(), threading.Event()
+        update = self.store.update
+        results = []
+        def blocked_update(*args):
+            entered.set()
+            if not release.wait(5):
+                raise RuntimeError('test writer was not released')
+            return update(*args)
+        def save():
+            results.append(diwan.request(url, '/document', {'patch': {'text': 'saved during version check'},
+                'if_version': self.before['version'], 'request_id': 'overlapping-save'}))
+        with patch.object(self.store, 'update', side_effect=blocked_update), patch.object(updates.InstalledRuntime, 'candidate', return_value={'version':'0.3.2','root':str(self.new)}), patch.object(server, 'shutdown'):
+            writer = threading.Thread(target=save)
+            writer.start()
+            try:
+                self.assertTrue(entered.wait(3))
+                self.assertFalse(diwan.request(url, '/runtime', {})['restarting'])
+            finally:
+                release.set()
+                writer.join(timeout=5)
+            self.assertEqual(len(results), 1)
+            current = self.store.get()
+            self.assertEqual(current['poem']['text'], 'saved during version check')
+            self.assertTrue(diwan.request(url, '/runtime', {})['restarting'])
+            with self.assertRaises(diwan.DiwanError):
+                diwan.request(url, '/document', {'patch': {'text': 'late draft'},
+                    'if_version': current['version'], 'request_id': 'too-late'})
+            self.assertEqual(self.store.get(), current)
 
     def test_partial_startup_acknowledgement_obeys_its_deadline(self):
         child = subprocess.Popen([sys.executable, '-c', 'import sys,time;sys.stdout.write("{");sys.stdout.flush();time.sleep(10)'], stdout=subprocess.PIPE)

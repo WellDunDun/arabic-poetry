@@ -87,6 +87,7 @@ def make_server(workspace, port=None, page=None, document=None, agent='manual'):
     token = token or secrets.token_urlsafe(32)
     prefix = '/' + token
     lock = threading.Lock()
+    document_writes = 0
     served = None if document is None else {'path': str(document.path), 'id': document.get()['poem']['id']}
     runtime = InstalledRuntime() if document is not None else None
 
@@ -159,6 +160,7 @@ def make_server(workspace, port=None, page=None, document=None, agent='manual'):
 
         def do_POST(self):
             """Validate JSON input before queuing or cancelling a request."""
+            nonlocal document_writes
             path = self.route()
             if path is None:
                 return
@@ -173,7 +175,16 @@ def make_server(workspace, port=None, page=None, document=None, agent='manual'):
                 self.send(400, {'error': 'Invalid JSON request'})
                 return
             if document is not None and path == '/document':
-                self.document_call(path, data)
+                with lock:
+                    if self.server.diwan_restart:
+                        self.send(503, {'error': {'code': 'UPDATING', 'message': 'Diwan is updating. Keep the draft and retry this same save after reconnecting.'}})
+                        return
+                    document_writes += 1
+                try:
+                    self.document_call(path, data)
+                finally:
+                    with lock:
+                        document_writes -= 1
                 return
             if document is not None and path == '/shutdown':
                 self.send(200, {'stopped': True})
@@ -197,7 +208,7 @@ def make_server(workspace, port=None, page=None, document=None, agent='manual'):
                             active = bool(dispatcher.jobs)
                     else:
                         active = bool(pending(workspace))
-                    if candidate and not active and not self.server.diwan_restart:
+                    if candidate and not active and not document_writes and not self.server.diwan_restart:
                         self.server.diwan_restart = True
                         self.send(200, {'restarting': True})
                         threading.Thread(target=self.server.shutdown, daemon=True).start()

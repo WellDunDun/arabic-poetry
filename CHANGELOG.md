@@ -10,6 +10,7 @@
 
 ## 0.3.0, automatic Diwan suggestions, unreleased
 
+- Preserve automatic/manual client selection when reopening a poem, including older sessions. Reuse a healthy session when its client is absent from a new shell's PATH.
 - Restore automatic word suggestions through native host AI, including shared-file and preloaded poems, without changing their storage.
 - Add automatic requests through an installed, signed-in Claude or Codex client. Opening a word replacement menu requests suggestions without a modal or chat handoff; selecting a replacement saves through the existing version guard.
 - Add explicit client selection, bounded tool-free requests, timeout/cancellation handling and visible errors with retry. Keep manual chat mode as a fallback.

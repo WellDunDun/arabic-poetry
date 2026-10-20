@@ -362,6 +362,25 @@ class DiwanCLITests(unittest.TestCase):
         self.assertTrue(self.cli('stop', self.file)['stopped'])
         self.assertEqual(self.cli('get', self.file)['version'], before)
 
+    def test_implicit_reopen_keeps_manual_and_explicit_switch_reuses_port(self):
+        before = self.create()['version']
+        first = self.cli('open', self.file, '--no-browser', '--agent', 'manual')
+        self.addCleanup(lambda: self.cli('stop', self.file))
+        self.assertEqual(first['agent'], 'manual')
+        repeated = self.cli('open', self.file, '--no-browser')
+        self.assertTrue(repeated['reused'])
+        self.assertEqual(repeated['url'], first['url'])
+        client = self.root / 'codex'
+        client.write_text('#!' + sys.executable + '\nraise SystemExit("No model request expected")\n')
+        client.chmod(0o755)
+        with patch.dict(os.environ, {'PATH': str(self.root) + os.pathsep + os.environ['PATH']}):
+            changed = self.cli('open', self.file, '--no-browser', '--agent', 'codex')
+            self.assertEqual(changed['agent'], 'codex')
+            self.assertFalse(changed['reused'])
+            self.assertEqual(diwan.urlsplit(changed['url']).port, diwan.urlsplit(first['url']).port)
+            self.assertTrue(self.cli('open', self.file, '--no-browser')['reused'])
+        self.assertEqual(self.cli('get', self.file)['version'], before)
+
     def test_open_after_rename_shuts_down_the_previous_owned_server(self):
         before = self.create()['version']
         receipt = self.cli('open',self.file,'--no-browser')

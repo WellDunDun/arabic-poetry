@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.0, automatic Diwan suggestions, unreleased
+
+- Restore automatic word suggestions through native host AI, including shared-file and preloaded poems, without changing their storage.
+- Add automatic requests through an installed, signed-in Claude or Codex client. Opening a word replacement menu requests suggestions without a modal or chat handoff; selecting a replacement saves through the existing version guard.
+- Add explicit client selection, bounded tool-free requests, timeout/cancellation handling and visible errors with retry. Keep manual chat mode as a fallback.
+- Explain right-click word controls and automatic-client usage in English and Arabic.
+
 ## 0.2.0, shared-file Diwan CLI, unreleased
 
 - Shut down an owned server before replacing its session after a rename within its directory. Preserve the renamed poem's identity/history when a new poem reuses its old filename; an old server cannot read or modify that replacement poem. Serialize server replacement and shutdown, report actual stop results, and retain receipts on uncertain shutdown. Stop sessions before moving to another directory.

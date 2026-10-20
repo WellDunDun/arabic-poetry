@@ -215,6 +215,28 @@ async function manualWordMenu() {
   assert(h.elements.get('cmsub').innerHTML.includes('جديد'), 'handoff results appear without reopening the word menu');
 }
 
+async function automaticWordMenu() {
+  const h = harness([poem('a', 'سلام حاضر')]), requests = [];
+  h.api.sample({ requiresUserHandoff: false, json(input) {
+    const done = deferred(); requests.push({input,done}); return done.promise;
+  } });
+  h.api.openCm({dataset:{li:'0',wi:'0'},textContent:'سلام'}, 500, 200);
+  assert.equal(requests.length, 1, 'opening the word menu automatically requests suggestions');
+  const button = {dataset:{cm:'syn'}};
+  h.elements.get('cmenu').listeners.click({target:{closest:selector=>selector==='[data-cm]'?button:null}});
+  assert.equal(requests.length, 1, 'selecting a category must reuse the in-flight word request');
+  requests[0].done.reject(new Error('Client timed out. Try again.'));
+  await new Promise(setImmediate);
+  assert(h.elements.get('cmsub').innerHTML.includes('Client timed out'), 'failures stay visible instead of reverting to an endless spinner');
+  assert(h.elements.get('cmsub').innerHTML.includes('data-cm="more"'), 'a failed request still offers retry');
+  const more = {dataset:{cm:'more'}};
+  h.elements.get('cmsub').listeners.click({target:{closest:selector=>selector==='[data-cm]'?more:null}});
+  assert.equal(requests.length, 2);
+  requests[1].done.resolve({synonyms:[{text:'أمان',note:'peace'}]});
+  await new Promise(setImmediate);
+  assert(h.elements.get('cmsub').innerHTML.includes('أمان'));
+}
+
 async function approvalReadback() {
   const local = harness([poem('a')]); local.click('confirm', 0);
   assert.equal(local.api.poems[0].status, 'confirmed');
@@ -254,6 +276,6 @@ async function preloadedLaunch() {
 module.exports = { harness };
 
 if (require.main === module) (async () => {
-  await staleSave(); await conversations(); await staleAlternatives(); await diacritics(); await lineEditing(); await wordContext(); await manualWordMenu(); await approvalReadback(); await preloadedLaunch();
+  await staleSave(); await conversations(); await staleAlternatives(); await diacritics(); await lineEditing(); await wordContext(); await manualWordMenu(); await automaticWordMenu(); await approvalReadback(); await preloadedLaunch();
   console.log('PASS workbench state: revision-safe saves, isolated conversations, stale responses, preserved wording/marks, line identities/metadata and word context');
 })().catch(error => { console.error(error); process.exitCode = 1; });

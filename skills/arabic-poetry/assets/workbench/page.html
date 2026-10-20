@@ -1251,7 +1251,8 @@ window.__METERS__ = /*METERS*/null;
   }
   function altKey() { return cmCtx && cur() ? JSON.stringify([sampleContext(cur()), cmCtx.li, cmCtx.wi]) : ''; }
   async function fetchWordAlts() {
-    const key = altKey(); if (wordAlts.has(key)) return;
+    const key = altKey(), previous = wordAlts.get(key);
+    if (previous && (!previous.error || previous.busy)) return;
     const st = { busy: true }; wordAlts.set(key, st);
     const p = cur(), { li, word, bits } = cmCtx, line = linesOf(p)[li];
     const isLast = cmCtx.wi === A.words(line).length - 1;
@@ -1278,9 +1279,8 @@ ${isLast ? `4) rhymes: حتى 20 كلمة قافية تصلح لآخر هذا ا
       st.syn = clean(out && out.synonyms); st.rhy = clean(out && out.same_rhythm); st.fit = clean(out && out.fits_meter); st.qaf = clean(out && out.rhymes);
       if (!st.syn.length && !st.rhy.length && !st.fit.length && !st.qaf.length) st.error = 'لم تصل كلمات؛ أعد فتح القائمة.';
     } catch (e) {
-      st.error = e && (e.code === 'not_granted' || e.code === 'sampling_disabled') ? 'لم يُسمح بالاتصال بالوكيل من هذه الصفحة.' : 'تعذّر الحصول على كلمات؛ أعد فتح القائمة.';
+      st.error = e && (e.code === 'not_granted' || e.code === 'sampling_disabled') ? 'لم يُسمح بالاتصال بالوكيل من هذه الصفحة.' : 'تعذّر الحصول على كلمات. ' + (e.message || 'اطلب اقتراحات أخرى.');
       if (e && (e.code === 'not_granted' || e.code === 'sampling_disabled')) sample = null;
-      wordAlts.delete(key);
     } finally { st.busy = false; if (cmCtx && altKey() === key && cmCtx.sub) renderSub(cmCtx.sub); }
   }
   function renderSub(kind) {

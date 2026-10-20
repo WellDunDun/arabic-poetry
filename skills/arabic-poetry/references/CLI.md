@@ -1,6 +1,6 @@
 # Shared-file Diwan CLI
 
-Use the bundled `scripts/diwan.py` when the editor and agent can reach the same local computer. It uses Python's standard library; safe writes currently require macOS/Linux. No API key, model request, global installation or cloud publication is needed. Commands never prompt. Help is offline and has no setup side effects.
+Use the bundled `scripts/diwan.py` when the editor and agent can reach the same local computer. It uses Python's standard library; safe writes currently require macOS/Linux. Opening, saving and scanning need no model request or cloud publication. AI suggestions use the selected installed Claude/Codex client's existing login and usage allowance; no separate API key is required. Commands never prompt. Help is offline and has no setup side effects.
 
 ## One authoritative poem
 
@@ -14,7 +14,7 @@ Run from the installed skill directory, or replace the script path with its abso
 python3 scripts/diwan.py --help
 python3 scripts/diwan.py agent-context --command update --json
 python3 scripts/diwan.py create /absolute/poems/window.diwan.json --title نافذة --text-file /absolute/poems/draft.txt --json
-python3 scripts/diwan.py open /absolute/poems/window.diwan.json --no-browser --json
+python3 scripts/diwan.py open /absolute/poems/window.diwan.json --agent auto --no-browser --json
 python3 scripts/diwan.py get /absolute/poems/window.diwan.json --json
 ```
 
@@ -53,6 +53,10 @@ python3 scripts/diwan.py respond /absolute/poems/window.diwan.json --id REQUEST_
 
 Scanning uses Firas F. Khabour's existing local engine; interpret pronunciation/rules through [SCANNER.md](SCANNER.md). Export supports `txt`, literal `md`, and `docx`; Word uses the existing Node exporter. Existing identical output is reused. Different output needs another filename or explicit `--overwrite`. Generation happens in a temporary directory; final delivery is atomic and returns path/hash/bytes/source version. No PDF capability is added here.
 
-AI buttons still queue requests for the existing agent. The user asks that chat to handle them; the editor does not wake an agent or buy separate model access. Read bounded `pending` results, use the poetry skill, and `respond` with the required JSON. The page's stale-response checks and shared-file version guard both apply. A queued answer alone does not save a poem.
+Right-click a poem word, or use a two-finger click on a Mac trackpad, to open its replacement menu. A normal click edits spelling and vowels. Opening the replacement menu requests suggestions automatically when AI is connected; selecting a suggested replacement saves through the shared-file version guard. Failed requests show an error and a retry choice rather than leaving a spinner running.
+
+New `open` and `serve` sessions detect a client automatically: prefer Claude when launched inside Claude Code, otherwise Codex if installed, then Claude. Reopening a running session preserves its current client unless `--agent` is explicit. Choose `--agent claude` or `--agent codex` when selecting that agent; the returned receipt names the actual client. An explicit change replaces the owned server at its existing port without changing the poem. Each AI action is a separate bounded model request through that client's saved login, not a turn in the existing conversation. It receives the bundled skill guidance and current poem/diagnostics, runs without shell/MCP access, and cannot save the poem. Calls use isolated client settings and low reasoning effort for interactive suggestions, keep no persistent chat session, time out after two minutes, and never retry or switch providers silently. The browser still checks suggested text against the current draft and scanner before applying it. A supplied host AI connection takes precedence without moving shared-file storage to a hosted database.
+
+Use `--agent manual` to require the existing conversation instead. If neither client is installed, `auto` selects this fallback. Its dialog asks the poet to tell their chat to handle the request. Read bounded `pending` results, use the poetry skill, and `respond` with the required JSON. Cancellation stops an automatic client process; manual cancelled/expired requests cannot accept a response. A queued answer alone does not save a poem.
 
 Results are JSON on stdout; errors are JSON on stderr. Exit codes: 0 success, 2 invalid input, 4 missing file/version, 5 conflict, 6 I/O, unsupported platform or delivery uncertainty. A nonzero exit does not prove that a preceding save or server launch was rolled back. Structured discovery describes the current flags, mutual exclusions and conditional capabilities. Profiles and remote-job controls are not applicable to this local, explicitly addressed workflow.

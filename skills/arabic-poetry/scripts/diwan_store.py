@@ -13,7 +13,7 @@ try:
 except ImportError:
     fcntl = None
 
-VERSION = '0.2.0'
+VERSION = '0.3.0'
 MAX_BYTES = 2_000_000
 FIELDS = {'title', 'text', 'choices', 'suggestions', 'status', 'mode', 'meter'}
 MODES = ('auto', 'classical', 'free', 'pairs')

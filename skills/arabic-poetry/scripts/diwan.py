@@ -25,8 +25,8 @@ EXAMPLES = {
     'update': 'update poem.diwan.json --text-file revised.txt --if-version "$VERSION" --request-id edit-1 --json',
     'history': 'history poem.diwan.json --limit 20 --json',
     'restore': 'restore poem.diwan.json --revision "$OLD_VERSION" --if-version "$VERSION" --request-id restore-1 --json',
-    'open': 'open poem.diwan.json --no-browser --json',
-    'serve': 'serve poem.diwan.json --port 0 --json',
+    'open': 'open poem.diwan.json --agent auto --no-browser --json',
+    'serve': 'serve poem.diwan.json --agent codex --port 0 --json',
     'stop': 'stop poem.diwan.json --json',
     'scan': 'scan poem.diwan.json --json',
     'export': 'export poem.diwan.json --format txt --output poem-export.txt --json',
@@ -72,6 +72,8 @@ def parser():
             p.add_argument('--before', type=int, help='next_cursor from a previous history page')
         if name in ('open', 'serve'):
             p.add_argument('--port', type=int, default=0)
+            p.add_argument('--agent', choices=('auto', 'claude', 'codex', 'manual'),
+                           help='AI client; new sessions detect automatically, existing sessions keep their client unless specified')
         if name == 'open':
             p.add_argument('--no-browser', action='store_true', help='Return the local URL for the agent to open')
         if name == 'export':
@@ -153,41 +155,56 @@ def shutdown_session(receipt):
     raise DiwanError('STOP_UNKNOWN', 'Could not confirm server shutdown. Retry stop or open; keep the existing session receipt.', 6)
 
 
-def serve(store, port):
+def serve(store, port, agent=None):
     with store.locked():
         existing = session(store)
-        if existing and not existing['moved']:
+        selected_mode = agent or (existing and ('manual' if existing.get('manual') else existing.get('agent', 'manual'))) or 'auto'
+        selected = serve_diwan.select_agent(selected_mode)
+        selected_name = selected.name if selected else 'manual'
+        if existing and not existing['moved'] and (agent is None or existing.get('agent', 'manual') == selected_name and existing.get('manual', False) == (agent == 'manual')):
             print(json.dumps(dict(existing, reused=True)), flush=True)
             return
         if existing:
             shutdown_session(existing)
+            if port == 0 and not existing['moved']:
+                port = urlsplit(existing['url']).port
         current = store.get()
-        server, url = serve_diwan.make_server(store.state / 'agent', port=port, document=store)
-        receipt = {'path': str(store.path), 'id': current['poem']['id'], 'url': url, 'pid': os.getpid(), 'reused': False, 'rendered': False}
+        server, url = serve_diwan.make_server(store.state / 'agent', port=port, document=store, agent=selected_mode)
+        receipt = {'path': str(store.path), 'id': current['poem']['id'], 'url': url, 'pid': os.getpid(), 'agent': server.diwan_agent, 'manual': selected_mode == 'manual', 'reused': False, 'rendered': False}
         atomic_write(store.state / 'session.json', encode(receipt))
         print(json.dumps(receipt, ensure_ascii=False), flush=True)
-    try:
-        server.serve_forever()
-    finally:
-        server.server_close()
+    serve_diwan.run_server(server)
 
 
 def open_poem(store, args):
     store.check_binding()
+    selected = serve_diwan.select_agent(args.agent or 'auto')
+    selected_name = selected.name if selected else 'manual'
     if args.dry_run:
-        return {'path': str(store.path), 'dry_run': True, 'would_open': True}
+        return {'path': str(store.path), 'dry_run': True, 'would_open': True, 'agent': selected_name}
     receipt = session(store)
-    if receipt and receipt['moved']:
+    def needs_replacement(value):
+        return value and (value['moved'] or args.agent is not None and (value.get('agent', 'manual') != selected_name or value.get('manual', False) != (args.agent == 'manual')))
+    replace = needs_replacement(receipt)
+    if replace:
         with store.locked():
             current = session(store)
-            if current and current['moved']:
+            if needs_replacement(current):
                 shutdown_session(current)
-    if receipt and not receipt['moved']:
+                if args.port == 0 and not current['moved']:
+                    args.port = urlsplit(current['url']).port
+    if receipt and not replace:
         receipt = dict(receipt, reused=True)
     else:
         with store.locked():
             log = (store.state / 'server.log').open('ab')
-        child = subprocess.Popen([sys.executable, str(SCRIPT), 'serve', str(store.path), '--port', str(args.port), '--json'],
+        command = [sys.executable, str(SCRIPT), 'serve', str(store.path), '--port', str(args.port), '--json']
+        launch_mode = args.agent
+        if launch_mode is None and receipt:
+            launch_mode = 'manual' if receipt.get('manual') else receipt.get('agent', 'manual')
+        if launch_mode is not None:
+            command += ['--agent', launch_mode]
+        child = subprocess.Popen(command,
                                  stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=log, start_new_session=True)
         log.close()
         ready, _, _ = select.select([child.stdout], [], [], 8)
@@ -259,7 +276,7 @@ def run(args, commands):
                 'detail_command': 'agent-context --command COMMAND --json',
                 'delivery_schemes': ['stdout:json', 'file:atomic', 'browser:loopback'],
                 'exit_codes': {'0': 'success', '2': 'invalid input', '4': 'not found', '5': 'conflict', '6': 'I/O or delivery uncertainty'},
-                'conditional_capabilities': {'profiles': 'not applicable: explicit document paths, no credentials/configuration',
+                'conditional_capabilities': {'profiles': 'explicit document paths; --agent selects an installed client with its own authentication',
                    'remote_jobs': 'not applicable: local synchronous operations; open owns a reusable local server',
                    'upstream_feedback': 'not configured; no remote sending', 'platforms': 'safe writes: macOS/Linux'},
                 'mutations': 'update/restore require if-version and a stable request-id. Conflicts require rereading/reassessment. Direct writes outside this API do not honor advisory locks.'}
@@ -283,7 +300,7 @@ def run(args, commands):
             raise DiwanError('INVALID_PORT', '--port must be 0–65535')
         if args.command == 'open':
             return open_poem(store, args)
-        serve(store, args.port)
+        serve(store, args.port, args.agent)
         return None
     if args.command == 'stop':
         with store.locked():
@@ -332,6 +349,8 @@ def main():
             print(json.dumps(result, ensure_ascii=False, indent=2))
         return 0
     except (DiwanError, OSError, UnicodeError, ValueError) as error:
+        if isinstance(error, serve_diwan.AgentError):
+            error = DiwanError(error.code, str(error), 2)
         if isinstance(error, UnicodeError):
             error = DiwanError('INVALID_UTF8', 'Use UTF-8 text/Markdown or a Diwan JSON document; binary document import is not supported')
         if not isinstance(error, DiwanError):

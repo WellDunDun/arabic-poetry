@@ -97,6 +97,10 @@ The bundled [Diwan CLI](skills/arabic-poetry/references/CLI.md) lets your agent 
 
 يتيح [سطر أوامر ديوان](skills/arabic-poetry/references/CLI.md) للوكيل والمحرر العمل على ملف قصيدة واحد بصيغة `.diwan.json`، يتضمن النص والعنوان وحالة المراجعة. يحفظ المحرر تعديلاته في الملف نفسه، وتظهر تعديلات الوكيل في المحرر. تُرفض التعديلات المبنية على نسخة قديمة، ويمكن استعادة مراجعة سابقة دون حذف السجل الأحدث. قل لوكيلك: «افتح هذه القصيدة كمستند ديوان مشترك، واقرأ أحدث نسخة قبل الحفظ، واحتفظ بمسودتي عند التعارض». يمكن استيراد النص العادي وMarkdown بوصفهما نص القصيدة حرفيًا. يتطلب الحفظ المشترك حاليًا macOS أو Linux ومتصفحًا يصل إلى الخادم المحلي للوكيل.
 
+**Word replacements:** right-click a word, or two-finger click on a Mac trackpad. Choose **بالمعنى نفسه** for synonyms, **بالتقطيع نفسه** for the same rhythm, or **تؤدّي المعنى وتقيم الوزن** to preserve meaning and repair meter. A normal click edits spelling/vowels. With a connected host or an installed, signed-in Claude/Codex client, suggestions arrive automatically. Select a suggestion to apply it. Local AI actions make separate requests using that client's login and usage allowance; they do not send a turn into your open chat. Ask your agent to open Diwan with Claude, Codex, or manual chat mode. The manual dialog remains available when automatic AI is unavailable.
+
+**بدائل الكلمات:** انقر على الكلمة بزر الفأرة الأيمن، أو بإصبعين على لوحة تتبّع Mac. اختر «بالمعنى نفسه» للمرادفات، أو «بالتقطيع نفسه» للحفاظ على الإيقاع، أو «تؤدّي المعنى وتقيم الوزن» لإصلاح الوزن مع حفظ المعنى. النقر العادي يفتح تعديل الكلمة وتشكيلها. تصل الاقتراحات تلقائيًا إذا كان المضيف متصلًا بنموذج، أو كان Claude/Codex مثبتًا ومسجّل الدخول محليًا. اختر اقتراحًا لتطبيقه. تستخدم طلبات الذكاء المحلية تسجيل الدخول وحصة الاستخدام للعميل المحدد بطلبات مستقلة عن محادثتك المفتوحة. اطلب من وكيلك فتح ديوان مع Claude أو Codex أو وضع المحادثة اليدوي. يبقى مربع الطلب اليدوي بديلًا عند تعذّر الاتصال التلقائي.
+
 ## Collaboration
 
 This project is maintained separately from the [personal skills collection](https://github.com/WellDunDun/skills).

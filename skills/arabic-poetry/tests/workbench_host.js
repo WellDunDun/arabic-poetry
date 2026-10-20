@@ -3,10 +3,10 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs'), path = require('node:path'), vm = require('node:vm');
 const source = fs.readFileSync(path.join(__dirname, '../assets/workbench/host.js'), 'utf8');
 
-function harness(claude, initial = null, local = null) {
+function harness(claude, initial = null, local = null, file = null, fetch = null) {
   const nodes = [], clicked = [], revoked = [];
   let copied;
-  const context = { window: { claude, DiwanInitialPoem: initial, DiwanLocal: local }, Blob, AbortController, DOMException, setTimeout: fn => fn(),
+  const context = { window: { claude, DiwanInitialPoem: initial, DiwanLocal: local, DiwanFile: file }, fetch, Blob, AbortController, DOMException, setInterval() {}, setTimeout: fn => fn(),
     URL: { createObjectURL: () => 'blob:local', revokeObjectURL: x => revoked.push(x) },
     navigator: { clipboard: { async writeText(text) { copied = text; } } },
     document: { body: { appendChild(node) { nodes.push(node); } }, createElement(tag) {
@@ -18,7 +18,9 @@ function harness(claude, initial = null, local = null) {
       showModal() { this.open = true; }, close() { this.open = false; },
       remove() { this.removed = true; }, click() { clicked.push(this); } };
     } } };
-  vm.createContext(context); vm.runInContext(source, context);
+  vm.createContext(context);
+  vm.runInContext(fs.readFileSync(path.join(__dirname, '../assets/workbench/file.js'), 'utf8'), context);
+  vm.runInContext(source, context);
   return { connect: context.window.DiwanConnection.connect, nodes, clicked, revoked, get copied() { return copied; } };
 }
 
@@ -77,9 +79,30 @@ function harness(claude, initial = null, local = null) {
   assert.equal((await h.connect(inherited)).downloads, services.downloads, 'inherited adapter capabilities must be honored');
   const privateCalls = [];
   const prepared = await harness({ async use(name) { privateCalls.push(name); return services[name]; } }, {id:'current'}).connect({db:services.db});
-  assert.deepEqual(privateCalls, [], 'a prepared local page must not request hosted services');
+  assert.deepEqual(privateCalls, ['sample'], 'a prepared page may use host AI but must not request hosted storage');
   assert.equal(prepared.db, null, 'a prepared local page must not switch to a shared database');
-  assert.equal(prepared.sample.requiresUserHandoff, true);
+  assert.equal(prepared.sample, services.sample, 'preloading a poem must preserve automatic host suggestions');
+  const shared = await harness({ async use(name) { return services[name]; } }, null, {base:'/session'}, {base:'/session'}).connect();
+  assert.equal(shared.sample, services.sample, 'shared-file saving must not replace working host AI with manual handoff');
+  assert.notEqual(shared.db, services.db, 'shared-file storage stays authoritative');
+  const explicitManualCalls = [];
+  const manualHost = await harness({async use(name) { explicitManualCalls.push(name); return services[name]; }},
+    null, {base:'/session',agent:'manual',manual:true}, {base:'/session'}).connect();
+  assert.equal(manualHost.sample.requiresUserHandoff, true, 'explicit manual mode must not start native host AI');
+  assert.deepEqual(explicitManualCalls, []);
+  const posted = [];
+  const automatic = harness(null, null, {base:'/session', agent:'codex'}, {base:'/session'}, async (url, opts) => {
+    if (opts.method === 'POST') {
+      posted.push({url, input: JSON.parse(opts.body).input});
+      return {ok:true, async json() { return {id:'test-request'}; }};
+    }
+    return {status:200, async json() { return {synonyms:[{text:'دَفْتَرِي', note:'my notebook'}]}; }};
+  });
+  const autoHost = await automatic.connect();
+  assert.equal(autoHost.sample.requiresUserHandoff, false);
+  assert.equal((await autoHost.sample.json('suggest a word')).synonyms[0].text, 'دَفْتَرِي');
+  assert.deepEqual(posted, [{url:'/session/requests', input:'suggest a word'}]);
+  assert.equal(automatic.nodes.length, 0, 'automatic suggestions must not open a handoff modal');
   const queued = await harness(null, {id:'current'}, {base:'/session'}).connect();
   assert(queued.label.includes('محلي'), 'a prepared page can still attach to the existing local bridge');
   console.log('PASS workbench host: portable exchange, invalid input, cancellation, native download, optional host adapters');

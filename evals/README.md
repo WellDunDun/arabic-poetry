@@ -1,5 +1,9 @@
 # Poetry skill evaluations
 
+## Automatic word suggestions
+
+The [diwan-automatic-suggestions.json](diwan-automatic-suggestions.json) scenarios cover real browser word requests through both installed clients, no handoff dialog, acceptance-only saves, agent/browser synchronization and reload persistence. These live model calls require the user's authorization and normal client login. Use the disposable poem and frozen steps, capture the rendered menu and canonical revisions, and record failed attempts as well as the final run. `test_diwan_agent.py`, `workbench_host.js` and `workbench_state.js` provide repeatable fixture-based regressions without live calls. Native host sampling is verified separately from the CLI adapters; passing one does not establish the other. Reports must distinguish current package proof from historical runs and must not claim broad poetic accuracy.
+
 ## Shared-file CLI
 
 The frozen [diwan-cli.json](diwan-cli.json) suite covers discovery, exact import, accepted conditional editing, stale saves, idempotent retry and restoring history as a new revision. Run `python3 evals/run_diwan_cli.py --skill /absolute/path/to/skill --output /absolute/new/temp/directory`. It uses fresh Codex sessions and disposable local files, with no browser, installs or publication. Inspect recorded commands and actual initial/final documents and history, then grade each frozen criterion. Software concurrency/crash tests and real browser checks are separate from these agent cases.

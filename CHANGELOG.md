@@ -2,6 +2,7 @@
 
 ## 0.3.1, safe updates in an open Diwan, unreleased
 
+- Let an explicit stop cancel an update, including the brief interval when the local server is offline. Confirm supervisor shutdown before reporting success.
 [Customer release notes in English and Arabic](docs/releases/0.3.1.md) include automatic word suggestions from the pending 0.3.0 changes, safe editor updates and the one-time upgrade steps. This candidate is not yet released.
 
 - Follow compatible plugin versions already installed in the same Claude Code user-scope or Codex versioned cache. Keep the open editor's address, poem identity, saved text, revision history and selected AI client through a supervised restart.

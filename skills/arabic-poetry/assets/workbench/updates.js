@@ -18,7 +18,7 @@
       busy = true;
       try {
         const state = await api('/runtime');
-        if (state.protocol !== 1 || state.id !== root.DiwanFile.id) return;
+        if (state.protocol !== 2 || state.id !== root.DiwanFile.id) return;
         if (state.version !== loaded) {
           message('تحديث ديوان جاهز. سيُطبّق بعد حفظ تعديلاتك وإغلاق أدوات التحرير.');
           if (ready()) root.location.reload();

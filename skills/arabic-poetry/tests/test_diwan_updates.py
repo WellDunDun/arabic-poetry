@@ -84,9 +84,9 @@ class RuntimeUpdateTests(unittest.TestCase):
         self.assertIsNone(monitor.candidate(force=True), 'a cached newer directory is not an install')
         self.install(self.new)
         self.assertEqual(monitor.candidate(force=True), {'version': '0.3.2', 'root': str(self.new)})
-        self.new.joinpath('skills/arabic-poetry/assets/workbench/runtime.json').write_text('{"protocol":2}')
-        self.assertIsNone(monitor.candidate(force=True))
         self.new.joinpath('skills/arabic-poetry/assets/workbench/runtime.json').write_text('{"protocol":1}')
+        self.assertIsNone(monitor.candidate(force=True))
+        self.new.joinpath('skills/arabic-poetry/assets/workbench/runtime.json').write_text(json.dumps({'protocol':updates.PROTOCOL}))
         self.config.joinpath('settings.json').write_text('{"enabledPlugins":{"arabic-poetry@arabic-poetry-plugins":false}}')
         self.assertIsNone(monitor.candidate(force=True))
 
@@ -332,6 +332,211 @@ class RuntimeUpdateTests(unittest.TestCase):
                     diwan.request(first['url'], '/shutdown', {})
                     self.assertEqual(process.wait(timeout=8), 0)
         self.assertEqual(self.store.get(), self.before)
+
+    def test_explicit_http_shutdown_cancels_an_accepted_update(self):
+        server,url = serve_diwan.make_server(self.root/'agent',document=self.store,agent='manual')
+        thread = threading.Thread(target=server.serve_forever,daemon=True); thread.start()
+        self.addCleanup(server.server_close); self.addCleanup(server.shutdown)
+        with patch.object(updates.InstalledRuntime,'candidate',return_value={'version':'0.3.2','root':str(self.new)}), patch.object(server,'shutdown'):
+            self.assertTrue(diwan.request(url,'/runtime',{})['restarting'])
+            self.assertTrue(diwan.request(url,'/shutdown',{})['stopped'])
+            self.assertFalse(server.diwan_restart)
+            self.assertFalse(diwan.request(url,'/runtime',{})['restarting'])
+
+    def test_stop_cancels_an_update_during_the_socket_gap(self):
+        marker = self.root/'successor-started'
+        release = self.root/'release-successor'
+        script = self.new/updates.SCRIPTS/'diwan.py'
+        original = script.read_text()
+        script.write_text('import time\nfrom pathlib import Path\n'
+            + f'Path({str(marker)!r}).touch()\n'
+            + f'while not Path({str(release)!r}).exists(): time.sleep(.01)\n' + original)
+        process,first = self.launch()
+        self.install(self.new)
+        self.assertTrue(diwan.request(first['url'],'/runtime',{})['restarting'])
+        deadline = time.monotonic()+5
+        while not marker.exists() and time.monotonic()<deadline: time.sleep(.01)
+        self.assertTrue(marker.exists(),'Successor did not reach the controlled socket gap')
+        with self.assertRaises(ConnectionRefusedError):diwan.request(first['url'],'/status')
+        result = subprocess.run([sys.executable,str(self.old/updates.SCRIPTS/'diwan.py'),'stop',str(self.file),'--json'],
+                                capture_output=True,text=True,timeout=8)
+        self.assertEqual(result.returncode,0,result.stderr)
+        self.assertTrue(json.loads(result.stdout)['stopped'])
+        self.assertEqual(process.wait(timeout=3),0)
+        release.touch()
+        with self.assertRaises(ConnectionRefusedError):diwan.request(first['url'],'/status')
+        self.assertEqual(self.store.get(),self.before)
+
+    def test_handoff_keeps_auto_mode_without_an_installed_client(self):
+        bins = self.root/'no-clients'; bins.mkdir()
+        with patch.dict(os.environ,{'PATH':str(bins)}):
+            process,first = self.launch('auto')
+            self.assertFalse(first['manual'])
+            self.install(self.new)
+            self.assertTrue(diwan.request(first['url'],'/runtime',{})['restarting'])
+            self.wait_version(first['url'],'0.3.2')
+            receipt = json.loads((self.store.state/'session.json').read_text())
+            self.assertEqual(receipt.get('mode'),'auto')
+            self.assertFalse(receipt['manual'])
+            diwan.request(first['url'],'/shutdown',{})
+            self.assertEqual(process.wait(timeout=8),0)
+
+    def test_unconfirmed_stop_retains_the_receipt_and_rejects_foreign_control(self):
+        identity = 'a'*32
+        control = updates.RuntimeControl(self.store,identity)
+        control.publish('running')
+        lease = control.lease()
+        updates.fcntl.flock(lease,updates.fcntl.LOCK_EX|updates.fcntl.LOCK_NB)
+        self.addCleanup(lease.close)
+        receipt = self.store.state/'session.json'
+        receipt.write_text(json.dumps({'runtime_id':identity,'url':'http://127.0.0.1:1/fixture/diwan.html'}))
+        before = receipt.read_bytes()
+        with self.assertRaises(diwan.DiwanError) as error:updates.stop_supervised(self.store,.05)
+        self.assertEqual(error.exception.code,'STOP_UNKNOWN')
+        self.assertEqual(receipt.read_bytes(),before)
+        control.request.unlink()
+        value = json.loads(control.path.read_text()); value['id'] = 'b'*32
+        control.path.write_text(json.dumps(value))
+        with self.assertRaises(diwan.DiwanError):updates.stop_supervised(self.store,.05)
+        self.assertFalse(control.request.exists())
+        self.assertEqual(receipt.read_bytes(),before)
+
+    def test_a_new_session_ignores_an_older_sessions_stop_request(self):
+        process,first = self.launch()
+        self.assertTrue(updates.stop_supervised(self.store,5))
+        self.assertEqual(process.wait(timeout=3),0)
+        other,second = self.launch()
+        self.assertNotEqual(first['runtime_id'],second['runtime_id'])
+        self.assertEqual(diwan.request(second['url'],'/status')['id'],first['id'])
+        self.assertIsNone(other.poll())
+        self.assertTrue(updates.stop_supervised(self.store,5))
+        self.assertEqual(other.wait(timeout=3),0)
+        self.assertEqual(self.store.get(),self.before)
+
+    def test_stop_recovers_a_crashed_supervisor_and_its_orphan_worker(self):
+        process,first = self.launch()
+        def cleanup():
+            try:diwan.request(first['url'],'/shutdown',{})
+            except (OSError,diwan.DiwanError):pass
+        self.addCleanup(cleanup)
+        process.kill(); process.wait(timeout=3)
+        self.assertEqual(diwan.request(first['url'],'/status')['id'],first['id'])
+        result = subprocess.run([sys.executable,str(self.old/updates.SCRIPTS/'diwan.py'),'stop',str(self.file),'--json'],
+                                capture_output=True,text=True,timeout=8)
+        self.assertEqual(result.returncode,0,result.stderr)
+        self.assertTrue(json.loads(result.stdout)['stopped'])
+        repeated = subprocess.run([sys.executable,str(self.old/updates.SCRIPTS/'diwan.py'),'stop',str(self.file),'--json'],
+                                  capture_output=True,text=True,timeout=8)
+        self.assertEqual(repeated.returncode,0,repeated.stderr)
+        self.assertTrue(json.loads(repeated.stdout)['already_stopped'])
+
+    def test_http_stop_survives_an_unreadable_control_record(self):
+        process,first = self.launch()
+        control = updates.RuntimeControl(self.store,first['runtime_id'])
+        control.path.write_text('{incomplete')
+        self.assertTrue(diwan.request(first['url'],'/shutdown',{})['stopped'])
+        self.assertEqual(process.wait(timeout=3),0)
+        self.assertEqual(self.store.get(),self.before)
+
+    def test_open_and_serve_do_not_create_a_second_runtime_in_the_socket_gap(self):
+        marker = self.root/'gap-started'; release = self.root/'gap-release'
+        script = self.new/updates.SCRIPTS/'diwan.py'
+        script.write_text('import time\nfrom pathlib import Path\n'
+            + f'Path({str(marker)!r}).touch()\n'
+            + f'while not Path({str(release)!r}).exists(): time.sleep(.01)\n' + script.read_text())
+        process,first = self.launch()
+        self.install(self.new)
+        self.assertTrue(diwan.request(first['url'],'/runtime',{})['restarting'])
+        deadline = time.monotonic()+5
+        while not marker.exists() and time.monotonic()<deadline:time.sleep(.01)
+        self.assertTrue(marker.exists())
+        receipt = self.store.state/'session.json'; before = receipt.read_bytes()
+        for command in ('open','serve'):
+            args = [sys.executable,str(self.old/updates.SCRIPTS/'diwan.py'),command,str(self.file),'--json']
+            if command=='open':args.append('--no-browser')
+            result = subprocess.run(args,capture_output=True,text=True,timeout=5)
+            if result.returncode==0:
+                other = json.loads(result.stdout)
+                diwan.request(other['url'],'/shutdown',{})
+            self.assertEqual(result.returncode,6,result.stdout+result.stderr)
+            self.assertEqual(receipt.read_bytes(),before)
+        release.touch()
+        self.wait_version(first['url'],'0.3.2')
+        diwan.request(first['url'],'/shutdown',{})
+        self.assertEqual(process.wait(timeout=3),0)
+
+    def test_stop_waits_for_the_supervisors_bounded_forced_teardown(self):
+        script = self.old/updates.SCRIPTS/'diwan.py'
+        script.write_text('import signal\n'+script.read_text().replace('serve_diwan.run_server(server)',
+            'signal.signal(signal.SIGTERM,signal.SIG_IGN)\n    server.serve_forever()'))
+        process,first = self.launch()
+        result = subprocess.run([sys.executable,str(self.old/updates.SCRIPTS/'diwan.py'),'stop',str(self.file),'--json'],
+                                capture_output=True,text=True,timeout=13)
+        self.assertEqual(result.returncode,0,result.stderr)
+        self.assertTrue(json.loads(result.stdout)['stopped'])
+        self.assertEqual(process.wait(timeout=3),0)
+        with self.assertRaises(ConnectionRefusedError):diwan.request(first['url'],'/status')
+        self.assertEqual(self.store.get(),self.before)
+
+    def test_control_cleanup_preserves_current_live_and_uncertain_generations(self):
+        old = updates.RuntimeControl(self.store,'1'*32); old.publish('stopped')
+        current = updates.RuntimeControl(self.store,'2'*32); current.publish('stopped')
+        uncertain = updates.RuntimeControl(self.store,'3'*32); uncertain.publish('running')
+        live = updates.RuntimeControl(self.store,'4'*32); live.publish('stopped')
+        lease = live.lease(); updates.fcntl.flock(lease,updates.fcntl.LOCK_EX|updates.fcntl.LOCK_NB)
+        self.addCleanup(lease.close)
+        (self.store.state/'session.json').write_text(json.dumps({'runtime_id':current.identity}))
+        updates.prune_stopped_controls(self.store)
+        self.assertFalse(old.path.exists())
+        self.assertTrue(current.path.exists())
+        self.assertTrue(uncertain.path.exists())
+        self.assertTrue(live.path.exists())
+
+    def test_explicit_replacement_waits_for_supervisor_shutdown_acknowledgement(self):
+        script = self.old/updates.SCRIPTS/'diwan_updates.py'
+        script.write_text(script.read_text().replace("            control.publish('stopped')",
+            "            time.sleep(1)\n            control.publish('stopped')"))
+        process,first = self.launch('manual')
+        bins = self.root/'empty-path'; bins.mkdir()
+        result = subprocess.run([sys.executable,str(self.old/updates.SCRIPTS/'diwan.py'),'open',str(self.file),
+            '--no-browser','--agent','auto','--json'],capture_output=True,text=True,timeout=10,
+            env=dict(os.environ,PATH=str(bins)))
+        if result.returncode==0:
+            second = json.loads(result.stdout)
+            self.addCleanup(lambda:subprocess.run([sys.executable,str(self.old/updates.SCRIPTS/'diwan.py'),
+                'stop',str(self.file),'--json'],capture_output=True,timeout=12))
+        self.assertEqual(result.returncode,0,result.stderr)
+        self.assertEqual(second['mode'],'auto')
+        self.assertFalse(second['manual'])
+        self.assertEqual(diwan.urlsplit(second['url']).port,diwan.urlsplit(first['url']).port)
+        self.assertEqual(process.wait(timeout=3),0)
+        self.assertEqual(self.store.get(),self.before)
+
+    def test_serve_replacement_can_outlast_the_old_workers_term_grace(self):
+        script = self.old/updates.SCRIPTS/'diwan.py'
+        script.write_text('import signal\n'+script.read_text().replace('serve_diwan.run_server(server)',
+            "if selected_mode == 'manual':\n        signal.signal(signal.SIGTERM,signal.SIG_IGN)\n        server.serve_forever()\n    else:\n        serve_diwan.run_server(server)"))
+        supervisor = self.old/updates.SCRIPTS/'diwan_updates.py'
+        supervisor.write_text(supervisor.read_text().replace("            control.publish('stopped')",
+            "            time.sleep(1)\n            control.publish('stopped')"))
+        process,first = self.launch('manual')
+        bins = self.root/'replacement-bin';bins.mkdir()
+        child = subprocess.Popen([sys.executable,str(script),'serve',str(self.file),'--agent','auto','--json'],
+            stdout=subprocess.PIPE,stderr=subprocess.PIPE,env=dict(os.environ,PATH=str(bins)))
+        def cleanup():
+            if child.poll() is None:child.terminate();child.wait(timeout=10)
+            child.stdout.close();child.stderr.close()
+        self.addCleanup(cleanup)
+        self.assertTrue(select.select([child.stdout],[],[],14)[0])
+        line = child.stdout.readline()
+        self.assertTrue(line,'Replacement failed before old teardown could complete')
+        second = json.loads(line)
+        self.assertEqual(second['mode'],'auto')
+        self.assertEqual(diwan.urlsplit(second['url']).port,diwan.urlsplit(first['url']).port)
+        self.assertEqual(process.wait(timeout=3),0)
+        diwan.request(second['url'],'/shutdown',{})
+        self.assertEqual(child.wait(timeout=4),0)
+        self.assertEqual(self.store.get(),self.before)
 
 
 if __name__ == '__main__':

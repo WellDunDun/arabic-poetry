@@ -9,7 +9,7 @@ async function fixture() {
   const transport = transportHarness();
   const page = pageHarness([{...transport.state.poem, _file_version:'v1'}], {shared:true});
   page.api.db(transport.host.db);
-  const state = {id:'one', protocol:1, version:'0.3.1', available:'0.3.2'};
+  const state = {id:'one', protocol:2, version:'0.3.1', available:'0.3.2'};
   let poll, reloads = 0, restarts = 0, delay;
   const messages = [];
   const context = {window:{DiwanFile:{runtime:'0.3.1', id:'one'}, location:{reload(){reloads++;}}},
@@ -71,7 +71,7 @@ async function run() {
   assert.equal(conflict.reloads,0);assert.equal(conflict.page.api.poems[0].text,'local conflict draft');
   assert.equal(conflict.transport.state.poem.text,'agent saved');
 
-  for (const changes of [{protocol:2},{id:'another-poem'}]) {
+  for (const changes of [{protocol:1},{protocol:3},{id:'another-poem'}]) {
     const h=await fixture();Object.assign(h.state,changes);await h.poll();assert.equal(h.restarts,0);assert.equal(h.reloads,0);
   }
   const rollback=await fixture();await rollback.poll();rollback.state.available=null;rollback.state.recovered=true;

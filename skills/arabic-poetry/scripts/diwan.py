@@ -118,7 +118,7 @@ def request(url, route, body=None, timeout=3):
         conn.close()
 
 
-def session(store):
+def session(store, owned_runtime=None):
     store.check_binding()
     path = store.state / 'session.json'
     if not path.exists():
@@ -128,7 +128,13 @@ def session(store):
         return None
     try:
         health = request(receipt['url'], '/status')
-    except (ConnectionRefusedError, DiwanError, ValueError):
+    except ConnectionRefusedError:
+        identity = receipt.get('runtime_id')
+        if identity and identity != owned_runtime and diwan_updates.RuntimeControl(store,identity).alive():
+            if diwan_updates.RuntimeControl(store,identity).state() != 'stopped':
+                raise DiwanError('START_UNKNOWN','The existing Diwan is changing workers. Retry open or serve; keep its session receipt.',6)
+        return None
+    except (DiwanError, ValueError):
         return None
     except (OSError, http.client.HTTPException) as error:
         raise DiwanError('STOP_UNKNOWN', 'Could not verify the saved server session. Retry stop or open; keep its receipt.', 6) from error
@@ -142,7 +148,10 @@ def session(store):
     return dict(receipt, moved=True)
 
 
-def shutdown_session(receipt):
+def shutdown_session(receipt, store=None):
+    if store is not None and receipt.get('runtime_id'):
+        if diwan_updates.stop_supervised(store,diwan_updates.STOP_WAIT) is not None:
+            return
     try:
         request(receipt['url'], '/shutdown', {})
     except (OSError, DiwanError, http.client.HTTPException):
@@ -163,7 +172,7 @@ def serve(store, port, agent=None, worker=False):
     if not worker:
         return diwan_updates.supervise(store.path, port, agent)
     with store.locked():
-        existing = session(store)
+        existing = session(store,owned_runtime=os.environ.get(diwan_updates.CONTROL_ENV))
         if existing and not existing['moved'] and agent is None:
             print(json.dumps(dict(existing, reused=True)), flush=True)
             return
@@ -174,12 +183,14 @@ def serve(store, port, agent=None, worker=False):
             print(json.dumps(dict(existing, reused=True)), flush=True)
             return
         if existing:
-            shutdown_session(existing)
+            shutdown_session(existing,store)
             if port == 0 and not existing['moved']:
                 port = urlsplit(existing['url']).port
         current = store.get()
         server, url = serve_diwan.make_server(store.state / 'agent', port=port, document=store, agent=selected_mode)
         receipt = {'path': str(store.path), 'id': current['poem']['id'], 'url': url, 'pid': os.getpid(), 'agent': server.diwan_agent, 'mode': selected_mode, 'manual': selected_mode == 'manual', 'reused': False, 'rendered': False}
+        if os.environ.get(diwan_updates.CONTROL_ENV):
+            receipt['runtime_id'] = os.environ[diwan_updates.CONTROL_ENV]
         atomic_write(store.state / 'session.json', encode(receipt))
         print(json.dumps(receipt, ensure_ascii=False), flush=True)
     serve_diwan.run_server(server)
@@ -201,7 +212,7 @@ def open_poem(store, args):
         with store.locked():
             current = session(store)
             if needs_replacement(current):
-                shutdown_session(current)
+                shutdown_session(current,store)
                 if args.port == 0 and not current['moved']:
                     args.port = urlsplit(current['url']).port
     if receipt and not replace:
@@ -315,6 +326,9 @@ def run(args, commands):
         return None
     if args.command == 'stop':
         with store.locked():
+            stopped = diwan_updates.stop_supervised(store,diwan_updates.STOP_WAIT)
+            if stopped is not None:
+                return {'path':str(store.path),'stopped':stopped,'already_stopped':not stopped}
             current = session(store)
             if current:
                 shutdown_session(current)

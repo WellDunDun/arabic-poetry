@@ -12,7 +12,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import urlsplit
 from diwan_agent import AgentError, Dispatcher, MAX_PROMPT, select_agent
-from diwan_updates import InstalledRuntime, TOKEN_ENV
+from diwan_updates import CONTROL_ENV, InstalledRuntime, RuntimeControl, TOKEN_ENV
 from diwan_store import DiwanError
 
 MAX_BODY = 2_000_000
@@ -90,6 +90,7 @@ def make_server(workspace, port=None, page=None, document=None, agent='manual'):
     document_writes = 0
     served = None if document is None else {'path': str(document.path), 'id': document.get()['poem']['id']}
     runtime = InstalledRuntime() if document is not None else None
+    control = RuntimeControl(document,os.environ[CONTROL_ENV]) if document is not None and os.environ.get(CONTROL_ENV) else None
 
     class Handler(BaseHTTPRequestHandler):
         def log_message(self, *args):
@@ -187,8 +188,16 @@ def make_server(workspace, port=None, page=None, document=None, agent='manual'):
                         document_writes -= 1
                 return
             if document is not None and path == '/shutdown':
-                self.send(200, {'stopped': True})
-                threading.Thread(target=self.server.shutdown, daemon=True).start()
+                with lock:
+                    if control:
+                        try:
+                            control.request_stop()
+                        except (OSError,DiwanError):
+                            pass  # Still stop this owned worker; its supervisor observes exit 0.
+                    self.server.diwan_stopping = True
+                    self.server.diwan_restart = False
+                    self.send(200, {'stopped': True})
+                    threading.Thread(target=self.server.shutdown, daemon=True).start()
                 return
             if runtime is not None and path == '/runtime':
                 # A browser sends no paths or executable arguments. The installation decides.
@@ -196,6 +205,9 @@ def make_server(workspace, port=None, page=None, document=None, agent='manual'):
                     self.send(400, {'error': 'Runtime updates take no arguments'})
                     return
                 with lock:
+                    if self.server.diwan_stopping:
+                        self.send(200,{'restarting':False})
+                        return
                     try:
                         if document.get()['poem']['id'] != served['id']:
                             raise ValueError('Document identity changed')
@@ -289,6 +301,7 @@ def make_server(workspace, port=None, page=None, document=None, agent='manual'):
         raise
     server.diwan_agent = client.name if client else 'manual'
     server.diwan_restart = False
+    server.diwan_stopping = False
     return server, f'http://127.0.0.1:{server.server_port}{prefix}/diwan.html'
 
 

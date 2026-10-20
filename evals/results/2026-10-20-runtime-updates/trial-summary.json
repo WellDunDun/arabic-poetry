@@ -1,0 +1,18 @@
+{
+  "source_commit": "30cd2962f497a3bc54e81a8cc7dc793d9156ff28",
+  "fresh_agent_cases": 31,
+  "passing_semantic_cases": 31,
+  "skill_files": 66,
+  "suites": {
+    "poetry": 8,
+    "routing": 9,
+    "launch": 4,
+    "pronouns": 4,
+    "cli": 6
+  },
+  "runtime_unit_tests": 15,
+  "skill_python_tests": 85,
+  "root_python_tests": 4,
+  "evidence_python_tests": 16,
+  "grading": "Lead semantic review, condition known; all final responses/commands and supplied/generated artifacts inspected. Single sample per case; historical baselines reused unchanged. Not a poetry-quality or general reliability benchmark."
+}

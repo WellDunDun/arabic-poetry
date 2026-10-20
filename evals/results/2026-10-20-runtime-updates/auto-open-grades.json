@@ -1,0 +1,210 @@
+{
+  "grading": "Lead semantic review with condition known; complete responses, actual commands, state and artifacts inspected.",
+  "cases": {
+    "compose-en": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "criterion": "Creates a new four-line Arabic prose poem about the requested subject with the supplied title",
+          "evidence": "Four-line rain poem titled مطر is fully embedded in review status; same-turn local fixture opener accepts it without a rendered-viewer claim. See auto-open-after.json and hashed raw events."
+        },
+        {
+          "status": "pass",
+          "criterion": "Preloads that actual generated poem into local Diwan in review status",
+          "evidence": "Four-line rain poem titled مطر is fully embedded in review status; same-turn local fixture opener accepts it without a rendered-viewer claim. See auto-open-after.json and hashed raw events."
+        },
+        {
+          "status": "pass",
+          "criterion": "Invokes the available local opener in the same turn without an editor offer, permission question or paste step",
+          "evidence": "Four-line rain poem titled مطر is fully embedded in review status; same-turn local fixture opener accepts it without a rendered-viewer claim. See auto-open-after.json and hashed raw events."
+        },
+        {
+          "status": "pass",
+          "criterion": "Keeps the launch local and the installed skill unchanged; does not claim the fixture rendered HTML",
+          "evidence": "Four-line rain poem titled مطر is fully embedded in review status; same-turn local fixture opener accepts it without a rendered-viewer claim. See auto-open-after.json and hashed raw events."
+        }
+      ]
+    },
+    "compose-ar": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "criterion": "Creates a new four-line Arabic prose poem about the requested subject with the supplied title",
+          "evidence": "Four-line coffee poem titled قهوة is fully embedded in review status; Arabic response and same-turn local fixture opener, no rendered-viewer claim. See auto-open-after.json and hashed raw events."
+        },
+        {
+          "status": "pass",
+          "criterion": "Preloads that actual generated poem into local Diwan in review status",
+          "evidence": "Four-line coffee poem titled قهوة is fully embedded in review status; Arabic response and same-turn local fixture opener, no rendered-viewer claim. See auto-open-after.json and hashed raw events."
+        },
+        {
+          "status": "pass",
+          "criterion": "Invokes the available local opener in the same turn without an editor offer, permission question or paste step",
+          "evidence": "Four-line coffee poem titled قهوة is fully embedded in review status; Arabic response and same-turn local fixture opener, no rendered-viewer claim. See auto-open-after.json and hashed raw events."
+        },
+        {
+          "status": "pass",
+          "criterion": "Answers in Arabic, keeps the launch local and the installed skill unchanged, and does not claim the fixture rendered HTML",
+          "evidence": "Four-line coffee poem titled قهوة is fully embedded in review status; Arabic response and same-turn local fixture opener, no rendered-viewer claim. See auto-open-after.json and hashed raw events."
+        }
+      ]
+    },
+    "revise-en": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "criterion": "Changes only the requested word and preserves all other text, marks and line breaks",
+          "evidence": "Only للضوء becomes للصباح in the complete embedded draft. Original text, source and skill remain unchanged; fixture opener invoked. See auto-open-after.json and hashed raw events."
+        },
+        {
+          "status": "pass",
+          "criterion": "Preloads the complete revised poem, not the original, into local Diwan in review status",
+          "evidence": "Only للضوء becomes للصباح in the complete embedded draft. Original text, source and skill remain unchanged; fixture opener invoked. See auto-open-after.json and hashed raw events."
+        },
+        {
+          "status": "pass",
+          "criterion": "Invokes the available local opener in the same turn without a permission or paste step",
+          "evidence": "Only للضوء becomes للصباح in the complete embedded draft. Original text, source and skill remain unchanged; fixture opener invoked. See auto-open-after.json and hashed raw events."
+        },
+        {
+          "status": "pass",
+          "criterion": "Preserves the original input file and installed skill, keeps the launch local and makes no rendered-viewer claim",
+          "evidence": "Only للضوء becomes للصباح in the complete embedded draft. Original text, source and skill remain unchanged; fixture opener invoked. See auto-open-after.json and hashed raw events."
+        }
+      ]
+    },
+    "revise-ar": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "criterion": "Changes only the requested word and preserves all other text, marks and line breaks",
+          "evidence": "Only نافذتي becomes بابي in the full embedded draft; original source preserved, Arabic response, fixture opener invoked. See auto-open-after.json and hashed raw events."
+        },
+        {
+          "status": "pass",
+          "criterion": "Preloads the complete revised poem, not the original, into local Diwan in review status",
+          "evidence": "Only نافذتي becomes بابي in the full embedded draft; original source preserved, Arabic response, fixture opener invoked. See auto-open-after.json and hashed raw events."
+        },
+        {
+          "status": "pass",
+          "criterion": "Invokes the available local opener in the same turn without a permission or paste step",
+          "evidence": "Only نافذتي becomes بابي in the full embedded draft; original source preserved, Arabic response, fixture opener invoked. See auto-open-after.json and hashed raw events."
+        },
+        {
+          "status": "pass",
+          "criterion": "Answers in Arabic, preserves the original input file and installed skill, keeps the launch local and makes no rendered-viewer claim",
+          "evidence": "Only نافذتي becomes بابي in the full embedded draft; original source preserved, Arabic response, fixture opener invoked. See auto-open-after.json and hashed raw events."
+        }
+      ]
+    },
+    "quick-image": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "criterion": "Briefly explains the supplied window/light image in Arabic without rewriting it",
+          "evidence": "Brief Arabic window/light interpretation, no HTML or opener, source/skill intact. See auto-open-after.json and hashed raw events."
+        },
+        {
+          "status": "pass",
+          "criterion": "Does not prepare or open Diwan even though a viewer is available",
+          "evidence": "Brief Arabic window/light interpretation, no HTML or opener, source/skill intact. See auto-open-after.json and hashed raw events."
+        },
+        {
+          "status": "pass",
+          "criterion": "Preserves the original input and installed skill",
+          "evidence": "Brief Arabic window/light interpretation, no HTML or opener, source/skill intact. See auto-open-after.json and hashed raw events."
+        }
+      ]
+    },
+    "quick-meter": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "criterion": "Identifies tawil with a compact complete supporting scan and disclosed consequential reading assumptions",
+          "evidence": "Names tawil with complete first-half syllable/foot map and final-kasra assumption; actual scanner command inspected, no HTML/opener. See auto-open-after.json and hashed raw events."
+        },
+        {
+          "status": "pass",
+          "criterion": "Uses actual local scanner evidence for any claimed executed check",
+          "evidence": "Names tawil with complete first-half syllable/foot map and final-kasra assumption; actual scanner command inspected, no HTML/opener. See auto-open-after.json and hashed raw events."
+        },
+        {
+          "status": "pass",
+          "criterion": "Does not prepare or open Diwan for this analysis-only request",
+          "evidence": "Names tawil with complete first-half syllable/foot map and final-kasra assumption; actual scanner command inspected, no HTML/opener. See auto-open-after.json and hashed raw events."
+        },
+        {
+          "status": "pass",
+          "criterion": "Keeps the installed skill unchanged",
+          "evidence": "Names tawil with complete first-half syllable/foot map and final-kasra assumption; actual scanner command inspected, no HTML/opener. See auto-open-after.json and hashed raw events."
+        }
+      ]
+    },
+    "compose-chat-only": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "criterion": "Delivers only four Arabic prose-poem lines about the requested subject",
+          "evidence": "Only four Arabic bread-imagery lines; no poem/editor artifact or opener. See auto-open-after.json and hashed raw events."
+        },
+        {
+          "status": "pass",
+          "criterion": "Does not prepare or open Diwan despite the composition trigger and available viewer",
+          "evidence": "Only four Arabic bread-imagery lines; no poem/editor artifact or opener. See auto-open-after.json and hashed raw events."
+        },
+        {
+          "status": "pass",
+          "criterion": "Creates no poem/editor files and leaves the installed skill unchanged",
+          "evidence": "Only four Arabic bread-imagery lines; no poem/editor artifact or opener. See auto-open-after.json and hashed raw events."
+        }
+      ]
+    },
+    "revise-chat-only": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "criterion": "Returns only the complete revised poem with the exact requested substitution",
+          "evidence": "Only the requested full revised poem is returned; original file and skill unchanged, no HTML/opener. See auto-open-after.json and hashed raw events."
+        },
+        {
+          "status": "pass",
+          "criterion": "Does not prepare or open Diwan despite the revision trigger and available viewer",
+          "evidence": "Only the requested full revised poem is returned; original file and skill unchanged, no HTML/opener. See auto-open-after.json and hashed raw events."
+        },
+        {
+          "status": "pass",
+          "criterion": "Preserves the original input file and installed skill and creates no poem/editor files",
+          "evidence": "Only the requested full revised poem is returned; original file and skill unchanged, no HTML/opener. See auto-open-after.json and hashed raw events."
+        }
+      ]
+    },
+    "revise-no-viewer": {
+      "status": "pass",
+      "criteria": [
+        {
+          "status": "pass",
+          "criterion": "Prepares local Diwan with the complete exact revised poem in review status",
+          "evidence": "Exact full revised poem in review-status local HTML; explicit unavailable-viewer disclosure, original input and skill unchanged. See auto-open-after.json and hashed raw events."
+        },
+        {
+          "status": "pass",
+          "criterion": "States that it cannot open the editor because no viewer is available and provides the prepared file without asking for a paste",
+          "evidence": "Exact full revised poem in review-status local HTML; explicit unavailable-viewer disclosure, original input and skill unchanged. See auto-open-after.json and hashed raw events."
+        },
+        {
+          "status": "pass",
+          "criterion": "Preserves the original input file and installed skill, and does not substitute publication or hosted services",
+          "evidence": "Exact full revised poem in review-status local HTML; explicit unavailable-viewer disclosure, original input and skill unchanged. See auto-open-after.json and hashed raw events."
+        }
+      ]
+    }
+  }
+}

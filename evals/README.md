@@ -1,5 +1,9 @@
 # Poetry skill evaluations
 
+## Updates in an open editor
+
+The frozen [diwan-runtime-updates.json](diwan-runtime-updates.json) scenarios cover safe application of already-installed compatible packages, idle reload, unsaved buffers, save conflicts, late input, failure rollback and client preservation. Run the normal skill Python tests and `node skills/arabic-poetry/tests/workbench_updates.js`; the native installer lifecycle also verifies installed-version detection. The [current runtime-update trial](results/2026-10-20-runtime-updates/report.md) records the final browser handoffs, 105 Python tests, package checks and all 31 fresh agent cases. Internal review notes and screenshots remain outside Git.
+
 ## Automatic word suggestions
 
 The [diwan-automatic-suggestions.json](diwan-automatic-suggestions.json) scenarios cover real browser word requests through both installed clients, no handoff dialog, acceptance-only saves, agent/browser synchronization and reload persistence. These live model calls require the user's authorization and normal client login. Use the disposable poem and frozen steps, capture the rendered menu and canonical revisions, and record failed attempts as well as the final run. `test_diwan_agent.py`, `workbench_host.js` and `workbench_state.js` provide repeatable fixture-based regressions without live calls. Native host sampling is verified separately from the CLI adapters; passing one does not establish the other. Reports must distinguish current package proof from historical runs and must not claim broad poetic accuracy.

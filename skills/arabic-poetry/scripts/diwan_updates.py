@@ -17,6 +17,7 @@ PROTOCOL = 1
 RESTART = 75
 TOKEN_ENV = 'DIWAN_RUNTIME_TOKEN'
 BLOCKED_ENV = 'DIWAN_RUNTIME_BLOCKED'
+RECOVERED_ENV = 'DIWAN_RUNTIME_RECOVERED'
 SCRIPTS = Path('skills/arabic-poetry/scripts')
 
 
@@ -34,13 +35,12 @@ def compatible(root):
 
 def recovery_marker(blocked, current):
     if not blocked:
-        return ''
+        return False
     try:
-        failed = tuple(map(int, package(Path(blocked)).split('.')))
         running = tuple(map(int, package(current).split('.')))
-        return blocked if failed > running else ''
+        return any(tuple(map(int, package(Path(root)).split('.'))) > running for root in blocked)
     except (OSError, ValueError):
-        return blocked
+        return True
 
 
 class InstalledRuntime:
@@ -55,7 +55,13 @@ class InstalledRuntime:
             self.packaged = False
         self.checked = 0
         self.available = None
-        self.blocked = os.environ.get(BLOCKED_ENV, '')
+        raw = os.environ.get(BLOCKED_ENV, '[]')
+        try:
+            values = json.loads(raw)
+        except ValueError:
+            values = [raw] if raw else []
+        self.blocked = set(values) if isinstance(values, list) and all(isinstance(p, str) for p in values) else set()
+        self.recovered = os.environ.get(RECOVERED_ENV) == '1'
 
     def candidate(self, force=False):
         if not self.packaged:
@@ -105,7 +111,7 @@ class InstalledRuntime:
                 return None
             if tuple(map(int, version.split('.'))) <= tuple(map(int, self.version.split('.'))):
                 return None
-            if str(target) == self.blocked or not compatible(target):
+            if str(target) in self.blocked or not compatible(target):
                 return None
             for name in ('diwan.py', 'diwan_updates.py', 'serve_diwan.py'):
                 if not (target / SCRIPTS / name).is_file():
@@ -121,7 +127,7 @@ class InstalledRuntime:
         value = self.candidate()
         return {'protocol': PROTOCOL, 'version': self.version,
                 'available': value['version'] if value else None,
-                'recovered': bool(self.blocked)}
+                'recovered': self.recovered}
 
 
 def acknowledgement(process, timeout=6):
@@ -152,7 +158,7 @@ def supervise(file, port, agent):
     child = None
     first = True
     token = None
-    blocked = ''
+    blocked = set()
     stopping = False
 
     def stop(signum, frame):
@@ -183,7 +189,8 @@ def supervise(file, port, agent):
             command = [sys.executable, str(script), 'serve', str(file), '--port', str(port), '--json', '--runtime-worker']
             if agent is not None:
                 command += ['--agent', agent]
-            env = dict(os.environ, **{BLOCKED_ENV: recovery_marker(blocked, current)})
+            env = dict(os.environ, **{BLOCKED_ENV: json.dumps(sorted(blocked)),
+                                      RECOVERED_ENV: '1' if recovery_marker(blocked, current) else '0'})
             if token:
                 env[TOKEN_ENV] = token
             else:
@@ -207,7 +214,7 @@ def supervise(file, port, agent):
                     return
                 if first or current == good:
                     raise DiwanError('START_FAILED', 'Diwan worker could not start; the poem was not changed', 6)
-                blocked = str(current)
+                blocked.add(str(current))
                 current = good
                 script = good_script
                 continue
@@ -228,13 +235,13 @@ def supervise(file, port, agent):
             if code != RESTART:
                 if current == good:
                     raise DiwanError('RUNTIME_FAILED', 'Diwan stopped unexpectedly; reopen the poem. Its saved text is unchanged.', 6)
-                blocked = str(current)
+                blocked.add(str(current))
                 current, script = good, good_script
                 continue
             # A real update request proves this worker served the document and runtime API.
             good, good_script = current, script
             monitor = InstalledRuntime(current)
-            monitor.blocked = blocked
+            monitor.blocked = set(blocked)
             candidate = monitor.candidate(force=True)
             current = Path(candidate['root']) if candidate else current
             script = current / SCRIPTS / 'diwan.py'

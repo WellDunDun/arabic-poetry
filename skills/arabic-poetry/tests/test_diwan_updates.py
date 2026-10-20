@@ -220,6 +220,26 @@ class RuntimeUpdateTests(unittest.TestCase):
         self.assertEqual(self.store.get(), self.before)
         self.assertIsNone(process.poll())
 
+    def test_each_failed_root_stays_blocked_after_another_failure(self):
+        attempts = self.root / 'attempts'
+        third = self.copy_package('0.3.3')
+        for root in (self.new, third):
+            root.joinpath(updates.SCRIPTS / 'diwan.py').write_text('from pathlib import Path\nwith Path(' + repr(str(attempts)) + ').open("a") as f:f.write(' + repr(root.name + '\n') + ')\nraise SystemExit(23)\n')
+        process, first = self.launch()
+        for root in (self.new, third):
+            self.install(root)
+            self.assertTrue(diwan.request(first['url'], '/runtime', {})['restarting'])
+            self.wait_version(first['url'], '0.3.1', recovered=True)
+        self.install(self.new)
+        self.assertFalse(diwan.request(first['url'], '/runtime', {})['restarting'])
+        self.assertEqual(attempts.read_text(), '0.3.2\n0.3.3\n')
+        working = self.copy_package('0.3.4')
+        self.install(working)
+        self.assertTrue(diwan.request(first['url'], '/runtime', {})['restarting'])
+        self.wait_version(first['url'], '0.3.4')
+        self.assertEqual(self.store.get(), self.before)
+        self.assertIsNone(process.poll())
+
     def test_update_waits_for_document_writes_and_rejects_late_saves(self):
         server, url = serve_diwan.make_server(self.root / 'agent', document=self.store, agent='manual', port=0)
         worker = threading.Thread(target=server.serve_forever, daemon=True)

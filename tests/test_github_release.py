@@ -60,6 +60,41 @@ class GitFixture(unittest.TestCase):
     def plan(self, before=None, after=None):
         return releases.plan(self.root, before or self.before, after or self.after, REPOSITORY)
 
+    def cli(self, *args, before=None):
+        argv = ['github_release.py', '--before', before or self.before,
+                '--commit', self.after, '--repository', REPOSITORY, *args]
+        with patch.object(releases, 'ROOT', self.root), patch.object(sys, 'argv', argv), \
+                redirect_stdout(io.StringIO()), redirect_stderr(io.StringIO()):
+            releases.main()
+
+    def test_offline_cli_outputs_schedule_the_bump_without_calling_github(self):
+        output = self.root / 'outputs.txt'
+        with patch.object(releases, 'GitHub') as client:
+            self.cli('--github-output', str(output))
+        client.assert_not_called()
+        self.assertEqual(output.read_text(), f'publish=true\nversion={self.next}\n')
+
+    def test_cli_rejects_invalid_notes_before_writing_workflow_outputs(self):
+        self.notes.write_text('## English\nOnly English notes\n')
+        self.after = self.commit()
+        output = self.root / 'outputs.txt'
+        with self.assertRaises(SystemExit) as error:
+            self.cli('--github-output', str(output))
+        self.assertEqual(error.exception.code, 1)
+        self.assertFalse(output.exists())
+
+    def test_cli_publication_requires_a_token_for_a_bump(self):
+        with patch.dict(releases.os.environ, {'GH_TOKEN': ''}), \
+                patch.object(releases, 'GitHub') as client, self.assertRaises(SystemExit):
+            self.cli('--publish')
+        client.assert_not_called()
+
+    def test_cli_unchanged_version_skips_even_with_publish_flag(self):
+        with patch.dict(releases.os.environ, {'GH_TOKEN': ''}), \
+                patch.object(releases, 'GitHub') as client:
+            self.cli('--publish', before=self.after)
+        client.assert_not_called()
+
     def test_version_bump_uses_exact_commit_and_both_reviewed_languages(self):
         result = self.plan()
         self.assertTrue(result['publish'])
@@ -268,3 +303,5 @@ class Publication(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+from contextlib import redirect_stderr, redirect_stdout
+import io

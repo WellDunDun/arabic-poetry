@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "arabic-poetry",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Write, revise and understand classical and modern Arabic poetry, with a meter scanner and optional Diwan editor.",
   "author": {
     "name": "Daniel Petro and Firas F. Khabour",

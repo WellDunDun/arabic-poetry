@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.1, safe updates in an open Diwan, unreleased
+
+- Follow compatible plugin versions already installed in the same Claude Code user-scope or Codex versioned cache. Keep the open editor's address, poem identity, saved text, revision history and selected AI client through a supervised restart.
+- Wait for saved, idle editors before reloading. Preserve unsaved bulk/line/word/title edits, unsent questions, in-flight saves, conflicts and AI requests, including when another tab initiates the update.
+- Return to the working package if an updated worker fails to start. Keep plugin installation under the host's existing update settings; older sessions require one safe reopen.
+
 ## 0.3.0, automatic Diwan suggestions, unreleased
 
 - Restore automatic word suggestions through native host AI, including shared-file and preloaded poems, without changing their storage.

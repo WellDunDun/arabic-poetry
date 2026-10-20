@@ -101,6 +101,10 @@ The bundled [Diwan CLI](skills/arabic-poetry/references/CLI.md) lets your agent 
 
 **بدائل الكلمات:** انقر على الكلمة بزر الفأرة الأيمن، أو بإصبعين على لوحة تتبّع Mac. اختر «بالمعنى نفسه» للمرادفات، أو «بالتقطيع نفسه» للحفاظ على الإيقاع، أو «تؤدّي المعنى وتقيم الوزن» لإصلاح الوزن مع حفظ المعنى. النقر العادي يفتح تعديل الكلمة وتشكيلها. تصل الاقتراحات تلقائيًا إذا كان المضيف متصلًا بنموذج، أو كان Claude/Codex مثبتًا ومسجّل الدخول محليًا. اختر اقتراحًا لتطبيقه. تستخدم طلبات الذكاء المحلية تسجيل الدخول وحصة الاستخدام للعميل المحدد بطلبات مستقلة عن محادثتك المفتوحة. اطلب من وكيلك فتح ديوان مع Claude أو Codex أو وضع المحادثة اليدوي. يبقى مربع الطلب اليدوي بديلًا عند تعذّر الاتصال التلقائي.
 
+An open shared-file Diwan can pick up compatible updates after your plugin manager installs them. It waits until your edits are saved and you finish editing, then reconnects automatically with the same poem and history. Unsaved edits or a save conflict keep the update pending. This requires a session opened with 0.3.1 or later and a supported versioned plugin cache; see [updates](INSTALL.md#versions-and-releases).
+
+يمكن لديوان المشترك المفتوح التقاط تحديث متوافق بعد أن يثبّته مدير الإضافات. ينتظر حفظ تعديلاتك وانتهاء التحرير، ثم يعيد الاتصال تلقائيًا بالقصيدة وسجلها نفسيهما. تبقى المسودات غير المحفوظة أو تعارضات الحفظ سببًا لتعليق التحديث. يلزم فتح الجلسة بالإصدار 0.3.1 أو أحدث واستخدام ذاكرة إضافات ذات إصدارات مدعومة؛ راجع [التحديثات](INSTALL.md#versions-and-releases).
+
 ## Collaboration
 
 This project is maintained separately from the [personal skills collection](https://github.com/WellDunDun/skills).

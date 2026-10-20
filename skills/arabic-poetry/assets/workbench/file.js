@@ -85,6 +85,8 @@
         async delete() { throw new Error('لا يحذف المحرر ملف القصيدة المشتركة'); }
       }; }
     }; } };
+    if (root.DiwanRuntimeUpdates) root.DiwanRuntimeUpdates(api,
+      () => !busy && !!latest && !!root.DiwanFileReady && root.DiwanFileReady());
     return { ...services, label: 'قصيدة مشتركة مع وكيلك؛ الحفظ في الملف' + (services.aiLabel ? ' · AI: ' + services.aiLabel : ''), db };
   };
 })(typeof window === 'undefined' ? globalThis : window);

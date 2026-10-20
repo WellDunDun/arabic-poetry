@@ -79,6 +79,10 @@ The default Git source follows reviewed `main` commits. Separately authorized re
 
 Prefer an update over uninstall/reinstall. Preserve user-authored local modifications and poem workspaces. An accepted update does not synchronize browser-stored poems with an agent or another browser. Diwan still uses its local bridge or manual JSON exchange as described in [DIWAN.md](skills/arabic-poetry/references/DIWAN.md).
 
+A shared-file Diwan opened with version 0.3.1 or later can pick up compatible updates already installed in the same versioned Claude Code user-scope or Codex plugin cache. It reconnects automatically when the editor is saved and idle. Active edits and failed/conflicting saves keep the update pending, without discarding the draft. This does not install releases or change host update preferences. Older running sessions, account-only/ZIP installs and standalone copies need a safe reopen. See [open-editor updates](skills/arabic-poetry/references/CLI.md#updates-in-an-open-editor).
+
+يمكن لديوان المشترك المفتوح بالإصدار 0.3.1 أو أحدث التقاط تحديث متوافق بعد أن يثبّته مدير الإضافات في ذاكرة الإضافة ذات الإصدارات لدى Claude Code على مستوى المستخدم أو Codex. يُعاد الاتصال تلقائيًا بعد حفظ التعديلات وانتهاء التحرير. يبقى التحديث معلّقًا أثناء التحرير أو عند تعذّر الحفظ أو تعارضه، وتبقى المسودة دون حذف. لا يثبّت ديوان الإصدارات ولا يغيّر إعدادات التحديث. تحتاج الجلسات الأقدم والإضافات المتاحة للحساب فقط وملفات ZIP والنسخ المستقلة إلى إعادة فتح آمنة.
+
 ## Fallback for other agents
 
 If plugin installation is unavailable, explain the missing capability first, then install the complete `skills/arabic-poetry` directory using the agent's supported skill installer. Preserve existing modifications. In Codex, `$skill-installer` is one standalone route. If an appropriate native installer is absent, the [Skills CLI](https://github.com/vercel-labs/skills#install-a-skill) can target the current agent only:

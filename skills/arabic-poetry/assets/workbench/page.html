@@ -512,6 +512,9 @@ window.__METERS__ = /*METERS*/null;
 /*FILE*/
 </script>
 <script>
+/*UPDATES*/
+</script>
+<script>
 (function () {
   'use strict';
   const A = window.Arud; A.load(window.__METERS__);
@@ -1647,6 +1650,10 @@ ${linesOf(p).join('\n')}
   };
   if (window.DiwanFile) {
     $('newBtn').hidden = true;
+    window.DiwanFileReady = () => !!cur() && !dirty.size && !writing.size && editing === null && pendingNew === null &&
+      $('bulkWrap').hidden && $('pop').hidden && $('cmenu').hidden && $('exportDlg').hidden && !$('diacBtn').disabled &&
+      ![...wordAlts.values(), ...Object.values(altResults), ...Object.values(askState)].some(s => s.busy || s.draft) &&
+      !(document.activeElement && (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName) || document.activeElement.isContentEditable));
     window.DiwanFileDraft = () => {
       const p = cur(); if (!p) return null;
       const draft = JSON.parse(JSON.stringify(p));

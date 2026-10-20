@@ -24,6 +24,14 @@ Create the parent poem directory first. Use the current complete new/revised dra
 
 If the current host cannot reach the same loopback server, state that limitation. A [preloaded snapshot](DIWAN.md#open-with-the-current-poem) remains available for local HTML viewers, but its browser edits do not synchronize to the canonical file. Do not promise shared-file behavior for that fallback.
 
+## Updates in an open editor
+
+Shared-file sessions opened with version 0.3.1 or later can follow compatible updates already installed by the plugin manager. The local runtime checks the same plugin's versioned cache, including user-scope Claude Code installations and Codex installations. It does not fetch Git commits or install packages. Keep the host's update settings enabled, or use its normal update command. Pinned installations remain pinned. Account-only/ZIP installations, standalone copies and development checkouts require reopening with the updated package.
+
+An idle editor reconnects and reloads automatically, keeping its address, canonical poem, revision history and selected AI client. An update waits while a text/word/line editor, title input, unsent question, save, conflict, export or AI request is active. It never saves or discards a draft to make an update proceed. Complete the edit and wait for a successful save, or cancel it explicitly. A failed/conflicting save keeps the draft and existing recovery controls; a compatible server handoff triggered by another tab must also leave that draft visible. If the new worker cannot start, Diwan returns to the last working version and shows a notice.
+
+Older running sessions need one safe reopen to acquire this mechanism. Check that there are no unsaved edits before stopping/reopening such a session; never overwrite the poem or refresh an active draft. Native hosted/snapshot pages do not use this local runtime handoff.
+
 ## Conditional saving and recovery
 
 Read `get --json` immediately before preparing an accepted save. Its `version` is an opaque content hash; `poem.revision` is the human-readable revision number. Write a JSON patch containing only intended editable fields, or use `--text-file` for an exact text-only update. `--input -` and `--text-file -` read stdin; empty input fails promptly.

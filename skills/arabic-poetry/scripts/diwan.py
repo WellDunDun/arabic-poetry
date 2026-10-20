@@ -16,6 +16,7 @@ import webbrowser
 sys.dont_write_bytecode = True
 from diwan_store import DiwanError, Store, VERSION, MAX_BYTES, atomic_write, bounded_read, digest, encode, parse, validate_patch
 import serve_diwan
+import diwan_updates
 
 SCRIPT = Path(__file__).resolve()
 SHUTDOWN_WAIT = 5
@@ -74,6 +75,8 @@ def parser():
             p.add_argument('--port', type=int, default=0)
             p.add_argument('--agent', choices=('auto', 'claude', 'codex', 'manual'),
                            help='AI client; new sessions detect automatically, existing sessions keep their client unless specified')
+        if name == 'serve':
+            p.add_argument('--runtime-worker', action='store_true', help=argparse.SUPPRESS)
         if name == 'open':
             p.add_argument('--no-browser', action='store_true', help='Return the local URL for the agent to open')
         if name == 'export':
@@ -155,7 +158,9 @@ def shutdown_session(receipt):
     raise DiwanError('STOP_UNKNOWN', 'Could not confirm server shutdown. Retry stop or open; keep the existing session receipt.', 6)
 
 
-def serve(store, port, agent=None):
+def serve(store, port, agent=None, worker=False):
+    if not worker:
+        return diwan_updates.supervise(store.path, port, agent)
     with store.locked():
         existing = session(store)
         selected_mode = agent or (existing and ('manual' if existing.get('manual') else existing.get('agent', 'manual'))) or 'auto'
@@ -174,6 +179,8 @@ def serve(store, port, agent=None):
         atomic_write(store.state / 'session.json', encode(receipt))
         print(json.dumps(receipt, ensure_ascii=False), flush=True)
     serve_diwan.run_server(server)
+    if server.diwan_restart:
+        raise SystemExit(diwan_updates.RESTART)
 
 
 def open_poem(store, args):
@@ -300,7 +307,7 @@ def run(args, commands):
             raise DiwanError('INVALID_PORT', '--port must be 0–65535')
         if args.command == 'open':
             return open_poem(store, args)
-        serve(store, args.port, args.agent)
+        serve(store, args.port, args.agent, args.runtime_worker)
         return None
     if args.command == 'stop':
         with store.locked():

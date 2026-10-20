@@ -1,8 +1,12 @@
 # Poetry skill evaluations
 
+## Automatic/manual documentation follow-up
+
+The [current combined follow-up](results/2026-10-20-coderabbit-followup-pr12/report.md) records eight fresh frozen poetry cases after clarifying automatic and manual requests and correcting historical grading/provenance. The default checker validates this exact combined package. The parent has a separate [eight-case follow-up](results/2026-10-20-coderabbit-followup-pr11/report.md). Earlier workflow, browser and installation runs remain tied to their recorded sources.
+
 ## Runtime review fixes
 
-The [current combined trial](results/2026-10-20-review-fixes-pr12/report.md) records the protocol-2 supervisor fixes, regression evidence, 100 skill tests and 31 fresh agent cases. Its recorded browser handoff keeps an unsaved draft pending, then retains the exact saved text at the same address. The default checker validates this package. Each preceding trial remains tied to its recorded source.
+The [runtime review trial](results/2026-10-20-review-fixes-pr12/report.md) records the protocol-2 supervisor fixes, regression evidence, 100 skill tests and 31 fresh agent cases. Its recorded browser handoff keeps an unsaved draft pending, then retains the exact saved text at the same address. Each preceding trial remains tied to its recorded source.
 
 ## Updates in an open editor
 
@@ -16,7 +20,7 @@ The [client/session trial](results/2026-10-20-review-fixes-pr11/report.md) recor
 
 The [diwan-automatic-suggestions.json](diwan-automatic-suggestions.json) scenarios cover real browser word requests through both installed clients, no handoff dialog, acceptance-only saves, agent/browser synchronization and reload persistence. These live model calls require the user's authorization and normal client login. Use the disposable poem and frozen steps, capture the rendered menu and canonical revisions, and record failed attempts as well as the final run. `test_diwan_agent.py`, `workbench_host.js` and `workbench_state.js` provide repeatable fixture-based regressions without live calls. Native host sampling is verified separately from the CLI adapters; passing one does not establish the other. Reports must distinguish current package proof from historical runs and must not claim broad poetic accuracy.
 
-The [earlier automatic-suggestions trial](results/2026-10-20-automatic-suggestions/report.md) includes both real client/browser flows and fresh executions of all 31 existing agent cases. Earlier trials remain unchanged.
+The [earlier automatic-suggestions trial](results/2026-10-20-automatic-suggestions/report.md) includes both real client/browser flows and fresh executions of all 31 existing agent cases. Earlier execution records remain historical.
 
 ## Shared-file CLI
 

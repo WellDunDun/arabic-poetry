@@ -32,6 +32,17 @@ def compatible(root):
     return json.loads((root / 'skills/arabic-poetry/assets/workbench/runtime.json').read_text()) == {'protocol': PROTOCOL}
 
 
+def recovery_marker(blocked, current):
+    if not blocked:
+        return ''
+    try:
+        failed = tuple(map(int, package(Path(blocked)).split('.')))
+        running = tuple(map(int, package(current).split('.')))
+        return blocked if failed > running else ''
+    except (OSError, ValueError):
+        return blocked
+
+
 class InstalledRuntime:
     """Read the current installation, never fetch or install another package."""
     def __init__(self, root=ROOT):
@@ -148,11 +159,17 @@ def supervise(file, port, agent):
         nonlocal stopping
         stopping = True
         if child and child.poll() is None:
-            child.terminate()
+            try:
+                child.terminate()
+            except ProcessLookupError:
+                pass
 
     def terminate():
         if child.poll() is None:
-            child.terminate()
+            try:
+                child.terminate()
+            except ProcessLookupError:
+                pass
             try:
                 child.wait(timeout=6)
             except subprocess.TimeoutExpired:
@@ -166,12 +183,16 @@ def supervise(file, port, agent):
             command = [sys.executable, str(script), 'serve', str(file), '--port', str(port), '--json', '--runtime-worker']
             if agent is not None:
                 command += ['--agent', agent]
-            env = dict(os.environ, **{BLOCKED_ENV: blocked if current == good else ''})
+            env = dict(os.environ, **{BLOCKED_ENV: recovery_marker(blocked, current)})
             if token:
                 env[TOKEN_ENV] = token
             else:
                 env.pop(TOKEN_ENV, None)
             child = subprocess.Popen(command, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, env=env)
+            if stopping:
+                terminate()
+                child.stdout.close()
+                return
             line = acknowledgement(child)
             try:
                 receipt = json.loads(line)
@@ -182,6 +203,8 @@ def supervise(file, port, agent):
                     raise ValueError('Worker changed the Diwan address')
             except (ValueError, KeyError, TypeError):
                 terminate()
+                if stopping:
+                    return
                 if first or current == good:
                     raise DiwanError('START_FAILED', 'Diwan worker could not start; the poem was not changed', 6)
                 blocked = str(current)
@@ -210,8 +233,8 @@ def supervise(file, port, agent):
                 continue
             # A real update request proves this worker served the document and runtime API.
             good, good_script = current, script
-            blocked = ''
             monitor = InstalledRuntime(current)
+            monitor.blocked = blocked
             candidate = monitor.candidate(force=True)
             current = Path(candidate['root']) if candidate else current
             script = current / SCRIPTS / 'diwan.py'

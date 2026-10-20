@@ -171,6 +171,55 @@ class RuntimeUpdateTests(unittest.TestCase):
         self.assertEqual(self.store.get(), self.before)
         self.assertIsNone(process.poll())
 
+    def test_termination_during_startup_is_a_clean_stop(self):
+        marker = self.root / 'worker-starting'
+        script = self.old / updates.SCRIPTS / 'diwan.py'
+        text = script.read_text()
+        insert = 'import sys,time\nfrom pathlib import Path\nif "--runtime-worker" in sys.argv:\n    Path(' + repr(str(marker)) + ').write_text("starting")\n    time.sleep(30)\n'
+        script.write_text(insert + text)
+        process = subprocess.Popen([sys.executable, str(script), 'serve', str(self.file), '--agent', 'manual', '--port', '0'], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+        try:
+            deadline = time.monotonic() + 5
+            while not marker.exists() and time.monotonic() < deadline:
+                time.sleep(.02)
+            self.assertTrue(marker.exists())
+            process.terminate()
+            self.assertEqual(process.wait(timeout=8), 0)
+            self.assertEqual(self.store.get(), self.before)
+        finally:
+            if process.poll() is None:
+                process.kill()
+                process.wait(timeout=3)
+            process.stdout.close()
+
+    def test_registry_change_between_approval_and_handoff_cannot_retry_failed_root(self):
+        flag = self.root / 'flip-on-restart'
+        index = self.config / 'plugins/installed_plugins.json'
+        self.install(self.new)
+        failed_index = index.read_text()
+        self.install(self.old)
+        script = self.old / updates.SCRIPTS / 'diwan.py'
+        injected = '        from pathlib import Path\n        if Path(' + repr(str(flag)) + ').exists():\n            Path(' + repr(str(index)) + ').write_text(' + repr(failed_index) + ')\n            Path(' + repr(str(flag)) + ').unlink()\n'
+        script.write_text(script.read_text().replace('        raise SystemExit(diwan_updates.RESTART)', injected + '        raise SystemExit(diwan_updates.RESTART)'))
+        attempts = self.root / 'failed-attempts'
+        self.new.joinpath(updates.SCRIPTS / 'diwan.py').write_text('from pathlib import Path\nwith Path(' + repr(str(attempts)) + ').open("a") as f:f.write("attempt\\n")\nraise SystemExit(23)\n')
+        process, first = self.launch()
+        self.install(self.new)
+        self.assertTrue(diwan.request(first['url'], '/runtime', {})['restarting'])
+        self.wait_version(first['url'], '0.3.1', recovered=True)
+        newer = self.copy_package('0.3.3')
+        self.install(newer)
+        flag.write_text('flip')
+        self.assertTrue(diwan.request(first['url'], '/runtime', {})['restarting'])
+        deadline = time.monotonic() + 5
+        while flag.exists() and time.monotonic() < deadline:
+            time.sleep(.02)
+        self.assertFalse(flag.exists())
+        self.wait_version(first['url'], '0.3.1', recovered=True)
+        self.assertEqual(attempts.read_text(), 'attempt\n')
+        self.assertEqual(self.store.get(), self.before)
+        self.assertIsNone(process.poll())
+
     def test_update_waits_for_document_writes_and_rejects_late_saves(self):
         server, url = serve_diwan.make_server(self.root / 'agent', document=self.store, agent='manual', port=0)
         worker = threading.Thread(target=server.serve_forever, daemon=True)
